@@ -36,7 +36,6 @@
 - On the Orders page, if you click on a product, the product details page opens
 
 # Need
-- احتاج الى Facebook App ID لكي يعمل زر المشاركة بشكل صحيح
 - احتاج الى سعر الذهب عيار ٢٤ وسعر الفضة لحساب قيمة الزكاة بشكل صحيح
 
 # Edit
