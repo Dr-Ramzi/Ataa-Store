@@ -1,0 +1,60 @@
+import 'package:ataa/UI/Animation/animation.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../../../../../../../Config/config.dart';
+import '../../../../../../GeneralState/empty.dart';
+import '../../../../../../GeneralState/error.dart';
+import '../../../../../../Widget/widget.dart';
+import 'Sections/loading.dart';
+import '../controller/Controller.dart';
+
+class MyDonationsView extends GetView<MyDonationsController> {
+  const MyDonationsView({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBarX(
+        title: "Register My Donations",
+        actions: [BasketIconButtonsX()],
+      ),
+      body: SafeArea(
+        child: FutureBuilder(
+          future: controller.getData(),
+          builder: (context, snapshot) {
+            /// Loading State
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const LoadingSectionX();
+            }
+
+            /// Error State
+            if (snapshot.hasError) {
+              return ErrorView(
+                error: snapshot.error.toString(),
+              );
+            }
+
+            /// Empty State
+            if (controller.myDonations.isEmpty) {
+              return const EmptyView(
+                message: "There are no current donations",
+              );
+            }
+
+            /// Main Content
+            return ListView.builder(
+              padding: const EdgeInsets.symmetric(
+                horizontal: StyleX.hPaddingApp,
+                vertical: StyleX.vPaddingApp,
+              ),
+              itemCount: controller.myDonations.length,
+              itemBuilder: (context, index) => MyDonationCardX(
+                myDonation: controller.myDonations[index],
+                donation: controller.donations[index],
+              ).fadeAnimationX(60 * (index + 1)),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}

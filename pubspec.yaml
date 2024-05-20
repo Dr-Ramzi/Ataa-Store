@@ -1,0 +1,138 @@
+#====================================================================
+# Project Info
+
+name: ataa
+description: "description_project_x"
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0+1
+
+#====================================================================
+# Flutter Version
+
+environment:
+  sdk: '>=3.3.3 <4.0.0'
+
+#====================================================================
+# Dependencies
+
+dependencies:
+  flutter:
+    sdk: flutter
+  #-------------------------------------
+  ## Basic
+  get: ^4.6.6
+  flutter_native_splash: any
+  universal_html: any
+  intl: any
+  url_launcher: any
+
+  #-------------------------------------
+  ## Map
+  google_maps_flutter: any
+  maps_toolkit: any
+
+  #-------------------------------------
+  ## Animation
+  simple_animations: any
+
+  #-------------------------------------
+  ## Locale Data
+  hive: any
+  path_provider: any
+
+  ##-------------------------------------
+  ## Icons
+  iconsax: any
+  cupertino_icons: any
+
+  ##-------------------------------------
+  ## Image
+  image_picker: any
+  image_network: ^2.5.1
+  flutter_svg: ^2.0.9 # To support SVG images
+
+  ##-------------------------------------
+  ## Features
+  quick_actions: ^1.0.7
+
+  #-------------------------------------
+  badges: ^3.1.2 # Notice number on the icon
+  smooth_page_indicator: ^1.1.0 # Show the number of images and any open image via dots below the image
+  flutter_advanced_segment: ^3.0.2 # Multiple tabs item
+  flutter_share_me: ^1.4.0 # To share links externally
+  flutter_native_contact_picker: ^0.0.6 # To fetch data from contacts
+  calendar_date_picker2: ^1.0.2 # To enter the date via the calendar
+  flutter_spinbox: ^0.13.1 # Number entry widget
+  auto_size_text: ^3.0.0 # Automatic text size
+
+  #-------------------------------------
+  ## Edit Package
+  flutter_multi_formatter: ^2.12.4
+  country_flags: ^2.2.0
+  json_annotation: ^4.8.1
+  flutter_rating_bar: ^4.0.1
+
+#====================================================================
+# Dev Dependencies
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+
+#====================================================================
+# Splash Screen
+
+flutter_native_splash:
+  color: '#0E6863'
+  image:  assets/splash/splash.png
+  color_dark: '#0E6863'
+  image_dark: assets/splash/splash.png
+  android_12:
+    image:  assets/splash/splash.png
+    color: '#0E6863'
+    icon_background_color: '#0E6863'
+  fullscreen: true
+  android: true
+  ios: true
+#  flutter pub run flutter_native_splash:create
+
+#====================================================================
+# Assets
+
+flutter:
+  uses-material-design: true
+  #-------------------------------------
+  ## Images & Icons
+
+  assets:
+    - assets/images/
+    - assets/images/logos/
+    - assets/images/otherLogos/
+    - assets/images/empty/
+    - assets/images/creditCard/
+    - assets/icons/
+    - assets/splash/
+    - assets/fonts/
+
+  #-------------------------------------
+  ## Fonts
+
+  fonts:
+    - family: IBMPlexSansArabic
+      fonts:
+        - asset: assets/fonts/IBMPlexSansArabic-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/IBMPlexSansArabic-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/IBMPlexSansArabic-Light.ttf
+          weight: 300
+        - asset: assets/fonts/IBMPlexSansArabic-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/IBMPlexSansArabic-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/IBMPlexSansArabic-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/IBMPlexSansArabic-Bold.ttf
+          weight: 700

@@ -1,0 +1,69 @@
+part of '../core.dart';
+
+// ~~~~~~~~~~~~~~~~~~~~~~~{{ Why this Util }}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Generic functions that can be used across the entire project
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+class FunctionX {
+  /// Convert ounces to grams with all carats
+  static Map<int, double> goldOunceToCarats(double ounce) {
+    double gram = ounce / ConstantX.ounceWeight;
+    Map<int, double> carats = {};
+    for (int carat in ConstantX.goldCarats) {
+      carats[carat] = (gram * carat) / 24;
+    }
+    return carats;
+  }
+
+  ///Convert ounces to grams
+  static double silverOunceToGram(double ounce) {
+    return ounce / ConstantX.ounceWeight;
+  }
+
+  /// Separating connected words like: SakerDakak -> Saker Dakak
+  static String addSpaceBeforeUpperCase(String val) {
+    return val[0] +
+        val.substring(1).replaceAllMapped(RegExp(r'([A-Z])'), (match) {
+          return ' ${match.group(1)}';
+        });
+  }
+
+  /// Time format like: 80 -> 1:20
+  static String formatTime(int val) {
+    return '${(val ~/ 60).toString().padLeft(2, '0')}:${(val % 60).toString().padLeft(2, '0')}';
+  }
+
+  /// Large number format like: 1000 -> 1,000
+  static String formatLargeNumber(num val, {int decimal = 0}) {
+    intl.NumberFormat formatter = intl.NumberFormat.decimalPatternDigits(
+      locale: 'en_us',
+      decimalDigits: decimal,
+    );
+    return formatter.format(val);
+  }
+
+  /// Extract the country code and phone number
+  /// like: +963994343927 -> [ 963 , 994343927 ]
+  static (String, int?) extractCountryCodeAndPhoneNumber(String number) {
+    // Remove all spaces
+    number = number.replaceAll(" ", '');
+    number = number.replaceAll("-", '');
+
+    // Remove any leading '+' or '00'
+    number = number.replaceAll(RegExp(r'^(\+|00)'), '');
+
+    // Check if the number contains a country code
+    if (number.length > 10) {
+      int? countryCode;
+      String x =number.substring(0, number.length - 9);
+      if(x.length == 3 || x.length==2){
+        countryCode = int.parse(x);
+      }
+      String phoneNumber = number.substring(number.length - 9);
+
+      return (phoneNumber, countryCode);
+    } else {
+      return (number, null);
+    }
+  }
+}

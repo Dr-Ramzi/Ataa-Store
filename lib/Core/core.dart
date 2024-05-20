@@ -1,0 +1,43 @@
+library core;
+
+import 'dart:async';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart' as intl;
+import 'package:url_launcher/url_launcher.dart';
+import '../Config/config.dart';
+import '../Data/data.dart';
+import '../UI/Screen/Auth/Login/view/loginView.dart';
+import '../UI/Widget/widget.dart';
+import 'package:flutter_share_me/flutter_share_me.dart';
+import '../Ui/GeneralState/systemCrash.dart';
+
+part 'Controller/App/appController.dart';
+part 'Util/function.dart';
+part 'Helper/clipboard.dart';
+part 'Helper/encryption.dart';
+part 'Helper/configApp.dart';
+part 'Helper/catchError.dart';
+part 'Helper/color.dart';
+part 'Helper/devise.dart';
+part 'Util/validate.dart';
+part 'Util/creditCard.dart';
+part 'Util/share.dart';
+part 'Helper/httpOverrides.dart';
+
+// ~~~~~~~~~~~~~~~~~~~~~~~{{ Why this section }}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Controlling the internal processes of an application and general controllers,
+/// containing all internal processors and general functions
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+class CoreX{
+  /// TODO: Features >>> Add receiving notifications in this section
+  static init() async{
+    /// Here codes are added to configure anything within this section when the application starts
+  }
+}

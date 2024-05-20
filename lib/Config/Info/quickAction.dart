@@ -1,0 +1,46 @@
+part of '../config.dart';
+
+// ~~~~~~~~~~~~~~~~~~~~~~~{{ Why this section }}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/// Manage everything related to the quick navigation buttons outside the application
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+class QuickActionX {
+  static QuickActions quickActions = const QuickActions();
+
+  /// Quick Action Items
+  static List<ShortcutItem> shortcuts = [
+    ShortcutItem(
+      type: 'quickDonation',
+      localizedTitle: 'Quick Donation'.tr,
+      icon: 'quick_donation',
+    ),
+    ShortcutItem(
+      type: 'basket',
+      localizedTitle: 'Basket'.tr,
+      icon: 'basket',
+    ),
+    ShortcutItem(
+      type: 'notifications',
+      localizedTitle: 'Notifications'.tr,
+      icon: 'notifications',
+    ),
+  ];
+
+  /// Initialize Quick Actions
+  static init() async {
+    quickActions.initialize((String shortcutType) async {
+      switch (shortcutType) {
+        case 'quickDonation':
+          RootController root = Get.find();
+          await root.openQuickDonation(isFromAction: true);
+        case 'basket':
+          Get.toNamed(RouteNameX.basket);
+        case 'notifications':
+          Get.toNamed(RouteNameX.notifications);
+        default:
+          Get.toNamed(RouteNameX.root);
+      }
+    });
+    quickActions.setShortcutItems(shortcuts);
+  }
+}
