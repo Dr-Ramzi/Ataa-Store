@@ -8,7 +8,7 @@ import '../../../Widget/widget.dart';
 
 // ~~~~~~~~~~~~~~~~~~~~~~~{{ Why this bottom sheet }}~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Enter the data of the person to whom the gift is sent, which is used on
-/// the Dedications page
+/// the Gifting page
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 detailsOfHisDedicateSheetX({
@@ -72,10 +72,11 @@ detailsOfHisDedicateSheetX({
                 /// Input Phone Number
                 PhoneFieldX(
                   key: Key(controller.countryCode.value.toString()),
+                  label: "Mehdi's mobile number",
                   controller: controller.giftedPhone,
                   onChange: controller.onChangeCountryCode,
                   countryCode: controller.countryCode.value,
-                  label: "Mehdi's mobile number",
+                  isDisableChangeCountryCode: !controller.app.generalSettings.isShowCountryCodeList,
                 ).fadeAnimation400,
 
                 /// Get data from contacts

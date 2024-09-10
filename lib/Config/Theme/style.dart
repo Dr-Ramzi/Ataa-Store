@@ -6,7 +6,7 @@ part of '../config.dart';
 
 class StyleX{
   /// Radius
-  static const double radiusSm = 5.0;
+  static const double radiusSm = 6.0;
   static const double radius = 10.0;
   static const double radiusMd = 20.0;
   static const double radiusLg = 30.0;
@@ -32,7 +32,7 @@ class StyleX{
 
   /// Padding
   static const double hPaddingApp=16.0;
-  static const double vPaddingApp=18.0;
+  static const double vPaddingApp=20.0;
   static const double bottomSheetPadding = 20.0;
   static const double paddingHeaderWeb=80.0;
 
@@ -43,15 +43,17 @@ class StyleX{
   static const double borderWidth=1;
 
   /// Cards
-  static const double charitableProjectCardHeight=317;
-  static const double charitableProjectCardWidthSM=340;
+  static const double donationCardHeight=295;
+  static const double donationCardWidthSM=340;
   static const double deductionCardHeight=284;
   static const double deductionCardWidthSM=340;
   static const double productCardHeight=310;
   static const double productCardWidth=200;
-  static const double organizationCardHeight=160;
+  static const double organizationCardHeight=150;
   static const double organizationCardWidth=140;
-  static const double adsCardHeight=200;
+  static const double partnerCardHeight=120;
+  static const double partnerCardWidth=170;
+  static const double adsCardHeight=210;
   static const double statisticCardHeight=160;
 
   /// Times

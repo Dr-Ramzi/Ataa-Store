@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:io';
+import 'package:ataa/Core/Extension/convert/convert.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,8 +21,8 @@ class EditProfileController extends GetxController {
   RxBool isLoading = false.obs;
   Rx<ButtonStateEX> buttonState = ButtonStateEX.normal.obs;
 
-  late int countryCode = app.user.value.countryCode;
-  late Rx<String> gender = (app.user.value.gender ?? "").obs;
+  late int countryCode = app.user.value!.countryCode;
+  late Rx<String> gender = (app.user.value!.gender ?? "").obs;
 
   XFile? image;
   final ImagePicker picker = ImagePicker();
@@ -29,11 +31,11 @@ class EditProfileController extends GetxController {
   GlobalKey<FormState> formKey = GlobalKey();
   AutovalidateMode autoValidate = AutovalidateMode.disabled;
   late TextEditingController name =
-      TextEditingController(text: app.user.value.name);
+      TextEditingController(text: app.user.value!.name);
   late TextEditingController phone =
-      TextEditingController(text: app.user.value.phone.toString());
+      TextEditingController(text: app.user.value!.phone.toString());
   late TextEditingController email =
-      TextEditingController(text: app.user.value.email);
+      TextEditingController(text: app.user.value!.email);
 
   //============================================================================
   // Functions
@@ -41,6 +43,23 @@ class EditProfileController extends GetxController {
   void onChangeGender(String? value) => gender.value = value!;
 
   void onChangePhone(String val) => countryCode = int.parse(val);
+
+  bool nameIsRequired() {
+    return app.user.value!.name.isNotEmpty ||
+        app.generalSettings.isRequiredRegisterName;
+  }
+
+  bool emailIsRequired() {
+    return (app.user.value!.email ?? '').isNotEmpty;
+  }
+
+  validateForName() {
+    return nameIsRequired() ? ValidateX.name : ValidateX.nameNoRequired;
+  }
+
+  validateForEmail() {
+    return emailIsRequired() ? ValidateX.email : ValidateX.emailNoRequired;
+  }
 
   changeImage() async {
     /// Open the user's photo gallery to select a photo
@@ -59,49 +78,36 @@ class EditProfileController extends GetxController {
         isLoading.value = true;
         buttonState.value = ButtonStateEX.loading;
         try {
-          /// TODO: Database >>> Update profile details
-          await Future.delayed(const Duration(seconds: 1)); // delete this
-
-          // if(email.text.toLowerCase().trim()!=app.user.value.email){
-          //   bool? otpResult = await Get.toNamed(RouteNameX.otp,
-          //     arguments: OtpX(
-          //         email: email.text.trim(),
-          //         isLogin: false,
-          //         isPhone: false,
-          //         isEdit: true
-          //     ),);
-          // }
-          //
-          // if(phone.text.trim()!=app.user.value.phone.toString() || countryCode!=app.user.value.countryCode ){
-          //   bool? otpResult = await Get.toNamed(RouteNameX.otp,
-          //     arguments: OtpX(
-          //         phone: int.parse(phone.text),
-          //         countryCode: countryCode,
-          //         isLogin: false,
-          //         isPhone: true,
-          //         isEdit: true
-          //     ),);
-          // }
-
-          // final result = await DatabaseX.updateProfile(
-          //   image: image != null ? File(image!.path) : null,
-          //   body: DBContactX.bodyUpdateProfile(
-          //     name: name.text.trim(),
-          //     phone:phone.text.trim(),
-          //     countryCode:countryCode,
-          //     email: email.text.trim(),
-          //     gender: gender.value,
-          //   ),
-          // );
-          // app.user = result;
-
-          /// Update user object
-          app.user.value.name = name.text;
-          app.user.value.phone = int.parse(phone.text);
-          app.user.value.countryCode = countryCode;
-          app.user.value.gender = gender.value;
-          // app.user.value.imageURL;
-          app.update();
+          (UserX?,String?) data = await DatabaseX.updateProfile(
+            image: image != null ? File(image!.path) : null,
+            name: name.text,
+            email: email.text,
+            phone: phone.text.toIntX,
+            countryCode: countryCode,
+            gender: gender.value,
+          );
+          if (data.$1!=null) {
+            app.user.value=data.$1;
+          } else {
+            if (data.$2 != null && data.$2!.isNotEmpty) {
+              ToastX.success(message: data.$2);
+            }
+            var resultOTP = await Get.toNamed(
+              RouteNameX.otp,
+              arguments: OtpX(
+                phone: phone.text.toIntX,
+                countryCode: countryCode,
+                isEdit: true,
+                isLogin: false,
+                isPhone: true,
+              ),
+            );
+            if (resultOTP != true) {
+              isLoading.value = false;
+              buttonState.value = ButtonStateEX.normal;
+              return;
+            }
+          }
 
           /// The time delay here is aesthetically beneficial
           buttonState.value = ButtonStateEX.success;

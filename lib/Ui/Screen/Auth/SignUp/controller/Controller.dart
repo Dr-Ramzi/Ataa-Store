@@ -1,17 +1,27 @@
 import 'dart:async';
+import 'package:ataa/Core/Extension/convert/convert.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../../../../../Config/config.dart';
+import '../../../../../Core/Error/error.dart';
+import '../../../../../Core/core.dart';
 import '../../../../../Data/data.dart';
+import '../../../../../UI/Screen/Auth/Login/controller/Controller.dart';
 import '../../../../../UI/Screen/Auth/Login/view/loginView.dart';
 import '../../../../Widget/widget.dart';
 import '../../OTP/view/View.dart';
 
 class SignUpController extends GetxController {
   //============================================================================
+  // Injection of required controls
+
+  final AppControllerX app = Get.find();
+
+  //============================================================================
   // Variables
-  
+
   RxBool isLoading = false.obs;
+  Rx<ErrorX?> error = Rx<ErrorX?>(null);
   bool isSheet = false;
   Rx<ButtonStateEX> buttonState = ButtonStateEX.normal.obs;
 
@@ -26,20 +36,28 @@ class SignUpController extends GetxController {
 
   //============================================================================
   // Functions
-  
+
   onChangeAgreedTerms(val) => agreedTerms.value = val;
 
   onChangePhone(val) => countryCode = int.parse(val);
 
   onLogin() {
     if (isLoading.isFalse) {
+      error.value = null;
+      autoValidate = AutovalidateMode.disabled;
       if (isSheet) {
         Get.back();
         bottomSheetX(child: LoginView(isSheet: true));
       } else if (Get.previousRoute == RouteNameX.login) {
         Get.back();
+        Get.find<LoginController>()
+          ..phone.text = phone.text
+          ..countryCode.value = countryCode;
       } else {
-        Get.toNamed(RouteNameX.login);
+        Get.toNamed(RouteNameX.login, arguments: {
+          NameX.phone: phone.text,
+          NameX.countryCode: countryCode
+        });
       }
     }
   }
@@ -51,16 +69,23 @@ class SignUpController extends GetxController {
     }
   }
 
+  onTapError() {
+    if (error.value?.details[NameX.errors]?[NameX.isAccountAlreadyExists] ?? false) {
+      onLogin();
+    }
+  }
+
   Future<void> onSignUp() async {
     if (isLoading.isFalse) {
       if (formKey.currentState!.validate()) {
         isLoading.value = true;
         buttonState.value = ButtonStateEX.loading;
+        error.value = null;
         try {
           /// Connect to the database to create the account
           await DatabaseX.signUp(
             name: name.text.trim(),
-            phone: int.parse(phone.text),
+            phone: phone.text.toIntX,
             countryCode: countryCode,
           );
 
@@ -72,7 +97,7 @@ class SignUpController extends GetxController {
 
           /// create otp object
           OtpX otp = OtpX(
-            phone: phone.text,
+            phone: phone.text.toIntX,
             countryCode: countryCode,
             isLogin: false,
             isPhone: true,
@@ -85,8 +110,8 @@ class SignUpController extends GetxController {
           } else {
             Get.toNamed(RouteNameX.otp, arguments: otp);
           }
-        } catch (error) {
-          ToastX.error(message: error.toString());
+        } catch (e) {
+          error.value = e.toErrorX;
           buttonState.value = ButtonStateEX.failed;
         }
         isLoading.value = false;

@@ -12,7 +12,10 @@ class FilterByReligionControllerX extends GetxController {
   //============================================================================
   // Functions
 
-  onChange(String? val) => previousReligionSelected.value = val ?? "";
+  onChange(String? val) {
+    previousReligionSelected.value = val ?? "";
+    Get.back();
+  }
 
   getData() async {
     try {

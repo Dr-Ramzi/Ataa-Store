@@ -16,7 +16,7 @@ class MyCampaignsController extends GetxController {
       /// TODO: Database >>> Fetch All My Campaigns
       await Future.delayed(const Duration(seconds: 1)); // delete this
 
-      campaigns = TestDataX.campaigns;
+      // campaigns = TestDataX.campaigns;
     } catch (e) {
       return Future.error(e);
     }

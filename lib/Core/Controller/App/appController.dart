@@ -4,47 +4,46 @@ class AppControllerX extends GetxController {
   //============================================================================
   // Variables
 
-  Rx<UserX> user = UserX.empty().obs;
-  RxBool isLogin=LocalDataX.token.isNotEmpty.obs;
+  Rx<UserX?> user = Rx<UserX?>(null);
+
+  late GeneralAppSettingsX generalSettings;
+  RxBool isLogin = LocalDataX.token.isNotEmpty.obs;
 
   //============================================================================
   // Functions
 
-
   init() async {
-    if (LocalDataX.token != '') {
-      try {
-        /// TODO: Delete >>> Static data when linking with database
-        await Future.delayed(const Duration(seconds: 1)); // delete this
-        user.value = UserX(
-          id: '1',
-          name: "Saker",
-          phone: 504432349,
-          countryCode: 966,
-          email: "sakeraldakak@gmail.com",
-          gender: 'male',
-          token: LocalDataX.token,
-          imageURL: "https://avatars.githubusercontent.com/u/131809848?v=4",
-        );
-        // user = await DatabaseX.getProfile();
-        // update();
-      } catch (_) {}
+    /// General Settings
+    generalSettings = await DatabaseX.getGeneralSettings();
+
+    /// Profile
+    if (isLogin.value) {
+      user.value = await DatabaseX.getProfile();
     }
+    update();
   }
-  onLoginSheet(){
+
+  onLoginSheet() {
     bottomSheetX(child: LoginView(isSheet: true));
   }
 
   logOut() async {
     try {
-      LocalDataX.put(LocalKeyX.userID, '');
-      LocalDataX.put(LocalKeyX.token, '');
+      isLogin.value = false;
+      user.value=null;
+      LocalDataX.remove(LocalKeyX.token);
       LocalDataX.put(LocalKeyX.route, RouteNameX.login);
-      Get.offAllNamed(RouteNameX.login);
-      isLogin.value=false;
+
+      LocalDataX.remove(LocalKeyX.basketID);
+      if (Get.isRegistered<BasketGeneralControllerX>()) {
+        Get.find<BasketGeneralControllerX>().delete();
+      } else {
+        Get.put(BasketGeneralControllerX()).delete();
+      }
+      if (Get.currentRoute != RouteNameX.login) {
+        await Future.microtask(() => Get.offAllNamed(RouteNameX.login));
+      }
       await DatabaseX.logout();
-    } catch (e) {
-      return Future.error(e);
-    }
+    } catch (_) {}
   }
 }

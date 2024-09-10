@@ -2,6 +2,7 @@ import 'package:ataa/Ui/Animation/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import '../../../../../../../Config/config.dart';
 import '../../../../../../../UI/Widget/widget.dart';
 import '../../controller/Controller.dart';
 
@@ -14,7 +15,7 @@ class MyAccountSectionX extends GetView<ProfileDetailsController> {
       title: "My Account",
       options: [
         OptionCardX(
-          title: 'Statistics',
+          title: 'Dashboard',
           icon: Icons.insert_chart_rounded,
           onTap: controller.onStatistics,
         ).fadeAnimation400,
@@ -25,7 +26,7 @@ class MyAccountSectionX extends GetView<ProfileDetailsController> {
         ).fadeAnimation400,
         OptionCardX(
           title: 'My activity on the platform',
-          icon: Icons.lightbulb,
+          icon: IconX.myActivity,
           onTap: controller.onActivity,
         ).fadeAnimation400,
         OptionCardX(

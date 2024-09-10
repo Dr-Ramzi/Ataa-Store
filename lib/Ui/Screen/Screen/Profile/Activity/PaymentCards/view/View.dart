@@ -36,7 +36,7 @@ class PaymentCardsView extends GetView<PaymentCardsController> {
             return Obx(
               () {
                 /// Empty State
-                if (controller.bankCards.isEmpty) {
+                if (controller.paymentCards.isEmpty) {
                   return EmptyView(
                     message: "You do not have payment cards registered",
                     buttonText: "Add a new card",
@@ -53,11 +53,11 @@ class PaymentCardsView extends GetView<PaymentCardsController> {
                         horizontal: StyleX.hPaddingApp,
                         vertical: StyleX.vPaddingApp,
                       ),
-                      itemCount: controller.bankCards.length,
+                      itemCount: controller.paymentCards.length,
 
                       /// Cards
                       itemBuilder: (context, index) => CreditCardCardX(
-                        bankCard: controller.bankCards[index],
+                        bankCard: controller.paymentCards[index],
                         isLoadingDelete: controller.isLoadingDelete[index],
                         isLoadingSetDefault:
                             controller.isLoadingSetDefault[index],
@@ -78,7 +78,7 @@ class PaymentCardsView extends GetView<PaymentCardsController> {
                         /// Bottom sheet to confirm set as default
                         onSetDefault: () async {
                           await bottomSheetSuccessX(
-                            icon: Icons.credit_card_rounded,
+                            icon: IconX.creditCard,
                             title: "The card is default",
                             okText: "Set as default",
                             message:

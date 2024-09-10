@@ -35,132 +35,120 @@ payDonationSheet(
     title: "Donate to the project",
     child: Obx(
       () {
-        /// Mandatory login
-        if (!controller.app.isLogin.value) {
-          return Column(
+        /// Main Content
+        return AbsorbPointer(
+          absorbing: controller.isLoading.value,
+          child: Column(
             children: [
-              const TextX(
-                "Log in to donate to the project",
-                fontWeight: FontWeight.w600,
-              ).fadeAnimation200,
-              const SizedBox(height: 16),
-              ButtonX(
-                onTap: controller.app.onLoginSheet,
-                text: "Login",
-              ).fadeAnimation300,
-            ],
-          );
-        } else {
-          /// Main Content
-          return AbsorbPointer(
-            absorbing: controller.isLoading.value,
-            child: Column(
-              children: [
-                /// Free Donation Options [ 20 , 50 , 100 ] SAR
-                if (donation.stockValue == null && donation.packages.isEmpty ||
-                    (campaign != null && campaign.targetAmount != null))
-                  FreeDonationOptionsX(
-                    isMarginTop: false,
-                    onSelected: controller.onChangeDonationAmount,
-                  ).fadeAnimation200,
+              /// Free Donation Options [ 20 , 50 , 100 ] SAR
+              if (!donation.donationShares.isShare &&
+                  donation.openPackages.isEmpty ||
+                  (campaign != null && campaign.targetAmount != null))
+                FreeDonationOptionsX(
+                  isMarginTop: false,
+                  onSelected: controller.onChangeDonationAmount,
+                  selected: controller.freeDonationSelected.value,
+                ).fadeAnimation200,
 
-                /// Show donation label
-                if (donation.packages.isNotEmpty && campaign == null)
-                  const LabelInputX("Donation amount").fadeAnimation200,
+              /// Show donation label
+              if (donation.openPackages.isNotEmpty && campaign == null)
+                const LabelInputX("Donation amount").fadeAnimation200,
 
-                /// Choose the best packages available
-                if (donation.packages.isNotEmpty && campaign == null)
-                  Obx(
-                    () => SizedBox(
-                      width: double.maxFinite,
-                      child: Row(
-                        children: [
-                          ...donation.packages.map(
-                            (val) => Flexible(
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.only(
-                                  end: 5.0,
-                                ),
-                                child: RadioButtonX(
-                                  groupValue: controller.packageSelected.value,
-                                  value: val,
-                                  onChanged: controller.onChangePackage,
-                                  label: val,
-                                  isCardOnly: true,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ).fadeAnimation200,
+              /// TODO: Change >>> donation open packages
+              /// Choose the best packages available
+              // if (donation.isShowPackages &&
+              //     donation.openPackages.isNotEmpty &&
+              //     campaign == null)
+              //   Obx(
+              //     () => SizedBox(
+              //       width: double.maxFinite,
+              //       child: Row(
+              //         children: [
+              //           ...donation.openPackages.map(
+              //             (val) => Flexible(
+              //               child: Padding(
+              //                 padding:
+              //                     const EdgeInsetsDirectional.only(end: 5.0),
+              //                 child: RadioButtonX(
+              //                   groupValue: controller.packageSelected.value,
+              //                   value: val,
+              //                   onChanged: controller.onChangePackage,
+              //                   label: val,
+              //                   isCardOnly: true,
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ).fadeAnimation200,
 
-                /// this just for show label of share or not
-                if (donation.stockValue != null &&
-                    (donation.packages.isEmpty ||
-                        (campaign != null && campaign.stockValue != null)))
-                  const LabelInputX("Number of Shares").fadeAnimation200,
+              /// this just for show label of share or not
+              if (donation.donationShares.isShare &&
+                  (donation.openPackages.isEmpty ||
+                      (campaign != null && campaign.stockValue != null)))
+                const LabelInputX("Number of Shares").fadeAnimation200,
 
-                /// Enter the number of shares
-                if (donation.stockValue != null ||
-                    (campaign != null && campaign.stockValue != null))
-                  NumberFieldX(
-                    min: 1,
-                    onChanged: controller.onChangeStockValue,
-                    value: controller.numOfStock,
-                  ).fadeAnimation200,
+              /// Enter the number of shares
+              if (donation.donationShares.isShare ||
+                  (campaign != null && campaign.stockValue != null))
+                NumberFieldX(
+                  min: 1,
+                  onChanged: controller.onChangeStockValue,
+                  value: controller.numOfStock,
+                ).fadeAnimation200,
 
-                /// Enter and display the donation amount
-                Form(
-                  key: controller.formKey,
-                  autovalidateMode: controller.autoValidate,
-                  child: TextFieldX(
-                    controller: controller.donationAmount,
-                    textInputType: TextInputType.number,
-                    textInputAction: TextInputAction.done,
-                    hint: "0",
-                    onlyRead: donation.stockValue != null,
-                    validate: ValidateX.money,
-                    suffixWidget: TextX(
-                      "SAR",
-                      style: TextStyleX.titleSmall,
-                      color: Get.theme.colorScheme.secondary,
-                    ),
+              /// Enter and display the donation amount
+              Form(
+                key: controller.formKey,
+                autovalidateMode: controller.autoValidate,
+                child: TextFieldX(
+                  controller: controller.donationAmount,
+                  onChanged: controller.removeFreeDonationSelected,
+                  textInputType: TextInputType.number,
+                  textInputAction: TextInputAction.done,
+                  hint: "0",
+                  onlyRead: donation.isCanEditAmount,
+                  validate: ValidateX.money,
+                  suffixWidget: TextX(
+                    "SAR",
+                    style: TextStyleX.titleSmall,
+                    color: Get.theme.colorScheme.secondary,
                   ),
-                ).fadeAnimation300,
-
-                /// View the donation section for family and friends
-                DonateOnBehalfOfFamilyPartOfSheetX(
-                  controller: controller.donateOnBehalfOfFamily,
                 ),
+              ).fadeAnimation300,
 
-                /// Add to Cart Button
-                if (onlyAddToCart)
-                  Obx(
-                    () => AddToCartButtonX(
-                      onAddToCart: controller.onDonationAddToCart,
-                      addToCartButtonState:
-                          controller.addToCartButtonState.value,
-                    ),
-                  ).fadeAnimation500,
+              /// View the donation section for family and friends
+              DonateOnBehalfOfFamilyPartOfSheetX(
+                controller: controller.donateOnBehalfOfFamily,
+              ),
 
-                /// Pay Donation & Add to Cart Buttons
-                if (!onlyAddToCart)
-                  Obx(
-                    () => AddToCartAndDonationButtonsX(
-                      onDonation: controller.onPayDonation,
-                      onAddToCart: controller.onDonationAddToCart,
-                      payDonationButtonState:
-                          controller.payDonationButtonState.value,
-                      addToCartButtonState:
-                          controller.addToCartButtonState.value,
-                    ),
-                  ).fadeAnimation500,
-              ],
-            ),
-          );
-        }
+              /// Add to Cart Button
+              if (onlyAddToCart)
+                Obx(
+                      () => AddToCartButtonX(
+                    onAddToCart: controller.onDonationAddToCart,
+                    addToCartButtonState:
+                    controller.addToCartButtonState.value,
+                  ),
+                ).fadeAnimation500,
+
+              /// Pay Donation & Add to Cart Buttons
+              if (!onlyAddToCart)
+                Obx(
+                      () => AddToCartAndDonationButtonsX(
+                    onDonation: controller.onPayDonation,
+                    onAddToCart: controller.onDonationAddToCart,
+                    payDonationButtonState:
+                    controller.payDonationButtonState.value,
+                    addToCartButtonState:
+                    controller.addToCartButtonState.value,
+                  ),
+                ).fadeAnimation500,
+            ],
+          ),
+        );
       },
     ),
   );

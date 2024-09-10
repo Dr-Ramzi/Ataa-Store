@@ -25,24 +25,23 @@ class ZakatView extends GetView<ZakatController> {
         child: Column(
           children: [
             OptionWithIconCardX(
-              title: "Paying zakat",
-              subtitle: "Pay your calculated zakat with ease",
-              icon: Icons.upgrade_rounded,
-              onTap: controller.onTapPayingZakat,
+              title: "Projects that accept Zakat",
+              subtitle:
+              "Pay your zakat to projects for which zakat deductions apply",
+              icon: Icons.verified,
+              onTap: controller.onTapZakatDisbursements,
             ).fadeAnimation200,
             OptionWithIconCardX(
               title: "Zakat calculator",
-              subtitle:
-                  "A smart tool to calculate Zakat on your money and property easily",
+              subtitle:"A smart tool to calculate Zakat on your money and property easily",
               icon: Iconsax.calculator5,
               onTap: controller.onTapZakatCalculator,
             ).fadeAnimation300,
             OptionWithIconCardX(
-              title: "Zakat disbursements",
-              subtitle:
-                  "Pay your zakat to projects for which zakat deductions apply",
-              icon: Icons.verified,
-              onTap: controller.onTapZakatDisbursements,
+              title: "Paying zakat",
+              subtitle: "Pay your Zakat with ease",
+              icon: Icons.upgrade_rounded,
+              onTap: controller.onTapPayingZakat,
             ).fadeAnimation400,
           ],
         ),

@@ -34,15 +34,6 @@ class MyCampaignsView extends GetView<MyCampaignsController> {
               );
             }
 
-            /// Empty State
-            if (controller.campaigns.isEmpty) {
-              return EmptyView(
-                message: "You haven't created any campaign yet",
-                buttonText: "Create a new campaign",
-                onTap: controller.createCampaign,
-              );
-            }
-
             /// Main Content
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,11 +41,16 @@ class MyCampaignsView extends GetView<MyCampaignsController> {
                 /// Title & Description
                 const HeaderSectionX(),
 
+                /// Empty State
+                if (controller.campaigns.isEmpty)
+                  const EmptyView(
+                    message: "You haven't created any campaign yet",
+                  ).paddingOnly(top: 30),
+
                 /// Create Button
                 ButtonX(
                   marginHorizontal: StyleX.hPaddingApp,
                   text: "Create a new campaign",
-                  iconData: Icons.campaign_rounded,
                   onTap: controller.createCampaign,
                 ).fadeAnimation200,
                 const SizedBox(height: 8),

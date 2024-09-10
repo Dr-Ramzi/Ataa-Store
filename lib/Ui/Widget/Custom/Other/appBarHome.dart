@@ -18,8 +18,7 @@ class AppBarHomeX extends StatelessWidget {
             decoration: BoxDecoration(
               color: ColorX.primary,
               borderRadius:
-              const BorderRadiusDirectional.only(
-                bottomEnd:
+              const BorderRadiusDirectional.all(
                 Radius.circular(StyleX.radiusAppBar),
               ),
             ),
@@ -30,6 +29,6 @@ class AppBarHomeX extends StatelessWidget {
           child: child
         )
       ],
-    );
+    ).marginOnly(bottom: 10);
   }
 }

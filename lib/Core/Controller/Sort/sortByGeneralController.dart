@@ -12,6 +12,13 @@ class SortByGeneralControllerX extends GetxController {
   //============================================================================
   // Functions
 
-  onChange(GeneralSortEX? val) =>
-      generalSelected.value = val ?? GeneralSortEX.values[0];
+  onChange(GeneralSortEX? val) {
+    generalSelected.value = val ?? GeneralSortEX.values[0];
+    Get.back();
+  }
+
+  /// Erase all data and return it to its default state
+  clearData(){
+    generalSelected.value = GeneralSortEX.values[0];
+  }
 }

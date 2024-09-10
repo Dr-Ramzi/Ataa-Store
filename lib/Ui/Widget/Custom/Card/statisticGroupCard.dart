@@ -69,13 +69,14 @@ class _StatisticGroupCardXState extends State<StatisticGroupCardX> {
                 children: [
                   TextX(widget.linkTitle,
                       color:context.isDarkMode?Colors.white:ColorX.primary,
+                  fontWeight: FontWeight.bold,
                   ),
                   const SizedBox(width: 16),
                   Directionality(
                     textDirection: TextDirection.ltr,
                     child: Icon(DeviseX.isLTR?Icons.arrow_forward_ios_rounded:Icons.arrow_back_ios_rounded,
                         color: context.isDarkMode?Colors.white:ColorX.primary,
-                    size: 18,
+                    size: 16,
                     ),
                   )
                 ],

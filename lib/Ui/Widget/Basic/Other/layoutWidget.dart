@@ -1,4 +1,4 @@
-part of widget;
+part of '../../widget.dart';
 
 class LayoutWidgetX extends StatelessWidget {
   final Widget? largeScreen;
@@ -6,11 +6,11 @@ class LayoutWidgetX extends StatelessWidget {
   final Widget smallScreen;
 
   const LayoutWidgetX({
-    Key? key,
+    super.key,
     this.largeScreen,
     this.mediumScreen,
     required this.smallScreen,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

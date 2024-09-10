@@ -39,11 +39,11 @@ class AppBarRootX extends StatelessWidget implements PreferredSizeWidget {
         leadingWidth: leadingWidth,
         backgroundColor: ColorX.primary,
         toolbarHeight: StyleX.appBarPaddingTop,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadiusDirectional.only(
-            bottomEnd: Radius.circular(StyleX.radiusAppBar),
-          ),
-        ),
+        // shape: const RoundedRectangleBorder(
+        //   borderRadius: BorderRadiusDirectional.only(
+        //     bottomEnd: Radius.circular(StyleX.radiusAppBar),
+        //   ),
+        // ),
       ),
     );
   }

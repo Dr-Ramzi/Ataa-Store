@@ -21,7 +21,7 @@ class DialogConfig {
     this.selectedItemColor = const Color(0xFF56565a),
     this.topBarColor = const Color(0xFF1B1C24),
     this.searchBoxRadius = 7,
-    this.title = "Country Codes",
+    this.title = "Select the country code",
     this.searchHintText = "Search",
     Widget? selectedIcon,
     TextStyle? textStyle,

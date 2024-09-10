@@ -5,6 +5,7 @@ import '../../../../../Config/config.dart';
 import '../../../../../Data/data.dart';
 import '../../../../Widget/widget.dart';
 import '../controller/Controller.dart';
+import 'Sections/backButton.dart';
 import 'Sections/mainContent.dart';
 
 class OTPView extends GetView<OTPController> {
@@ -25,21 +26,31 @@ class OTPView extends GetView<OTPController> {
       return const MainContentOtpX();
     } else {
       return Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Theme.of(context).canvasColor,
         body: SafeArea(
-          child: SingleChildScrollView(
+          child: Padding(
             padding: const EdgeInsets.only(
-              top: 80.0,
-              bottom: 50.0,
+              top: 20,
+              bottom: 20.0,
               left: StyleX.hPaddingApp,
               right: StyleX.hPaddingApp,
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const LogoX().fadeAnimation200,
-                const SizedBox(height: 50.0),
-                const MainContentOtpX()
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const BackButtonSectionX(),
+                    const SizedBox(height: 30.0),
+                    const LogoX().fadeAnimation200,
+                    const SizedBox(height: 40.0),
+                    const MainContentOtpX(),
+                  ],
+                ),
+                /// Sponsor Logo
+                const SponsorLogoX().fadeAnimation700,
               ],
             ),
           ),

@@ -22,7 +22,7 @@ class OrderProductX{
       id: json[NameX.id].toString(),
       productID: json[NameX.productID].toString(),
       name: json[NameX.name].toString(),
-      imageURL: json[NameX.imageURL].toString(),
+      imageURL: json[NameX.imageUrl].toString(),
       numProduct: json[NameX.numProduct] ?? 0,
       price: json[NameX.price] ?? 0,
      );

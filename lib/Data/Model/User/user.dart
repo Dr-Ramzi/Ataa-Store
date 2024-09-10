@@ -6,36 +6,43 @@ class UserX {
     required this.name,
     required this.phone,
     required this.countryCode,
+    required this.token,
     this.email,
     this.gender,
     this.imageURL,
-    this.token="",
   });
-
-  UserX.empty();
 
   late String id;
   late String token;
   late String name;
   late int phone;
   late int countryCode;
-  late String? email;
-  late String? gender;
-  late String? imageURL;
+  String? email;
+  String? gender;
+  String? imageURL;
 
   factory UserX.fromJson(Map<String, dynamic> json, String token) {
-    return UserX(
-      id: json[NameX.id].toString(),
-      name: json[NameX.name].toString(),
-      phone: json[NameX.phone]??0,
-      countryCode: json[NameX.countryCode]??0,
-      email: json[NameX.email],
-      gender: json[NameX.gender],
-      imageURL: (json[NameX.imageURL]??{})[NameX.imageURL],
-      token: token,
+    Map<String, Object?> imageJson =
+        Map<String, Object?>.from(json[NameX.image] ?? {});
+    return ModelUtilX.checkFromJson(
+      json,
+      (json) {
+        return UserX(
+          id: json[NameX.id].toStrDefaultX(''),
+          name: json[NameX.name].toStrDefaultX(''),
+          phone: json[NameX.phone].toIntX,
+          countryCode: json[NameX.countryCode].toIntDefaultX(966),
+          email: json[NameX.email].toStrNullableX,
+          gender: json[NameX.gender].toStrNullableX,
+          imageURL: imageJson[NameX.url].toStrNullableX,
+          token: token,
+        );
+      },
+      requiredDataKeys: [
+        NameX.phone,
+      ],
     );
   }
-
   Map<String, dynamic> toJson() {
     return {
       NameX.id: id,
@@ -43,7 +50,7 @@ class UserX {
       NameX.phone: phone,
       NameX.email: email,
       NameX.gender: gender,
-      NameX.imageURL: imageURL,
+      NameX.imageUrl: imageURL,
     };
   }
 }

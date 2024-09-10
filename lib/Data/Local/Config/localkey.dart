@@ -6,7 +6,7 @@ part of '../../data.dart';
 
 class LocalKeyX{
   static const String route='route';
-  static const String userID='userID';
+  static const String basketID='basketID';
   static const String token='token';
   static const String settings='settings';
   static const String unreadNotifications='unreadNotifications';

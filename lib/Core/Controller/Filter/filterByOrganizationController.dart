@@ -6,23 +6,39 @@ class FilterByOrganizationControllerX extends GetxController {
   //============================================================================
   // Variables
 
-  RxString orgSelected = "All".obs;
-  List<OrganizationX> organizations = [];
-  List<String> options = [];
+  OrganizationX orgEmpty = OrganizationX(id: '', name: '',isShowHome: true, isShowQuickDonation: true);
+  late Rx<(String, OrganizationX)> optionSelected =
+      ("All", orgEmpty).obs;
+  List<(String, OrganizationX)> options = [];
+  late (String, OrganizationX) fixedData = ("All", orgEmpty);
 
   //============================================================================
   // Functions
 
-  onChange(String? val) => orgSelected.value = val ?? "";
-
-  getData() async {
-    try {
-      /// TODO: Database >>> Fetch available organizations in the filtering process
-      await Future.delayed(const Duration(seconds: 1)); // delete this
-      organizations = TestDataX.organizations; // delete this
-      options = ["All", ...TestDataX.organizations.map((e) => e.name)];
-    } catch (e) {
-      return Future.error(e);
+  onChange((String, OrganizationX)? val) {
+    if (val != null) {
+      optionSelected.value = val;
     }
+    Get.back();
+  }
+
+  /// Erase all data and return it to its default state
+  clearData() {
+    optionSelected.value = fixedData;
+  }
+
+  Future<List<(String, OrganizationX)>> getData(
+    ScrollRefreshLoadMoreParametersX data,
+  ) async {
+    List<OrganizationX> results = await DatabaseX.getAllOrganizations(
+      page: data.page,
+      perPage: data.perPage,
+    );
+    if (optionSelected.value.$1 != fixedData.$1) {
+      var val = results.firstWhere((x) => x.id == optionSelected.value.$2.id,
+          orElse: () => optionSelected.value.$2);
+      optionSelected.value = (val.name, val);
+    }
+    return results.map((e) => (e.name, e)).toList();
   }
 }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
+import '../../../widget.dart';
 import '../models/country_code_model.dart';
 import '../models/dialog_config.dart';
 import 'country_widget.dart';
-import 'rixa_textfield.dart';
 
 class CountryCodeBottomSheet extends StatefulWidget {
   final List<CountryCodeModel> countries;
@@ -16,7 +17,7 @@ class CountryCodeBottomSheet extends StatefulWidget {
       required this.countries,
       required this.onSelected,
       this.selected,
-        required this.validate,
+      required this.validate,
       required this.dialogConfig});
 
   @override
@@ -36,90 +37,48 @@ class _CountryCodeBottomSheetState extends State<CountryCodeBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.8,
+      height: MediaQuery.of(context).size.height * 0.6,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 14),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Center(
-                  child: Container(
-                height: 5,
-                width: 145,
-                decoration: BoxDecoration(
-                    color: widget.dialogConfig.topBarColor,
-                    borderRadius: BorderRadius.circular(30)),
-              )),
-              const SizedBox(height: 25),
-              Text(
-                widget.dialogConfig.title,
-                style: widget.dialogConfig.titleStyle,
-              ),
-              const SizedBox(height: 14),
-              RixaTextField(
-                validate: widget.validate,
-                hintText: widget.dialogConfig.searchHintText,
-                controller: searchController,
-                textStyle: widget.dialogConfig.searchBoxTextStyle,
-                hintStyle: widget.dialogConfig.searchBoxHintStyle,
-                radius: widget.dialogConfig.searchBoxRadius,
-                enabledColor: Colors.transparent,
-                focusedColor: Colors.transparent,
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 24),
-                  child: Icon(
-                    Icons.search,
-                    color: widget.dialogConfig.searchBoxIconColor,
-                    size: 25,
-                  ),
-                ),
-                onChanged: (value) {
-                  search(value);
-                },
-                isUnderline: false,
-                noInputBorder: true,
-                backgroundColor: widget.dialogConfig.searchBoxBackgroundColor,
-              ),
-            ]),
+          TextFieldX(
+            color: Theme.of(context).cardColor,
+            validate: widget.validate,
+            hint: widget.dialogConfig.searchHintText,
+            controller: searchController,
+            icon: Iconsax.search_normal_1,
+            iconSize: 20,
+            onChanged: (value) {
+              search(value);
+            },
           ),
+          const SizedBox(height: 10),
           Expanded(
             child: ListView(
               children: [
                 if (widget.selected != null &&
                     searchCountries.any(
                         (element) => element.code == widget.selected?.code))
-                  TextButton(
-                      onPressed: () {
+                  InkWell(
+                      onTap: () {
                         widget.onSelected(widget.selected!);
                         Navigator.pop(context);
                       },
-                      style: TextButton.styleFrom(
-                        minimumSize: Size.zero,
-                        padding: EdgeInsets.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
                       child: CountryWidget(
                           countryCodeModel: widget.selected!,
                           isSelected: true,
-                          dialogConfig: widget.dialogConfig)),
+                          dialogConfig: widget.dialogConfig).paddingSymmetric(horizontal: 10)),
                 for (var country in searchCountries
                     .where((element) => element.code != widget.selected?.code))
-                  TextButton(
-                      onPressed: () {
+                  InkWell(
+                    onTap: () {
                         widget.onSelected(country);
                         Navigator.pop(context);
                       },
-                      style: TextButton.styleFrom(
-                        minimumSize: Size.zero,
-                        padding: EdgeInsets.zero,
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
                       child: CountryWidget(
                           countryCodeModel: country,
                           isSelected: false,
-                          dialogConfig: widget.dialogConfig))
+                          dialogConfig: widget.dialogConfig,).paddingSymmetric(horizontal: 10),)
               ],
             ),
           )
@@ -131,7 +90,7 @@ class _CountryCodeBottomSheetState extends State<CountryCodeBottomSheet> {
   void search(String search) {
     searchCountries = mainCountries
         .where((element) =>
-            element.name.toLowerCase().contains(search.toLowerCase()))
+            element.name.tr.toLowerCase().contains(search.tr.toLowerCase()))
         .toList();
     setState(() {});
   }

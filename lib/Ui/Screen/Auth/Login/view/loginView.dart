@@ -24,8 +24,8 @@ class LoginView extends GetView<LoginController> {
         body: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.only(
-              top: 80.0,
-              bottom: 50.0,
+              top: 70.0,
+              bottom: 20.0,
               left: StyleX.hPaddingApp,
               right: StyleX.hPaddingApp,
             ),
@@ -33,8 +33,9 @@ class LoginView extends GetView<LoginController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const LogoX().fadeAnimation200,
-                const SizedBox(height: 50.0),
-                const MainContentLoginX()
+                const SizedBox(height: 40.0),
+                const MainContentLoginX(),
+                const SponsorLogoX().marginOnly(top: 40).fadeAnimation900,
               ],
             ),
           ),

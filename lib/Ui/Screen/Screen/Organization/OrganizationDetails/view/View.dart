@@ -2,8 +2,8 @@ import 'package:ataa/UI/Animation/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../Config/config.dart';
-import '../../../../../GeneralState/empty.dart';
-import '../../../../../GeneralState/error.dart';
+import '../../../../../../Data/data.dart';
+import '../../../../../Widget/Basic/Other/scrollRefreshLoadMore.dart';
 import '../../../../../Widget/widget.dart';
 import '../controller/Controller.dart';
 import 'Sections/header.dart';
@@ -15,80 +15,133 @@ class OrganizationDetailsView extends GetView<OrganizationDetailsController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarX(
-        title: "Association Programs",
+        title: "Program",
         actions: [BasketIconButtonsX()],
       ),
       body: SafeArea(
-        child: FutureBuilder(
-          future: controller.getData(),
-          builder: (context, snapshot) {
-            /// Loading State
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const LoadingSectionX();
-            }
-
-            /// Error State
-            if (snapshot.hasError) {
-              return ErrorView(
-                error: snapshot.error.toString(),
-              );
-            }
-
-            /// Main Content
-            return Column(
+        child: Obx(
+          () => SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(
+              horizontal: StyleX.hPaddingApp,
+              vertical: StyleX.vPaddingApp,
+            ),
+            controller: controller.scrollController,
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 /// Title & Subtitle
-                const HeaderSectionX(),
+                const HeaderSectionX(isMargin: false),
 
                 /// Search Bar
                 SearchBarX(
                   search: controller.search,
                   onTapFilter: controller.onFilter,
-                  onSearching: controller.onSearching,
-                ).fadeAnimation200,
-                Expanded(
-                  child: Obx(
-                    () {
-                      /// if Empty Donation on Search
-                      if (controller.donationsResult.isEmpty) {
-                        return const EmptyView(
-                          message:
-                              "There are no search results.\nTry searching for something else",
-                        );
-                      } else {
-                        /// Donation Result
-                        return ListView.builder(
-                          padding: const EdgeInsets.only(
-                            top: 10,
-                            bottom: 30,
-                            left: StyleX.hPaddingApp,
-                            right: StyleX.hPaddingApp,
-                          ),
-                          itemCount: controller.donationsResult.length,
-                          itemBuilder: (context, index) =>
-                              CharitableProjectCardX(
-                            isSmallCard: false,
-                            isZakat: true,
-                            obj: controller.donationsResult[index],
-                            onTap: controller.onTapDonation,
-                            onAddToCart: controller.onBasketDonation,
-                            onDonation: controller.onDonationDonation,
-                            totalDonations: controller
-                                .donationsResult[index].totalDonations,
-                            stockValue:
-                                controller.donationsResult[index].stockValue,
-                          ).fadeAnimation300,
-                        );
-                      }
-                    },
-                  ),
+                  isMargin: false,
+                  disabledSearch:
+                      !controller.app.generalSettings.isActiveProjectSearch,
+                ).marginSymmetric(vertical: 10).fadeAnimation200,
+
+                TextX(
+                  'Program Donation Opportunities',
+                  style: TextStyleX.titleLarge,
+                ).paddingSymmetric(vertical: 10).fadeAnimation200,
+                ScrollRefreshLoadMoreX<DonationX>(
+                  fetchData: controller.getData,
+                  filters: controller.filterController.filters.value,
+                  orderBy: controller.filterController.orderBy.value,
+                  searchQueryController: controller.search,
+                  parentScrollController: controller.scrollController,
+                  padding: const EdgeInsets.only(top: 10),
+                  initLoading: const LoadingSectionX(),
+                  emptyMessage: "There are no current donation projects",
+                  itemBuilder: (data, index) {
+                    return DonationCardX(
+                      donation: data,
+                      doneImageUrl: controller
+                          .app.generalSettings.projectCompletionImageUrl,
+                      onDonation: controller.onPayDonation,
+                      onAddToCart: controller.onAddToCart,
+                    ).fadeAnimation300;
+                  },
                 ),
               ],
-            );
-          },
+            ),
+          ),
         ),
       ),
     );
   }
 }
+//import 'package:ataa/UI/Animation/animation.dart';
+// import 'package:flutter/material.dart';
+// import 'package:get/get.dart';
+// import '../../../../../../Config/config.dart';
+// import '../../../../../../Data/data.dart';
+// import '../../../../../Widget/Basic/Other/scrollRefreshLoadMore.dart';
+// import '../../../../../Widget/widget.dart';
+// import '../controller/Controller.dart';
+// import 'Sections/header.dart';
+// import 'Sections/loading.dart';
+//
+// class OrganizationDetailsView extends GetView<OrganizationDetailsController> {
+//   const OrganizationDetailsView({super.key});
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBarX(
+//         title: "Program",
+//         actions: [BasketIconButtonsX()],
+//       ),
+//       body: SafeArea(
+//         child: Obx(
+//           () {
+//             return ScrollRefreshLoadMoreX<DonationX>(
+//               fetchData: controller.getData,
+//               filters: controller.filterController.filters.value,
+//               orderBy: controller.filterController.orderBy.value,
+//               searchQueryController: controller.search,
+//               isEmptySearchCenter: false,
+//               padding: const EdgeInsets.symmetric(
+//                 horizontal: StyleX.hPaddingApp,
+//                 vertical: StyleX.vPaddingApp,
+//               ),
+//               initLoading: const LoadingSectionX(),
+//               isScrollingInitLoading: false,
+//               emptyMessage: "There are no current donation projects",
+//               header: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: [
+//                   /// Title & Subtitle
+//                   const HeaderSectionX(isMargin:false),
+//
+//                   /// Search Bar
+//                   SearchBarX(
+//                     search: controller.search,
+//                     onTapFilter: controller.onFilter,
+//                     isMargin:false,
+//                     disabledSearch:
+//                         !controller.app.generalSettings.isActiveProjectSearch,
+//                   ).marginSymmetric(vertical: 10),
+//
+//                   TextX('Program Donation Opportunities',style: TextStyleX.titleLarge,).paddingSymmetric(vertical: 10),
+//
+//                 ],
+//               ),
+//               isScrollingHeader: true,
+//               isHideHeaderIfInitLoading: false,
+//               isHideHeaderIfEmpty: false,
+//               itemBuilder: (data, index) {
+//                 return DonationCardX(
+//                   donation: data,
+//                   doneImageUrl: controller.app.generalSettings.projectCompletionImageUrl,
+//                   onDonation: controller.onPayDonation,
+//                   onAddToCart: controller.onAddToCart,
+//                 ).fadeAnimation300;
+//               },
+//             );
+//           },
+//         ),
+//       ),
+//     );
+//   }
+// }

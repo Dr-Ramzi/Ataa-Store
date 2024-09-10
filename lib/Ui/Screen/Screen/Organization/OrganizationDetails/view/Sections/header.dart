@@ -1,20 +1,22 @@
 import 'package:ataa/Ui/Animation/animation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
 import '../../../../../../../Config/config.dart';
 import '../../../../../../Widget/widget.dart';
 import '../../controller/Controller.dart';
 
 class HeaderSectionX extends GetView<OrganizationDetailsController> {
-  const HeaderSectionX({super.key});
+  const HeaderSectionX({this.isMargin = true, super.key});
+  final bool isMargin;
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
+      padding: isMargin?const EdgeInsets.only(
         right: StyleX.hPaddingApp,
         left: StyleX.hPaddingApp,
         top: StyleX.vPaddingApp,
-      ),
+      ):EdgeInsets.zero,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -27,10 +29,9 @@ class HeaderSectionX extends GetView<OrganizationDetailsController> {
           const SizedBox(height: 6),
 
           /// Description
-          TextX(
+          HtmlWidget(
             controller.org.description,
-            style: TextStyleX.supTitleLarge,
-            maxLines: 4,
+            textStyle: TextStyleX.supTitleLarge,
           ).fadeAnimation200,
         ],
       ),

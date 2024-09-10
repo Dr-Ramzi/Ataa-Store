@@ -2,8 +2,6 @@ import 'package:ataa/UI/Animation/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../Config/config.dart';
-import '../../../../../Core/core.dart';
-import '../../../../ScreenSheet/PartOfSheet/DonateOnBehalfOfFamily/donateOnBehalfOfFamily.dart';
 import '../../../../Widget/widget.dart';
 import '../controller/Controller.dart';
 
@@ -19,17 +17,18 @@ class QuickDonationView extends StatelessWidget {
           absorbing: controller.isLoading.value,
           child: Column(
             children: [
-              /// Choose Donation Program
+              /// Choose Donation Project
               MultipleSelectionCardX(
-                title: "Choose donation program",
-                onTap: controller.onTapChooseDonationProgram,
+                title: "Select a donation project (optional)",
+                onTap: controller.onTapChooseDonationProject,
                 selected: controller
-                    .donationProgramSelectedController.orgSelected.value,
+                    .donationProjectSelectedController.orgSelected.value,
               ).fadeAnimation200,
 
               /// Free Donation Options [ 20 , 50 , 100 ] SAR
               FreeDonationOptionsX(
                 onSelected: controller.onChangeDonationAmount,
+                selected: controller.freeDonationSelected.value,
               ).fadeAnimation200,
 
               /// Input Donation Amount
@@ -38,22 +37,18 @@ class QuickDonationView extends StatelessWidget {
                 autovalidateMode: controller.autoValidate,
                 child: TextFieldX(
                   controller: controller.donationAmount,
+                  onChanged: controller.removeFreeDonationSelected,
                   textInputType: TextInputType.number,
                   textInputAction: TextInputAction.done,
                   hint: "0",
-                  validate: ValidateX.money,
+                  validate: controller.validateAmount,
                   suffixWidget: TextX(
                     "SAR",
                     style: TextStyleX.titleSmall,
                     color: Theme.of(context).colorScheme.secondary,
                   ),
                 ).fadeAnimation300,
-              ),
-
-              /// View the donation section for family and friends
-              DonateOnBehalfOfFamilyPartOfSheetX(
-                controller: controller.donateOnBehalfOfFamily,
-              ).fadeAnimation400,
+              ).marginSymmetric(vertical: 6),
 
               /// Pay with Apple
               PaymentByAppleAndGoogleButtonX(
@@ -74,7 +69,7 @@ class QuickDonationView extends StatelessWidget {
                 onTap: controller.onDonatingByApp,
                 state: controller.buttonState.value,
                 iconData: Icons.payments_rounded,
-                text: 'Donate Now',
+                text: 'Payment by payment card or bank transfer',
               ).fadeAnimation500,
             ],
           ),

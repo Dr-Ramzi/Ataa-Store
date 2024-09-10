@@ -1,37 +1,48 @@
 import 'dart:async';
+import 'package:ataa/Core/Extension/convert/convert.dart';
+import 'package:ataa/Core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../Config/config.dart';
+import '../../../../../Core/Error/error.dart';
 import '../../../../../Data/data.dart';
 import '../../../../Widget/widget.dart';
 import '../../OTP/view/View.dart';
 import '../../SignUp/view/View.dart';
 
 class LoginController extends GetxController {
+
+  //============================================================================
+  // Injection of required controls
+
+  final AppControllerX app = Get.find();
+
   //============================================================================
   // Variables
 
   RxBool isLoading = false.obs;
+  Rx<ErrorX?> error = Rx<ErrorX?>(null);
   bool isSheet = false;
   Rx<ButtonStateEX> buttonState = ButtonStateEX.normal.obs;
 
   RxBool isPhone = true.obs;
-  int countryCode = 966;
+  RxInt countryCode = ((Get.arguments??{}[NameX.countryCode] ?? 966) as int).obs;
   final loginVia = ValueNotifier(1);
 
   GlobalKey<FormState> formKey = GlobalKey();
   AutovalidateMode autoValidate = AutovalidateMode.disabled;
 
-  TextEditingController phone = TextEditingController();
+  TextEditingController phone = TextEditingController(text: Get.arguments??{}[NameX.phone]);
   TextEditingController email = TextEditingController();
 
   //============================================================================
   // Functions
 
-  onChangeCountryCode(String code) => countryCode = int.parse(code);
+  onChangeCountryCode(String code) => countryCode.value = int.parse(code);
 
   onSignUp() {
     if (isLoading.isFalse) {
+      error.value = null;
       if (isSheet) {
         Get.back();
 
@@ -54,24 +65,33 @@ class LoginController extends GetxController {
     }
   }
 
+  onTapError() {
+    if (error.value?.details[NameX.errors][NameX.isContactUs] ?? false) {
+      Get.toNamed(RouteNameX.contactUs);
+    }
+  }
   Future<void> onLogin() async {
     if (isLoading.isFalse) {
       if (formKey.currentState!.validate()) {
         isLoading.value = true;
         buttonState.value = ButtonStateEX.loading;
-        var massage = '';
+        error.value = null;
+        String massage = '';
         try {
           if (isPhone.value) {
-            massage = await loginByPhone();
+            massage = await loginByPhone() ?? '';
           } else {
-            massage = await loginByEmail();
+            massage = await loginByEmail() ?? '';
           }
-          ToastX.success(message: massage);
-        } catch (error) {
-          ToastX.error(message: error);
+          if(massage.isNotEmpty){
+            ToastX.success(message: massage);
+          }
+        } catch (e) {
+          error.value = e.toErrorX;
           buttonState.value = ButtonStateEX.failed;
         }
         isLoading.value = false;
+
 
         /// Reset the button state
         Timer(
@@ -86,9 +106,10 @@ class LoginController extends GetxController {
     }
   }
 
-  Future<String> loginByPhone() async {
-    String massage = await DatabaseX.loginByPhone(
-        phone: int.parse(phone.text), countryCode: countryCode);
+  Future<String?> loginByPhone() async {
+    String? massage = await DatabaseX.loginByPhone(
+        phone: phone.text.toIntX, countryCode: countryCode.value,
+    );
 
     /// The time delay here is aesthetically beneficial
     buttonState.value = ButtonStateEX.success;
@@ -98,8 +119,8 @@ class LoginController extends GetxController {
 
     /// create otp object
     OtpX otp = OtpX(
-      phone: phone.text,
-      countryCode: countryCode,
+      phone: phone.text.toIntX,
+      countryCode: countryCode.value,
       isLogin: true,
       isPhone: true,
     );
@@ -114,8 +135,8 @@ class LoginController extends GetxController {
     return massage;
   }
 
-  Future<String> loginByEmail() async {
-    String massage = await DatabaseX.loginByEmail(email: email.text.trim());
+  Future<String?> loginByEmail() async {
+    String? massage = await DatabaseX.loginByEmail(email: email.text.trim());
 
     /// The time delay here is aesthetically beneficial
     buttonState.value = ButtonStateEX.success;

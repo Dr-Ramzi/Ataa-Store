@@ -31,6 +31,12 @@ class StoreController extends GetxController {
       products = TestDataX.products;
 
       productsResult.value = products;
+
+      /// If he moves to another screen and returns here and there was a previous search,
+      /// it will return the results of the last search
+      if (search.text.isNotEmpty) {
+        onFilter();
+      }
     } catch (e) {
       return Future.error(e);
     }

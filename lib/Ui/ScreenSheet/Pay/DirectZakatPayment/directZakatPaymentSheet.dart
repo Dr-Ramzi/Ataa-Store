@@ -20,7 +20,7 @@ directZakatPaymentSheetX() {
   // Content
 
   return bottomSheetX(
-    title: "Pay your calculated zakat with ease",
+    title: "Pay your Zakat with ease",
     child: Obx(
       () {
         /// Mandatory login
@@ -82,7 +82,7 @@ directZakatPaymentSheetX() {
                     ),
                     const SizedBox(width: 10),
                     Flexible(
-                      child: ButtonX.second(
+                      child: ButtonX.gray(
                         onTap: controller.onCancel,
                         text: "Cancel",
                       ),

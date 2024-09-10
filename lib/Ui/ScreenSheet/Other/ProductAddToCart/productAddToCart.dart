@@ -28,117 +28,100 @@ productAddToCartSheetX(ProductX product) async {
     title: "The Product",
     child: Obx(
       () {
-        /// Mandatory login
-        if (!controller.app.isLogin.value) {
-          return Column(
+        /// Main Content
+        return AbsorbPointer(
+          absorbing: controller.isLoading.value,
+          child: Column(
             children: [
-              const TextX(
-                "Log in to add the product to the cart",
-                fontWeight: FontWeight.w600,
+              /// Product Details
+              Row(
+                children: [
+                  /// Image
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(StyleX.radius),
+                    child: ImageNetworkX(
+                      height: 50,
+                      width: 50,
+                      imageUrl: controller.product
+                          .imageURL[controller.imageSelectedIndex.value],
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+
+                  /// Product Name
+                  Expanded(
+                    child: TextX(
+                      controller.product.name,
+                      style: TextStyleX.titleLarge,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+
+                  /// Price
+                  TextX(
+                    "${controller.product.price} ${"SAR".tr}",
+                    color: Get.theme.primaryColor,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ],
               ).fadeAnimation200,
-              const SizedBox(height: 16),
-              ButtonX(
-                onTap: controller.app.onLoginSheet,
-                text: "Login",
-              ).fadeAnimation300,
-            ],
-          );
-        } else {
-          /// Main Content
-          return AbsorbPointer(
-            absorbing: controller.isLoading.value,
-            child: Column(
-              children: [
-                /// Product Details
-                Row(
+
+              /// Available colors
+              if (controller.product.colors.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    /// Image
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(StyleX.radius),
-                      child: ImageNetworkX(
-                        height: 50,
-                        width: 50,
-                        imageUrl: controller.product
-                            .imageURL[controller.imageSelectedIndex.value],
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-
-                    /// Product Name
-                    Expanded(
-                      child: TextX(
-                        controller.product.name,
-                        style: TextStyleX.titleLarge,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-
-                    /// Price
-                    TextX(
-                      "${controller.product.price} ${"SAR".tr}",
-                      color: Get.theme.primaryColor,
-                      fontWeight: FontWeight.w700,
-                    ),
+                    const SizedBox(height: 16),
+                    const LabelInputX("Available colors").fadeAnimation200,
+                    const SizedBox(height: 6),
+                    ColorBarSelectorX(
+                      isPadding: false,
+                      key: Key(controller.product.id),
+                      colors: controller.product.colors,
+                      colorSelectedIndex: controller.colorSelectedIndex.value,
+                      onChangeColor: controller.onChangeColor,
+                    ).fadeAnimation200,
                   ],
-                ).fadeAnimation200,
+                ),
 
-                /// Available colors
-                if (controller.product.colors.isNotEmpty)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 16),
-                      const LabelInputX("Available colors").fadeAnimation200,
-                      const SizedBox(height: 6),
-                      ColorBarSelectorX(
-                        isPadding: false,
-                        key: Key(controller.product.id),
-                        colors: controller.product.colors,
-                        colorSelectedIndex: controller.colorSelectedIndex.value,
-                        onChangeColor: controller.onChangeColor,
-                      ).fadeAnimation200,
-                    ],
-                  ),
+              /// Available Size
+              if (controller.product.sizes.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10),
+                    const LabelInputX("Sizes").fadeAnimation300,
+                    DropdownX(
+                      disable: controller.product.sizes.length == 1,
+                      value: controller.sizeSelected,
+                      list: controller.product.sizes,
+                      onChanged: controller.onChangeSize,
+                      hint: "-- Choose --",
+                    ).fadeAnimation300
+                  ],
+                ),
+              const SizedBox(height: 5),
 
-                /// Available Size
-                if (controller.product.sizes.isNotEmpty)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 10),
-                      const LabelInputX("Sizes").fadeAnimation300,
-                      DropdownX(
-                        disable: controller.product.sizes.length == 1,
-                        value: controller.sizeSelected,
-                        list: controller.product.sizes,
-                        onChanged: controller.onChangeSize,
-                        hint: "-- Choose --",
-                      ).fadeAnimation300
-                    ],
-                  ),
-                const SizedBox(height: 5),
+              /// Number of selected product
+              NumberFieldX(
+                onChanged: controller.onChangeProductNum,
+                value: controller.productNum.value,
+                max: controller.product.numOfStore.toDouble(),
+                min: 1,
+              ).fadeAnimation400,
+              const SizedBox(height: 5),
 
-                /// Number of selected product
-                NumberFieldX(
-                  onChanged: controller.onChangeProductNum,
-                  value: controller.productNum.value,
-                  max: controller.product.numOfStore.toDouble(),
-                  min: 1,
-                ).fadeAnimation400,
-                const SizedBox(height: 5),
-
-                /// Button Add to cart
-                ButtonStateX(
-                  text: "Add to cart",
-                  state: controller.buttonState.value,
-                  onTap: controller.onAddToCart,
-                  iconData: Icons.shopping_cart_rounded,
-                ).fadeAnimation500,
-              ],
-            ),
-          );
-        }
+              /// Button Add to cart
+              ButtonStateX(
+                text: "Add to cart",
+                state: controller.buttonState.value,
+                onTap: controller.onAddToCart,
+                iconData: Icons.shopping_cart_rounded,
+              ).fadeAnimation500,
+            ],
+          ),
+        );
       },
     ),
   );

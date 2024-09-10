@@ -6,7 +6,7 @@ class CreditCardCardX extends StatelessWidget {
       required this.bankCard,
       required this.onSetDefault,
       required this.onDelete, required this.isLoadingSetDefault, required this.isLoadingDelete});
-  final BankCardX bankCard;
+  final PaymentCardX bankCard;
   final bool isLoadingSetDefault;
   final bool isLoadingDelete;
   final Function() onSetDefault;

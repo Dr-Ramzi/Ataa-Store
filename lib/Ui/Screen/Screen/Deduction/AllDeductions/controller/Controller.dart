@@ -11,7 +11,7 @@ class AllDeductionsController extends GetxController {
   // Injection of required controls
 
   FilterControllerX filterController =
-      Get.put(FilterControllerX(), tag: "All Deduction");
+      Get.put(FilterControllerX(tag: "All Deduction")..isShowDeduction=true, tag: "All Deduction");
 
   //============================================================================
   // Variables
@@ -28,7 +28,7 @@ class AllDeductionsController extends GetxController {
       /// TODO: Database >>> Fetch All donations
       await Future.delayed(const Duration(seconds: 1)); // delete this
 
-      deductions = TestDataX.deductions;
+      // deductions = TestDataX.deductions;
       deductionsResult.value = deductions;
 
       /// If he moves to another screen and returns here and there was a previous search,
@@ -53,7 +53,7 @@ class AllDeductionsController extends GetxController {
 
   onFilter() async {
     bool? result =
-        await generalFilterSheetX(isDeduction: true, controller: filterController);
+        await generalFilterSheetX(controller: filterController);
     if (result == true) {
       /// TODO: Database >>> Add a deduction filter
       /// TODO: Algorithm >>> Add a deduction filter

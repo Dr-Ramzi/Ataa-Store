@@ -12,6 +12,8 @@ class SortProductsControllerX extends GetxController {
   //============================================================================
   // Functions
 
-  onChange(ProductSortEX? val) =>
-      sortSelected.value = val ?? ProductSortEX.values[0];
+  onChange(ProductSortEX? val){
+    sortSelected.value = val ?? ProductSortEX.values[0];
+    Get.back();
+  }
 }

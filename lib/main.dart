@@ -1,12 +1,11 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'Config/Route/routeList.dart';
 import 'Config/Translation/translation.dart';
 import 'Config/config.dart';
+import 'Core/Logging/logging.dart';
 import 'Core/core.dart';
 import 'Data/data.dart';
-import 'Ui/Screen/Basic/Root/controller/Controller.dart';
 
 // ~~~~~~~~~~~~~~~~~~~~~~~{{ Why this section }}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// The project's starting point: everything is initialized here before the
@@ -14,15 +13,17 @@ import 'Ui/Screen/Basic/Root/controller/Controller.dart';
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  HttpOverrides.global = HttpOverridesHelperX();
+  await LoggingX.safeZone(() async {
+    // Ensures that the Flutter framework is properly initialized
+    WidgetsFlutterBinding.ensureInitialized();
 
-  /// Application sections initialization
-  await ConfigX.init();
-  await DataX.init();
-  await CoreX.init();
+    await ConfigX.init();
+    await DataX.init();
+    await CoreX.init();
 
-  runApp(const MyApp());
+    // Start the Flutter application
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -40,22 +41,18 @@ class MyApp extends StatelessWidget {
           AppControllerX(),
           permanent: true,
         );
-        Get.lazyPut(
-              () => RootController(),
-          fenix: true,
-        );
       }),
 
       /// Routes
       getPages: RouteListX.routes,
-      initialRoute: LocalDataX.route,
+      initialRoute: RouteNameX.loading,
 
       /// Settings GetX
       smartManagement: SmartManagement.full,
       useInheritedMediaQuery: true,
 
       /// App name with translate
-      title: InfoX.nameApp.tr,
+      title: 'Ataa'.tr,
 
       /// Translate App
       translations: TranslationX(),

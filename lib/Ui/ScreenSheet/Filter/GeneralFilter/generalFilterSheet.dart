@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../Core/Controller/Filter/filterController.dart';
 import '../../../Widget/widget.dart';
-import '../FilterByOrganization/filterByOrganizationSheet.dart';
 
 // ~~~~~~~~~~~~~~~~~~~~~~~{{ Why this bottom sheet }}~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// A general filtering option that serves more than one department
@@ -11,25 +10,24 @@ import '../FilterByOrganization/filterByOrganizationSheet.dart';
 
 generalFilterSheetX({
   required FilterControllerX controller,
-  bool isOrganization = true,
-  bool isDeduction = false,
-  bool isZakat = true,
 }) {
   return bottomSheetX(
     title: "Filter and sort",
     child: Column(
       children: [
         /// Zakat
-        if (isZakat && !isDeduction)
-          SwitchX(
-            value: controller.isZakat.value,
-            onChange: controller.onChangeZakat,
-            label: "Zakat disbursement only",
-            margin: const EdgeInsets.only(bottom: 5),
-          ).fadeAnimation200,
+        if (controller.isShowZakat && !controller.isShowDeduction)
+          Obx(
+            () => SwitchX(
+              value: controller.isZakat.value,
+              onChange: controller.onChangeZakat,
+              label: "Zakat disbursement only",
+              margin: const EdgeInsets.only(bottom: 5),
+            ).fadeAnimation200,
+          ),
 
         /// Frequency
-        if (isDeduction)
+        if (controller.isShowDeduction)
           Obx(
             () => MultipleSelectionCardX(
               title: "Filter by frequency",
@@ -37,20 +35,20 @@ generalFilterSheetX({
               selected: controller
                   .sortByFrequencyController.frequencySelected.value.name,
             ),
-          ).fadeAnimation200,
-        if (isDeduction) const SizedBox(height: 10),
+          ).marginOnly(bottom: 10).fadeAnimation200,
 
         /// Organization
-        if (isOrganization)
+        if (controller.isShowOrganization)
           Obx(
             () => MultipleSelectionCardX(
               title: "Filter by program",
-              onTap: filterByOrganizationSheetX,
-              selected: controller.filterByOrgController.orgSelected.value,
+              onTap: controller.onTapFilterByOrganization,
+              selected:
+                  controller.filterByOrgController.optionSelected.value.$1,
             ),
-          ).fadeAnimation300,
-        if (isOrganization) const SizedBox(height: 10),
+          ).marginOnly(bottom: 10).fadeAnimation300,
 
+        if(controller.isShowSort)
         /// Sort
         Obx(
           () => MultipleSelectionCardX(
@@ -59,8 +57,7 @@ generalFilterSheetX({
             selected:
                 controller.sortByGeneralController.generalSelected.value.name,
           ),
-        ).fadeAnimation300,
-        const SizedBox(height: 10),
+        ).marginOnly(bottom: 10).fadeAnimation300,
 
         /// Buttons
         Row(
@@ -74,8 +71,8 @@ generalFilterSheetX({
             const SizedBox(width: 10),
             Flexible(
               child: ButtonX.second(
-                onTap: controller.onCancelFilter,
-                text: "Cancel",
+                onTap: controller.clearDate,
+                text: "Clear all",
               ),
             )
           ],

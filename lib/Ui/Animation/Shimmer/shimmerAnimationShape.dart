@@ -26,11 +26,11 @@ class ShimmerAnimationShapeX {
     );
   }
 
-  /// Charitable Project Card
-  static Widget charitableProjectCard({bool isSmall = false}) {
+  /// Donation Card
+  static Widget donationCard({bool isSmall = false}) {
     return ShimmerAnimationX(
-      height: StyleX.charitableProjectCardHeight,
-      width: isSmall ? StyleX.charitableProjectCardWidthSM : double.maxFinite,
+      height: StyleX.donationCardHeight,
+      width: isSmall ? StyleX.donationCardWidthSM:double.maxFinite,
       margin: isSmall
           ? const EdgeInsetsDirectional.only(end: 14)
           : const EdgeInsetsDirectional.only(bottom: 14),
@@ -41,7 +41,7 @@ class ShimmerAnimationShapeX {
   static Widget deductionCard({bool isSmall = false}) {
     return ShimmerAnimationX(
       height: StyleX.deductionCardHeight,
-      width: isSmall ? StyleX.charitableProjectCardWidthSM : double.maxFinite,
+      width: isSmall ? StyleX.deductionCardWidthSM:double.maxFinite,
       margin: isSmall
           ? const EdgeInsetsDirectional.only(end: 14)
           : const EdgeInsetsDirectional.only(bottom: 14),

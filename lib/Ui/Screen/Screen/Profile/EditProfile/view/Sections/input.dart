@@ -1,7 +1,6 @@
 import 'package:ataa/UI/Animation/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../../../../Core/core.dart';
 import '../../../../../../Widget/widget.dart';
 import '../../controller/Controller.dart';
 
@@ -23,21 +22,25 @@ class InputSectionX extends GetView<EditProfileController> {
                 controller: controller.name,
                 label: "Name",
                 hint: "your name",
-                validate: ValidateX.name,
+                isRequired: controller.nameIsRequired(),
+                validate: controller.validateForName(),
                 textInputType: TextInputType.name,
                 textInputAction: TextInputAction.next,
               ).fadeAnimation200,
               PhoneFieldX(
                 controller: controller.phone,
                 label: "Mobile",
+                isRequired: true,
                 onChange: controller.onChangePhone,
                 countryCode: controller.countryCode,
+                isDisableChangeCountryCode: !controller.app.generalSettings.isShowCountryCodeList,
               ).marginSymmetric(vertical: 10.0).fadeAnimation300,
               TextFieldX(
                 controller: controller.email,
                 label: "Email",
                 hint: "name@example.com",
-                validate: ValidateX.email,
+                isRequired: controller.emailIsRequired(),
+                validate: controller.validateForEmail(),
                 textInputType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.done,
               ).fadeAnimation300,

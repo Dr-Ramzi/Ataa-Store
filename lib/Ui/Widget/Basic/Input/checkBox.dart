@@ -12,7 +12,7 @@ class CheckBoxX extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(4.0),
       ),
-      side: MaterialStateBorderSide.resolveWith(
+      side: WidgetStateBorderSide.resolveWith(
         (states) => BorderSide(width: 1.0, color: ColorX.grey.shade300),
       ),
     );

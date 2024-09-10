@@ -12,12 +12,12 @@ import '../../../Widget/widget.dart';
 
 sortByFrequencySheetX({required SortByFrequencyControllerX controller}){
   return bottomSheetX(
-    title: "Filter and sort",
+    title: "Filter by frequency",
     child: Obx(
           () => Column(
         children: [
           /// Options Cards
-          ...FrequencySortEX.values.map(
+          ...RecurringSortEX.values.map(
                 (val) => RadioButtonX(
               groupValue:
               controller.frequencySelected.value,

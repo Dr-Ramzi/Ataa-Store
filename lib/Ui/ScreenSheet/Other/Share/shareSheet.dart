@@ -1,6 +1,5 @@
 import 'package:ataa/UI/Animation/animation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../../../../Config/config.dart';
 import '../../../../Core/Controller/Other/shareController.dart';
@@ -137,13 +136,10 @@ shareSheet(String shareUrl) async {
                         msg: controller.shareMsg,
                         url: controller.shareUrl,
                       ),
-                      child: SvgPicture.asset(
+                      child: Icon(
                         IconX.telegram,
-                        height: 27,
-                        colorFilter: ColorFilter.mode(
-                          Theme.of(context).colorScheme.secondary,
-                          BlendMode.srcIn,
-                        ),
+                        size: 27,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -155,13 +151,10 @@ shareSheet(String shareUrl) async {
                         msg: controller.shareMsg,
                         url: controller.shareUrl,
                       ),
-                      child: SvgPicture.asset(
+                      child: Icon(
                         IconX.facebook,
-                        height: 27,
-                        colorFilter: ColorFilter.mode(
-                          Theme.of(context).colorScheme.secondary,
-                          BlendMode.srcIn,
-                        ),
+                        size: 27,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -173,13 +166,10 @@ shareSheet(String shareUrl) async {
                         msg: controller.shareMsg,
                         url: controller.shareUrl,
                       ),
-                      child: SvgPicture.asset(
+                      child: Icon(
                         IconX.whatsapp,
-                        height: 27,
-                        colorFilter: ColorFilter.mode(
-                          Theme.of(context).colorScheme.secondary,
-                          BlendMode.srcIn,
-                        ),
+                        size: 27,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -191,13 +181,10 @@ shareSheet(String shareUrl) async {
                         msg: controller.shareMsg,
                         url: controller.shareUrl,
                       ),
-                      child: SvgPicture.asset(
+                      child: Icon(
                         IconX.twitter,
-                        height: 27,
-                        colorFilter: ColorFilter.mode(
-                          Theme.of(context).colorScheme.secondary,
-                          BlendMode.srcIn,
-                        ),
+                        size: 27,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
                     const SizedBox(width: 16),

@@ -12,13 +12,16 @@ class FilterByCountryControllerX extends GetxController {
   //============================================================================
   // Functions
 
-  onChange(String? val) => countrySelected.value = val ?? "";
+  onChange(String? val){
+    countrySelected.value = val ?? "";
+    Get.back();
+  }
 
   getData() async {
     try {
       /// TODO: Database >>> Fetch available countries in the filtering process
       await Future.delayed(const Duration(seconds: 1)); // delete this
-      options = ["All", ...TestDataX.countriesGuarantees];
+      options = ["All", ...TestDataX.countriesSponsorships];
     } catch (e) {
       return Future.error(e);
     }

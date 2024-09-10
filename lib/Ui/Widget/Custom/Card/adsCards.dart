@@ -1,9 +1,10 @@
 part of '../../widget.dart';
 
 class AdsCardsX extends StatefulWidget {
-  const AdsCardsX({super.key, required this.ads, required this.onTap});
+  const AdsCardsX({super.key, required this.ads, required this.onTap, required this.onTapButton});
   final List<AdsX> ads;
-  final Function(int index) onTap;
+  final Function(AdsX) onTap;
+  final Function(AdsX) onTapButton;
 
   @override
   State<AdsCardsX> createState() => _AdsCardsXState();
@@ -22,7 +23,7 @@ class _AdsCardsXState extends State<AdsCardsX> {
       } else {
         currentIndex = 0;
       }
-      try{
+      try {
         if (adsController.hasClients) {
           adsController.animateToPage(
             currentIndex,
@@ -30,7 +31,7 @@ class _AdsCardsXState extends State<AdsCardsX> {
             curve: Curves.easeIn,
           );
         }
-      }catch(_){}
+      } catch (_) {}
     });
   }
 
@@ -51,28 +52,11 @@ class _AdsCardsXState extends State<AdsCardsX> {
             controller: adsController,
             children: [
               for (int index = 0; index < widget.ads.length; index++)
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: StyleX.hPaddingApp,
-                  ),
-                  child: ContainerX(
-                    color: Theme.of(context).cardColor,
-                    width: double.maxFinite,
-                    height: StyleX.adsCardHeight,
-                    radius: StyleX.radiusMd,
-                    padding: EdgeInsets.zero,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(StyleX.radiusMd),
-                      child: GestureDetector(
-                        onTap: () => widget.onTap(index),
-                        child: ImageNetworkX(
-                          imageUrl: widget.ads[index].imageURL,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                )
+                AdCardX(
+                  onTap: widget.onTap,
+                  onTapButton: widget.onTapButton,
+                  ad: widget.ads[index],
+                ),
             ],
           ),
         ),

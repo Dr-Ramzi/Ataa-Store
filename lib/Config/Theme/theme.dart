@@ -21,7 +21,12 @@ class ThemeX {
   /// Light Theme
   static ThemeData light = ThemeData.light().copyWith(
     /// Fonts
-    textTheme: ThemeData.light().textTheme.apply(fontFamily: FontX.fontFamily),
+    textTheme: ThemeData.light().textTheme.apply(
+          fontFamily: FontX.fontFamily,
+          bodyColor: ColorX.grey.shade700,
+          decorationColor: ColorX.grey.shade700,
+          displayColor: ColorX.grey.shade700,
+        ),
 
     /// Text
     hintColor: ColorX.grey.shade300,
@@ -52,16 +57,16 @@ class ThemeX {
     // The color of the flashing effect when you click on an item
 
     colorScheme: ColorScheme.fromSeed(
-      // Determines if the theme is light or dark
-      brightness: Brightness.light,
-      primary: ColorX.primary,
-      onPrimary: ColorX.primary.shade50,
-      seedColor: ColorX.primary,
-      secondary: ColorX.grey.shade500,
-      onSecondary: ColorX.grey.shade50,
-      error: ColorX.danger,
-      onError: ColorX.danger.shade100,
-    ),
+        // Determines if the theme is light or dark
+        brightness: Brightness.light,
+        primary: ColorX.primary,
+        onPrimary: ColorX.primary.shade50,
+        seedColor: ColorX.primary,
+        secondary: ColorX.grey.shade500,
+        onSecondary: ColorX.grey.shade50,
+        error: ColorX.danger,
+        onError: ColorX.danger.shade50,
+        outline: ColorX.grey.shade200),
     appBarTheme: AppBarTheme(
       backgroundColor: ColorX.primary,
       shadowColor: Colors.transparent,
@@ -73,8 +78,15 @@ class ThemeX {
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       selectedItemColor: ColorX.primary,
-      unselectedItemColor: ColorX.grey.shade700,
+      unselectedIconTheme: IconThemeData(color: ColorX.grey.shade400),
       backgroundColor: Colors.white,
+      unselectedItemColor: ColorX.grey.shade500,
+      unselectedLabelStyle: TextStyle(
+        fontSize: 13.0,
+        color: ColorX.grey.shade500,
+        fontWeight: FontWeight.w400,
+        letterSpacing: 0.15,
+      ),
     ),
     drawerTheme: const DrawerThemeData(
       backgroundColor: ColorX.backgroundLight,
@@ -121,7 +133,7 @@ class ThemeX {
       primary: ColorX.primary,
       onPrimary: ColorX.primary.shade200,
       seedColor: ColorX.primary,
-      secondary: ColorX.grey.shade400,
+      secondary: ColorX.grey.shade300,
       onSecondary: ColorX.grey.shade700,
       error: ColorX.danger.shade500,
       onError: ColorX.danger.shade300,
@@ -139,6 +151,12 @@ class ThemeX {
       selectedItemColor: ColorX.primary.shade600,
       unselectedItemColor: ColorX.grey.shade500,
       backgroundColor: ColorX.grey.shade800,
+      unselectedLabelStyle: TextStyle(
+        fontSize: 13.0,
+        color: ColorX.grey.shade800,
+        fontWeight: FontWeight.w400,
+        letterSpacing: 0.15,
+      ),
     ),
     drawerTheme: const DrawerThemeData(
       backgroundColor: ColorX.backgroundDark,

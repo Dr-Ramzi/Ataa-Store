@@ -17,7 +17,9 @@ languageSheetX(Function(String val) changeLanguage) {
         (Map<String, String> language) {
           return InkWell(
             /// Run the language change function
-            onTap: () async => await changeLanguage(language[NameX.code]!),
+            onTap: () async {
+              await changeLanguage(language[NameX.code]!);
+            },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(

@@ -7,12 +7,12 @@ import '../../../GeneralState/error.dart';
 import '../../../Widget/widget.dart';
 
 // ~~~~~~~~~~~~~~~~~~~~~~~{{ Why this bottom sheet }}~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// Preview the dedication before paying
+/// Preview the gifting before paying
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 previewDedicateSheetX({required PreviewDedicateControllerX controller}) {
   return bottomSheetX(
-    title: "Preview the dedication",
+    title: "Preview the gifting",
     child: FutureBuilder(
       future: controller.getDate(),
       builder: (context, snapshot) {
@@ -47,7 +47,7 @@ previewDedicateSheetX({required PreviewDedicateControllerX controller}) {
               ).fadeAnimation200,
               const SizedBox(height: 10),
 
-              /// Show the dedication image
+              /// Show the gifting image
               if (controller.isImage.value)
                 ContainerX(
                   maxHeight: 500,
@@ -61,7 +61,7 @@ previewDedicateSheetX({required PreviewDedicateControllerX controller}) {
                   ),
                 ).fadeAnimation300,
 
-              /// Show the dedication message
+              /// Show the gifting message
               if (!controller.isImage.value)
                 ContainerX(
                   color: Get.theme.colorScheme.onPrimary,
@@ -79,7 +79,7 @@ previewDedicateSheetX({required PreviewDedicateControllerX controller}) {
                       ),
                       const SizedBox(height: 10),
 
-                      /// Dedication Url
+                      /// Gifting Url
                       Directionality(
                         textDirection: TextDirection.ltr,
                         child: Row(

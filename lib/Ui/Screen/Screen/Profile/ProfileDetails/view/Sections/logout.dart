@@ -10,7 +10,7 @@ class LogoutSectionX extends GetView<ProfileDetailsController> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 14),
-      child: ButtonX.dangerous(
+      child: ButtonX.gray(
         text: 'Logout',
         iconData: Icons.logout_rounded,
         onTap: () => bottomSheetDangerousX(

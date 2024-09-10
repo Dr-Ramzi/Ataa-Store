@@ -20,13 +20,20 @@ class RootController extends GetxController {
 
   RxInt indexPageSelected = 0.obs;
   List<RootPageX> pages = navBarItems;
+  RxBool isMoreDynamicPage = false.obs;
 
   //============================================================================
   // Functions
 
-  isHome() => indexPageSelected.value == 0;
+  isHomePage() => indexPageSelected.value == 0;
+  isMorePage() => indexPageSelected.value == 3;
+  changeMoreDynamicPage() => isMoreDynamicPage.value = !isMoreDynamicPage.value;
   appBarTitle() {
-    if (indexPageSelected.value != 0) {
+    if (indexPageSelected.value == 1) {
+      return "Donation opportunities";
+    } else if (isMoreDynamicPage.isTrue && indexPageSelected.value == 3) {
+      return 'More Pages';
+    }  else if (indexPageSelected.value != 0) {
       return pages[indexPageSelected.value].label;
     } else {
       /// So that a title does not appear when the home page is open
@@ -34,7 +41,13 @@ class RootController extends GetxController {
     }
   }
 
-  onItemSelected(int index) => indexPageSelected.value = index;
+  onItemSelected(int index) {
+    /// To disable the hidden button below the quick donate button
+    if (!(app.generalSettings.isActiveQuickDonation && index == 2)) {
+      indexPageSelected.value = index;
+    }
+  }
+
   returnPage() => pages[indexPageSelected.value].view;
 
   openDonations() => onItemSelected(1);
@@ -60,15 +73,17 @@ class RootController extends GetxController {
   //============================================================================
   // Initialization
 
-  init() async {
-    try {
-      /// Configure the global controller when it is on the home page when the application opens so that it fetches user data
-      await app.init();
+  @override
+  void onInit() {
+    super.onInit();
+    init();
+  }
 
-      /// Initialize quick actions
-      await QuickActionX.init();
-    } catch (e) {
-      return Future.error(e);
+  init()async{
+    /// Initialize quick actions
+    // await QuickActionX.init();
+    if(!app.generalSettings.isActiveQuickDonation){
+      pages.removeAt(2);
     }
   }
 }

@@ -37,41 +37,16 @@ class AppBarX extends StatelessWidget implements PreferredSizeWidget {
         actions: actions,
         leadingWidth: 100,
         leading: isBack
-            ? Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: StyleX.hPaddingApp),
-                    child: InkWell(
-                      onTap: () => Get.back(),
-                      borderRadius: BorderRadius.circular(StyleX.radius),
-                      child: Container(
-                        height: 48,
-                        width: 48,
-                        decoration: BoxDecoration(
-                          color: Colors.white10,
-                          borderRadius: BorderRadius.circular(StyleX.radius),
-                        ),
-                        child: Center(
-                          child: Icon(
-                            Icons.arrow_back_rounded,
-                            color: color,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ).fadeAnimation100
+            ? BackButtonX(color: color).fadeAnimation100
             : const SizedBox(),
         centerTitle: true,
         backgroundColor: ColorX.primary,
         toolbarHeight: StyleX.appBarPaddingTop,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadiusDirectional.only(
-            bottomEnd: Radius.circular(StyleX.radiusAppBar),
-          ),
-        ),
+        // shape: const RoundedRectangleBorder(
+        //   borderRadius: BorderRadiusDirectional.only(
+        //     bottomEnd: Radius.circular(StyleX.radiusAppBar),
+        //   ),
+        // ),
       ),
     );
   }

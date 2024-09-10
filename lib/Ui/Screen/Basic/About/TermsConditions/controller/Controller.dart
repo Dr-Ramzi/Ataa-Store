@@ -5,16 +5,14 @@ class TermsConditionsController extends GetxController {
   //============================================================================
   // Variables
 
-  String termsConditions="";
+  late PageX termsConditions;
 
   //============================================================================
   // Functions
 
-  getData()async{
+  Future<void> getData()async{
     try{
-      /// TODO: Database >>> Fetch Terms and Conditions data
-      await Future.delayed(const Duration(seconds: 1)); // delete this
-      termsConditions=TestDataX.termsConditions;
+      termsConditions = await DatabaseX.getTermsAndConditionsPage();
     }catch(e){
       return Future.error(e);
     }

@@ -12,62 +12,153 @@ class TestDataX {
   static List<String> cities = ["Riyadh", "Jeddah", "Sharqia"];
   static ContactUsX contactUs = ContactUsX(
       phone: "+966 0500 000 000", email: "info@ataa.com", web: "www.atta.com");
-  static List<AdsX> ads = [
-    AdsX(
-        id: '1',
-        goToLink: "/donations",
-        imageURL:
-            "https://github.com/SakerDakak/Images/blob/main/home-1.png?raw=true"),
-    AdsX(
-        id: '2',
-        goToLink: "/donations",
-        imageURL:
-            "https://github.com/SakerDakak/Images/blob/main/home-2.png?raw=true"),
-    AdsX(
-        id: '3',
-        goToLink: "/donations",
-        imageURL:
-            "https://github.com/SakerDakak/Images/blob/main/home-3.png?raw=true"),
+  static List<CampaignX> campaigns = [
+    CampaignX(
+      id: '1',
+      title: "Teach 30 Muslims the Pillars of Islam",
+      countDonations: 20,
+      currentDonations: 30295,
+      totalDonations: 40000,
+      isZakat: true,
+      shareURL: "https://www.ataa.com/231",
+      imageURL:
+          "https://github.com/SakerDakak/Images/blob/main/donate-1.jpeg?raw=true",
+      stockValue: 50,
+      maxNumStock: 100,
+      orgID: '1',
+      donationID: "1",
+      endDate: DateTime.now(),
+    ),
+    CampaignX(
+      id: '2',
+      title: "Prayer science for 120 new Muslims",
+      countDonations: 14,
+      currentDonations: 25690,
+      totalDonations: 50000,
+      isZakat: false,
+      shareURL: "https://www.ataa.com/231",
+      imageURL:
+          "https://github.com/SakerDakak/Images/blob/main/donate-2.jpeg?raw=true",
+      targetAmount: 50000,
+      orgID: '2',
+      donationID: "2",
+      endDate: DateTime.now(),
+    ),
+    CampaignX(
+      id: '3',
+      title: "Charity on Friday",
+      countDonations: 43,
+      currentDonations: 120200,
+      totalDonations: 2000000,
+      isZakat: true,
+      shareURL: "https://www.ataa.com/231",
+      imageURL:
+          "https://github.com/SakerDakak/Images/blob/main/donate-3.jpeg?raw=true",
+      stockValue: 20,
+      maxNumStock: 100,
+      orgID: '3',
+      donationID: "3",
+      endDate: DateTime.now(),
+    ),
   ];
-  static List<BankAccountX> banks = [
-    BankAccountX(
-        id: '1',
-        name: "Al Rajhi Bank",
-        iban: "SA6280000355608010003110",
-        imageURL:
-            "https://github.com/SakerDakak/Images/blob/main/bank-1.png?raw=true"),
-    BankAccountX(
-        id: '2',
-        name: "Alinma Bank",
-        iban: "SA5005000068202960918000",
-        imageURL:
-            "https://github.com/SakerDakak/Images/blob/main/bank-2.png?raw=true")
+  static List<DonationX> donations = [
+    DonationX(
+      id: "1",
+      name: "Teach 30 Muslims the Pillars of Islam",
+      currentDonations: 5420,
+      totalDonations: 36953,
+      description:
+          "Do you want an easy job with an extended reward and an uninterrupted reward?!Contribute to the conversion of 1,000 people to Islam so that you will be rewarded for their prayers, fasting, and good deeds, God willing.",
+      isZakat: false,
+      shareURL: "https://www.ataa.com/231",
+      code: 1,
+      order: 1,
+      status: true,
+      remainingDonations: 10,
+      countDonations: 10,
+      countDonor: 10,
+      briefDescription: '',
+      imageURL: '',
+      videoURL: '',
+      categories: [],
+      donationType: DonationTypeX.fromJson({}),
+      isShowPackages: true,
+      isCanEditAmount: true,
+      donationShares: DonationSharesX.fromJson({}, []),
+      donationDeductionPackages: [],
+      openPackages: [],
+      isShowHome: true,
+      isShowDonationsPercentage: true,
+      isShowCompletionIndicator: true,
+      isShowGifting: true,
+      isShowDonorsCount: true,
+    ),
+    DonationX(
+        id: "2",
+        name: "Prayer science for 120 new Muslims",
+        currentDonations: 5420,
+        totalDonations: 36953,
+        description:
+            "Do you want an easy job with an extended reward and an uninterrupted reward?!Contribute to the conversion of 1,000 people to Islam so that you will be rewarded for their prayers, fasting, and good deeds, God willing.",
+        isZakat: false,
+        shareURL: "https://www.ataa.com/231",
+      code: 1,
+      order: 1,
+      status: true,
+      remainingDonations: 10,
+      countDonations: 10,
+      countDonor: 10,
+      briefDescription: '',
+      imageURL: '',
+      videoURL: '',
+      categories: [],
+      donationType: DonationTypeX.fromJson({}),
+      isShowPackages: true,
+      isCanEditAmount: true,
+      donationShares: DonationSharesX.fromJson({}, []),
+      donationDeductionPackages: [],
+      openPackages: [],
+      isShowHome: true,
+      isShowDonationsPercentage: true,
+      isShowCompletionIndicator: true,
+      isShowGifting: true,
+      isShowDonorsCount: true,
+    ),
+    DonationX(
+        id: "3",
+        name: "Charity on Friday",
+        currentDonations: 5420,
+        totalDonations: 36953,
+        description:
+            "Do you want an easy job with an extended reward and an uninterrupted reward?!Contribute to the conversion of 1,000 people to Islam so that you will be rewarded for their prayers, fasting, and good deeds, God willing.",
+        isZakat: false,
+        shareURL: "https://www.ataa.com/231",
+      code: 1,
+      order: 1,
+      status: true,
+      remainingDonations: 10,
+      countDonations: 10,
+      countDonor: 10,
+      briefDescription: '',
+      imageURL: '',
+      videoURL: '',
+      categories: [],
+      donationType: DonationTypeX.fromJson({}),
+      isShowPackages: true,
+      isCanEditAmount: true,
+      donationShares: DonationSharesX.fromJson({}, []),
+      donationDeductionPackages: [],
+      openPackages: [],
+      isShowHome: true,
+      isShowDonationsPercentage: true,
+      isShowCompletionIndicator: true,
+      isShowGifting: true,
+      isShowDonorsCount: true,
+    ),
   ];
-  static List<OrganizationX> organizations = [
-    OrganizationX(
-        id: '1',
-        name: "Introduction to Islam",
-        description:
-            "Preaching Islam through electronic dialogue with non-Muslims, introducing them to it, and answering their questions",
-        imageURL:
-            "https://github.com/SakerDakak/Images/blob/main/org-1.png?raw=true"),
-    OrganizationX(
-        id: '2',
-        name: "New Muslim Academy",
-        description:
-            "Teaching the new Muslim the basics of religion and the pillars and rituals that are obligatory for every Muslim",
-        imageURL:
-            "https://github.com/SakerDakak/Images/blob/main/org-2.png?raw=true"),
-    OrganizationX(
-        id: '3',
-        name: "Messengers of Peace Academy",
-        description:
-            "Qualifying Muslims and training them on modern means of advocacy, how to constructive dialogue with others, and scientific methods of persuasion",
-        imageURL:
-            "https://github.com/SakerDakak/Images/blob/main/org-3.png?raw=true"),
-  ];
-  static List<BankCardX> bankCards = [
-    BankCardX(
+
+  static List<PaymentCardX> bankCards = [
+    PaymentCardX(
       id: "1",
       name: "Saker",
       cardNum: "3489708765678764",
@@ -75,7 +166,7 @@ class TestDataX {
       cvv: 343,
       isDefault: true,
     ),
-    BankCardX(
+    PaymentCardX(
       id: "2",
       name: "Saker",
       cardNum: "4589708765670976",
@@ -83,7 +174,7 @@ class TestDataX {
       cvv: 343,
       isDefault: false,
     ),
-    BankCardX(
+    PaymentCardX(
       id: "3",
       name: "Saker",
       cardNum: "536970876567786",
@@ -91,7 +182,7 @@ class TestDataX {
       cvv: 343,
       isDefault: false,
     ),
-    BankCardX(
+    PaymentCardX(
       id: "4",
       name: "Saker",
       cardNum: "658970876565625",
@@ -100,132 +191,54 @@ class TestDataX {
       isDefault: false,
     ),
   ];
-  static List<DonationX> donations = [
-    DonationX(
-        id: "1",
-        name: "Teach 30 Muslims the Pillars of Islam",
-        totalNumberDonations: 324,
-        currentDonations: 5420,
-        totalDonations: 36953,
-        currentTargets: 33453,
-        totalTargets: 5606,
-        stockValue: 10,
-        description:
-        "Do you want an easy job with an extended reward and an uninterrupted reward?!Contribute to the conversion of 1,000 people to Islam so that you will be rewarded for their prayers, fasting, and good deeds, God willing.",
-        idea:
-        "Supporting the electronic dialogue program to introduce Islam via the Internet, which includes a contribution to the association’s endowment, so that you will receive two wages, the wage of converting 1,000 people to Islam, and the wage and your contribution to the endowment.",
-        plan:
-        "The first stage: 1,000 Muslims, We attract them > we dialogue with them > we give you good news of their Islam. Thanks to God, more than 148,000 new Muslims from 186 countries around the world have converted to Islam with us.",
-        isZakat: false,
-        packages: ["Silver", "Golden", "Diamond"],
-        shareURL: "https://www.ataa.com/231",
-        imageURL: [
-          "https://github.com/SakerDakak/Images/blob/main/donate-1.png?raw=true",
-          "https://github.com/SakerDakak/Images/blob/main/donate-2.jpeg?raw=true",
-          "https://github.com/SakerDakak/Images/blob/main/donate-3.jpeg?raw=true"
-        ]),
-    DonationX(
-        id: "2",
-        name: "Prayer science for 120 new Muslims",
-        totalNumberDonations: 324,
-        currentDonations: 5420,
-        totalDonations: 36953,
-        currentTargets: 33453,
-        totalTargets: 5606,
-        description:
-        "Do you want an easy job with an extended reward and an uninterrupted reward?!Contribute to the conversion of 1,000 people to Islam so that you will be rewarded for their prayers, fasting, and good deeds, God willing.",
-        idea:
-        "Supporting the electronic dialogue program to introduce Islam via the Internet, which includes a contribution to the association’s endowment, so that you will receive two wages, the wage of converting 1,000 people to Islam, and the wage and your contribution to the endowment.",
-        plan:
-        "The first stage: 1,000 Muslims, We attract them > we dialogue with them > we give you good news of their Islam. Thanks to God, more than 148,000 new Muslims from 186 countries around the world have converted to Islam with us.",
-        isZakat: false,
-        shareURL: "https://www.ataa.com/231",
-        imageURL: [
-          "https://github.com/SakerDakak/Images/blob/main/donate-2.jpeg?raw=true"
-        ]),
-    DonationX(
-        id: "3",
-        name: "Charity on Friday",
-        totalNumberDonations: 324,
-        currentDonations: 5420,
-        totalDonations: 36953,
-        currentTargets: 33453,
-        totalTargets: 5606,
-        stockValue: 10,
-        description:
-        "Do you want an easy job with an extended reward and an uninterrupted reward?!Contribute to the conversion of 1,000 people to Islam so that you will be rewarded for their prayers, fasting, and good deeds, God willing.",
-        idea:
-        "Supporting the electronic dialogue program to introduce Islam via the Internet, which includes a contribution to the association’s endowment, so that you will receive two wages, the wage of converting 1,000 people to Islam, and the wage and your contribution to the endowment.",
-        plan:
-        "The first stage: 1,000 Muslims, We attract them > we dialogue with them > we give you good news of their Islam. Thanks to God, more than 148,000 new Muslims from 186 countries around the world have converted to Islam with us.",
-        isZakat: false,
-        shareURL: "https://www.ataa.com/231",
-        imageURL: [
-          "https://github.com/SakerDakak/Images/blob/main/donate-3.jpeg?raw=true"
-        ]),
-    DonationX(
-        id: "4",
-        name: "Teach 30 Muslims the Pillars of Islam",
-        totalNumberDonations: 324,
-        currentDonations: 5420,
-        totalDonations: 36953,
-        currentTargets: 33453,
-        totalTargets: 5606,
-        stockValue: 10,
-        description:
-        "Do you want an easy job with an extended reward and an uninterrupted reward?!Contribute to the conversion of 1,000 people to Islam so that you will be rewarded for their prayers, fasting, and good deeds, God willing.",
-        idea:
-        "Supporting the electronic dialogue program to introduce Islam via the Internet, which includes a contribution to the association’s endowment, so that you will receive two wages, the wage of converting 1,000 people to Islam, and the wage and your contribution to the endowment.",
-        plan:
-        "The first stage: 1,000 Muslims, We attract them > we dialogue with them > we give you good news of their Islam. Thanks to God, more than 148,000 new Muslims from 186 countries around the world have converted to Islam with us.",
-        isZakat: true,
-        shareURL: "https://www.ataa.com/231",
-        imageURL: [
-          "https://github.com/SakerDakak/Images/blob/main/donate-1.png?raw=true",
-          "https://github.com/SakerDakak/Images/blob/main/donate-2.jpeg?raw=true",
-          "https://github.com/SakerDakak/Images/blob/main/donate-3.jpeg?raw=true"
-        ]),
-    DonationX(
-        id: "5",
-        name: "Prayer science for 120 new Muslims",
-        totalNumberDonations: 324,
-        currentDonations: 5420,
-        totalDonations: 36953,
-        currentTargets: 33453,
-        totalTargets: 5606,
-        stockValue: 10,
-        description:
-        "Do you want an easy job with an extended reward and an uninterrupted reward?!Contribute to the conversion of 1,000 people to Islam so that you will be rewarded for their prayers, fasting, and good deeds, God willing.",
-        idea:
-        "Supporting the electronic dialogue program to introduce Islam via the Internet, which includes a contribution to the association’s endowment, so that you will receive two wages, the wage of converting 1,000 people to Islam, and the wage and your contribution to the endowment.",
-        plan:
-        "The first stage: 1,000 Muslims, We attract them > we dialogue with them > we give you good news of their Islam. Thanks to God, more than 148,000 new Muslims from 186 countries around the world have converted to Islam with us.",
-        isZakat: true,
-        shareURL: "https://www.ataa.com/231",
-        imageURL: [
-          "https://github.com/SakerDakak/Images/blob/main/donate-2.jpeg?raw=true"
-        ]),
-    DonationX(
-        id: "6",
-        name: "Charity on Friday",
-        totalNumberDonations: 324,
-        currentDonations: 5420,
-        totalDonations: 36953,
-        currentTargets: 33453,
-        totalTargets: 5606,
-        stockValue: 10,
-        description:
-        "Do you want an easy job with an extended reward and an uninterrupted reward?!Contribute to the conversion of 1,000 people to Islam so that you will be rewarded for their prayers, fasting, and good deeds, God willing.",
-        idea:
-        "Supporting the electronic dialogue program to introduce Islam via the Internet, which includes a contribution to the association’s endowment, so that you will receive two wages, the wage of converting 1,000 people to Islam, and the wage and your contribution to the endowment.",
-        plan:
-        "The first stage: 1,000 Muslims, We attract them > we dialogue with them > we give you good news of their Islam. Thanks to God, more than 148,000 new Muslims from 186 countries around the world have converted to Islam with us.",
-        isZakat: true,
-        shareURL: "https://www.ataa.com/231",
-        imageURL: [
-          "https://github.com/SakerDakak/Images/blob/main/donate-3.jpeg?raw=true"
-        ]),
+
+  static List<DeductionX> deductions = [
+    DeductionX(
+      id: "1",
+      name: "Zakat on the first ten days of Dhul-Hijjah",
+      currentDonations: 324,
+      recurring: "Daily",
+      totalNumberSubscriptions: 273,
+      fixedDeductionAmount: 50,
+      briefDescription: "",
+      description:
+          "Donate daily automatically by participating in the charity of the blessed ten days of Dhul-Hijjah.",
+      shareURL: "https://www.ataa.com/231",
+      imageURL:
+          "https://github.com/SakerDakak/Images/blob/main/deduction-1.jpeg?raw=true",
+      videoURL: '',
+    ),
+    DeductionX(
+      id: "2",
+      name: "Monthly sponsorship for preacher Youssef",
+      currentDonations: 324,
+      recurring: "Monthly",
+      totalNumberSubscriptions: 273,
+      briefDescription: "",
+      description:
+          "Contribute to sponsoring a preacher on a monthly basis and receive his reward, God willing.",
+      shareURL: "https://www.ataa.com/231",
+      imageURL: "",
+      videoURL:
+          'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
+    ),
+    DeductionX(
+      id: "3",
+      name: "Weekly Friday charity",
+      currentDonations: 324,
+      recurring: "Weekly",
+      totalNumberSubscriptions: 273,
+      briefDescription: "",
+      description:
+          "Donate weekly automatically by subscribing to the weekly Friday charity.",
+      shareURL: "https://www.ataa.com/231",
+      imageURL:
+          "https://github.com/SakerDakak/Images/blob/main/deduction-3.jpeg?raw=true",
+      videoURL:
+          'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
+    ),
   ];
+
   static List<ShareLinkX> shareLinks = [
     ShareLinkX(
       id: "1",
@@ -258,47 +271,7 @@ class TestDataX {
       totalDonations: 410,
     ),
   ];
-  static List<DeductionX> deductions = [
-    DeductionX(
-        id: "1",
-        name: "Zakat on the first ten days of Dhul-Hijjah",
-        currentDonations: 324,
-        deduction: "Daily",
-        totalNumberSubscriptions: 273,
-        fixedDeductionAmount: 50,
-        description:
-            "Donate daily automatically by participating in the charity of the blessed ten days of Dhul-Hijjah.",
-        shareURL: "https://www.ataa.com/231",
-        imageURL: [
-          "https://github.com/SakerDakak/Images/blob/main/deduction-1.jpeg?raw=true",
-          "https://github.com/SakerDakak/Images/blob/main/deduction-2.jpeg?raw=true",
-          "https://github.com/SakerDakak/Images/blob/main/deduction-3.jpeg?raw=true"
-        ]),
-    DeductionX(
-        id: "2",
-        name: "Monthly sponsorship for preacher Youssef",
-        currentDonations: 324,
-        deduction: "Monthly",
-        totalNumberSubscriptions: 273,
-        description:
-            "Contribute to sponsoring a preacher on a monthly basis and receive his reward, God willing.",
-        shareURL: "https://www.ataa.com/231",
-        imageURL: [
-          "https://github.com/SakerDakak/Images/blob/main/deduction-2.jpeg?raw=true"
-        ]),
-    DeductionX(
-        id: "3",
-        name: "Weekly Friday charity",
-        currentDonations: 324,
-        deduction: "Weekly",
-        totalNumberSubscriptions: 273,
-        description:
-            "Donate weekly automatically by subscribing to the weekly Friday charity.",
-        shareURL: "https://www.ataa.com/231",
-        imageURL: [
-          "https://github.com/SakerDakak/Images/blob/main/deduction-3.jpeg?raw=true"
-        ]),
-  ];
+
   static List<DeductionRecordX> deductionRecords = [
     DeductionRecordX(
       id: "1",
@@ -328,7 +301,7 @@ class TestDataX {
   static List<DonationRecordX> donationsRecords = [
     DonationRecordX(
       id: '1',
-      donationID: "1",
+      donationId: "1",
       numStock: 2,
       package: "Silver",
       state: 'Active',
@@ -340,7 +313,7 @@ class TestDataX {
     ),
     DonationRecordX(
       id: '2',
-      donationID: "2",
+      donationId: "2",
       donationAmount: 100,
       state: 'Complete',
       paymentMethod: 'Apple Pay',
@@ -351,7 +324,7 @@ class TestDataX {
     ),
     DonationRecordX(
       id: '3',
-      donationID: "3",
+      donationId: "3",
       numStock: 3,
       state: 'Complete',
       paymentMethod: 'Google Pay',
@@ -390,13 +363,13 @@ class TestDataX {
       id: '1',
       name: "Quran speaker with lighting",
       description:
-      "Mini Portable Hand Counter Digital Bead Counter Lcd Electronic Rosary Beads Digital Tali Toy Meditation Muslim Prayer New",
+          "Mini Portable Hand Counter Digital Bead Counter Lcd Electronic Rosary Beads Digital Tali Toy Meditation Muslim Prayer New",
       price: 50,
       numOfStore: 30,
       rating: 4.6,
       reviews: 100,
       numSales: 14,
-      colors: ["0F9591", "F05252", "C76028","C27803", "6875F5", "9061F9"],
+      colors: ["0F9591", "F05252", "C76028", "C27803", "6875F5", "9061F9"],
       sizes: ["Lg", "Md", "Sm"],
       imageURL: [
         "https://github.com/SakerDakak/Images/blob/main/product-1.png?raw=true",
@@ -406,7 +379,7 @@ class TestDataX {
       id: '2',
       name: "Talking educational prayer rug",
       description:
-      "Mini Portable Hand Counter Digital Bead Counter Lcd Electronic Rosary Beads Digital Tali Toy Meditation Muslim Prayer New",
+          "Mini Portable Hand Counter Digital Bead Counter Lcd Electronic Rosary Beads Digital Tali Toy Meditation Muslim Prayer New",
       price: 23,
       numOfStore: 30,
       rating: 5,
@@ -422,13 +395,13 @@ class TestDataX {
       id: '3',
       name: "Modern electronic rosary",
       description:
-      "Mini Portable Hand Counter Digital Bead Counter Lcd Electronic Rosary Beads Digital Tali Toy Meditation Muslim Prayer New",
+          "Mini Portable Hand Counter Digital Bead Counter Lcd Electronic Rosary Beads Digital Tali Toy Meditation Muslim Prayer New",
       price: 17,
       numOfStore: 30,
       rating: 4.6,
       reviews: 100,
       numSales: 13,
-      colors: ["0F9591", "F05252", "C76028","C27803", "6875F5", "9061F9"],
+      colors: ["0F9591", "F05252", "C76028", "C27803", "6875F5", "9061F9"],
       sizes: [],
       imageURL: [
         "https://github.com/SakerDakak/Images/blob/main/product-3.png?raw=true",
@@ -440,7 +413,7 @@ class TestDataX {
       id: '4',
       name: "Smart tasbeeh ring",
       description:
-      "Mini Portable Hand Counter Digital Bead Counter Lcd Electronic Rosary Beads Digital Tali Toy Meditation Muslim Prayer New",
+          "Mini Portable Hand Counter Digital Bead Counter Lcd Electronic Rosary Beads Digital Tali Toy Meditation Muslim Prayer New",
       price: 100,
       numOfStore: 30,
       rating: 4.6,
@@ -456,13 +429,13 @@ class TestDataX {
       id: '5',
       name: "The Holy Quran Reader with multi-color pen design M9- 16",
       description:
-      "Mini Portable Hand Counter Digital Bead Counter Lcd Electronic Rosary Beads Digital Tali Toy Meditation Muslim Prayer New",
+          "Mini Portable Hand Counter Digital Bead Counter Lcd Electronic Rosary Beads Digital Tali Toy Meditation Muslim Prayer New",
       price: 50,
       numOfStore: 30,
       rating: 4.6,
       reviews: 100,
       numSales: 10,
-      colors: ["0F9591", "F05252", "C76028","C27803", "6875F5", "9061F9"],
+      colors: ["0F9591", "F05252", "C76028", "C27803", "6875F5", "9061F9"],
       sizes: ["Lg", "Md", "Sm"],
       imageURL: [
         "https://github.com/SakerDakak/Images/blob/main/product-5.png?raw=true"
@@ -472,7 +445,7 @@ class TestDataX {
       id: '6',
       name: "Prayer rug with back support",
       description:
-      "Mini Portable Hand Counter Digital Bead Counter Lcd Electronic Rosary Beads Digital Tali Toy Meditation Muslim Prayer New",
+          "Mini Portable Hand Counter Digital Bead Counter Lcd Electronic Rosary Beads Digital Tali Toy Meditation Muslim Prayer New",
       price: 50,
       numOfStore: 30,
       rating: 4.6,
@@ -500,7 +473,7 @@ class TestDataX {
       productID: "2",
       numProduct: 2,
       imageURL:
-      "https://github.com/SakerDakak/Images/blob/main/product-2.png?raw=true",
+          "https://github.com/SakerDakak/Images/blob/main/product-2.png?raw=true",
       name: "Talking educational prayer rug",
       price: 23,
     ),
@@ -509,7 +482,7 @@ class TestDataX {
       productID: "3",
       numProduct: 7,
       imageURL:
-      "https://github.com/SakerDakak/Images/blob/main/product-3.png?raw=true",
+          "https://github.com/SakerDakak/Images/blob/main/product-3.png?raw=true",
       name: "Modern electronic rosary",
       price: 23,
     ),
@@ -520,7 +493,7 @@ class TestDataX {
     "Buddhism",
     "Hinduism",
   ];
-  static List<String> countriesGuarantees = [
+  static List<String> countriesSponsorships = [
     "Britain",
     "America",
     "France",
@@ -533,8 +506,8 @@ class TestDataX {
     "Indian",
     "Urdu",
   ];
-  static List<GuaranteeX> guarantees = [
-    GuaranteeX(
+  static List<SponsorshipX> sponsorships = [
+    SponsorshipX(
       id: "1",
       muslimNum: 124934,
       previousReligion: "Christianity",
@@ -544,7 +517,7 @@ class TestDataX {
       language: "Indian",
       donationAmount: 2000,
     ),
-    GuaranteeX(
+    SponsorshipX(
       id: "2",
       muslimNum: 320840,
       previousReligion: "Hinduism",
@@ -554,7 +527,7 @@ class TestDataX {
       language: "English",
       donationAmount: 1200,
     ),
-    GuaranteeX(
+    SponsorshipX(
       id: "3",
       muslimNum: 73874,
       previousReligion: "Judaism",
@@ -564,7 +537,7 @@ class TestDataX {
       language: "English",
       donationAmount: 1800,
     ),
-    GuaranteeX(
+    SponsorshipX(
       id: "4",
       muslimNum: 38298,
       courseName: "What a Muslim cannot afford to be ignorant of",
@@ -574,7 +547,7 @@ class TestDataX {
       language: "English",
       donationAmount: 3200,
     ),
-    GuaranteeX(
+    SponsorshipX(
       id: "5",
       muslimNum: 972836,
       courseName: "Memorizing the Qur’an",
@@ -584,7 +557,7 @@ class TestDataX {
       language: "English",
       donationAmount: 2200,
     ),
-    GuaranteeX(
+    SponsorshipX(
       id: "6",
       muslimNum: 427689,
       courseName: "Memorizing prophetic hadiths",
@@ -594,7 +567,7 @@ class TestDataX {
       language: "Indian",
       donationAmount: 1800,
     ),
-    GuaranteeX(
+    SponsorshipX(
       id: "7",
       muslimNum: 632833,
       country: "Pakistan",
@@ -603,7 +576,7 @@ class TestDataX {
       language: "Urdu",
       donationAmount: 2000,
     ),
-    GuaranteeX(
+    SponsorshipX(
       id: "8",
       muslimNum: 43269,
       country: "America",
@@ -612,7 +585,7 @@ class TestDataX {
       language: "English",
       donationAmount: 3100,
     ),
-    GuaranteeX(
+    SponsorshipX(
       id: "9",
       muslimNum: 867261,
       country: "India",
@@ -621,7 +594,7 @@ class TestDataX {
       language: "Indian",
       donationAmount: 2300,
     ),
-    GuaranteeX(
+    SponsorshipX(
       id: "10",
       country: "India",
       countryFlagCode: "in",
@@ -629,7 +602,7 @@ class TestDataX {
       language: "Indian",
       donationAmount: 3400,
     ),
-    GuaranteeX(
+    SponsorshipX(
       id: "11",
       country: "Britain",
       countryFlagCode: "gb",
@@ -637,7 +610,7 @@ class TestDataX {
       language: "English",
       donationAmount: 2300,
     ),
-    GuaranteeX(
+    SponsorshipX(
       id: "12",
       country: "Pakistan",
       countryFlagCode: "pk",
@@ -646,17 +619,17 @@ class TestDataX {
       donationAmount: 2500,
     ),
   ];
-  static List<DedicationCardX> dedicationCards = [
-    DedicationCardX(
+  static List<GiftingCardX> giftingCardX = [
+    GiftingCardX(
         id: "1",
         imageURL:
-        "https://github.com/SakerDakak/Images/blob/main/dedications-card-1.png?raw=true"),
-    DedicationCardX(
+            "https://github.com/SakerDakak/Images/blob/main/dedications-card-1.png?raw=true"),
+    GiftingCardX(
         id: "1",
         imageURL:
-        "https://github.com/SakerDakak/Images/blob/main/dedications-card-2.png?raw=true"),
+            "https://github.com/SakerDakak/Images/blob/main/dedications-card-2.png?raw=true"),
   ];
-  static List<String> dedicationColors = [
+  static List<String> giftingColors = [
     "0F9591",
     "F05252",
     "C76028",
@@ -665,34 +638,8 @@ class TestDataX {
     "9061F9",
     "E74694"
   ];
-  static List<DedicationTypeX> dedicationTypes = [
-    DedicationTypeX(
-      id: "1",
-      name: "Ramadan",
-      imageURL:
-      "https://github.com/SakerDakak/Images/blob/main/dedication-type-1.jpeg?raw=true",
-    ),
-    DedicationTypeX(
-      id: "2",
-      name: "The arrival of a generator",
-      imageURL:
-      "https://github.com/SakerDakak/Images/blob/main/dedication-type-2.png?raw=true",
-    ),
-    DedicationTypeX(
-      id: "3",
-      name: "Charity",
-      imageURL:
-      "https://github.com/SakerDakak/Images/blob/main/dedication-type-3.png?raw=true",
-    ),
-    DedicationTypeX(
-      id: "4",
-      name: "Memorizing the Qur’an",
-      imageURL:
-      "https://github.com/SakerDakak/Images/blob/main/dedication-type-4.jpeg?raw=true",
-    ),
-  ];
-  static List<DedicationX> dedications = [
-    DedicationX(
+  static List<GiftingX> gifting = [
+    GiftingX(
       id: "1",
       typeID: "1",
       cardID: "1",
@@ -704,15 +651,15 @@ class TestDataX {
       mahdiName: "Saker",
       name: "Mouhamad",
       gender: "male",
-      phone: "994343927",
+      phone: 994343927,
       countryCode: 963,
-      dedicationData: "2024/05/22",
-      dedicationURL:
+      giftingData: "2024/05/22",
+      giftingURL:
           "https://ataa-store-frontend-staging.edialoguecenter.com/Store",
       paymentMethod: "Mada",
       typeName: "Ramadan",
     ),
-    DedicationX(
+    GiftingX(
       id: "2",
       typeID: "2",
       cardID: "2",
@@ -724,92 +671,16 @@ class TestDataX {
       mahdiName: "Saker",
       name: "Sara",
       gender: "female",
-      phone: "578987678",
+      phone: 578987678,
       countryCode: 966,
-      dedicationData: "2024/05/13",
-      dedicationURL:
+      giftingData: "2024/05/13",
+      giftingURL:
           "https://ataa-store-frontend-staging.edialoguecenter.com/Store",
       paymentMethod: "Apple Pay",
       typeName: "The arrival of a generator",
     ),
   ];
-  static List<CampaignX> campaigns = [
-    CampaignX(
-      id: '1',
-      title: "Teach 30 Muslims the Pillars of Islam",
-      totalNumberDonations: 20,
-      currentDonations: 30295,
-      totalDonations: 40000,
-      isZakat: true,
-      shareURL: "https://www.ataa.com/231",
-      imageURL: [
-        "https://github.com/SakerDakak/Images/blob/main/donate-1.png?raw=true",
-        "https://github.com/SakerDakak/Images/blob/main/donate-2.jpeg?raw=true",
-        "https://github.com/SakerDakak/Images/blob/main/donate-3.jpeg?raw=true"
-      ],
-      stockValue: 50,
-      maxNumStock: 100,
-      orgID: '1',
-      donationID: "1",
-      endDate: DateTime.now(),
-    ),
-    CampaignX(
-      id: '2',
-      title: "Prayer science for 120 new Muslims",
-      totalNumberDonations: 14,
-      currentDonations: 25690,
-      totalDonations: 50000,
-      isZakat: false,
-      shareURL: "https://www.ataa.com/231",
-      imageURL: [
-        "https://github.com/SakerDakak/Images/blob/main/donate-2.jpeg?raw=true"
-      ],
-      targetAmount: 50000,
-      orgID: '2',
-      donationID: "2",
-      endDate: DateTime.now(),
-    ),
-    CampaignX(
-      id: '3',
-      title: "Charity on Friday",
-      totalNumberDonations: 43,
-      currentDonations: 120200,
-      totalDonations: 2000000,
-      isZakat: true,
-      shareURL: "https://www.ataa.com/231",
-      imageURL: [
-        "https://github.com/SakerDakak/Images/blob/main/donate-3.jpeg?raw=true"
-      ],
-      stockValue: 20,
-      maxNumStock: 100,
-      orgID: '3',
-      donationID: "3",
-      endDate: DateTime.now(),
-    ),
-  ];
-  static StatisticsX statistics = StatisticsX(
-    id: '1',
-    allDonations: 6,
-    completedDonations: 5,
-    totalDonationAmount: 3250,
-    totalParticipation: 2487,
-    totalCampaigns: 8,
-    totalCampaignAmount: 20653,
-    numCampaignDonations: 7,
-    numCampaignVisits: 3520,
-    numRequests: 8,
-    completedOrders: 6,
-    totalAmountOrders: 2487,
-    totalDeductions: 3,
-    totalAmountDeductions: 3575,
-    numGuarantees: 12,
-    totalAmountGuarantees: 1349,
-    numLinks: 9,
-    newRegistrationsViaLinks: 22,
-    numDonationsViaLinks: 5,
-    numLinkVisits: 2908,
-    totalAmountDonationsViaLinks: 4309,
-  );
+
   static List<NotificationX> notifications = [
     NotificationX(
       id: 1,
@@ -817,6 +688,9 @@ class TestDataX {
       dateTime: "Two days ago",
     )
   ];
+  static String about = """  منصة تبرعات لدعم مشاريع جمعية ركن الحوار.
+
+من برامجنا التعريف بالإسلام لدعوة الآخرين من خلال الحوار البناء، وأكاديمية المسلم الجديد لتوجيه للمسلمين الجدد وتعليمهم دينهم. وكذلك أكاديمية رسل السلام لتدريب المسلمين على الدعوة إلى الإسلام بطرق فعالة وأسس سليمة.""";
   static String privacyPolicy = """
 Privacy Policy for Ataa Application
 

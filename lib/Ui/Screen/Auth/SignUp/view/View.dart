@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../Animation/animation.dart';
-import '../../../../../Config/config.dart';
 import '../../../../Widget/widget.dart';
 import '../controller/Controller.dart';
 import 'Sections/mainContent.dart';
@@ -24,17 +23,16 @@ class SignUpView extends GetView<SignUpController> {
         body: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.only(
-              top: 80.0,
-              bottom: 50.0,
-              left: StyleX.hPaddingApp,
-              right: StyleX.hPaddingApp,
+              top: 70.0,
+              bottom: 20.0,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const LogoX().fadeAnimation200,
-                const SizedBox(height: 50.0),
+                const SizedBox(height: 40.0),
                 const MainContentSignUpX(),
+                const SponsorLogoX().marginOnly(top: 40).fadeAnimation900,
               ],
             ),
           ),

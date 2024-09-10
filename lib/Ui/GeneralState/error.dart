@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import '../../Config/config.dart';
+import '../../Core/Error/error.dart';
 import '../Widget/widget.dart';
 
 // ~~~~~~~~~~~~~~~~~~~~~~~{{ Why this screen }}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -8,10 +8,33 @@ import '../Widget/widget.dart';
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 class ErrorView extends StatelessWidget {
-  const ErrorView({required this.error, super.key});
-  final String error;
+  const ErrorView({required this.error,this.onTapButton,this.buttonText = "Try again", super.key});
+  final Object? error;
+  final Function? onTapButton;
+  final String buttonText;
+
   @override
   Widget build(BuildContext context) {
+    ErrorX errorX = (error??"").toErrorX;
+    errorX.log();
+    IconData getIcon(){
+      switch (errorX.errorType) {
+        case ErrorTypeStatusX.network:
+          return Icons.network_wifi_sharp;
+
+        case ErrorTypeStatusX.input:
+      return  Icons.keyboard_hide;
+
+        case ErrorTypeStatusX.server:
+          return Icons.dns_rounded;
+
+        case ErrorTypeStatusX.unknown:
+          return Icons.report_problem_rounded;
+
+        default:
+          return Icons.report_problem_rounded;
+      }
+    }
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: StyleX.hPaddingApp),
@@ -20,7 +43,7 @@ class ErrorView extends StatelessWidget {
           children: [
             /// Message Card
             Container(
-              margin: const EdgeInsets.symmetric(vertical: 40),
+              margin: const EdgeInsets.symmetric(vertical: 20),
               padding: const EdgeInsets.symmetric(
                 horizontal: 10,
                 vertical: 30,
@@ -28,16 +51,24 @@ class ErrorView extends StatelessWidget {
               width: double.maxFinite,
               child: Column(
                 children: [
-                  const Icon(
-                    Icons.report_gmailerrorred_rounded,
+                  Icon(
+                    getIcon(),
                     color: ColorX.danger,
                     size: 110.0,
                   ),
                   const SizedBox(height: 20),
                   TextX(
-                    error.isNotEmpty ? error : 'Something is wrong',
+                    errorX.title,
+                    maxLines: 1,
+                    style: TextStyleX.headerMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 10),
+                  TextX(
+                    errorX.message,
                     color: ColorX.danger,
                     maxLines: 10,
+                    // style: TextStyleX.titleLarge,
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -46,8 +77,8 @@ class ErrorView extends StatelessWidget {
 
             /// Action Button
             ButtonX(
-              onTap: () => Get.offAllNamed(RouteNameX.root),
-              text: "Back to Home",
+              onTap: onTapButton??(){},
+              text: buttonText,
             )
           ],
         ),

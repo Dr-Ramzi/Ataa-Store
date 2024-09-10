@@ -1,7 +1,10 @@
 import 'package:get/get.dart';
 import '../../Core/Controller/Basket/deliveryAddressController.dart';
 import '../../Core/Controller/Pay/directZakatPaymentController.dart';
-import '../../Ui/Screen/Basic/About/Info/controller/Controller.dart';
+import '../../Ui/Screen/Basic/About/About/controller/Controller.dart';
+import '../../Ui/Screen/Basic/About/About/view/View.dart';
+import '../../Ui/Screen/Basic/Loading/View/View.dart';
+import '../../Ui/Screen/Basic/Loading/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Basket/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Basket/view/View.dart';
 import '../../Ui/Screen/Screen/Campaigns/AllCampaigns/controller/Controller.dart';
@@ -10,28 +13,30 @@ import '../../Ui/Screen/Screen/Campaigns/CampaignDetails/controller/Controller.d
 import '../../Ui/Screen/Screen/Campaigns/CampaignDetails/view/View.dart';
 import '../../Ui/Screen/Screen/Campaigns/CreateCampaign/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Campaigns/CreateCampaign/view/View.dart';
-import '../../Ui/Screen/Screen/Dedications/controller/Controller.dart';
-import '../../Ui/Screen/Screen/Dedications/view/View.dart';
+import '../../Ui/Screen/Screen/DynamicPage/controller/Controller.dart';
+import '../../Ui/Screen/Screen/DynamicPage/view/View.dart';
+import '../../Ui/Screen/Screen/Gifting/controller/Controller.dart';
+import '../../Ui/Screen/Screen/Gifting/view/View.dart';
 import '../../Ui/Screen/Screen/Deduction/AllDeductions/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Deduction/AllDeductions/view/View.dart';
 import '../../Ui/Screen/Screen/Deduction/DeductionDetails/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Deduction/DeductionDetails/view/View.dart';
-import '../../Ui/Screen/Screen/Guarantees/AllGuarantees/controller/Controller.dart';
-import '../../Ui/Screen/Screen/Guarantees/AllGuarantees/view/View.dart';
-import '../../Ui/Screen/Screen/Guarantees/TypesGuarantees/controller/Controller.dart';
-import '../../Ui/Screen/Screen/Guarantees/TypesGuarantees/view/View.dart';
+import '../../Ui/Screen/Screen/Sponsorships/AllSponsorships/controller/Controller.dart';
+import '../../Ui/Screen/Screen/Sponsorships/AllSponsorships/view/View.dart';
+import '../../Ui/Screen/Screen/Sponsorships/TypesSponsorships/controller/Controller.dart';
+import '../../Ui/Screen/Screen/Sponsorships/TypesSponsorships/view/View.dart';
 import '../../Ui/Screen/Screen/Profile/Activity/Activity/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Profile/Activity/Activity/view/View.dart';
 import '../../Ui/Screen/Screen/Profile/Activity/MyCampaigns/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Profile/Activity/MyCampaigns/view/View.dart';
-import '../../Ui/Screen/Screen/Profile/Activity/MyDedications/controller/Controller.dart';
-import '../../Ui/Screen/Screen/Profile/Activity/MyDedications/view/View.dart';
+import '../../Ui/Screen/Screen/Profile/Activity/MyGifting/controller/Controller.dart';
+import '../../Ui/Screen/Screen/Profile/Activity/MyGifting/view/View.dart';
 import '../../Ui/Screen/Screen/Profile/Activity/MyDeductions/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Profile/Activity/MyDeductions/view/View.dart';
 import '../../Ui/Screen/Screen/Profile/Activity/MyDonations/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Profile/Activity/MyDonations/view/View.dart';
-import '../../Ui/Screen/Screen/Profile/Activity/MyGuarantees/controller/Controller.dart';
-import '../../Ui/Screen/Screen/Profile/Activity/MyGuarantees/view/View.dart';
+import '../../Ui/Screen/Screen/Profile/Activity/MySponsorships/controller/Controller.dart';
+import '../../Ui/Screen/Screen/Profile/Activity/MySponsorships/view/View.dart';
 import '../../Ui/Screen/Screen/Profile/Activity/MyOrders/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Profile/Activity/MyOrders/view/View.dart';
 import '../../Ui/Screen/Screen/Profile/Activity/PaymentCards/controller/Controller.dart';
@@ -65,7 +70,6 @@ import '../../Ui/Screen/Auth/SignUp/controller/Controller.dart';
 import '../../Ui/Screen/Auth/SignUp/view/View.dart';
 import '../../Ui/Screen/Basic/About/ContactUs/controller/Controller.dart';
 import '../../Ui/Screen/Basic/About/ContactUs/view/View.dart';
-import '../../Ui/Screen/Basic/About/Info/View/View.dart';
 import '../../Ui/Screen/Basic/About/OurBank/controller/Controller.dart';
 import '../../Ui/Screen/Basic/About/OurBank/view/View.dart';
 import '../../Ui/Screen/Basic/About/PrivacyPolicy/controller/Controller.dart';
@@ -94,10 +98,17 @@ import '../../../Ui/Screen/Basic/Settings/view/View.dart';
 /// Link pages to their controller via the page name
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
 class RouteListX {
   /// List Routes
   static final List<GetPage<dynamic>> routes = [
+    /// Loading
+    GetPage(
+        name: RouteNameX.loading,
+        page: () => const LoadingView(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut(() => LoadingController());
+        })),
+
     /// Root
     GetPage(
       name: RouteNameX.root,
@@ -106,9 +117,11 @@ class RouteListX {
         () {
           Get.lazyPut(
             () => RootController(),
+            fenix: true,
           );
           Get.lazyPut(
-            () => HomeController(), fenix: true,
+            () => HomeController(),
+            fenix: true,
           );
           Get.lazyPut(
             () => AllDonationController(),
@@ -156,8 +169,17 @@ class RouteListX {
         page: () => const OnboardingView(),
         binding: BindingsBuilder(() {
           Get.lazyPut(
-                () => OnboardingController(),
-            fenix: true,
+            () => OnboardingController(),
+          );
+        })),
+    //========================================================
+    /// Dynamic Page
+    GetPage(
+        name: RouteNameX.dynamicPage,
+        page: () => const DynamicPageView(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut(
+            () => DynamicPageController(),
           );
         })),
     //========================================================
@@ -203,10 +225,10 @@ class RouteListX {
           Get.lazyPut(() => MyOrdersController());
         })),
     GetPage(
-        name: RouteNameX.myDedications,
-        page: () => const MyDedicationsView(),
+        name: RouteNameX.myGifts,
+        page: () => const MyGiftingView(),
         binding: BindingsBuilder(() {
-          Get.lazyPut(() => MyDedicationsController());
+          Get.lazyPut(() => MyGiftingController());
         })),
     GetPage(
         name: RouteNameX.myCampaigns,
@@ -221,10 +243,10 @@ class RouteListX {
           Get.lazyPut(() => MyDeductionsController());
         })),
     GetPage(
-        name: RouteNameX.myGuarantees,
-        page: () => const MyGuaranteesView(),
+        name: RouteNameX.mySponsorships,
+        page: () => const MySponsorshipsView(),
         binding: BindingsBuilder(() {
-          Get.lazyPut(() => MyGuaranteesController());
+          Get.lazyPut(() => MySponsorshipsController());
         })),
     GetPage(
         name: RouteNameX.sharingLinks,
@@ -258,11 +280,11 @@ class RouteListX {
           );
         })),
     GetPage(
-        name: RouteNameX.info,
-        page: () => const InfoView(),
+        name: RouteNameX.about,
+        page: () => const AboutView(),
         binding: BindingsBuilder(() {
           Get.lazyPut(
-            () => InfoController(),
+            () => AboutController(),
           );
         })),
     GetPage(
@@ -330,12 +352,12 @@ class RouteListX {
           Get.lazyPut(() => DeductionDetailsController());
         })),
     //========================================================
-    /// Dedications
+    /// Gifting
     GetPage(
-        name: RouteNameX.dedications,
-        page: () => const DedicationsView(),
+        name: RouteNameX.gifting,
+        page: () => const GiftingView(),
         binding: BindingsBuilder(() {
-          Get.lazyPut(() => DedicationsController());
+          Get.lazyPut(() => GiftingController());
         })),
     //========================================================
     /// Basket
@@ -350,18 +372,18 @@ class RouteListX {
       ),
     ),
     //========================================================
-    /// Guarantees
+    /// Sponsorships
     GetPage(
-        name: RouteNameX.typesGuarantees,
-        page: () => const TypesGuaranteesView(),
+        name: RouteNameX.typesSponsorships,
+        page: () => const TypesSponsorshipsView(),
         binding: BindingsBuilder(() {
-          Get.lazyPut(() => TypesGuaranteesController());
+          Get.lazyPut(() => TypesSponsorshipsController());
         })),
     GetPage(
-        name: RouteNameX.allGuarantees,
-        page: () => const AllGuaranteesView(),
+        name: RouteNameX.allSponsorships,
+        page: () => const AllSponsorshipsView(),
         binding: BindingsBuilder(() {
-          Get.lazyPut(() => AllGuaranteesController());
+          Get.lazyPut(() => AllSponsorshipsController());
         })),
     //========================================================
     /// Zakat
@@ -398,32 +420,29 @@ class RouteListX {
         name: RouteNameX.allCampaigns,
         page: () => const AllCampaignsView(),
         binding: BindingsBuilder(() {
-          Get.lazyPut(
-                  () => AllCampaignsController());
+          Get.lazyPut(() => AllCampaignsController());
         })),
     GetPage(
         name: RouteNameX.createCampaign,
         page: () => const CreateCampaignView(),
         binding: BindingsBuilder(() {
-          Get.lazyPut(
-                  () => CreateCampaignController());
+          Get.lazyPut(() => CreateCampaignController());
         })),
     GetPage(
         name: RouteNameX.campaignDetails,
         page: () => const CampaignDetailsView(),
         binding: BindingsBuilder(() {
-          Get.lazyPut(
-                  () => CampaignDetailsController());
+          Get.lazyPut(() => CampaignDetailsController());
         })),
     //========================================================
-     /// Template
-     // GetPage(
-     //    name: RouteNameX.,
-     //    page: () => const View(),
-     //    binding: BindingsBuilder(() {
-     //      Get.lazyPut(
-     //              () => Controller());
-     //    })),
-     //
+    /// Template
+    // GetPage(
+    //    name: RouteNameX.,
+    //    page: () => const View(),
+    //    binding: BindingsBuilder(() {
+    //      Get.lazyPut(
+    //              () => Controller());
+    //    })),
+    //
   ];
 }

@@ -55,13 +55,12 @@ class AllDeductionsView extends GetView<AllDeductionsController> {
                             horizontal: StyleX.hPaddingApp,
                           ),
                           itemCount: controller.deductionsResult.length,
-                          itemBuilder: (context, index) =>
-                              CharitableProjectCardX(
+
+                          /// Cards
+                          itemBuilder: (context, index) => DeductionCardX(
                             onTap: controller.onTapDeduction,
-                            onDonation: controller.onSubscriptionDonation,
-                            obj: controller.deductionsResult[index],
-                            deduction:
-                                controller.deductionsResult[index].deduction,
+                            onSubscribe: controller.onSubscriptionDonation,
+                            deduction: controller.deductionsResult[index],
                           ).fadeAnimation300,
                         );
                       }

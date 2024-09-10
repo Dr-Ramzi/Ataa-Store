@@ -9,7 +9,7 @@ class PreviewDedicateControllerX  extends GetxController {
   //============================================================================
   // Variables
 
-  DedicationX dedication = DedicationX.empty();
+  GiftingX gifting = GiftingX.empty();
   String imageUrl='';
   String message='';
   String url='';

@@ -1,5 +1,6 @@
 part of '../../widget.dart';
 
+// ignore: must_be_immutable
 class DropdownX<T> extends StatefulWidget {
   DropdownX(
       {super.key,
@@ -73,7 +74,7 @@ class _DropdownXState<T> extends State<DropdownX> {
                       color: widget.disable?Theme.of(context).iconTheme.color:null,
                     ),
                     isExpanded: true,
-                    icon: const Icon(Iconsax.arrow_down_1, size: 22),
+                    icon: const Icon(Iconsax.arrow_down_1, size: 15),
                     value: widget.value,
                     underline: const SizedBox(),
                     items: widget.list.map((value) {

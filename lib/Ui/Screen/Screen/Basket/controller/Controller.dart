@@ -5,6 +5,7 @@ import '../../../../../Config/config.dart';
 import '../../../../../Core/Controller/Basket/basketGeneralController.dart';
 import '../../../../../Core/Controller/Basket/deliveryAddressController.dart';
 import '../../../../../Core/core.dart';
+import '../../../../../Data/Model/Gifting/giftCategory.dart';
 import '../../../../../Data/data.dart';
 import '../../../../../UI/Widget/widget.dart';
 
@@ -27,15 +28,15 @@ class BasketController extends GetxController {
   AutovalidateMode autoValidate = AutovalidateMode.onUserInteraction;
   RxMap<String, TextEditingController> donationPriceController =
       <String, TextEditingController>{}.obs;
-  RxMap<String, TextEditingController> dedicationDonationAmountController =
+  RxMap<String, TextEditingController> giftingDonationAmountController =
       <String, TextEditingController>{}.obs;
 
   /// Basket Items
   List<DonationX> donations = [];
   RxList<DonationRecordX> donationRecords = <DonationRecordX>[].obs;
-  RxList<DedicationX> dedications = <DedicationX>[].obs;
-  List<DedicationTypeX> dedicationTypes = [];
-  RxList<GuaranteeX> guarantees = <GuaranteeX>[].obs;
+  RxList<GiftingX> gifting = <GiftingX>[].obs;
+  List<GiftCategoryX> giftingTypes = [];
+  RxList<SponsorshipX> sponsorships = <SponsorshipX>[].obs;
   List<ProductX> products = [];
   RxList<OrderProductX> orderProducts = <OrderProductX>[].obs;
 
@@ -58,15 +59,15 @@ class BasketController extends GetxController {
     int result = 0;
 
     /// Donations
-    for (var element in donationRecords) {
-      DonationX donation = getDonationById(element.donationID);
-      if (element.numStock != null && donation.stockValue != null) {
-        result += element.numStock! * donation.stockValue!;
-      }
-      if (element.donationAmount != null) {
-        result += element.donationAmount!;
-      }
-    }
+    // for (var element in donationRecords) {
+    //   DonationX donation = getDonationById(element.donationID);
+    //   if (element.numStock != null && donation.stockValue != null) {
+    //     result += element.numStock! * donation.stockValue!;
+    //   }
+    //   if (element.donationAmount != null) {
+    //     result += element.donationAmount!;
+    //   }
+    // }
 
     /// Products
     for (var element in orderProducts) {
@@ -74,13 +75,13 @@ class BasketController extends GetxController {
       result += element.numProduct * product.price;
     }
 
-    /// Dedications
-    for (var element in dedications) {
+    /// Gifting
+    for (var element in gifting) {
       result += element.donationAmount;
     }
 
-    /// Guarantees
-    for (var element in guarantees) {
+    /// Sponsorships
+    for (var element in sponsorships) {
       result += element.donationAmount;
     }
 
@@ -106,14 +107,13 @@ class BasketController extends GetxController {
 
       /// TODO: Delete >>> After linking to the database
       // --- delete from here ---
-      donationRecords.value = TestDataX.donationsRecords;
-      orderProducts.value = TestDataX.orderProducts;
-      dedications.value = TestDataX.dedications;
-      dedicationTypes = TestDataX.dedicationTypes;
-
-      guarantees.value = TestDataX.guarantees.sublist(0, 3);
-      donations = TestDataX.donations.sublist(0, 3);
-      products = TestDataX.products.sublist(0, 3);
+      // donationRecords.value = TestDataX.donationsRecords;
+      // orderProducts.value = TestDataX.orderProducts;
+      // gifting.value = TestDataX.gifting;
+      // giftingTypes = TestDataX.giftingTypes;
+      //
+      // sponsorships.value = TestDataX.sponsorships.sublist(0, 3);
+      // products = TestDataX.products.sublist(0, 3);
       // --- to here ---
 
       createPriceControllers();
@@ -128,10 +128,10 @@ class BasketController extends GetxController {
       await deliveryAddressController.getData();
 
       /// update number items for icon basket badge
-      basketGeneral.numItemsBadge.value = donationRecords.length +
+      basketGeneral.basket.value.countItem = donationRecords.length +
           orderProducts.length +
-          dedications.length +
-          guarantees.length;
+          gifting.length +
+          sponsorships.length;
     } catch (e) {
       return Future.error(e);
     }
@@ -147,10 +147,10 @@ class BasketController extends GetxController {
       );
     }
 
-    /// Dedication Donation Amount
-    dedicationDonationAmountController.value = {};
-    for (var element in dedications) {
-      dedicationDonationAmountController[element.id] = TextEditingController(
+    /// Gifting Donation Amount
+    giftingDonationAmountController.value = {};
+    for (var element in gifting) {
+      giftingDonationAmountController[element.id] = TextEditingController(
         text: element.donationAmount.toString(),
       );
     }
@@ -190,9 +190,9 @@ class BasketController extends GetxController {
           donationRecords.value = [];
           products = [];
           orderProducts.value = [];
-          dedications.value = [];
-          guarantees.value = [];
-          dedicationTypes = [];
+          gifting.value = [];
+          sponsorships.value = [];
+          giftingTypes = [];
           basketSummary.value = 0;
           shippingCharges.value = 0;
 
@@ -203,7 +203,7 @@ class BasketController extends GetxController {
           );
 
           /// update number items for icon basket badge
-          basketGeneral.numItemsBadge.value = 0;
+          basketGeneral.basket.value.countItem = 0;
 
           ToastX.success(message: "The payment was completed successfully");
         }
@@ -231,13 +231,13 @@ class BasketController extends GetxController {
   onDeleteDonationItem(DonationRecordX basketItem) async {
     try {
       /// TODO: Database >>> Delete Donation Item on basket
-      donations.removeWhere((e) => e.id == basketItem.donationID);
+      donations.removeWhere((e) => e.id == basketItem.donationId);
       donationPriceController.removeWhere((key, val) => key == basketItem.id);
       donationRecords.remove(basketItem);
       calculateBasketSummary();
 
       /// update number items for icon basket badge
-      basketGeneral.numItemsBadge.value--;
+      basketGeneral.basket.value.countItem--;
     } catch (e) {
       return Future.error(e);
     }
@@ -293,7 +293,7 @@ class BasketController extends GetxController {
       calculateBasketSummary();
 
       /// update number items for icon basket badge
-      basketGeneral.numItemsBadge.value--;
+      basketGeneral.basket.value.countItem--;
     } catch (e) {
       return Future.error(e);
     }
@@ -313,36 +313,36 @@ class BasketController extends GetxController {
   }
 
   //----------------------------------------------------------------------------
-  // Dedication
-  getDedicationTypeById(String id) =>
-      dedicationTypes.firstWhere((e) => e.id == id);
+  // Gifting
+  getGiftingTypeById(String id) =>
+      giftingTypes.firstWhere((e) => e.id == id);
 
-  onDeleteDedicationItem(DedicationX dedication) async {
+  onDeleteGiftingItem(GiftingX val) async {
     try {
-      /// TODO: Database >>> Delete Dedication Item on basket
-      dedications.remove(dedication);
+      /// TODO: Database >>> Delete Gifting Item on basket
+      gifting.remove(val);
 
-      dedicationDonationAmountController
-          .removeWhere((key, val) => key == dedication.id);
+      giftingDonationAmountController
+          .removeWhere((key, _) => key == val.id);
 
       calculateBasketSummary();
 
       /// update number items for icon basket badge
-      basketGeneral.numItemsBadge.value--;
+      basketGeneral.basket.value.countItem--;
     } catch (e) {
       return Future.error(e);
     }
   }
 
-  onChangedDedicationDonationAmount(
-    DedicationX dedication,
+  onChangedGiftingDonationAmount(
+    GiftingX val,
     String price,
   ) async {
     if (ValidateX.money(price) == null) {
       try {
-        /// TODO: Database >>> Change Dedication Donation Amount on basket
-        int index = dedications.indexOf(dedication);
-        dedications[index].donationAmount = int.parse(price);
+        /// TODO: Database >>> Change Gifting Donation Amount on basket
+        int index = gifting.indexOf(val);
+        gifting[index].donationAmount = int.parse(price);
         calculateBasketSummary();
       } catch (e) {
         return Future.error(e);
@@ -351,17 +351,17 @@ class BasketController extends GetxController {
   }
 
   //----------------------------------------------------------------------------
-  // Guarantee
+  // Sponsorship
 
-  onDeleteGuaranteeItem(GuaranteeX guarantee) async {
+  onDeleteSponsorshipItem(SponsorshipX sponsorship) async {
     try {
-      /// TODO: Database >>> Delete Guarantee Item on basket
-      guarantees.remove(guarantee);
+      /// TODO: Database >>> Delete Sponsorship Item on basket
+      sponsorships.remove(sponsorship);
 
       calculateBasketSummary();
 
       /// update number items for icon basket badge
-      basketGeneral.numItemsBadge.value--;
+      basketGeneral.basket.value.countItem--;
     } catch (e) {
       return Future.error(e);
     }

@@ -54,7 +54,7 @@ class CreateCampaignView extends GetView<CreateCampaignController> {
                         /// Program
                         DropdownX(
                           title: "The Program",
-                          hint: "-- Choose donation program --",
+                          hint: "-- Choose donation project --",
                           value: controller.orgSelected.value,
                           list: controller.organizations,
                           valuesShow: controller.valuesShowOrg,

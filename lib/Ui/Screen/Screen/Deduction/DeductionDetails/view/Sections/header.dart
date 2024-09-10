@@ -22,7 +22,7 @@ class HeaderSectionX extends GetView<DeductionDetailsController> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               /// Deduction marker
-              DeductionMarkerCardX(deduction: controller.deduction.deduction)
+              DeductionMarkerCardX(deduction: controller.deduction.recurring)
                   .fadeAnimation300,
               const SizedBox(width: 20),
 

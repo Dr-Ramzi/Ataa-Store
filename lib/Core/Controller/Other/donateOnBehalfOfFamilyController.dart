@@ -24,7 +24,7 @@ class DonateOnBehalfOfFamilyController extends GetxController {
 
   /// The name Mahdi is fetched through the username
   late TextEditingController donorName =
-      TextEditingController(text: app.isLogin.value ? app.user.value.name : "");
+      TextEditingController(text: app.isLogin.value ? app.user.value!.name : "");
   TextEditingController giftedName = TextEditingController();
   TextEditingController giftedPhone = TextEditingController();
 
@@ -35,7 +35,7 @@ class DonateOnBehalfOfFamilyController extends GetxController {
   clearData() {
     giftedName.text = '';
     giftedPhone.text = "";
-    donorName.text = app.isLogin.value ? app.user.value.name : "";
+    donorName.text = app.isLogin.value ? app.user.value!.name : "";
     isEnable.value = false;
     autoValidate = AutovalidateMode.disabled;
   }
@@ -53,7 +53,6 @@ class DonateOnBehalfOfFamilyController extends GetxController {
       if (contact != null) {
         /// If name is empty, it returns the previous value
         giftedName.text = contact.fullName ?? giftedName.text;
-        print(contact.phoneNumbers?.first??'ss');
 
         /// To check if there is a phone number and then check if this number is empty or not
         if (contact.phoneNumbers != null && contact.phoneNumbers!.isNotEmpty) {
@@ -65,7 +64,9 @@ class DonateOnBehalfOfFamilyController extends GetxController {
           giftedPhone.text = result.$1;
 
           /// If name is empty, it returns the previous value
-          countryCode.value = result.$2 ?? countryCode.value;
+          if(!app.generalSettings.isShowCountryCodeList) {
+            countryCode.value = result.$2 ?? countryCode.value;
+          }
         }
       }
     } catch (e) {

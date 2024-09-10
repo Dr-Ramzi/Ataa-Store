@@ -16,17 +16,20 @@ class OrganizationCardX extends StatelessWidget {
         child: Column(
           children: [
             ImageNetworkX(
-              imageUrl: org.imageURL,
-              height: 60,
+              imageUrl: org.imageUrl,
+              height: 66,
               fit: BoxFit.contain,
             ),
             const SizedBox(height: 14),
-            TextX(
-              org.name,
-              maxLines: 2,
-              style: TextStyleX.titleSmall,
-              fontWeight: FontWeight.w600,
-              textAlign: TextAlign.center,
+            Flexible(
+              child: AutoSizeText(
+                org.name,
+                style: TextStyleX.titleSmall.copyWith(fontWeight: FontWeight.w600),
+                minFontSize: TextStyleX.supTitleMedium.fontSize!,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+              ),
             )
           ],
         ),

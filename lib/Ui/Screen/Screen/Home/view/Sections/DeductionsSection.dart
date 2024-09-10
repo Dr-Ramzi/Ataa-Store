@@ -1,6 +1,8 @@
+import 'package:ataa/Ui/Widget/Basic/Other/scrollRefreshLoadMore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../Config/config.dart';
+import '../../../../../../Data/data.dart';
 import '../../../../../Animation/animation.dart';
 import '../../../../../Widget/widget.dart';
 import '../../controller/Controller.dart';
@@ -9,52 +11,51 @@ class DeductionsSectionX extends GetView<HomeController> {
   const DeductionsSectionX({super.key});
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: controller.getDeductions(),
-      builder: (context, snapshot) {
+    return ScrollRefreshLoadMoreX<DeductionX>(
+      fetchData: controller.getDeductions,
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.only(
+        left: StyleX.hPaddingApp,
+        right: StyleX.hPaddingApp,
+        bottom: 20,
+      ),
 
-        /// If the data is still loading, a flash is displayed in the same shape as the item expected to appear
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return ScrollCardsHorizontallyX(
-              height:StyleX.deductionCardHeight,
-              title: "Deductions",
-              icon: Icons.credit_card_rounded,
-              onShowMore: controller.onDeductionsMore,
-              cards: [
-                for (int i = 0; i < 3; i++)
-                   const ShimmerAnimationX(
-                    height: StyleX.deductionCardHeight,
-                    width: StyleX.deductionCardWidthSM,
-                    margin: EdgeInsetsDirectional.only(end: 14),
-                  )
-              ],
-          );
-        }
+      /// Header
+      header: SectionTitleX(
+        title: "Deductions",
+        icon: IconX.creditCard,
+        showMore: controller.onDeductionsMore,
+      ),
+      isHideHeaderIfEmpty: true,
+      isHideHeaderIfError: true,
+      isHideHeaderIfInitLoading: false,
+      isHeaderPadding: false,
 
-        /// If there is an error in this section or it is empty, the section does not appear
-        if (snapshot.hasError || controller.deductions.isEmpty) {
-          return const SizedBox();
-        }
-
-        /// When the data has finished loading properly, it is displayed
-        return ScrollCardsHorizontallyX(
-            height: StyleX.deductionCardHeight,
-            title: "Deductions",
-            icon: Icons.credit_card_rounded,
-            onShowMore: controller.onDeductionsMore,
-            cards: [
-              ...controller.deductions.map(
-                (obj) => CharitableProjectCardX(
-                  isSmallCard: true,
-                  onTap: controller.onTapDeduction,
-                  onDonation: controller.onSubscriptionDeduction,
-                  deduction: obj.deduction,
-                  obj: obj,
-                ).fadeAnimation300,
-              ),
-            ],
-        );
+      /// Items
+      itemBuilder: (data, index) {
+        return DeductionCardX(
+          deduction: data,
+          onTap: controller.onTapDeduction,
+          onSubscribe: controller.onSubscriptionDeduction,
+          isSmallCard: true,
+        ).fadeAnimation300;
       },
+
+      /// If there is an error in this section or it is empty, the section does not appear
+      empty: const SizedBox(),
+      errorWidget: (_) => const SizedBox(),
+
+      /// If the data is still loading, a flash is displayed in the same shape as the item expected to appear
+      initLoading: Row(
+        children: [
+          for (int i = 0; i < 3; i++)
+            const ShimmerAnimationX(
+              height: StyleX.deductionCardHeight,
+              width: StyleX.deductionCardWidthSM,
+              margin: EdgeInsetsDirectional.only(end: 14),
+            )
+        ],
+      ),
     );
   }
 }

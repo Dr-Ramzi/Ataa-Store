@@ -10,10 +10,23 @@ class ImageX {
   /// Logo
   static const String logo = '${_path}logos/ataa-color.svg';
   static const String logoWhite = '${_path}logos/ataa-white.svg';
+  static const String logoSymbol = '${_path}logos/ataa-symbol-color.svg';
+  static const String logoSymbolWhite = '${_path}logos/ataa-symbol-white.svg';
 
-  /// Sponsor Logo
+  /// Other Logo
   static const String sponsorLogo = '${_path}otherLogos/sponsor-color.svg';
   static const String sponsorLogoWhite = '${_path}otherLogos/sponsor-white.svg';
+  static const String homeLogo = '${_path}otherLogos/home-logo.svg';
+
+  /// Other
+  static const String doneDonation = '${_path}other/done-donation.png';
+  static const String google = '${_path}other/google.png';
+  static const String apple = '${_path}other/apple.png';
+  static const String defaultUserTestimonial = '${_path}other/default_user_testimonial.jpg';
+
+  /// Gift
+  static const String giftCardLogo = '${_path}gift/gift-card-logo.png';
+  static const String giftCardBackground1 = '${_path}gift/gift-card-background-1.png';
 
   /// Empty
   static const String basketEmpty = '${_path}empty/basket-empty.png';

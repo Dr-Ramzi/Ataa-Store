@@ -3,7 +3,7 @@ part of '../../data.dart';
 class DonationRecordX {
   DonationRecordX({
     required this.id,
-    required this.donationID,
+    required this.donationId,
     this.donationAmount,
     this.numStock,
     this.package,
@@ -15,7 +15,7 @@ class DonationRecordX {
   });
 
   late String id;
-  late String donationID;
+  late String donationId;
   late int? donationAmount;
   late int? numStock;
   late String? package;
@@ -28,7 +28,7 @@ class DonationRecordX {
   factory DonationRecordX.fromJson(Map<String, dynamic> json) {
     return DonationRecordX(
       id: json[NameX.id].toString(),
-      donationID: json[NameX.donationID].toString(),
+      donationId: json[NameX.donationId].toString(),
       donationAmount: json[NameX.donationAmount],
       numStock: json[NameX.numStock],
       package: json[NameX.package],

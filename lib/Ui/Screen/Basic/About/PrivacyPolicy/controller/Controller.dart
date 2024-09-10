@@ -5,16 +5,14 @@ class PrivacyPolicyController extends GetxController {
   //============================================================================
   // Variables
 
-  String privacyPolicy="";
+  late PageX privacyPolicy;
 
   //============================================================================
   // Functions
 
-  getData()async{
+  Future getData()async{
     try{
-      /// TODO: Database >>> Fetch privacy policy data
-      await Future.delayed(const Duration(seconds: 1)); // delete this
-      privacyPolicy= TestDataX.privacyPolicy;
+      privacyPolicy = await DatabaseX.getPrivacyPolicyPage();
     }catch(e){
       return Future.error(e);
     }

@@ -17,7 +17,7 @@ class AdsSectionX extends GetView<HomeController> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return AppBarHomeX(
             child: ShimmerAnimationX(
-              height: 200,
+              height: StyleX.adsCardHeight,
               margin:const EdgeInsets.only(right: StyleX.hPaddingApp,left: StyleX.vPaddingApp,bottom: 20.0),
               borderRadius: BorderRadius.circular(StyleX.radiusMd),
             ),
@@ -35,6 +35,7 @@ class AdsSectionX extends GetView<HomeController> {
           child: AdsCardsX(
             ads: controller.ads,
             onTap: controller.onAdsLink,
+            onTapButton:controller.onAdsLinkButton,
           ).fadeAnimation200,
         );
       },

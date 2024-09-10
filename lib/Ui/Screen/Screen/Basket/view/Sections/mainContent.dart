@@ -31,7 +31,7 @@ class MainContentSectionX extends GetView<BasketController> {
                       (basketItem) {
                         return BasketDonationCardX(
                           donation: controller.getDonationById(
-                            basketItem.donationID,
+                            basketItem.donationId,
                           ),
                           basketItem: basketItem,
                           onDelete: controller.onDeleteDonationItem,
@@ -44,20 +44,20 @@ class MainContentSectionX extends GetView<BasketController> {
                       },
                     ),
 
-                    /// Dedication Items
-                    ...controller.dedications.map(
-                      (dedication) {
-                        return BasketDedicationCardX(
-                          dedication: dedication,
-                          dedicationType: controller.getDedicationTypeById(
-                            dedication.typeID,
+                    /// Gifting Items
+                    ...controller.gifting.map(
+                      (gifting) {
+                        return BasketGiftingCardX(
+                          gifting: gifting,
+                          giftingType: controller.getGiftingTypeById(
+                            gifting.typeID,
                           ),
-                          onDelete: controller.onDeleteDedicationItem,
+                          onDelete: controller.onDeleteGiftingItem,
                           onChangedPrice:
-                              controller.onChangedDedicationDonationAmount,
+                              controller.onChangedGiftingDonationAmount,
                           priceController:
-                              controller.dedicationDonationAmountController[
-                                  dedication.id],
+                              controller.giftingDonationAmountController[
+                                  gifting.id],
                         ).fadeAnimation300;
                       },
                     )
@@ -65,12 +65,12 @@ class MainContentSectionX extends GetView<BasketController> {
                 ),
               ),
 
-              /// Guarantee Items
-              ...controller.guarantees.map(
-                    (guarantee) {
-                  return BasketGuaranteeCardX(
-                    guarantee: guarantee,
-                    onDelete: controller.onDeleteGuaranteeItem,
+              /// Sponsorship Items
+              ...controller.sponsorships.map(
+                    (sponsorship) {
+                  return BasketSponsorshipCardX(
+                    sponsorship: sponsorship,
+                    onDelete: controller.onDeleteSponsorshipItem,
                   ).fadeAnimation400;
                 },
               ),

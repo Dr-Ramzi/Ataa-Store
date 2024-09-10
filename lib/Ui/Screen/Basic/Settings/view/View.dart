@@ -40,9 +40,9 @@ class SettingsView extends GetView<SettingsController> {
                   onTap: controller.changeTheme,
                   isBottomLine: false,
                   child: Obx(
-                    () => Switch(
+                    () => SwitchX(
                       value: controller.themeIsDark.value,
-                      onChanged: (_) => controller.changeTheme(),
+                      onChange: (_) => controller.changeTheme(),
                     ),
                   ),
                 ).fadeAnimation300,

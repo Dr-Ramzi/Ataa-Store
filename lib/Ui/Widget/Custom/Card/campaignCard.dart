@@ -24,7 +24,6 @@ class CampaignCardX extends StatelessWidget {
       radius: StyleX.radius,
       margin: const EdgeInsetsDirectional.only(bottom: 14),
       padding: EdgeInsets.zero,
-      height: StyleX.charitableProjectCardHeight,
       width: double.maxFinite,
       child: GestureDetector(
         onTap: () async => await onTap(campaign.id),

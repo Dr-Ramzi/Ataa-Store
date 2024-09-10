@@ -32,7 +32,7 @@ class BasketDonationCardX extends StatelessWidget {
           Row(
             children: [
               ImageNetworkX(
-                imageUrl: donation.imageURL.first,
+                imageUrl: donation.imageURL,
                 height: 55,
                 width: 55,
                 radius: StyleX.radiusSm,
@@ -72,7 +72,7 @@ class BasketDonationCardX extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 10),
                                 TextX(
-                                  "${FunctionX.formatLargeNumber((donation.stockValue??0)*(basketItem.numStock??0))} ${"SAR".tr}",
+                                  "${FunctionX.formatLargeNumber((donation.donationShares.price)*(basketItem.numStock??0))} ${"SAR".tr}",
                                   style: TextStyleX.supTitleLarge,
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -122,7 +122,7 @@ class BasketDonationCardX extends StatelessWidget {
                   Flexible(
                     child: DropdownX(
                       value: basketItem.package,
-                      list: donation.packages,
+                      list: donation.openPackages,
                       onChanged: (dynamic val) async =>
                       await onChangedPackage(
                         basketItem,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../widget.dart';
 import '../models/country_code_model.dart';
 import '../models/dialog_config.dart';
 import 'flag_view.dart';
@@ -17,30 +18,33 @@ class CountryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: dialogConfig.countryItemHeight,
-      color: isSelected ? dialogConfig.selectedItemColor : Colors.transparent,
-      padding: const EdgeInsets.only(left: 40, right: 55),
+      // color: isSelected ? dialogConfig.selectedItemColor : Colors.transparent,
+      color: Colors.transparent,
       child: Row(children: [
         FlagView(
             countryCodeModel: countryCodeModel,
             isFlat: dialogConfig.flatFlag,
-            size: dialogConfig.itemFlagSize),
+            size: dialogConfig.itemFlagSize,
+        ),
         const SizedBox(width: 25),
         Expanded(
-          child: Text(
+          child: TextX(
             countryCodeModel.name,
             overflow: TextOverflow.ellipsis,
             style: dialogConfig.textStyle,
+            color: Theme.of(context).colorScheme.secondary,
           ),
         ),
         const SizedBox(width: 10),
         Directionality(
           textDirection: TextDirection.ltr,
-          child: Text(
+          child: TextX(
             countryCodeModel.dial_code,
             style: dialogConfig.textStyle,
           ),
         )
-      ]),
+      ],
+      ),
     );
   }
 }

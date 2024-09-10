@@ -16,7 +16,6 @@ part 'Theme/color.dart';
 part 'Theme/textStyle.dart';
 part 'Theme/theme.dart';
 part 'Theme/style.dart';
-part 'Info/info.dart';
 part 'Info/quickAction.dart';
 part '../Data/Constant/onboarding.dart';
 

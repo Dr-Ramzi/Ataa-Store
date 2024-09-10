@@ -1,5 +1,7 @@
 import 'package:ataa/UI/Animation/animation.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../../../../../Config/config.dart';
@@ -12,26 +14,64 @@ class AppBarWithCoverSectionX extends GetView<DonationDetailsController> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        /// Cover Images
+        /// Cover Image & Video
         SizedBox(
           height: 300,
           width: double.maxFinite,
           child: PageView.builder(
             controller: controller.imagesController,
-            itemCount: controller.donation.imageURL.length,
+            itemCount: controller.getNumCover(),
             itemBuilder: (_, index) {
-              return Container(
-                color: Theme.of(context).cardColor,
-                width: double.maxFinite,
-                height: 300,
-                child: ImageNetworkX(
-                  imageUrl: controller.donation.imageURL[index],
-                  fit: BoxFit.cover,
-                ),
-              );
+              if ((controller.getNumCover() == 1 &&
+                  index == 0 &&
+                  controller.donation.imageURL.isNotEmpty) ||
+                  (controller.getNumCover() == 2 && index == 0)) {
+                return Container(
+                  color: Theme.of(context).cardColor,
+                  width: double.maxFinite,
+                  height: 300,
+                  child: ImageNetworkX(
+                    imageUrl: controller.donation.imageURL,
+                    fit: BoxFit.cover,
+                  ),
+                );
+              } else if (!controller.hasErrorVideo.value ||
+                  (controller.getNumCover() == 1 &&
+                      index == 0 &&
+                      controller.donation.videoURL.isNotEmpty) ||
+                  (controller.getNumCover() == 2 && index == 1)) {
+                return Obx(
+                      () {
+                    if (controller.isInitChewieController.isFalse ||
+                        !controller
+                            .videoPlayerController.value.value.isInitialized) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else {
+                      return Container(
+                        color: Colors.black,
+                        child: Chewie(
+                          controller: controller.chewieController,
+                        ),
+                      );
+                    }
+                  },
+                );
+              } else {
+                return SizedBox(
+                  height: 300,
+                  width: double.infinity,
+                  child: Padding(
+                    padding: const EdgeInsets.all(50),
+                    child: SvgPicture.asset(
+                      context.isDarkMode ? ImageX.logoWhite : ImageX.logo,
+                    ),
+                  ),
+                );
+              }
             },
           ),
         ).fadeAnimation200,
+
 
         /// AppBar
         Positioned(
@@ -48,28 +88,29 @@ class AppBarWithCoverSectionX extends GetView<DonationDetailsController> {
           ),
         ),
 
-        /// Images Pointer
-        Positioned(
-          bottom: 38,
-          left: 0,
-          right: 0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SmoothPageIndicator(
-                controller: controller.imagesController,
-                count: controller.donation.imageURL.length,
-                effect: const ExpandingDotsEffect(
-                  dotHeight: 6,
-                  dotWidth: 6,
-                  activeDotColor: Colors.white,
-                  dotColor: Colors.white70,
-                  expansionFactor: 4,
-                ),
-              ).fadeAnimation200,
-            ],
+        /// Image & Video Pointer
+        if (controller.getNumCover() != 1)
+          Positioned(
+            bottom: 38,
+            left: 0,
+            right: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SmoothPageIndicator(
+                  controller: controller.imagesController,
+                  count: controller.getNumCover(),
+                  effect: const ExpandingDotsEffect(
+                    dotHeight: 6,
+                    dotWidth: 6,
+                    activeDotColor: Colors.white,
+                    dotColor: Colors.white70,
+                    expansionFactor: 4,
+                  ),
+                ).fadeAnimation200,
+              ],
+            ),
           ),
-        ),
 
         /// for create Rounded Background Design
         Positioned(

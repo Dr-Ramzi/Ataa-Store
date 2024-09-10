@@ -1,9 +1,11 @@
 import 'package:ataa/Ui/Animation/animation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
 import '../../../../../../Config/config.dart';
+import '../../../../../../Data/data.dart';
 import '../../../../../../UI/Widget/widget.dart';
-import '../../../../../GeneralState/error.dart';
+import '../../../../../Widget/Basic/Utils/future_builder.dart';
 import '../controller/Controller.dart';
 
 class TermsConditionsView extends GetView<TermsConditionsController> {
@@ -13,44 +15,40 @@ class TermsConditionsView extends GetView<TermsConditionsController> {
     return Scaffold(
       appBar: const AppBarX(title: 'Terms and Conditions'),
       body: SafeArea(
-        child: FutureBuilder(
-          future: controller.getData(),
-          builder: (context, snapshot) {
-            /// Loading State
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: StyleX.hPaddingApp,
-                  vertical: StyleX.vPaddingApp,
-                ),
-                child: Column(
-                  children: [
-                    for (int i = 0; i < 20; i++)
-                      const ShimmerAnimationX(
-                        height: 34,
-                        margin: EdgeInsets.only(bottom: 10),
-                      )
-                  ],
-                ),
-              );
-            }
-        
-            /// Error State
-            if (snapshot.hasError) {
-              return ErrorView(
-                error: snapshot.error.toString(),
-              );
-            }
-        
-            /// Main Content
-            return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(
-                horizontal: StyleX.hPaddingApp,
-                vertical: StyleX.vPaddingApp,
+        child: FutureBuilderX(
+          future: controller.getData,
+          loading: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: ContainerX(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  for (int i = 0; i < 20; i++)
+                    const ShimmerAnimationX(
+                      height: 34,
+                      margin: EdgeInsets.only(bottom: 10),
+                    )
+                ],
               ),
-              child: TextX(controller.termsConditions).fadeAnimation200,
-            );
-          },
+            ),
+          ),
+          child: (_)=> SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: ContainerX(
+              padding: const EdgeInsets.all(16),
+              width: double.infinity,
+              child: HtmlWidget(
+                controller.termsConditions.contentHTML,
+                customWidgetBuilder: (element) {
+                  if(element.localName == 'img'){
+                    return ImageNetworkX(imageUrl: element.attributes[NameX.src].toString(),width: double.maxFinite);
+                  }
+                  return null;
+                },
+                textStyle: TextStyleX.titleMedium,
+              ).fadeAnimation200,
+            ),
+          ),
         ),
       ),
     );

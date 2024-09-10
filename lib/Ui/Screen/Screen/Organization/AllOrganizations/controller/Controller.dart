@@ -4,20 +4,11 @@ import '../../../../../../Data/data.dart';
 
 class AllOrganizationsController extends GetxController {
   //============================================================================
-  // Variables
-
-  List<OrganizationX> organizations =[];
-
-  //============================================================================
   // Functions
 
-   getData()async{
+  Future<List<OrganizationX>> getData(ScrollRefreshLoadMoreParametersX data) async {
      try{
-       /// TODO: Database >>> Fetch All organizations
-       await Future.delayed(const Duration(seconds: 1)); // delete thia
-
-       organizations= TestDataX.organizations;
-
+       return await DatabaseX.getAllOrganizations(page: data.page, perPage: data.perPage);
      }catch(e){
        return Future.error(e);
      }

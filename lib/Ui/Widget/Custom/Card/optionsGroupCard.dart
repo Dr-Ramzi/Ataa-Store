@@ -20,6 +20,7 @@ class OptionsGroupCardX extends StatelessWidget {
             title!,
             color: Theme.of(context).primaryColor,
             style: TextStyleX.titleMedium,
+            fontWeight: FontWeight.w700,
           ).fadeAnimation300,
         if (title != null) const SizedBox(height: 12),
         ContainerX(

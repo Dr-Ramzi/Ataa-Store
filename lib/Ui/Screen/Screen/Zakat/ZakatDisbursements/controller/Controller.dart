@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../../../Config/config.dart';
 import '../../../../../../Core/Controller/Filter/filterController.dart';
+import '../../../../../../Core/core.dart';
 import '../../../../../../Data/data.dart';
 import '../../../../../ScreenSheet/Filter/GeneralFilter/generalFilterSheet.dart';
 import '../../../../../ScreenSheet/Pay/PayDonation/payDonationSheet.dart';
@@ -10,36 +10,29 @@ class ZakatDisbursementsController extends GetxController {
   //============================================================================
   // Injection of required controls
 
+  final AppControllerX app = Get.find();
   FilterControllerX filterController =
-      Get.put(FilterControllerX(), tag: "Zakat");
+      Get.put(FilterControllerX(tag: "Zakat")..isShowZakat=false, tag: "Zakat");
 
   //============================================================================
   // Variables
-
-  List<DonationX> donations = [];
-  RxList<DonationX> donationsResult = <DonationX>[].obs;
 
   TextEditingController search = TextEditingController();
 
   //============================================================================
   // Functions
 
-  getData() async {
+  Future<List<DonationX>> getData(ScrollRefreshLoadMoreParametersX data) async {
     try {
-      /// TODO: Database >>> Fetch all donations that are subject to zakat
-      await Future.delayed(const Duration(seconds: 1)); // delete this
-
-      donations = TestDataX.donations
-          .where((element) => element.isZakat == true)
-          .toList();
-
-      donationsResult.value = donations;
-
-      /// If he moves to another screen and returns here and there was a previous search,
-      /// it will return the results of the last search
-      if (search.text.isNotEmpty) {
-        onSearching(search.text);
-      }
+      List<DonationX> results = await DatabaseX.getDonationsBySearch(
+        page: data.page,
+        perPage: data.perPage,
+        sortType: data.orderBy,
+        searchQuery: data.searchQuery,
+        isZakat: true,
+        categoryID: data.filters?[NameX.categoryID],
+      );
+      return results;
     } catch (e) {
       return Future.error(e);
     }
@@ -50,9 +43,6 @@ class ZakatDisbursementsController extends GetxController {
 
   onDonationDonation(donation) async => await payDonationSheet(donation);
 
-  onTapDonation(String id) =>
-      Get.toNamed(RouteNameX.donationDetails, arguments: id);
-
   onDonationAddToCart(donation) async =>
       await payDonationSheet(donation, onlyAddToCart: true);
 
@@ -60,31 +50,7 @@ class ZakatDisbursementsController extends GetxController {
   // Search & Filter
 
   onFilter() async {
-    bool? result =
-        await generalFilterSheetX(isZakat: false, controller: filterController);
-    if (result == true) {
-      /// TODO: Database >>> Add a donation filter
-      /// TODO: Algorithm >>> Add a donation filter
-      onSearching(search.text);
-    }
+    await generalFilterSheetX(controller: filterController);
   }
 
-  onSearching(String search) async {
-    /// TODO: Expected Condition >>> Change the search code if you want to retrieve search results from the database
-    try {
-      /// clean search text from withe space and convert all char to lower case for contains with donation data
-      search = search.toLowerCase().trimLeft().trimRight();
-
-      /// Bring all donations that partially or completely match the name or description
-      donationsResult.value = donations
-          .where(
-            (donation) =>
-                donation.name.toLowerCase().contains(search) ||
-                donation.description.toLowerCase().contains(search),
-          )
-          .toList();
-    } catch (e) {
-      return Future.error(e);
-    }
-  }
 }

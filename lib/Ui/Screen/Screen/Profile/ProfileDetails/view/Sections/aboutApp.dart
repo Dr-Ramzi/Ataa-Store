@@ -1,6 +1,7 @@
 import 'package:ataa/Ui/Animation/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../../../../Config/config.dart';
 import '../../../../../../../UI/Widget/widget.dart';
 import '../../controller/Controller.dart';
 
@@ -19,17 +20,17 @@ class AboutAppSectionX extends GetView<ProfileDetailsController> {
         ).fadeAnimation400,
         OptionCardX(
           title: 'Contact us',
-          icon: Icons.call,
+          icon: IconX.contactUs,
           onTap: controller.onContact,
         ).fadeAnimation400,
         OptionCardX(
-          title: 'Info Ataa',
+          title: 'About Us',
           icon: Icons.info_rounded,
           onTap: controller.onInfo,
         ).fadeAnimation400,
         OptionCardX(
           title: 'Our Bank Accounts',
-          icon: Icons.account_balance_rounded,
+          icon: IconX.ourBanks,
           onTap: controller.onOurBank,
         ).fadeAnimation400,
         OptionCardX(

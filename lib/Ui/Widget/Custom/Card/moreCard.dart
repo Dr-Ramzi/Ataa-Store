@@ -1,9 +1,10 @@
 part of '../../widget.dart';
 
 class MoreCardX extends StatelessWidget {
-  const MoreCardX({super.key, required this.title, required this.icon, required this.onTap});
+  const MoreCardX({super.key, required this.title, this.icon, required this.onTap, this.iconSize=26});
   final String title;
-  final IconData icon;
+  final IconData? icon;
+  final double iconSize;
   final Function() onTap;
   @override
   Widget build(BuildContext context) {
@@ -18,13 +19,18 @@ class MoreCardX extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  Icon(icon,color: ColorX.primary.shade500,size: 26,),
-                  const SizedBox(width: 12),
-                  TextX(title),
-                ],
+              Expanded(
+                child: Row(
+                  children: [
+                    if(icon!=null)
+                    Icon(icon,color: ColorX.primary.shade500,size: iconSize),
+                    if(icon!=null)
+                    const SizedBox(width: 12),
+                    Expanded(child: TextX(title)),
+                  ],
+                ),
               ),
+              const SizedBox(width: 12),
               Icon( Icons.arrow_forward_ios_rounded,
                 color: Theme.of(context).colorScheme.secondary,
                 size: 16,

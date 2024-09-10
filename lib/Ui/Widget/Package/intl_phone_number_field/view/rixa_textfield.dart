@@ -139,6 +139,9 @@ class RixaTextField extends StatelessWidget {
         autocorrect: false,
         enableSuggestions: false,
         inputFormatters: inputFormatters,
+        onTapOutside: (event) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
         decoration: InputDecoration(
             border: const OutlineInputBorder(),
             hintText: hintText,

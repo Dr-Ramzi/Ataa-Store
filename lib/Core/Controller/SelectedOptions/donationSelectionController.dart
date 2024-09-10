@@ -19,7 +19,7 @@ class DonationSelectionControllerX extends GetxController {
     try {
       /// TODO: Database >>> Fetch donation opportunities from the database
       await Future.delayed(const Duration(seconds: 1)); // delete this
-      donations = TestDataX.donations;
+      // donations = TestDataX.donations;
       donationsResult.value = [];
       donationsResult.addAll(donations);
       onSearching(search.text);
@@ -36,7 +36,10 @@ class DonationSelectionControllerX extends GetxController {
     search.text = "";
   }
 
-  onChange(DonationX? val) => donationSelected.value = val;
+  onChange(DonationX? val){
+    donationSelected.value = val;
+    Get.back();
+  }
 
   /// The search process changes each time the search input
   onSearching(String search) async {

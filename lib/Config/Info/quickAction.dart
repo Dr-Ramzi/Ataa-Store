@@ -28,6 +28,10 @@ class QuickActionX {
 
   /// Initialize Quick Actions
   static init() async {
+    if(!Get.find<AppControllerX>().generalSettings.isActiveQuickDonation){
+      /// To remove the quick donation action button if it is disabled
+      shortcuts.removeAt(0);
+    }
     quickActions.initialize((String shortcutType) async {
       switch (shortcutType) {
         case 'quickDonation':

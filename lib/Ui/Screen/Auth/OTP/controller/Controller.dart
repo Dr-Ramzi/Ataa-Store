@@ -1,13 +1,15 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 import '../../../../../Config/config.dart';
+import '../../../../../Core/Error/error.dart';
 import '../../../../../Core/core.dart';
 import '../../../../../Data/data.dart';
 import '../../../../ScreenSheet/Other/AccountCreated/accountCreatedSheet.dart';
 import '../../../../Widget/widget.dart';
 
-class OTPController extends GetxController {
+class OTPController extends GetxController with CodeAutoFill {
   //============================================================================
   // Injection of required controls
 
@@ -32,20 +34,19 @@ class OTPController extends GetxController {
   late Timer timer;
   RxInt start = 60.obs;
 
+  Rx<String> appSignature = "".obs;
+
+  Rx<ErrorX?> error = Rx<ErrorX?>(null);
+
   //============================================================================
   // Functions
 
   /// Some titles have been duplicated if the title has changed in any case
   String getTitle() {
-    if (otp.isLogin) {
-      // is Login
-      return "Confirm the operation";
-    } else if (!otp.isLogin && !otp.isEdit) {
-      // is Sign up
+    if (otp.isPhone) {
       return "Confirm mobile number";
-    } else if (otp.isEdit) {
-      // is Edit from profile
-      return "Confirm the operation";
+    } else if (!otp.isLogin && !otp.isEdit) {
+      return "Email confirmation";
     }
     return "OTP";
   }
@@ -71,20 +72,43 @@ class OTPController extends GetxController {
     return ""; // like default
   }
 
+  onTapError() {
+    /// Add a link to go to pages through the error message
+  }
+
   onVerify() async {
     if (isLoading.isFalse) {
       if (formKey.currentState!.validate()) {
         isLoading.value = true;
         buttonState.value = ButtonStateEX.loading;
+        error.value = null;
         try {
-          if (otp.isPhone) {
-            app.user.value = await DatabaseX.otpByPhone(
+          if (otp.isEdit) {
+            if (otp.isPhone) {
+              /// Update Profile => Otp By Phone
+              app.user.value = await DatabaseX.otpUpdateProfile(
                 otp: int.parse(otpCode.text),
-                phone: int.parse(otp.phone!),
-                countryCode: otp.countryCode!);
+              );
+            }else{
+              /// Update Profile => Otp By Email
+              /// TODO: Database >>> change api end point on verify otp code for update profile via email
+              app.user.value = await DatabaseX.otpUpdateProfile(
+                otp: int.parse(otpCode.text),
+              );
+            }
+          }if(otp.isPhone){
+            /// Login & Sign up => Otp By Phone
+            app.user.value = await DatabaseX.otpByPhone(
+              otp: int.parse(otpCode.text),
+              phone: otp.phone!,
+              countryCode: otp.countryCode!,
+            );
           } else {
+            /// Login & Sign up => Otp By Email
             app.user.value = await DatabaseX.otpByEmail(
-                otp: int.parse(otpCode.text), email: otp.email!);
+              otp: int.parse(otpCode.text),
+              email: otp.email!,
+            );
           }
           if (otp.isEdit) {
             /// The time delay here is aesthetically beneficial
@@ -96,8 +120,7 @@ class OTPController extends GetxController {
             Get.back(result: true);
           } else {
             /// save data on local
-            LocalDataX.put(LocalKeyX.userID, app.user.value.id);
-            LocalDataX.put(LocalKeyX.token, app.user.value.token);
+            LocalDataX.put(LocalKeyX.token, app.user.value!.token);
             LocalDataX.put(LocalKeyX.route, RouteNameX.root);
             app.isLogin.value = true;
 
@@ -116,13 +139,16 @@ class OTPController extends GetxController {
               Get.offAllNamed(RouteNameX.root);
 
               /// if sign up, show sheet to complete account data
-              if (otp.email == null) {
+              if (!otp.isLogin && !otp.isEdit) {
+                /// Time delay for aesthetics
+                await Future.delayed(const Duration(seconds: 2));
                 accountCreatedSheet();
               }
             }
           }
         } catch (e) {
-          ToastX.error(message: e.toString());
+          error.value = e.toErrorX;
+          error.value?.log();
           buttonState.value = ButtonStateEX.failed;
         }
         isLoading.value = false;
@@ -143,13 +169,16 @@ class OTPController extends GetxController {
   /// Resend the code and set a new timer
   void onResend() async {
     isLoadingResendAgain.value = true;
+    error.value = null;
     try {
-      String message = await sendCode();
+      String message = await sendCode() ?? '';
       isResendAgain.value = false;
       startTimer();
-      ToastX.success(message: message);
+      if (message.isNotEmpty) {
+        ToastX.success(message: message);
+      }
     } catch (e) {
-      ToastX.error(message: e.toString());
+      error.value = e.toErrorX;
     }
     isLoadingResendAgain.value = false;
   }
@@ -157,15 +186,36 @@ class OTPController extends GetxController {
   /// use api from backend to send code otp
   sendCode() async {
     try {
-      /// TODO: Back-end >>> Fix re-sending the code in case of creating an account
-      if (otp.isPhone) {
-        return await DatabaseX.loginByPhone(
-            phone: int.parse(otp.phone!), countryCode: otp.countryCode!);
+      if(otp.isEdit){
+        if (otp.isPhone) {
+          return await DatabaseX.resendOtpUpdateProfile();
+        } else {
+          /// TODO: Database >>> change api end point on resend otp code for update profile by email
+          return await DatabaseX.resendOtpUpdateProfile();
+        }
+      }else if (otp.isLogin) {
+        if (otp.isPhone) {
+          return await DatabaseX.loginByPhone(
+            phone: otp.phone!,
+            countryCode: otp.countryCode!,
+          );
+        } else {
+          return await DatabaseX.loginByEmail(email: otp.email!);
+        }
       } else {
-        return await DatabaseX.loginByEmail(email: otp.email!);
+        /// Auth: Sign up
+        if (otp.isPhone) {
+          return await DatabaseX.resendOtpByPhone(
+            phone: otp.phone!,
+            countryCode: otp.countryCode!,
+          );
+        } else {
+          /// TODO: Database >>> change api end point on resend otp code in sign in by email
+          return await DatabaseX.loginByEmail(email: otp.email!);
+        }
       }
     } catch (e) {
-      return Future.error(e);
+      error.value = e.toErrorX;
     }
   }
 
@@ -190,6 +240,32 @@ class OTPController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
+    /// Start the counter to resend the code
     startTimer();
+
+    /// To listen to the verification code in messages
+    listenForCode();
+
+    /// to get app signature
+    SmsAutoFill().getAppSignature.then((signature) {
+      // print(signature +" signature");
+      appSignature.value = signature;
+    });
+  }
+
+  /// Specific to the listening package for the code in messages
+  @override
+  void codeUpdated() {
+    /// Fetch the code
+    otpCode.text = code ?? "";
+  }
+
+  /// Disable listeners
+  @override
+  void dispose() {
+    super.dispose();
+    SmsAutoFill().unregisterListener();
+    cancel();
   }
 }

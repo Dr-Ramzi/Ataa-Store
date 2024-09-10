@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../Data/data.dart';
-import 'locale/ar.dart';
-import 'locale/en.dart';
+import 'Locale/Ar/ar.dart';
+import 'Locale/En/en.dart';
 
 // ~~~~~~~~~~~~~~~~~~~~~~~{{ Why this section }}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Managing the day and night theme for the entire application

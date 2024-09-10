@@ -33,6 +33,13 @@ class StoreView extends GetView<StoreController> {
               );
             }
 
+            /// Empty State
+            if (controller.products.isEmpty) {
+              return const EmptyView(
+                message: "There are no products currently",
+              );
+            }
+
             /// Main Content
             return Column(
               children: [
@@ -40,19 +47,20 @@ class StoreView extends GetView<StoreController> {
                   search: controller.search,
                   onTapFilter: controller.onFilter,
                   onSearching: controller.onSearching,
+                  filterIcon: IconX.sortDescending,
                 ).fadeAnimation200,
-                Expanded(
-                  child: Obx(
-                    () {
-                      /// if Empty Product on Search
-                      if (controller.productsResult.isEmpty) {
-                        return const EmptyView(
-                          message:
-                              "There are no search results.\nTry searching for something else",
-                        );
-                      } else {
-                        /// Products Result
-                        return SingleChildScrollView(
+                Obx(
+                  () {
+                    /// if Empty Product on Search
+                    if (controller.productsResult.isEmpty) {
+                      return const EmptyView(
+                        message:
+                            "There are no search results.\nTry searching for something else",
+                      );
+                    } else {
+                      /// Products Result
+                      return Expanded(
+                        child: SingleChildScrollView(
                           padding: const EdgeInsets.only(
                             top: 10,
                             bottom: 30,
@@ -63,6 +71,7 @@ class StoreView extends GetView<StoreController> {
                             runSpacing: 10,
                             spacing: 10,
                             children: [
+                              /// Cards
                               ...controller.productsResult.map(
                                 (product) => ProductCardX(
                                   margin: EdgeInsets.zero,
@@ -76,10 +85,10 @@ class StoreView extends GetView<StoreController> {
                               )
                             ],
                           ),
-                        );
-                      }
-                    },
-                  ),
+                        ),
+                      );
+                    }
+                  },
                 ),
               ],
             );

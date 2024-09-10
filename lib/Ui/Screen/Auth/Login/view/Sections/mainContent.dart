@@ -20,26 +20,34 @@ class MainContentLoginX extends GetView<LoginController> {
               'Log in',
               style: TextStyleX.headerMedium,
               color: Theme.of(context).primaryColor,
-            ).fadeAnimation200,
-            const SizedBox(height: 10.0),
+            ).marginOnly(bottom: 10).fadeAnimation200,
 
             /// Subtitle
             TextX(
               'Welcome back, Sign in to your account',
               color: Theme.of(context).colorScheme.secondary,
               textAlign: TextAlign.center,
-            ).fadeAnimation200,
-            const SizedBox(height: 40.0),
+            ).marginOnly(bottom: 32).fadeAnimation200,
+
+            /// Error Message
+            if (controller.error.value!=null)
+              GestureDetector(
+                onTap: controller.onTapError,
+                child: MessageCardX(
+                  message: controller.error.value?.message,
+                  isError: true,
+                ),
+              ).marginOnly(bottom: 14).fadeAnimation200,
 
             /// Select registration method tab
-            TabSegmentX(
-              controller: controller.loginVia,
-              tabs: {
-                1: 'Via Mobile'.tr,
-                2: 'Via Email'.tr,
-              },
-            ).fadeAnimation400,
-            const SizedBox(height: 25),
+            if (controller.app.generalSettings.isShowRegisterEmail)
+              TabSegmentX(
+                controller: controller.loginVia,
+                tabs: {
+                  1: 'Via Mobile'.tr,
+                  2: 'Via Email'.tr,
+                },
+              ).fadeAnimation400.marginOnly(bottom: 20),
 
             /// Input Fields
             Form(
@@ -53,7 +61,9 @@ class MainContentLoginX extends GetView<LoginController> {
                       label: "Mobile Number",
                       controller: controller.phone,
                       onChange: controller.onChangeCountryCode,
-                      countryCode: controller.countryCode,
+                      countryCode: controller.countryCode.value,
+                      isDisableChangeCountryCode:
+                          !controller.app.generalSettings.isShowCountryCodeList,
                     ).fadeAnimation400,
                   if (!controller.isPhone.value)
                     TextFieldX(
@@ -66,24 +76,21 @@ class MainContentLoginX extends GetView<LoginController> {
                     ).marginSymmetric(vertical: 2).fadeAnimation400,
                 ],
               ),
-            ),
-            const SizedBox(height: 20.0),
+            ).marginOnly(bottom: 20),
 
-            /// Buttons
+            /// Button Login
             ButtonStateX(
               onTap: controller.onLogin,
               state: controller.buttonState.value,
               text: 'Log in',
             ).fadeAnimation600,
-            if (!controller.isSheet)
-              const SizedBox(
-                height: 5.0,
-              ),
+
+            /// Button visitor
             if (!controller.isSheet)
               ButtonX.second(
                 onTap: controller.onGuest,
                 text: 'Browse the platform as a visitor',
-              ).fadeAnimation800,
+              ).marginOnly(top: 5).fadeAnimation800,
             const SizedBox(height: 25.0),
 
             /// Text Button

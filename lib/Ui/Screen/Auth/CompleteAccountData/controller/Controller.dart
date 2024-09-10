@@ -2,9 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../Config/config.dart';
+import '../../../../../Core/Error/error.dart';
 import '../../../../../Core/core.dart';
 import '../../../../../Data/data.dart';
-import '../../../../../UI/Widget/widget.dart';
 
 class CompleteAccountDataController extends GetxController {
   //============================================================================
@@ -16,30 +16,47 @@ class CompleteAccountDataController extends GetxController {
   // Variables
 
   bool isLoading = false;
+  Rx<ErrorX?> error = Rx<ErrorX?>(null);
   Rx<ButtonStateEX> buttonState = ButtonStateEX.normal.obs;
 
   GlobalKey<FormState> formKey = GlobalKey();
   AutovalidateMode autoValidate = AutovalidateMode.disabled;
   TextEditingController email = TextEditingController();
 
-  Rx<String> gender = "male".obs;
+  Rx<String> gender = "".obs;
 
   //============================================================================
   // Functions
 
   void onChangeGender(String? value) => gender.value = value!;
 
+  void onTapError() {
+    /// Add a link to go to pages through the error message
+  }
+
   Future<void> onSave() async {
     if (!isLoading) {
-      if (formKey.currentState!.validate()) {
+      if(gender.value.isEmpty){
+        error.value=ErrorX(message: 'Gender must be specified.');
+        buttonState.value = ButtonStateEX.failed;
+      }else if (formKey.currentState!.validate()) {
         isLoading = true;
         buttonState.value = ButtonStateEX.loading;
+        error.value=null;
         try {
           /// update on database
-          app.user.value = await DatabaseX.completeDataSingUp(
+          var result = await DatabaseX.completeDataSingUp(
             email: email.text,
             gender: gender.value,
           );
+
+          if(result!=null) {
+            app.user.value = result;
+          }else{
+            app.user.value?.email = email.text.toLowerCase().trim();
+            app.user.value?.gender = gender.value;
+          }
+          app.update();
 
           /// The time delay here is aesthetically beneficial
           buttonState.value = ButtonStateEX.success;
@@ -49,8 +66,9 @@ class CompleteAccountDataController extends GetxController {
 
           /// back to home
           Get.back();
-        } catch (error) {
-          ToastX.error(message: error.toString());
+        } catch (e) {
+          error.value=e.toErrorX;
+          error.value!.log();
           buttonState.value = ButtonStateEX.failed;
         }
         isLoading = false;

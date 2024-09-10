@@ -13,7 +13,7 @@ class AllCampaignsController extends GetxController {
   // Injection of required controls
 
   final AppControllerX app = Get.find();
-  FilterControllerX filterController = Get.put(FilterControllerX(),tag: "All Campaigns");
+  FilterControllerX filterController = Get.put(FilterControllerX(tag: "All Campaigns"),tag: "All Campaigns");
 
   //============================================================================
   // Variables
@@ -42,7 +42,7 @@ class AllCampaignsController extends GetxController {
       /// If he moves to another screen and returns here and there was a previous search,
       /// it will return the results of the last search
       if (search.text.isNotEmpty) {
-        onSearching(search.text);
+        onFilter();
       }
     } catch (e) {
       return Future.error(e);

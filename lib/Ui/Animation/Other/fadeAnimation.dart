@@ -20,7 +20,7 @@ class FadeAnimationX extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tween = simpleAnimation.MovieTween()
+    final tween = simple_animation.MovieTween()
       ..tween('opacity', Tween(begin: 0.0, end: 1.0),
           duration: const Duration(milliseconds: 500))
       ..tween('translateY', Tween(begin: isFromEnd ? 30.0 : -30.0, end: 0.0),
@@ -28,12 +28,12 @@ class FadeAnimationX extends StatelessWidget {
     if (isDisable) {
       return child;
     } else {
-      return simpleAnimation.CustomAnimationBuilder(
+      return simple_animation.CustomAnimationBuilder(
         delay: Duration(milliseconds: delay),
         duration: tween.duration,
         tween: tween,
         child: child,
-        builder: (context, simpleAnimation.Movie animation, child) => Opacity(
+        builder: (context, simple_animation.Movie animation, child) => Opacity(
           opacity: animation.get("opacity"),
           child: Transform.translate(
               offset: Offset(0, animation.get("translateY")), child: child),

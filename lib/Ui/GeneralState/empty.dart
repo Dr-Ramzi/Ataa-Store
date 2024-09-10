@@ -23,9 +23,10 @@ class EmptyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: isMargin ? StyleX.hPaddingApp : 0,
-      ),
+      padding: isMargin?const EdgeInsets.symmetric(
+        horizontal: StyleX.hPaddingApp,
+        vertical: 6,
+      ):EdgeInsets.zero,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

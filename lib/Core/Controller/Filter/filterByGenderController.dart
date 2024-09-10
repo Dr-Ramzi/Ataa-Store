@@ -10,6 +10,9 @@ class FilterByGenderControllerX extends GetxController {
   //============================================================================
   // Functions
 
-  onChange(String? val)=>genderSelected.value=val??"";
+  onChange(String? val){
+    genderSelected.value=val??"";
+    Get.back();
+  }
 
 }

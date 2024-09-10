@@ -37,21 +37,36 @@ class StatisticCardX extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Flexible(child: TextX(FunctionX.formatLargeNumber(statistic), style: TextStyleX.headerSmall,fontWeight: FontWeight.w700,)),
-           const SizedBox(width: 6),
+              Flexible(
+                child: AutoSizeText(
+                  FunctionX.formatLargeNumber(statistic),
+                  style: TextStyleX.headerSmall.copyWith(fontWeight: FontWeight.w700),
+                  maxLines: 1,
+                ),
+              ),
+             const SizedBox(width: 6),
               if(isMoney)
              TextX("SAR", style: TextStyleX.titleLarge,fontWeight: FontWeight.w600)
             ],
           ),
           Expanded(
-            child: AutoSizeText(
-              subtitle.tr,
-              style: TextStyleX.supTitleLarge,
-              maxLines: 2,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Flexible(
+                  child: AutoSizeText(
+                    subtitle.tr,
+                    style: TextStyleX.titleMedium.copyWith(color: Theme.of(context).colorScheme.secondary),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
             ),
           ),
         ],

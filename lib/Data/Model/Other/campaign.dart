@@ -7,7 +7,7 @@ class CampaignX{
     required this.donationID,
     required this.endDate,
     required this.title,
-    required this.totalNumberDonations,
+    required this.countDonations,
     required this.currentDonations,
     required this.totalDonations,
     required this.isZakat,
@@ -29,8 +29,8 @@ class CampaignX{
   late bool isZakat;
   late int currentDonations;
   late int totalDonations;
-  late int totalNumberDonations;
-  late List<String> imageURL;
+  late int countDonations;
+  late String imageURL;
 
   get getTargetAmount => targetAmount ?? stockValue!*maxNumStock!;
   get remainingDonations=> totalDonations-currentDonations;

@@ -19,7 +19,7 @@ class FlagView extends StatelessWidget {
         ? CountryFlag.fromCountryCode(
             countryCodeModel.code.toUpperCase(),
             width: size * 1.17,
-            borderRadius: 14,
+            borderRadius: 40,
           )
         : Text(
             countryCodeModel.code.toUpperCase().replaceAllMapped(

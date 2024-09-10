@@ -15,7 +15,7 @@ class BasketView extends GetView<BasketController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const AppBarX(
-        title: "Giving Basket",
+        title: "Basket",
       ),
       body: FutureBuilder(
         future: controller.getData(),
@@ -33,7 +33,7 @@ class BasketView extends GetView<BasketController> {
           }
           return Obx(
             () {
-              if (controller.basketGeneral.numItemsBadge.value <= 0) {
+              if (controller.basketGeneral.basket.value.countItem <= 0) {
                 /// Empty State
                 return const EmptySectionX();
               } else {

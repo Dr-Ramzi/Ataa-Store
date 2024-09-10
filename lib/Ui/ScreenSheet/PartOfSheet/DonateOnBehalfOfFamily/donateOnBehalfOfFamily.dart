@@ -66,11 +66,12 @@ class DonateOnBehalfOfFamilyPartOfSheetX extends StatelessWidget {
 
                   /// Phone Number
                   PhoneFieldX(
+                    label: "Mehdi's mobile number",
                     key: Key(controller.countryCode.value.toString()),
                     controller: controller.giftedPhone,
                     onChange: controller.onChangeCountryCode,
                     countryCode: controller.countryCode.value,
-                    label: "Mehdi's mobile number",
+                    isDisableChangeCountryCode: !controller.app.generalSettings.isShowCountryCodeList,
                   ).fadeAnimation400,
 
                   /// Get data from contacts

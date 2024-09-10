@@ -6,22 +6,46 @@ class BasketGeneralControllerX extends GetxController {
   //============================================================================
   // Variables
 
-  RxInt numItemsBadge = 0.obs;
+  Rx<BasketX> basket = BasketX.empty().obs;
 
   //============================================================================
   // Functions
 
-  openBasket() => Get.toNamed(RouteNameX.basket);
+  delete(){
+    basket.value = BasketX.empty();
+  }
 
-  getData() async {
-    try {
-      /// TODO: Database >>> Fetch the number of items in the basket
-      await Future.delayed(const Duration(seconds: 1)); // delete this
-      numItemsBadge.value = 0;
-    } catch (e) {
+  saveBasketID(){
+    LocalDataX.put(LocalKeyX.basketID, basket.value.id);
+  }
+  
+  assignBasket()async{
+    if(LocalDataX.basketID.isNotEmpty){
+      try{
+        await DatabaseX.assignBasket(LocalDataX.basketID);
+      }catch(e){
+        return Future.error(e);
+      }
+    }
+  }
+
+  getData({bool isLogin=false})async{
+    try{
+      if(LocalDataX.basketID.isNotEmpty || LocalDataX.token.isNotEmpty){
+        basket.value = await DatabaseX.getAllBasketItems(LocalDataX.basketID);
+      }else{
+        basket.value = await DatabaseX.createBasket();
+      }
+      if(isLogin){
+        await assignBasket();
+      }
+      saveBasketID();
+    }catch(e){
       return Future.error(e);
     }
   }
+
+  openBasket() => Get.toNamed(RouteNameX.basket);
 
   addDonation(DonationX donation) async {
     try {
@@ -29,7 +53,7 @@ class BasketGeneralControllerX extends GetxController {
       await Future.delayed(const Duration(seconds: 1)); // delete this
 
       /// update number items for icon basket badge
-      numItemsBadge.value++;
+      basket.value.countItem++;
     } catch (e) {
       return Future.error(e);
     }
@@ -41,31 +65,31 @@ class BasketGeneralControllerX extends GetxController {
       await Future.delayed(const Duration(seconds: 1)); // delete this
 
       /// update number items for icon basket badge
-      numItemsBadge.value++;
+      basket.value.countItem++;
     } catch (e) {
       return Future.error(e);
     }
   }
 
-  addDedication(DedicationX dedication) async {
+  addGifting(GiftingX gifting) async {
     try {
-      /// TODO: Database >>> Add dedication to cart
+      /// TODO: Database >>> Add gifting to cart
       await Future.delayed(const Duration(seconds: 1)); // delete this
 
       /// update number items for icon basket badge
-      numItemsBadge.value++;
+      basket.value.countItem++;
     } catch (e) {
       return Future.error(e);
     }
   }
 
-  addGuarantee(GuaranteeX guarantee) async {
+  addSponsorship(SponsorshipX sponsorship) async {
     try {
-      /// TODO: Database >>> Add guarantee to cart
+      /// TODO: Database >>> Add sponsorship to cart
       await Future.delayed(const Duration(seconds: 1)); // delete this
 
       /// update number items for icon basket badge
-      numItemsBadge.value++;
+      basket.value.countItem++;
     } catch (e) {
       return Future.error(e);
     }
@@ -77,7 +101,7 @@ class BasketGeneralControllerX extends GetxController {
       await Future.delayed(const Duration(seconds: 1)); // delete this
 
       /// update number items for icon basket badge
-      numItemsBadge.value++;
+      basket.value.countItem++;
     } catch (e) {
       return Future.error(e);
     }

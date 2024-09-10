@@ -12,7 +12,10 @@ class FilterByLanguageControllerX extends GetxController {
   //============================================================================
   // Functions
 
-  onChange(String? val) => languageSelected.value = val ?? "";
+  onChange(String? val){
+    languageSelected.value = val ?? "";
+    Get.back();
+  }
 
   getData() async {
     try {

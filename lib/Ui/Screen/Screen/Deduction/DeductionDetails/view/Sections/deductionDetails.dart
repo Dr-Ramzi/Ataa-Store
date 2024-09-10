@@ -22,7 +22,7 @@ class DeductionDetailsSectionX extends GetView<DeductionDetailsController> {
           children: [
             /// Description
             TextX(
-              "Project Description",
+              "Description of deduction",
               style: TextStyleX.titleLarge,
             ).fadeAnimation500,
             const SizedBox(height: 6),
@@ -42,7 +42,8 @@ class DeductionDetailsSectionX extends GetView<DeductionDetailsController> {
                     color: Theme.of(context).cardColor,
                     icon: Icons.payments_rounded,
                     statistic: controller.deduction.currentDonations,
-                    subtitle: "Saudi riyals have been collected so far",
+                    isMoney: true,
+                    subtitle: "Total amount of donations",
                   ),
                 ),
                 const SizedBox(width: 8),

@@ -11,9 +11,10 @@ class CatchErrorX{
   }
 
   /// Change the appearance of the default error screen
-  static systemCrash(){
-    ErrorWidget.builder=(FlutterErrorDetails error){
-      return SystemCrashView(error: error);
-    };
-  }
+  // static systemCrash(){
+  //   ErrorWidget.builder=(FlutterErrorDetails error){
+  //     return SystemCrashView(error: error);
+  //   };
+  // }
+
 }

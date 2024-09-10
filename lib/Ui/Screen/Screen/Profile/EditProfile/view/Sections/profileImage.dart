@@ -26,13 +26,13 @@ class ProfileImageSectionX extends GetView<EditProfileController> {
                 child: ImageNetworkX(
                   imageUrl: controller.image != null
                       ? controller.image!.path
-                      : controller.app.user.value.imageURL ?? "",
+                      : controller.app.user.value!.imageURL ?? "",
                   height: 100,
                   width: 100,
                   isFile: controller.image != null,
                   failed: Center(
                     child: TextX(
-                      controller.app.user.value.name[0],
+                      controller.app.user.value!.name[0],
                       style: TextStyleX.headerLarge,
                       fontWeight: FontWeight.w600,
                       color: Theme.of(context).primaryColor,

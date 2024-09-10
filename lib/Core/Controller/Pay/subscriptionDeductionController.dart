@@ -27,6 +27,7 @@ class SubscriptionDeductionControllerX extends GetxController {
 
   TextEditingController deductionAmount = TextEditingController();
 
+  RxInt freeDeductionSelected = 0.obs;
   late DeductionX deduction;
 
   //============================================================================
@@ -55,8 +56,16 @@ class SubscriptionDeductionControllerX extends GetxController {
     Get.delete<SubscriptionDeductionControllerX>(tag: deduction.id);
   }
 
-  onChangeDeductionAmount(int val) => deductionAmount.text = val.toString();
+  onChangeDeductionAmount(int val) {
+    deductionAmount.text = val.toString();
+    freeDeductionSelected.value=val;
+  }
 
+  removeFreeDonationSelected(_){
+    if(freeDeductionSelected.value!=0) {
+      freeDeductionSelected.value=0;
+    }
+  }
   bool dataVerification() {
     if (deduction.fixedDeductionAmount != null) {
       return true;

@@ -23,7 +23,7 @@ class LoadingSectionX extends StatelessWidget {
             child: Column(
               children: [
                 for (int i = 0; i < 5; i++)
-                  ShimmerAnimationShapeX.charitableProjectCard()
+                  ShimmerAnimationShapeX.donationCard()
               ],
             ),
           ),

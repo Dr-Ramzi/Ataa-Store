@@ -8,11 +8,11 @@ class ActivityController extends GetxController {
 
   onDonations()=>Get.toNamed(RouteNameX.myDonations);
   onOrders()=>Get.toNamed(RouteNameX.myOrders);
-  onDedications()=>Get.toNamed(RouteNameX.myDedications);
+  onGifting()=>Get.toNamed(RouteNameX.myGifts);
 
   onCampaigns()=>Get.toNamed(RouteNameX.myCampaigns);
   onDeductions()=>Get.toNamed(RouteNameX.myDeductions);
-  onGuarantees()=>Get.toNamed(RouteNameX.myGuarantees);
+  onSponsorships()=>Get.toNamed(RouteNameX.mySponsorships);
   onGivingBasket()=>Get.toNamed(RouteNameX.basket);
 
   onSharingLinks()=>Get.toNamed(RouteNameX.sharingLinks);

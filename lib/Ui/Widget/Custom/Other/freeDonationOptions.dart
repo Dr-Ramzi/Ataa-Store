@@ -1,8 +1,15 @@
 part of "../../widget.dart";
+
 class FreeDonationOptionsX extends StatelessWidget {
-  const FreeDonationOptionsX({super.key, required this.onSelected,this.isMarginTop=true});
-   final Function(int val) onSelected;
-   final bool isMarginTop;
+  const FreeDonationOptionsX({
+    super.key,
+    required this.onSelected,
+    this.isMarginTop = true,
+    required this.selected,
+  });
+  final Function(int val) onSelected;
+  final bool isMarginTop;
+  final int selected;
 
   @override
   Widget build(BuildContext context) {
@@ -10,31 +17,49 @@ class FreeDonationOptionsX extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         LabelInputX(
-        "Donation Amount",
-        marginTop: isMarginTop?20:0,
-      ),
-      Row(
-        children: [
-          Flexible(
-              child: ButtonX.gray(
-                  onTap: () =>onSelected(20),
-                  text: "20 ${"SAR".tr}")),
-          const SizedBox(width: 10),
-          Flexible(
-            child: ButtonX.gray(
-              onTap: () => onSelected(50),
-              text: "50 ${"SAR".tr}",
+          "Donation Amount",
+          marginTop: isMarginTop ? 20 : 0,
+        ),
+        Row(
+          children: [
+            Flexible(
+              child: selected == 20
+                  ? ButtonX(
+                      onTap: () => onSelected(20),
+                      text: "20 ${"SAR".tr}",
+                    )
+                  : ButtonX.gray(
+                      onTap: () => onSelected(20),
+                      text: "20 ${"SAR".tr}",
+                    ),
             ),
-          ),
-          const SizedBox(width: 10),
-          Flexible(
-            child: ButtonX.gray(
-              onTap: () => onSelected(100),
-              text: "100 ${"SAR".tr}",
+            const SizedBox(width: 10),
+            Flexible(
+              child: selected == 50
+                  ? ButtonX(
+                      onTap: () => onSelected(50),
+                      text: "50 ${"SAR".tr}",
+                    )
+                  : ButtonX.gray(
+                      onTap: () => onSelected(50),
+                      text: "50 ${"SAR".tr}",
+                    ),
             ),
-          ),
-        ],
-      ),
-    ],);
+            const SizedBox(width: 10),
+            Flexible(
+              child: selected == 100
+                  ? ButtonX(
+                      onTap: () => onSelected(100),
+                      text: "100 ${"SAR".tr}",
+                    )
+                  : ButtonX.gray(
+                      onTap: () => onSelected(100),
+                      text: "100 ${"SAR".tr}",
+                    ),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }

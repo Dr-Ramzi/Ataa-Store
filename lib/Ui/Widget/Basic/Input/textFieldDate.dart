@@ -69,7 +69,7 @@ class _TextFieldDateXState extends State<TextFieldDateX> {
               border: InputBorder.none,
               hintText: widget.hint.tr,
               isCollapsed: true,
-              helperStyle: TextStyleX.supTitleMedium,
+              helperStyle: TextStyleX.titleSmall.copyWith(color: Theme.of(context).hintColor),
             ),
             onTap: () async {
               FocusScope.of(context).requestFocus(FocusNode());

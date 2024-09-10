@@ -1,5 +1,6 @@
 part of '../../widget.dart';
 
+// ignore: must_be_immutable
 class ButtonX extends StatelessWidget {
   final String? text;
   final IconData? iconData;
@@ -9,7 +10,9 @@ class ButtonX extends StatelessWidget {
   final double? width;
   final Function onTap;
   final bool halfWidth;
+  final double radius;
   final bool disabled;
+  final bool isMaxFinite;
   final double? height;
   Color? borderColor;
   Color? colorButton;
@@ -24,9 +27,11 @@ class ButtonX extends StatelessWidget {
     this.width,
     this.marginVertical = 4,
     this.halfWidth = false,
+    this.isMaxFinite = true,
     this.borderColor = Colors.transparent,
     this.marginHorizontal = 0,
     this.colorText = Colors.white,
+    this.radius = StyleX.radius,
     super.key, this.height,
   }) {
     this.colorButton = colorButton ?? ColorX.primary;
@@ -36,12 +41,14 @@ class ButtonX extends StatelessWidget {
     this.text,
     this.colorButton,
     this.disabled = false,
+    this.isMaxFinite = true,
     this.iconData,
     this.icon,
     this.width,
     this.marginVertical = 5,
     this.halfWidth = false,
     this.marginHorizontal = 0,
+    this.radius = StyleX.radius,
     super.key, this.height,
   }) {
     colorText = ColorX.primary;
@@ -51,6 +58,7 @@ class ButtonX extends StatelessWidget {
     required this.onTap,
     this.text,
     this.disabled = false,
+    this.isMaxFinite = true,
     this.iconData,
     this.icon,
     this.width,
@@ -58,6 +66,7 @@ class ButtonX extends StatelessWidget {
     this.marginVertical = 5,
     this.halfWidth = false,
     this.marginHorizontal = 0,
+    this.radius = StyleX.radius,
     super.key, this.height,
   }) {
     this.colorText =  colorText??Get.theme.colorScheme.secondary;
@@ -67,6 +76,7 @@ class ButtonX extends StatelessWidget {
   ButtonX.dangerous(
       {required this.onTap,
       this.disabled = false,
+        this.isMaxFinite = true,
       this.text,
       this.iconData,
         this.icon,
@@ -74,6 +84,7 @@ class ButtonX extends StatelessWidget {
       this.halfWidth = false,
       this.marginVertical = 5,
       this.marginHorizontal = 0,
+        this.radius = StyleX.radius,
       super.key, this.height,
       }) {
     colorText = ColorX.danger;
@@ -93,14 +104,15 @@ class ButtonX extends StatelessWidget {
       },
       child: Container(
         height: height??StyleX.buttonHeight,
-        width: width ?? double.maxFinite,
+        width: width ?? (isMaxFinite?double.maxFinite:null),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         margin: EdgeInsets.symmetric(
           vertical: marginVertical,
           horizontal: marginHorizontal,
         ),
         decoration: BoxDecoration(
           border: Border.all(color: borderColor!),
-          borderRadius: BorderRadius.circular(StyleX.radius),
+          borderRadius: BorderRadius.circular(radius),
           color: disabled ? ColorX.grey : colorButton,
         ),
         child: Row(
@@ -109,7 +121,7 @@ class ButtonX extends StatelessWidget {
             if(icon!=null)
               icon!,
             if(iconData != null && icon==null)
-           Icon(iconData, color: colorText,size: text != null?20:24,),
+           Icon(iconData, color: colorText,size: text != null?20:22,),
             if((iconData != null || icon!=null) && text != null)
               const SizedBox(width: 8),
             if(text != null)

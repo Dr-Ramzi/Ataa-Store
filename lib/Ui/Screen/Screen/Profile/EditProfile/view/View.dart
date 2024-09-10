@@ -31,10 +31,10 @@ class EditProfileView extends GetView<EditProfileController> {
 
                   /// Text Input
                   InputSectionX(),
-                  SizedBox(height: 25),
                 ],
               ),
             ),
+            const SizedBox(height: 25),
 
             /// Save & Cancel Buttons
             Row(

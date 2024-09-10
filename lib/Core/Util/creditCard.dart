@@ -91,30 +91,30 @@ class CreditCardUtilsX {
     CreditCardTypeEX cardType;
     if (input.startsWith(RegExp(
         r'((5[1-5])|(222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720))'))) {
-      cardType = CreditCardTypeEX.Master;
+      cardType = CreditCardTypeEX.master;
     } else if (input.startsWith(RegExp(r'[4]'))) {
-      cardType = CreditCardTypeEX.Visa;
+      cardType = CreditCardTypeEX.visa;
     } else if (input
         .startsWith(RegExp(r'((506([01]))|(507([89]))|(6500))'))) {
-      cardType = CreditCardTypeEX.Verve;
+      cardType = CreditCardTypeEX.verve;
     } else if (input.startsWith(RegExp(r'((34)|(37))'))) {
-      cardType = CreditCardTypeEX.AmericanExpress;
+      cardType = CreditCardTypeEX.americanExpress;
     } else if (input.startsWith(RegExp(r'((6[45])|(6011))'))) {
-      cardType = CreditCardTypeEX.Discover;
+      cardType = CreditCardTypeEX.discover;
     } else if (input
         .startsWith(RegExp(r'((30[0-5])|(3[89])|(36)|(3095))'))) {
-      cardType = CreditCardTypeEX.DinersClub;
+      cardType = CreditCardTypeEX.dinersClub;
     } else if (input.startsWith(RegExp(r'(352[89]|35[3-8][0-9])'))) {
-      cardType = CreditCardTypeEX.Jcb;
+      cardType = CreditCardTypeEX.jcb;
     }
     // else if () {
     /// TODO: Algorithm >>> Add regExp to Mada payment card
     //   cardType = CreditCardType.Mada;
     // }
     else if (input.length <= 8) {
-      cardType = CreditCardTypeEX.Others;
+      cardType = CreditCardTypeEX.others;
     } else {
-      cardType = CreditCardTypeEX.Invalid;
+      cardType = CreditCardTypeEX.invalid;
     }
     return cardType;
   }

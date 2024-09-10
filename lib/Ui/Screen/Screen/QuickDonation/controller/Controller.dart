@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../Config/config.dart';
-import '../../../../../Core/Controller/Other/donateOnBehalfOfFamilyController.dart';
 import '../../../../../Core/Controller/SelectedOptions/organizationSelectionController.dart';
+import '../../../../../Core/core.dart';
 import '../../../../../Data/data.dart';
 import '../../../../../UI/Widget/widget.dart';
 import '../../../../ScreenSheet/Selection/Organization/organizationSelectionSheet.dart';
@@ -12,10 +12,11 @@ class QuickDonationController extends GetxController {
   //============================================================================
   // Injection of required controls
 
-  OrganizationSelectionController donationProgramSelectedController =
-      Get.put(OrganizationSelectionController(), tag: "Quick Donation");
-  DonateOnBehalfOfFamilyController donateOnBehalfOfFamily =
-      Get.put(DonateOnBehalfOfFamilyController(), tag: "Quick Donation");
+  AppControllerX app = Get.find();
+  OrganizationSelectionController donationProjectSelectedController = Get.put(
+    OrganizationSelectionController(isQuickDonation: true),
+    tag: "Quick Donation",
+  );
 
   //============================================================================
   // Variables
@@ -27,6 +28,7 @@ class QuickDonationController extends GetxController {
 
   List<OrganizationX> organizations = [];
   RxString donationProgramSelected = "All".obs;
+  RxInt freeDonationSelected = 0.obs;
 
   GlobalKey<FormState> formKey = GlobalKey();
   AutovalidateMode autoValidate = AutovalidateMode.disabled;
@@ -38,19 +40,41 @@ class QuickDonationController extends GetxController {
   getOrganizations() async {
     try {
       await Future.delayed(const Duration(seconds: 1));
-      organizations = TestDataX.organizations;
+      // organizations = TestDataX.organizations;
     } catch (e) {
       return Future.error(e);
     }
   }
 
+  String? validateAmount(String? val) {
+    String? message;
+    message = ValidateX.money(val);
+
+    /// Verify the lowest possible donation value in Free Donation
+    if (num.parse(donationAmount.text) <
+        app.generalSettings.minimumDonationAmount) {
+      message =
+          "${"The minimum donation amount is".tr} ${app.generalSettings.minimumDonationAmount} ${"SAR".tr}";
+    }
+    return message;
+  }
+
   //----------------------------------------------------------------------------
   // Other
 
-  onChangeDonationAmount(int val) => donationAmount.text = val.toString();
+  onChangeDonationAmount(int val) {
+    donationAmount.text = val.toString();
+    freeDonationSelected.value = val;
+  }
 
-  onTapChooseDonationProgram() async =>
-      await organizationSelectionSheetX(donationProgramSelectedController);
+  removeFreeDonationSelected(_) {
+    if (freeDonationSelected.value != 0) {
+      freeDonationSelected.value = 0;
+    }
+  }
+
+  onTapChooseDonationProject() async =>
+      await organizationSelectionSheetX(donationProjectSelectedController);
 
   onChangeDonationProgram(String? val) =>
       donationProgramSelected.value = val ?? "";
@@ -63,8 +87,7 @@ class QuickDonationController extends GetxController {
     donationAmount.text = '';
     donationProgramSelected.value = "All";
     autoValidate = AutovalidateMode.disabled;
-    donateOnBehalfOfFamily.clearData();
-    donationProgramSelectedController.orgSelected.value =
+    donationProjectSelectedController.orgSelected.value =
         donationProgramSelected.value;
   }
 
@@ -75,11 +98,6 @@ class QuickDonationController extends GetxController {
       autoValidate = AutovalidateMode.always;
       return Future.error(
           "Make sure you enter a valid value in donation amount");
-    } else if (donateOnBehalfOfFamily.isEnable.value &&
-        !donateOnBehalfOfFamily.formKey.currentState!.validate()) {
-      // Check the input fields to donate on behalf of the family
-      donateOnBehalfOfFamily.autoValidate = AutovalidateMode.always;
-      return Future.error("Please enter the donor's information on his behalf");
     }
   }
 

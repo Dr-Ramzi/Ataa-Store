@@ -17,6 +17,7 @@ class ImageNetworkX extends StatelessWidget {
   final String imageUrl;
   final Widget? failed;
   final Widget? empty;
+
   final double? height;
   final double? width;
   final BoxFit fit;
@@ -29,18 +30,22 @@ class ImageNetworkX extends StatelessWidget {
     double getPaddingEmpty() => (width ?? height ?? 200) >= 200
         ? 50.0
         : (width ?? height ?? 100) >= 100
-            ? 10.0
-            : 2.0;
+        ? 10.0
+        : 2.0;
+
+    String getImageEmpty() => (width ?? height ?? 160) >= 160
+        ? context.isDarkMode ? ImageX.logoWhite : ImageX.logo
+        : context.isDarkMode ? ImageX.logoSymbolWhite : ImageX.logoSymbol;
     buildImageType() {
       if (imageUrl.isEmpty) {
         return SizedBox(
           width: width,
           height: height,
-          child: empty ??
+          child: empty ??failed??
               Padding(
                 padding: EdgeInsets.all(getPaddingEmpty()),
                 child: SvgPicture.asset(
-                  context.isDarkMode ? ImageX.logoWhite : ImageX.logo,
+                  getImageEmpty(),
                 ),
               ),
         );
@@ -54,11 +59,10 @@ class ImageNetworkX extends StatelessWidget {
           errorBuilder: (context, error, stackTrace) => SizedBox(
             width: width,
             height: height,
-            child: failed ??
+            child: failed ??empty??
                 Padding(
                     padding: EdgeInsets.all(getPaddingEmpty()),
-                    child: SvgPicture.asset(
-                        context.isDarkMode ? ImageX.logoWhite : ImageX.logo)),
+                    child: SvgPicture.asset(getImageEmpty())),
           ),
         );
       } else {
@@ -107,11 +111,10 @@ class ImageNetworkX extends StatelessWidget {
           errorBuilder: (context, error, stackTrace) => SizedBox(
             width: width,
             height: height,
-            child: failed ??
+            child: failed ?? empty??
                 Padding(
                     padding: EdgeInsets.all(getPaddingEmpty()),
-                    child: SvgPicture.asset(
-                        context.isDarkMode ? ImageX.logoWhite : ImageX.logo)),
+                    child: SvgPicture.asset(getImageEmpty())),
           ),
         );
       }

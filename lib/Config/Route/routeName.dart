@@ -8,8 +8,14 @@ class RouteNameX {
   /// Root
   static const String root = '/';
 
+  /// Loading
+  static const String loading = '/loading';
+
   /// Onboarding
   static const String onboarding = '/onboarding';
+
+  /// Pages
+  static const String dynamicPage = '/dynamicPage';
 
   /// Auth
   static const String login = '/login';
@@ -28,13 +34,13 @@ class RouteNameX {
   static const String myCampaigns = '/myCampaigns';
   static const String myOrders = '/myOrders';
   static const String myDeductions = '/myDeductions';
-  static const String myDedications = '/myDedications';
+  static const String myGifts = '/myGifts';
   static const String sharingLinks = '/sharingLinks';
-  static const String myGuarantees = '/myGuarantees';
+  static const String mySponsorships = '/mySponsorships';
   static const String paymentCards = '/paymentCards';
 
-  /// Dedications
-  static const String dedications = '/dedications';
+  /// Gifting
+  static const String gifting = '/gifting';
 
   /// Basket
   static const String basket = '/basket';
@@ -47,9 +53,9 @@ class RouteNameX {
   /// Donations
   static const String donationDetails = '/donationDetails';
 
-  /// Guarantees
-  static const String typesGuarantees = '/typesGuarantees';
-  static const String allGuarantees = '/allGuarantees';
+  /// Sponsorships
+  static const String typesSponsorships = '/typesSponsorships';
+  static const String allSponsorships = '/allSponsorships';
 
   /// Organization
   static const String allOrganizations = '/allOrganizations';
@@ -71,7 +77,7 @@ class RouteNameX {
   /// Info
   static const String settings = '/settings';
   static const String contactUs = '/contactUs';
-  static const String info = '/info';
+  static const String about = '/about';
   static const String ourBank = '/OurBank';
   static const String termsConditions = '/termsConditions';
   static const String privacyPolicy = '/privacyPolicy';

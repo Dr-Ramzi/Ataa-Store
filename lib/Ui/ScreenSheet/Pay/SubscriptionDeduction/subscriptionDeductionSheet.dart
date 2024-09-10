@@ -84,6 +84,7 @@ subscriptionDeductionSheetX(DeductionX deduction) {
                       FreeDonationOptionsX(
                         isMarginTop: false,
                         onSelected: controller.onChangeDeductionAmount,
+                        selected: controller.freeDeductionSelected.value,
                       ).fadeAnimation300,
 
                       /// Field to enter the deduction value
@@ -92,6 +93,7 @@ subscriptionDeductionSheetX(DeductionX deduction) {
                         autovalidateMode: controller.autoValidate,
                         child: TextFieldX(
                           controller: controller.deductionAmount,
+                          onChanged: controller.removeFreeDonationSelected,
                           textInputType: TextInputType.number,
                           textInputAction: TextInputAction.done,
                           hint: "0",

@@ -30,7 +30,9 @@ class ColorBarSelectorX extends StatelessWidget {
                 child: ContainerX(
                   padding: EdgeInsets.zero,
                   borderColor: colorSelectedIndex == index
-                      ? Theme.of(context).colorScheme.onPrimary
+                      ? ColorHelperX.toMaterial(Color(
+                    int.parse("0xff${colors[index]}"),
+                  )).shade200
                       : null,
                   borderWidth: 4,
                   radius: 100,

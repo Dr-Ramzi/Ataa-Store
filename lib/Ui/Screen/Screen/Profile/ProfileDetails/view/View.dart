@@ -20,7 +20,7 @@ class ProfileDetailsView extends GetView<ProfileDetailsController> {
             child: SingleChildScrollView(
               padding: const EdgeInsets.only(
                 top: 20,
-                bottom: 50,
+                bottom: 60,
                 left: StyleX.hPaddingApp,
                 right: StyleX.hPaddingApp,
               ),

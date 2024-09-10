@@ -7,7 +7,7 @@ class AgreeToPrivacyTermsX extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CheckBoxX(
           value: agreedTerms,
@@ -19,24 +19,12 @@ class AgreeToPrivacyTermsX extends StatelessWidget {
             child: RichText(
               text: TextSpan(
                 text: "${'I agree to'.tr} ",
-                style: TextStyleX.titleSmall.copyWith(color: Get.iconColor),
+                style: TextStyleX.supTitleLarge.copyWith(color: Get.theme.colorScheme.secondary,fontFamily: FontX.fontFamily),
                 children: <TextSpan>[
                   TextSpan(
-                      text: "${'terms'.tr} ",
-                      style: TextStyleX.titleSmall
-                          .copyWith(color: Theme.of(context).primaryColor),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Get.toNamed(RouteNameX.termsConditions);
-                        }),
-                  TextSpan(
-                    text: '& '.tr,
-                    style: TextStyleX.titleSmall.copyWith(color: Get.iconColor),
-                  ),
-                  TextSpan(
-                      text: "${'Conditions'.tr} ",
-                      style: TextStyleX.titleSmall
-                          .copyWith(color: Theme.of(context).primaryColor),
+                      text: "${'terms & Conditions'.tr} ",
+                      style: TextStyleX.supTitleLarge
+                          .copyWith(color: Theme.of(context).primaryColor,fontFamily: FontX.fontFamily,fontWeight: FontWeight.w600),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
                           Get.toNamed(RouteNameX.termsConditions);
@@ -44,11 +32,11 @@ class AgreeToPrivacyTermsX extends StatelessWidget {
                   TextSpan(
                       text: '${'and'.tr} ',
                       style:
-                          TextStyleX.titleSmall.copyWith(color: Get.iconColor)),
+                          TextStyleX.supTitleLarge.copyWith(color: Get.iconColor,fontFamily: FontX.fontFamily,),),
                   TextSpan(
                     text: 'Privacy Policy'.tr,
-                    style: TextStyleX.titleSmall
-                        .copyWith(color: Theme.of(context).primaryColor),
+                    style: TextStyleX.supTitleLarge
+                        .copyWith(color: Theme.of(context).primaryColor,fontFamily: FontX.fontFamily,fontWeight: FontWeight.w600),
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
                         Get.toNamed(RouteNameX.privacyPolicy);

@@ -1,8 +1,9 @@
 part of '../../widget.dart';
 
 class ProfileAccountCardX extends StatelessWidget {
-  const ProfileAccountCardX({super.key, required this.children});
+  const ProfileAccountCardX({super.key, required this.children,this.isButtonPadding=false});
   final List<Widget> children;
+  final bool isButtonPadding;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -16,9 +17,9 @@ class ProfileAccountCardX extends StatelessWidget {
             height: 80,
             decoration: BoxDecoration(
               color: ColorX.primary,
-              borderRadius: const BorderRadiusDirectional.only(
-                bottomEnd: Radius.circular(StyleX.radiusAppBar),
-              ),
+              // borderRadius: const BorderRadiusDirectional.only(
+              //   bottomEnd: Radius.circular(StyleX.radiusAppBar),
+              // ),
             ),
           ),
         ),
@@ -27,7 +28,7 @@ class ProfileAccountCardX extends StatelessWidget {
           margin: const EdgeInsets.symmetric(
             horizontal: StyleX.hPaddingApp,
           ),
-          padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 12),
+          padding:  EdgeInsets.symmetric(vertical: isButtonPadding?16:12,horizontal: isButtonPadding?16:12),
           child: Column(children: children),
         ).fadeAnimation200,
       ],

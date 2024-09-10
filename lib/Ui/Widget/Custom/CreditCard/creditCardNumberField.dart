@@ -30,11 +30,11 @@ class CreditCardNumberFieldX extends StatefulWidget {
 }
 
 class _CreditCardNumberFieldXState extends State<CreditCardNumberFieldX> {
-  CreditCardTypeEX type = CreditCardTypeEX.Others;
+  CreditCardTypeEX type = CreditCardTypeEX.others;
   @override
   void initState() {
     super.initState();
-    type = CreditCardTypeEX.Others;
+    type = CreditCardTypeEX.others;
     widget.controller.addListener(_getCardTypeFrmNumber);
   }
   @override

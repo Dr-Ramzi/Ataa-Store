@@ -1,5 +1,6 @@
 part of '../../widget.dart';
 
+// ignore: must_be_immutable
 class ButtonStateX extends StatefulWidget {
    ButtonStateX({
     required this.onTap,
@@ -18,6 +19,9 @@ class ButtonStateX extends StatefulWidget {
     this.icon,
     this.width,
     this.colorButton,
+    this.colorDisabledButton,
+     this.colorDisabledText,
+     this.colorDisabledBorder,
     this.marginVertical = 5,
     this.borderColor = Colors.transparent,
     this.marginHorizontal = 0,
@@ -41,6 +45,9 @@ class ButtonStateX extends StatefulWidget {
     this.icon,
     this.width,
     this.colorButton = Colors.transparent,
+    this.colorDisabledButton,
+    this.colorDisabledText,
+    this.colorDisabledBorder,
     this.marginVertical = 5,
     this.marginHorizontal = 0,
     super.key,
@@ -65,6 +72,9 @@ class ButtonStateX extends StatefulWidget {
     this.icon,
     this.width,
     this.colorButton = Colors.transparent,
+    this.colorDisabledButton,
+    this.colorDisabledText,
+    this.colorDisabledBorder,
     this.marginVertical = 5,
     this.marginHorizontal = 0,
     super.key,
@@ -90,6 +100,9 @@ class ButtonStateX extends StatefulWidget {
   final IconData? iconData;
   final double? width;
   final Color? colorButton;
+  final Color? colorDisabledButton;
+  final Color? colorDisabledText;
+  final Color? colorDisabledBorder;
   late Color? colorText;
   final Function? onAnimationEnd;
   @override
@@ -123,13 +136,13 @@ class _ButtonStateXState extends State<ButtonStateX>
   }
 
   Color? get backgroundColor => widget.disabled
-      ? Theme.of(context).disabledColor
+      ? widget.colorDisabledButton??Theme.of(context).disabledColor
       : colorAnimation == null
           ? stateColors[widget.state]
           : colorAnimation!.value ?? stateColors[widget.state];
 
   Color get borderColor => widget.disabled
-      ? Theme.of(context).disabledColor
+      ? widget.colorDisabledBorder??Theme.of(context).disabledColor
       : stateBorderColors[widget.state]??widget.borderColor;
 
   @override
@@ -184,14 +197,14 @@ class _ButtonStateXState extends State<ButtonStateX>
             if(widget.icon != null)
               widget.icon!,
             if(widget.iconData != null && widget.icon == null)
-              Icon(widget.iconData, color: widget.disabled?ColorX.grey.shade400:widget.colorText),
+              Icon(widget.iconData, color: widget.disabled?widget.colorDisabledText??ColorX.grey.shade400:widget.colorText),
 
             if(widget.text != null && (widget.iconData != null || widget.icon!=null))
               const SizedBox(width: 8.0),
 
             if(widget.text != null)
             TextX(widget.text!,
-                color: widget.disabled?ColorX.grey.shade400:widget.colorText,
+                color: widget.disabled?widget.colorDisabledText??ColorX.grey.shade400:widget.colorText,
             ),
           ],
         ),
@@ -215,7 +228,7 @@ class _ButtonStateXState extends State<ButtonStateX>
         duration: const Duration(milliseconds: 250),
         child: TextX(
           getText,
-          color: widget.disabled?ColorX.grey.shade400:Colors.white,
+          color: widget.disabled?widget.colorDisabledText??ColorX.grey.shade400:Colors.white,
           style: TextStyleX.titleSmall,
           maxLines: 1,
         ),

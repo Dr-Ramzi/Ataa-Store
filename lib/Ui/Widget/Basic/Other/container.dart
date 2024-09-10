@@ -1,4 +1,4 @@
-part of widget;
+part of '../../widget.dart';
 
 class ContainerX extends StatelessWidget {
   final Widget child;
@@ -13,7 +13,7 @@ class ContainerX extends StatelessWidget {
   final double borderWidth;
   final Color? color;
   final EdgeInsetsGeometry margin;
-  final EdgeInsetsGeometry? padding;
+  final EdgeInsets padding;
   final bool isBorder;
   final bool isShadow;
   final Color? borderColor;
@@ -30,7 +30,7 @@ class ContainerX extends StatelessWidget {
     this.color,
     this.borderRadius,
     this.borderColor,
-    this.padding,
+    this.padding = const EdgeInsets.all(14.0),
     this.radius = StyleX.radius,
     this.margin = const EdgeInsets.all(0),
     required this.child,
@@ -67,7 +67,7 @@ class ContainerX extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(StyleX.radius),
         child: Padding(
-          padding: padding ?? const EdgeInsets.all(14.0),
+          padding: padding,
           child: child,
         ),
       ),

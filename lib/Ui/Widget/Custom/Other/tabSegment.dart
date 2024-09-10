@@ -13,8 +13,8 @@ class TabSegmentX extends StatelessWidget {
       child: AdvancedSegment<int,String>(
         controller: controller,
         segments: tabs,
-        activeStyle: TextStyleX.titleMedium.copyWith(color: Theme.of(context).primaryColor,fontWeight: FontWeight.w600),
-        inactiveStyle: TextStyleX.titleMedium.copyWith(color: Theme.of(context).colorScheme.secondary,fontWeight: FontWeight.w600),
+        activeStyle: TextStyleX.titleMedium.copyWith(color: Theme.of(context).primaryColor,fontWeight: FontWeight.w600,fontFamily: FontX.fontFamily),
+        inactiveStyle: TextStyleX.titleMedium.copyWith(color: Theme.of(context).colorScheme.secondary,fontWeight: FontWeight.w600,fontFamily: FontX.fontFamily),
         backgroundColor: context.isDarkMode?Theme.of(context).cardColor:ColorX.grey.shade100,
         sliderColor: context.isDarkMode?ColorX.grey.shade700:Colors.white,
         borderRadius: const BorderRadius.all(Radius.circular(StyleX.radius)),

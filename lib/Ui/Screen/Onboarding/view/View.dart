@@ -65,7 +65,7 @@ class OnboardingView extends GetView<OnboardingController> {
 
                   /// Text
                   SizedBox(
-                    height: 160,
+                    height: 140,
                     child: PageView.builder(
                       controller: controller.cardController.value,
                       itemCount: controller.cardsTitle.length,
@@ -79,7 +79,7 @@ class OnboardingView extends GetView<OnboardingController> {
                             TextX(
                               controller.cardsTitle[index],
                               color: Colors.white,
-                              style: TextStyleX.headerSmall,
+                              style: TextStyleX.headerSmall.copyWith(fontSize: 24),
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 10),
@@ -89,8 +89,9 @@ class OnboardingView extends GetView<OnboardingController> {
                               child: TextX(
                                 controller.cardsSubtitle[index],
                                 color: Colors.white,
-                                style: TextStyleX.titleSmall,
+                                style: TextStyleX.titleMedium.copyWith(fontSize: 16),
                                 textAlign: TextAlign.center,
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                           ],

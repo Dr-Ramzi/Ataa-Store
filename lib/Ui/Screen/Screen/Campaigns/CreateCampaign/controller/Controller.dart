@@ -43,7 +43,8 @@ class CreateCampaignController extends GetxController {
     try {
       /// TODO: Database >>> Fetch organizations
       await Future.delayed(const Duration(seconds: 1)); // delete this
-      organizations = TestDataX.organizations;
+      // organizations = TestDataX.organizations;
+      // organizations = await DatabaseX.getAllOrganizations();
     } catch (e) {
       return Future.error(e);
     }
@@ -62,7 +63,7 @@ class CreateCampaignController extends GetxController {
 
   entryVerification() {
     if (orgSelected.value == null) {
-      return throw "You must select a program";
+      return throw "You must select a project";
     } else if (donationOpportunityController.donationSelected.value == null) {
       return throw "You must select one of the donation projects";
     } else if (!formKey.currentState!.validate()) {
@@ -103,7 +104,7 @@ class CreateCampaignController extends GetxController {
             maxNumStock: !isOpenDonation.value ? numShares.value : null,
             targetAmount:
                 isOpenDonation.value ? int.parse(targetAmount.text) : null,
-            totalNumberDonations: 0,
+            countDonations: 0,
             currentDonations: 0,
             totalDonations: 0,
             endDate: endDate.value!,
@@ -118,18 +119,12 @@ class CreateCampaignController extends GetxController {
                 donationOpportunityController.donationSelected.value!.imageURL,
           );
 
-          /// Automatically fix keyboard pop-up
-          FocusScope.of(Get.context!).requestFocus(FocusNode());
-
           var isConfirmCreate = await confirmCampaignCreationSheetX(
             campaign: campaign,
             orgName: orgSelected.value!.name,
             projectName:
                 donationOpportunityController.donationSelected.value!.name,
           );
-
-          /// Automatically fix keyboard pop-up
-          FocusScope.of(Get.context!).requestFocus(FocusNode());
 
           if (isConfirmCreate == true) {
             // TODO: Database >>> Create new campaign
@@ -152,9 +147,6 @@ class CreateCampaignController extends GetxController {
               /// TODO: Algorithm >>> Send the new campaign ID
               onOk: ()async => await Get.toNamed(RouteNameX.campaignDetails, arguments: "1"),
             );
-
-            /// Automatically fix keyboard pop-up
-            FocusScope.of(Get.context!).requestFocus(FocusNode());
 
             /// clear date on controller
             clearData();

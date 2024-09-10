@@ -6,13 +6,11 @@ class SwitchX extends StatefulWidget {
       this.label,
       required this.value,
       required this.onChange,
-      this.isChangeStateInternally = true,
       this.margin = const EdgeInsets.symmetric(vertical: 5),
       this.isSmallTitle = false,
       this.isFittedTitle = true});
   final String? label;
   final bool value;
-  final bool isChangeStateInternally;
   final Function(bool val) onChange;
   final EdgeInsetsGeometry margin;
   final bool isSmallTitle;
@@ -28,7 +26,15 @@ class _SwitchXState extends State<SwitchX> {
     value = widget.value;
     super.initState();
   }
-
+  @override
+  void didUpdateWidget(covariant SwitchX oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.value != oldWidget.value) {
+      setState(() {
+        value=widget.value;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -37,11 +43,13 @@ class _SwitchXState extends State<SwitchX> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SizedBox(
-            height: 40,
+            height: 44,
             child: FittedBox(
               fit: BoxFit.contain,
               child: Switch(
-                value: widget.isChangeStateInternally ? value : widget.value,
+                thumbIcon: WidgetStateProperty.all(const Icon(null)),
+                thumbColor: WidgetStatePropertyAll(context.isDarkMode?ColorX.grey.shade300:Colors.white),
+                value: value,
                 onChanged: (bool val) async {
                   setState(() {
                     value = val;
@@ -51,24 +59,41 @@ class _SwitchXState extends State<SwitchX> {
               ),
             ),
           ),
+          if (widget.label != null)
           const SizedBox(width: 10),
           if (widget.label != null && widget.isFittedTitle)
             Flexible(
-              child: FittedBox(
-                fit: BoxFit.fill,
-                child: TextX(
-                  widget.label!,
-                  style: widget.isSmallTitle ? TextStyleX.titleSmall : null,
+              child: GestureDetector(
+                onTap: () async {
+                  setState(() {
+                    value = !value;
+                  });
+                  await widget.onChange(value);
+                },
+                child: FittedBox(
+                  fit: BoxFit.fill,
+                  child: TextX(
+                    widget.label!,
+                    style: widget.isSmallTitle ? TextStyleX.titleSmall : null,
+                  ),
                 ),
               ),
             ),
           if (widget.label != null && !widget.isFittedTitle)
             Flexible(
-              child: TextX(
-                widget.label!,
-                fontWeight: FontWeight.w600,
-                color: Theme.of(context).iconTheme.color,
-                style: widget.isSmallTitle ? TextStyleX.supTitleMedium : null,
+              child: GestureDetector(
+                onTap: () async {
+                  setState(() {
+                    value = !value;
+                  });
+                  await widget.onChange(value);
+                },
+                child: TextX(
+                  widget.label!,
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).iconTheme.color,
+                  style: widget.isSmallTitle ? TextStyleX.supTitleMedium : null,
+                ),
               ),
             ),
         ],

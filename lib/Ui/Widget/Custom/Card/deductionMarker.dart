@@ -6,15 +6,16 @@ class DeductionMarkerCardX extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ContainerX(
+      radius: StyleX.radiusSm,
       color: context.isDarkMode?ColorX.primary.shade100:ColorX.primary.shade50,
       padding: const EdgeInsets.symmetric(
-        horizontal: 7,
-        vertical: 5,
+        horizontal: 10,
+        vertical: 4,
       ),
       child: Row(
         children: [
           Icon(
-            Icons.date_range_rounded,
+            IconX.calendar,
             size: 20,
             color: ColorX.primary,
           ),

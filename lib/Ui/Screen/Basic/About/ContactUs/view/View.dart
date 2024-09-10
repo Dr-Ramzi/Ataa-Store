@@ -11,7 +11,7 @@ class ContactUsView extends GetView<ContactUsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarX(title: 'Contact Us'),
+      appBar: const AppBarX(title: 'Contact us'),
       body: FutureBuilder(
         future: controller.getData(),
         builder: (context, snapshot) {
@@ -37,7 +37,7 @@ class ContactUsView extends GetView<ContactUsController> {
           /// Error State
           if (snapshot.hasError) {
             return ErrorView(
-              error: snapshot.error.toString(),
+              error: snapshot.error,
             );
           }
 

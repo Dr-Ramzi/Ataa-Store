@@ -2,8 +2,9 @@ part of '../../widget.dart';
 
 
 class SectionTitleX extends StatelessWidget {
-  const SectionTitleX({super.key,required this.title, this.icon, this.showMore});
+  const SectionTitleX({super.key,required this.title, this.icon, this.showMore, this.iconSize=22});
   final IconData? icon;
+  final double iconSize;
   final String title;
   final Function()? showMore;
   @override
@@ -16,7 +17,7 @@ class SectionTitleX extends StatelessWidget {
           Flexible(
             child: Row(children: [
               if(icon!=null)
-                Icon(icon,color: context.isDarkMode?ColorX.grey.shade300:ColorX.grey.shade700,size: 22),
+                Icon(icon,color: context.isDarkMode?ColorX.grey.shade300:ColorX.grey.shade700,size: iconSize),
               if(icon!=null)
                 const SizedBox(width: 8),
               Flexible(child: TextX(title,style: TextStyleX.titleLarge,color: context.isDarkMode?ColorX.grey.shade100:ColorX.grey.shade700,maxLines: 1,)),

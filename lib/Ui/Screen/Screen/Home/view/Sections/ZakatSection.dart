@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../Config/config.dart';
+import '../../../../../../Data/data.dart';
 import '../../../../../Animation/animation.dart';
+import '../../../../../Widget/Basic/Other/scrollRefreshLoadMore.dart';
 import '../../../../../Widget/widget.dart';
 import '../../controller/Controller.dart';
 
@@ -9,55 +11,52 @@ class ZakatSectionX extends GetView<HomeController> {
   const ZakatSectionX({super.key});
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: controller.getZakat(),
-      builder: (context, snapshot) {
+    return ScrollRefreshLoadMoreX<DonationX>(
+      fetchData: controller.getZakat,
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.only(
+        left: StyleX.hPaddingApp,
+        right: StyleX.hPaddingApp,
+        bottom: 20,
+      ),
 
-        /// If the data is still loading, a flash is displayed in the same shape as the item expected to appear
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return ScrollCardsHorizontallyX(
-            height: StyleX.charitableProjectCardHeight,
-            title: "Zakat",
-            icon: Icons.verified_rounded,
-            onShowMore: controller.onZakatMore,
-            cards: [
-              for (int i = 0; i < 3; i++)
-                const ShimmerAnimationX(
-                  height: StyleX.charitableProjectCardHeight,
-                  width: StyleX.charitableProjectCardWidthSM,
-                  margin: EdgeInsetsDirectional.only(end: 14),
-                )
-            ],
-          );
-        }
+      /// Header
+      header: SectionTitleX(
+        title: "Zakat",
+        icon: Icons.verified_rounded,
+        showMore: controller.onZakatMore,
+      ),
+      isHideHeaderIfEmpty: true,
+      isHideHeaderIfError: true,
+      isHideHeaderIfInitLoading: false,
+      isHeaderPadding: false,
 
-        /// If there is an error in this section or it is empty, the section does not appear
-        if (snapshot.hasError || controller.zakat.isEmpty) {
-          return const SizedBox();
-        }
+      /// If there is an error in this section or it is empty, the section does not appear
+      empty: const SizedBox(),
+      errorWidget: (_) => const SizedBox(),
 
-        /// When the data has finished loading properly, it is displayed
-        return ScrollCardsHorizontallyX(
-          height: StyleX.charitableProjectCardHeight,
-          title: "Zakat",
-          icon: Icons.verified_rounded,
-          onShowMore: controller.onZakatMore,
-          cards: [
-            ...controller.zakat.map(
-              (obj) => CharitableProjectCardX(
-                isSmallCard: true,
-                onTap: controller.onTapDonation,
-                onDonation: controller.onPayDonation,
-                onAddToCart: controller.onDonationAddToCart,
-                isZakat: true,
-                stockValue: obj.stockValue,
-                totalDonations: obj.totalDonations,
-                obj: obj,
-              ).fadeAnimation300,
-            ),
-          ],
-        );
+      /// Items
+      itemBuilder: (data, index) {
+        return DonationCardX(
+          doneImageUrl: controller.app.generalSettings.projectCompletionImageUrl,
+          donation: data,
+          onDonation: controller.onPayDonation,
+          onAddToCart: controller.onDonationAddToCart,
+          isSmallCard: true,
+        ).fadeAnimation300;
       },
+
+      /// If the data is still loading, a flash is displayed in the same shape as the item expected to appear
+      initLoading: Row(
+        children: [
+          for (int i = 0; i < 3; i++)
+            const ShimmerAnimationX(
+              height: StyleX.donationCardHeight,
+              width: StyleX.donationCardWidthSM,
+              margin: EdgeInsetsDirectional.only(end: 14),
+            )
+        ],
+      ),
     );
   }
 }

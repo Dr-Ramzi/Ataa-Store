@@ -16,7 +16,7 @@ class ProfileDetailsController extends GetxController {
   onActivity() => Get.toNamed(RouteNameX.activity);
   onNotifications() => Get.toNamed(RouteNameX.notifications);
   onContact() => Get.toNamed(RouteNameX.contactUs);
-  onInfo() => Get.toNamed(RouteNameX.info);
+  onInfo() => Get.toNamed(RouteNameX.about);
   onOurBank() => Get.toNamed(RouteNameX.ourBank);
   onTermsConditions() => Get.toNamed(RouteNameX.termsConditions);
   onPrivacyPolicy() => Get.toNamed(RouteNameX.privacyPolicy);

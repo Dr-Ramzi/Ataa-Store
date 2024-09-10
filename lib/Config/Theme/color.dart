@@ -6,7 +6,7 @@ part of '../config.dart';
 
 class ColorX {
   /// Primary
-  static MaterialColor primary =const MaterialColor(0xff0E6863, {
+  static MaterialColor primary =const MaterialColor(0xff127973, {
     50:Color(0xffE1F2F3),
     100:Color(0xffB3DEDF),
     200:Color(0xff8ac7c9),
@@ -45,14 +45,14 @@ class ColorX {
   static const MaterialColor grey =MaterialColor(0xff6B7280, {
   50:Color(0xffF9FAFB),
   100:Color(0xffF3F4F6),
-  200:Color(0xffe0e2e7),
-  300:Color(0xffcaced5),
+  200:Color(0xffE5E7EB),
+  300:Color(0xffc2c6cc),
   400:Color(0xffa6acb7),
   500:Color(0xff6B7280),
   600:Color(0xff5c6069),
   700:Color(0xff2e2f3b),
   800:Color(0xff252631),
-  900:Color(0xFF20212c),
+  900:Color(0xff20212a),
   });
 
   /// Background

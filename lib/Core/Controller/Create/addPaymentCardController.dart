@@ -46,7 +46,7 @@ class AddPaymentCardControllerX extends GetxController {
           await Future.delayed(const Duration(seconds: 1)); // delete this
 
           /// Create a bank card object
-          BankCardX bankCard = BankCardX(
+          PaymentCardX paymentCard = PaymentCardX(
             id: "",
             name: name.text,
             cardNum: cardNum.text.removeAllWhitespace,
@@ -62,7 +62,7 @@ class AddPaymentCardControllerX extends GetxController {
           );
 
           /// This controller form bottom sheet
-          Get.back(result: bankCard);
+          Get.back(result: paymentCard);
           ToastX.success(message: "Added Card successfully");
 
           /// Clear data on the controller

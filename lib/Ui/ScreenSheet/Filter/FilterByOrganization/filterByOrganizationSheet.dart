@@ -1,61 +1,40 @@
 import 'package:ataa/Ui/Animation/animation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import '../../../../Core/Controller/Filter/filterByOrganizationController.dart';
-import '../../../GeneralState/error.dart';
+import '../../../../Data/data.dart';
+import '../../../Widget/Basic/Other/scrollRefreshLoadMore.dart';
 import '../../../Widget/widget.dart';
 
 // ~~~~~~~~~~~~~~~~~~~~~~~{{ Why this bottom sheet }}~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Show available organizations to choose from
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-filterByOrganizationSheetX() {
-  //============================================================================
-  // Injection of required controls
-
-  final FilterByOrganizationControllerX controller = Get.find();
-
+filterByOrganizationSheetX({required FilterByOrganizationControllerX controller}) {
   //============================================================================
   // Content
 
   return bottomSheetX(
     title: "Filter by program",
-    child: FutureBuilder(
-      future: controller.getData(),
-      builder: (context, snapshot) {
-        /// Loading State
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const SizedBox(
-            height: 180,
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-
-        /// Error State
-        if (snapshot.hasError) {
-          return ErrorView(
-            error: snapshot.error.toString(),
-          );
-        }
-
-        /// Main Content
-        return Obx(
-          () => Column(
-            children: [
-              /// Options Cards
-              ...controller.options.map(
-                (val) => RadioButtonX(
-                  groupValue: controller.orgSelected.value,
-                  value: val,
-                  onChanged: controller.onChange,
-                  label: val,
-                ).fadeAnimation300,
-              ),
-            ],
-          ),
-        );
+    child: ScrollRefreshLoadMoreX<(String, OrganizationX)>(
+      fetchData: controller.getData,
+      firstFixedData: [controller.fixedData],
+      pageSize: 10,
+      isEmptyCenter: false,
+      isExpanded: false,
+      initLoading: const SizedBox(
+        height: 180,
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      ),
+      emptyMessage: "There are no association programs.",
+      itemBuilder: (data, index) {
+        return RadioButtonX<(String, OrganizationX)>(
+          groupValue: controller.optionSelected.value,
+          value: data,
+          label: data.$1,
+          onChanged: controller.onChange,
+        ).fadeAnimation300;
       },
     ),
   );

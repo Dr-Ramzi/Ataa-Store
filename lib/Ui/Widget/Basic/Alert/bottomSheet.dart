@@ -39,10 +39,10 @@ Future<dynamic> bottomSheetX({
           ),
           if (title != null)
             Padding(
-              padding: const EdgeInsets.only(
+              padding: const EdgeInsetsDirectional.only(
                 top: 5.0,
-                left: StyleX.bottomSheetPadding,
-                right: StyleX.bottomSheetPadding,
+                start: StyleX.bottomSheetPadding,
+                end: StyleX.bottomSheetPadding-10,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -26,20 +26,21 @@ class OptionCardX extends StatelessWidget {
           onTap: onTap,
           child: Container(
             color: Colors.transparent,
-            padding: const EdgeInsets.symmetric(vertical: 12.0,horizontal: 20),
+            padding: const EdgeInsets.symmetric(vertical: 14.0,horizontal: 20),
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12.0),
+                  height: 40,
+                  width: 40,
                   margin: EdgeInsets.only(right: DeviseX.isLTR? 15.0:0.0,left: DeviseX.isLTR? 0:19),
                   decoration:  BoxDecoration(
-                    color: isDanger ? ColorX.danger : Theme.of(context).cardTheme.color,
+                    color: isDanger ? ColorX.danger : Theme.of(context).dividerColor,
                     borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                   ),
                   child: Center(child: Icon(
                     icon,
                     color: context.isDarkMode?ColorX.grey.shade200:ColorX.grey.shade700,
-                    size: 23,
+                    size: 20,
                   ),),
                 ),
                 Expanded(
@@ -52,7 +53,7 @@ class OptionCardX extends StatelessWidget {
                 Container(
                     margin: EdgeInsets.only(left:DeviseX.isLTR? 24:0,right:DeviseX.isLTR? 0:24),
                     child: Icon( Icons.arrow_forward_ios_rounded,
-                      color: isDanger ? ColorX.danger : Theme.of(context).colorScheme.secondary,
+                      color: isDanger ? ColorX.danger : ColorX.grey.shade400,
                       size: 16,
                     ),
                 ),

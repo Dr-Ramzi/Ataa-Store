@@ -3,27 +3,32 @@ import 'package:get/get.dart';
 import '../../../../Data/data.dart';
 
 class OrganizationSelectionController extends GetxController {
+  bool? isQuickDonation;
+  OrganizationSelectionController({this.isQuickDonation});
   //============================================================================
   // Variables
 
   RxString orgSelected = "All".obs;
-  List<OrganizationX> organizations = [];
-  List<String> options = [];
 
   //============================================================================
   // Functions
 
-  onChange(String? val) => orgSelected.value = val ?? "";
+  onChange(String? val) {
+    orgSelected.value = val ?? "";
+    Get.back();
+  }
 
-  getData() async {
+  Future<List<String>> getData(
+      ScrollRefreshLoadMoreParametersX data) async {
     try {
-      /// TODO: Database >>> Fetch available organizations in the filtering process
-      await Future.delayed(const Duration(seconds: 1)); // delete this
-      organizations = TestDataX.organizations; // delete this
-      options = ["All", ...TestDataX.organizations.map((e) => e.name)];
+      List<OrganizationX> results = await DatabaseX.getAllOrganizations(
+        isQuickDonation: isQuickDonation,
+        page: data.page,
+        perPage: data.perPage,
+      );
+      return ["All", ...results.map((e) => e.name)];
     } catch (e) {
       return Future.error(e);
     }
   }
-
 }

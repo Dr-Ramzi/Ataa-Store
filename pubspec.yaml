@@ -4,7 +4,7 @@
 name: ataa
 description: "description_project_x"
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 1.0.0+1
+version: 1.0.1+1
 
 #====================================================================
 # Flutter Version
@@ -18,13 +18,20 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
   #-------------------------------------
   ## Basic
-  get: ^4.6.6
-  flutter_native_splash: any
-  universal_html: any
+  get: any
   intl: any
   url_launcher: any
+  universal_html: any
+  flutter_native_splash: any
+  package_info_plus: any
+  http: ^1.2.0
+
+  #-------------------------------------
+  ## Network
+  dio: ^5.7.0
 
   #-------------------------------------
   ## Map
@@ -44,9 +51,15 @@ dependencies:
   ## Icons
   iconsax: any
   cupertino_icons: any
+  material_design_icons_flutter: ^7.0.7296
 
+  ## Video
   ##-------------------------------------
+  video_player: ^2.6.0
+  chewie: ^1.8.1
+
   ## Image
+  ##-------------------------------------
   image_picker: any
   image_network: ^2.5.1
   flutter_svg: ^2.0.9 # To support SVG images
@@ -56,6 +69,12 @@ dependencies:
   quick_actions: ^1.0.7
 
   #-------------------------------------
+  ## Text
+  flutter_widget_from_html: ^0.15.2
+
+  #-------------------------------------
+  ## Other
+
   badges: ^3.1.2 # Notice number on the icon
   smooth_page_indicator: ^1.1.0 # Show the number of images and any open image via dots below the image
   flutter_advanced_segment: ^3.0.2 # Multiple tabs item
@@ -64,6 +83,8 @@ dependencies:
   calendar_date_picker2: ^1.0.2 # To enter the date via the calendar
   flutter_spinbox: ^0.13.1 # Number entry widget
   auto_size_text: ^3.0.0 # Automatic text size
+  sms_autofill: ^2.0.0 # OTP sms auto fill
+
 
   #-------------------------------------
   ## Edit Package
@@ -90,9 +111,10 @@ flutter_native_splash:
   color_dark: '#0E6863'
   image_dark: assets/splash/splash.png
   android_12:
-    image:  assets/splash/splash.png
     color: '#0E6863'
-    icon_background_color: '#0E6863'
+    image: assets/splash/splash.png
+    color_dark: '#0E6863'
+    image_dark: assets/splash/splash.png
   fullscreen: true
   android: true
   ios: true
@@ -107,11 +129,15 @@ flutter:
   ## Images & Icons
 
   assets:
+    # pubspec.yaml: It must be present to access package data, application name and version
+    - pubspec.yaml
     - assets/images/
     - assets/images/logos/
     - assets/images/otherLogos/
     - assets/images/empty/
     - assets/images/creditCard/
+    - assets/images/gift/
+    - assets/images/other/
     - assets/icons/
     - assets/splash/
     - assets/fonts/
@@ -136,3 +162,7 @@ flutter:
           weight: 600
         - asset: assets/fonts/IBMPlexSansArabic-Bold.ttf
           weight: 700
+
+    - family: Icon_x
+      fonts:
+        - asset: assets/fonts/Icon_x.ttf

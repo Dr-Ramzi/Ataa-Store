@@ -11,31 +11,31 @@ class CreditCardCompanyX extends StatelessWidget {
     String img = "";
     Icon? icon;
     switch (cardType) {
-      case CreditCardTypeEX.Master:
+      case CreditCardTypeEX.master:
         img = ImageX.masterCreditCard;
         break;
-      case CreditCardTypeEX.Visa:
+      case CreditCardTypeEX.visa:
         img = ImageX.visaCreditCard;
         break;
-      case CreditCardTypeEX.Verve:
+      case CreditCardTypeEX.verve:
         img = ImageX.verveCreditCard;
         break;
-      case CreditCardTypeEX.AmericanExpress:
+      case CreditCardTypeEX.americanExpress:
         img = ImageX.americanExpressCreditCard;
         break;
-      case CreditCardTypeEX.Discover:
+      case CreditCardTypeEX.discover:
         img = ImageX.discoverCreditCard;
         break;
-      case CreditCardTypeEX.DinersClub:
+      case CreditCardTypeEX.dinersClub:
         img = ImageX.dinersClubCreditCard;
         break;
-      case CreditCardTypeEX.Jcb:
+      case CreditCardTypeEX.jcb:
         img = ImageX.jcbCreditCard;
         break;
-      case CreditCardTypeEX.Mada:
+      case CreditCardTypeEX.mada:
         img = ImageX.madaCreditCard;
         break;
-      case CreditCardTypeEX.Others:
+      case CreditCardTypeEX.others:
         icon =  Icon(
           Icons.credit_card,
           size: width??40.0,

@@ -15,7 +15,7 @@ class PaymentCardsController extends GetxController {
   // Variables
 
   RxBool isLoading = false.obs;
-  RxList<BankCardX> bankCards = <BankCardX>[].obs;
+  RxList<PaymentCardX> paymentCards = <PaymentCardX>[].obs;
 
   /// To control the display of the waiting element within the specified card
   RxList<bool> isLoadingSetDefault = <bool>[].obs;
@@ -33,10 +33,10 @@ class PaymentCardsController extends GetxController {
       /// TODO: Database >>> Fetch All Payment Cards
       await Future.delayed(const Duration(seconds: 1)); // delete this
 
-      bankCards.value = TestDataX.bankCards;
+      paymentCards.value = TestDataX.bankCards;
 
       /// Initialize variables with the number of cards
-      for (int i = 0; i < bankCards.length; i++) {
+      for (int i = 0; i < paymentCards.length; i++) {
         isLoadingSetDefault.add(false);
         isLoadingDelete.add(false);
       }
@@ -58,16 +58,16 @@ class PaymentCardsController extends GetxController {
         /// It is checked whether a card has been created or not
         if (newCard != null) {
           /// Add to card list
-          bankCards.add(newCard);
+          paymentCards.add(newCard);
 
           /// Adding variables to control the waiting process for the new card
           isLoadingDelete.add(false);
           isLoadingSetDefault.add(false);
 
           /// It checks if the new card is set as a default card and updates the data internally without connecting to the database
-          int oldDefaultIndex = bankCards.indexWhere((x) => x.isDefault);
+          int oldDefaultIndex = paymentCards.indexWhere((x) => x.isDefault);
           if (oldDefaultIndex != -1) {
-            bankCards[oldDefaultIndex].isDefault = false;
+            paymentCards[oldDefaultIndex].isDefault = false;
           }
         }
       } catch (e) {
@@ -87,13 +87,13 @@ class PaymentCardsController extends GetxController {
         await Future.delayed(const Duration(seconds: 1)); // delete this
 
         /// Find the previous virtual card
-        int oldDefaultIndex = bankCards.indexWhere((x) => x.isDefault);
+        int oldDefaultIndex = paymentCards.indexWhere((x) => x.isDefault);
         /// If it is found, its status is changed
         if (oldDefaultIndex != -1) {
-          bankCards[oldDefaultIndex].isDefault = false;
+          paymentCards[oldDefaultIndex].isDefault = false;
         }
         /// The default card is set internally
-        bankCards[index].isDefault = true;
+        paymentCards[index].isDefault = true;
 
         ToastX.success(
           message: "The card has been successfully set as default",
@@ -117,7 +117,7 @@ class PaymentCardsController extends GetxController {
           await Future.delayed(const Duration(seconds: 1)); // delete this
 
           /// Delete card data from variables
-          bankCards.removeAt(index);
+          paymentCards.removeAt(index);
           isLoadingDelete.removeAt(index);
           isLoadingSetDefault.removeAt(index);
 

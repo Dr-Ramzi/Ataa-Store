@@ -40,7 +40,7 @@ class MyDonationCardX extends StatelessWidget {
             ActivityDataRowX(
               title: "Share value",
               data:
-                  "${FunctionX.formatLargeNumber(donation.stockValue!)} ${"SAR".tr}",
+                  "${FunctionX.formatLargeNumber(donation.donationShares.price)} ${"SAR".tr}",
             ).fadeAnimation200,
           ActivityDataRowX(
             title: "Payment method",

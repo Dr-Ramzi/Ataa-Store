@@ -1,8 +1,8 @@
 import 'package:ataa/UI/Animation/animation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
 import '../../../../../../../Config/config.dart';
-import '../../../../../../../Core/core.dart';
 import '../../../../../../../UI/Widget/widget.dart';
 import '../../controller/Controller.dart';
 
@@ -21,68 +21,8 @@ class DonationDetailsSectionX extends GetView<DonationDetailsController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// Statistics
-            Row(
-              children: [
-                /// Been Collected
-                Expanded(
-                  child: ContainerX(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 20,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextX(
-                          "Been Collected",
-                          style: TextStyleX.titleSmall,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                        const SizedBox(height: 5),
-                        FittedBox(
-                          child: TextX(
-                            "${FunctionX.formatLargeNumber(controller.donation.currentDonations)} ${"SAR".tr}",
-                            style: TextStyleX.headerSmall,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-
-                /// Remaining Amount
-                Expanded(
-                  child: ContainerX(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 20,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextX(
-                          "Remaining Amount",
-                          style: TextStyleX.titleSmall,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                        const SizedBox(height: 5),
-                        FittedBox(
-                          child: TextX(
-                            "${FunctionX.formatLargeNumber(controller.donation.remainingDonations)} ${"SAR".tr}",
-                            style: TextStyleX.headerSmall,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ).fadeAnimation400,
-            const SizedBox(height: 12),
-
             /// Donations progress bar
+            if(controller.donation.isShowCompletionIndicator)
             Row(
               children: [
                 Expanded(
@@ -98,8 +38,7 @@ class DonationDetailsSectionX extends GetView<DonationDetailsController> {
                   style: TextStyleX.supTitleLarge,
                 )
               ],
-            ).fadeAnimation400,
-            const SizedBox(height: 16),
+            ).marginOnly(bottom: 16).fadeAnimation400,
 
             /// Details
             TextX(
@@ -107,45 +46,23 @@ class DonationDetailsSectionX extends GetView<DonationDetailsController> {
               style: TextStyleX.titleLarge,
             ).fadeAnimation500,
             const SizedBox(height: 6),
-            TextX(
+            HtmlWidget(
               controller.donation.description,
-              style: TextStyleX.titleSmall,
-              maxLines: 100,
+              textStyle: TextStyleX.titleSmall,
             ).fadeAnimation500,
-            const SizedBox(height: 12),
-            TextX(
-              "Project Idea",
-              style: TextStyleX.titleLarge,
-            ).fadeAnimation500,
-            const SizedBox(height: 6),
-            TextX(
-              controller.donation.idea,
-              style: TextStyleX.titleSmall,
-              maxLines: 100,
-            ).fadeAnimation500,
-            const SizedBox(height: 12),
-            TextX(
-              "Project plan",
-              style: TextStyleX.titleLarge,
-            ).fadeAnimation600,
-            const SizedBox(height: 6),
-            TextX(
-              controller.donation.plan,
-              style: TextStyleX.titleSmall,
-              maxLines: 100,
-            ).fadeAnimation600,
             const SizedBox(height: 16),
 
-            /// Statistics More
+            /// Statistics
             Row(
               children: [
                 /// Total donations
                 Flexible(
                   child: StatisticCardX(
                     color: Theme.of(context).cardColor,
-                    icon: Icons.favorite_rounded,
-                    statistic: controller.donation.totalDonations,
-                    subtitle: "Total donations",
+                    icon: Icons.payments_rounded,
+                    statistic: controller.donation.currentDonations,
+                    subtitle: "Total amount of donations",
+                    isMoney: true,
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -154,10 +71,9 @@ class DonationDetailsSectionX extends GetView<DonationDetailsController> {
                 Flexible(
                   child: StatisticCardX(
                     color: Theme.of(context).cardColor,
-                    icon: Icons.group_rounded,
-                    statistic: controller.donation.totalTargets,
-                    subtitle:
-                        "${"Targeted so far".tr}\n ${controller.donation.currentTargets} ${"people remaining".tr}",
+                    icon: Icons.favorite_rounded,
+                    statistic: controller.donation.countDonations,
+                    subtitle:"Number of donations",
                   ),
                 ),
               ],

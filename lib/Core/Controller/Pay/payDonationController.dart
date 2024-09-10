@@ -32,6 +32,7 @@ class PayDonationControllerX extends GetxController {
 
   RxString packageSelected = ''.obs;
   double numOfStock = 1;
+  RxInt freeDonationSelected = 0.obs;
 
   late DonationX donation;
   CampaignX? campaign;
@@ -62,9 +63,9 @@ class PayDonationControllerX extends GetxController {
 
   onChangeStockValue(double val) {
     numOfStock = val;
-    if (campaign == null && donation.stockValue != null) {
+    if (campaign == null && donation.donationShares.isShare) {
       donationAmount.text =
-          ((donation.stockValue! * numOfStock).toInt()).toString();
+          ((donation.donationShares.price * numOfStock).toInt()).toString();
     } else if (campaign != null && campaign!.stockValue != null) {
       donationAmount.text =
           ((campaign!.stockValue! * numOfStock).toInt()).toString();
@@ -73,8 +74,16 @@ class PayDonationControllerX extends GetxController {
 
   onChangePackage(String? val) => packageSelected.value = val!;
 
-  onChangeDonationAmount(int val) => donationAmount.text = val.toString();
+  onChangeDonationAmount(int val) {
+    donationAmount.text = val.toString();
+    freeDonationSelected.value=val;
+  }
 
+  removeFreeDonationSelected(_){
+    if(freeDonationSelected.value!=0) {
+      freeDonationSelected.value=0;
+    }
+  }
   /// clear date on controller
   removeController() {
     Get.delete<DonateOnBehalfOfFamilyController>(tag: donation.id);
@@ -82,13 +91,19 @@ class PayDonationControllerX extends GetxController {
   }
 
   bool dataVerification() {
-    if (campaign == null &&
-        donation.packages.isNotEmpty &&
+    // if(!donation.donationShares.isShare &&
+    //     donation.openPackages.isEmpty && donation.donationDeductionPackages.isEmpty && num.parse(donationAmount.text) < app.generalSettings.minimumDonationAmount){
+    //   /// Verify the lowest possible donation value in Free Donation
+    //   return throw "${"The minimum donation amount is".tr} ${app.generalSettings.minimumDonationAmount} ${"SAR".tr}";
+    // }else
+    //
+      if (campaign == null &&
+        donation.openPackages.isNotEmpty &&
         packageSelected.value.isEmpty) {
       /// Verify package selection
       return throw "You must choose one of the packages";
     } else if (((campaign != null && campaign!.stockValue != null) ||
-            donation.stockValue != null) &&
+            donation.donationShares.isShare) &&
         numOfStock <= 0) {
       /// Verify the number of shares
       return throw "You must choose to enter a number of shares of at least 1";

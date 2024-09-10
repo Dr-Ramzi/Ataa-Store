@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import '../../../../../../Config/config.dart';
+import '../../../../../../Core/core.dart';
 import '../../../../../GeneralState/error.dart';
 import '../../../../../Widget/widget.dart';
 import '../controller/Controller.dart';
@@ -74,8 +75,9 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                       /// Product images
                       /// Show images bar if has more 1
                       if (controller.product.imageURL.length > 1)
-                        const ImagesBarSection().fadeAnimation300,
-                      const SizedBox(height: 16),
+                        const ImagesBarSection()
+                            .marginOnly(bottom: 16)
+                            .fadeAnimation300,
 
                       /// Product Details
                       Padding(
@@ -85,74 +87,71 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            /// Rating
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                /// Product Name
-                                Expanded(
-                                  child: TextX(
-                                    controller.product.name,
-                                    style: TextStyleX.titleLarge,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                const SizedBox(width: 20),
-
-                                /// Rating rate
-                                ContainerX(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 5,
-                                    horizontal: 10,
-                                  ),
-                                  color: ColorX.primary.shade50,
-                                  child: Row(
-                                    children: [
-                                      TextX(
-                                        controller.product.rating
-                                            .toStringAsFixed(1),
-                                        style: TextStyleX.supTitleLarge,
-                                        color: ColorX.primary,
-                                      ),
-                                      const SizedBox(width: 5),
-                                      Icon(
-                                        Icons.access_time_filled_rounded,
-                                        color: ColorX.primary,
-                                        size: 20,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ).fadeAnimation300,
-                            const SizedBox(height: 10),
-
-                            /// More Details
-                            Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                              children: [
-                                /// Price
-                                TextX(
-                                  "${controller.product.price} ${"SAR".tr}",
-                                  fontWeight: FontWeight.w700,
-                                  style: TextStyleX.titleLarge,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-
-                                /// Rating
+                                /// Rating Stars
                                 RatingBar.builder(
-                                  initialRating: controller.product.rating,
+                                  initialRating:
+                                      (controller.product.rating * 2).round() /
+                                          2,
                                   allowHalfRating: true,
-                                  itemSize: 24,
-                                  unratedColor: ColorX.grey.shade200,
+                                  itemSize: 26,
+                                  unratedColor: context.isDarkMode
+                                      ? ColorX.grey.shade600
+                                      : ColorX.grey.shade200,
                                   itemBuilder: (context, _) => const Icon(
                                     Icons.star_rate_rounded,
                                     color: Colors.amber,
                                   ),
                                   onRatingUpdate: (_) {},
                                   ignoreGestures: true,
+                                ),
+                                const SizedBox(width: 12),
+
+                                /// Rating rate
+                                ContainerX(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 2,
+                                    horizontal: 10,
+                                  ),
+                                  color: context.isDarkMode
+                                      ? ColorX.primary.shade100
+                                      : ColorX.primary.shade50,
+                                  child: TextX(
+                                    controller.product.rating
+                                        .toStringAsFixed(1),
+                                    style: TextStyleX.supTitleLarge,
+                                    fontWeight: FontWeight.w500,
+                                    color: ColorX.primary,
+                                  ),
+                                ),
+                              ],
+                            ).fadeAnimation300,
+                            const SizedBox(height: 12),
+
+                            /// Product Name
+                            TextX(
+                              controller.product.name,
+                              style: TextStyleX.titleLarge,
+                              fontWeight: FontWeight.w700,
+                            ).fadeAnimation300,
+                            const SizedBox(height: 12),
+
+                            /// Price
+                            Row(
+                              children: [
+                                TextX(
+                                  FunctionX.formatLargeNumber(
+                                      controller.product.price),
+                                  style: TextStyleX.titleLarge,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                const SizedBox(width: 4),
+                                TextX(
+                                  "SAR",
+                                  style: TextStyleX.titleSmall,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ],
                             ).fadeAnimation400,
@@ -194,7 +193,9 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                               const SizedBox(height: 16),
                               const LabelInputX("Sizes"),
                               DropdownX(
-                                color: context.isDarkMode?null:Theme.of(context).cardColor,
+                                color: context.isDarkMode
+                                    ? null
+                                    : Theme.of(context).cardColor,
                                 disable: controller.product.sizes.length == 1,
                                 value: controller.sizeSelected,
                                 list: controller.product.sizes,

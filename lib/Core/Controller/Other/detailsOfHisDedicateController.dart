@@ -17,7 +17,7 @@ class DetailsOfHisDedicateController extends GetxController {
 
   Rx<ButtonStateEX> buttonState = ButtonStateEX.normal.obs;
 
-  late Rx<String> gender = "".obs;
+  late Rx<String> gender = "male".obs;
   RxInt countryCode = 966.obs;
 
   final FlutterContactPicker contactPicker = FlutterContactPicker();
@@ -27,7 +27,7 @@ class DetailsOfHisDedicateController extends GetxController {
 
   /// The name Mahdi is fetched through the username
   late TextEditingController donorName =
-      TextEditingController(text: app.isLogin.value ? app.user.value.name : "");
+      TextEditingController(text: app.isLogin.value ? app.user.value!.name : "");
   TextEditingController giftedName = TextEditingController();
   TextEditingController giftedPhone = TextEditingController();
 
@@ -39,7 +39,7 @@ class DetailsOfHisDedicateController extends GetxController {
     giftedName.text = '';
     giftedPhone.text = "";
     gender.value = "";
-    donorName.text = app.isLogin.value ? app.user.value.name : "";
+    donorName.text = app.isLogin.value ? app.user.value!.name : "";
     autoValidate = AutovalidateMode.disabled;
   }
 

@@ -34,9 +34,9 @@ class CampaignDetailsController extends GetxController {
       /// TODO: Database >>> Fetch donation details
       await Future.delayed(const Duration(seconds: 1)); // delete this
 
-      campaign = TestDataX.campaigns.firstWhere((element) => element.id == id);
-      donation = TestDataX.donations
-          .firstWhere((element) => element.id == campaign.donationID);
+      // campaign = TestDataX.campaigns.firstWhere((element) => element.id == id);
+      // donation = TestDataX.donations
+      //     .firstWhere((element) => element.id == campaign.donationID);
     } catch (e) {
       return Future.error(e);
     }

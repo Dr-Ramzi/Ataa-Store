@@ -1,9 +1,7 @@
 import 'package:ataa/UI/Animation/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import '../../../../../../../Config/config.dart';
-import '../../../../../../../Core/core.dart';
 import '../../../../../../../UI/Widget/widget.dart';
 import '../../controller/Controller.dart';
 
@@ -16,8 +14,7 @@ class AppBarSectionX extends GetView<ProfileDetailsController> {
       () {
         /// If the user is logged in
         if (controller.app.isLogin.value) {
-          return GetBuilder<AppControllerX>(
-            builder: (controllerApp) => ProfileAccountCardX(
+          return Obx(() => ProfileAccountCardX(
               children: [
                 CircleAvatar(
                   backgroundColor: Theme.of(context).cardTheme.color,
@@ -27,31 +24,26 @@ class AppBarSectionX extends GetView<ProfileDetailsController> {
                     child: ImageNetworkX(
                       /// So that the image is updated if it changes
                       key: Key(
-                        controllerApp.user.value.imageURL ?? "profile image",
+                        controller.app.user.value?.imageURL ?? "profile image",
                       ),
                       height: 120,
                       width: 120,
-                      imageUrl: controllerApp.user.value.imageURL ?? "",
+                      imageUrl: controller.app.user.value?.imageURL ?? "",
                       fit: BoxFit.cover,
-
                       /// Empty State
                       empty: Center(
-                        child: TextX(
-                          controllerApp.user.value.name[0],
-                          style: TextStyleX.headerLarge,
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-
-                      /// Error State
-                      failed: Center(
-                        child: TextX(
-                          controllerApp.user.value.name[0],
-                          style: TextStyleX.headerLarge,
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).primaryColor,
-                        ),
+                        child: controller.app.user.value?.name.isNotEmpty??false
+                            ? TextX(
+                          controller.app.user.value!.name[0],
+                                style: TextStyleX.headerLarge,
+                                fontWeight: FontWeight.w600,
+                                color: Theme.of(context).primaryColor,
+                              )
+                            : Icon(
+                                Icons.account_circle_rounded,
+                                color: Theme.of(context).primaryColor,
+                                size: 50,
+                              ),
                       ),
                     ),
                   ),
@@ -64,8 +56,9 @@ class AppBarSectionX extends GetView<ProfileDetailsController> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      const SizedBox(width: 20),
                       TextX(
-                        controllerApp.user.value.name,
+                        controller.app.user.value?.name.isNotEmpty??false?controller.app.user.value!.name:'User',
                         color: Theme.of(context).primaryColor,
                         textAlign: TextAlign.center,
                         style: TextStyleX.titleLarge,
@@ -73,7 +66,7 @@ class AppBarSectionX extends GetView<ProfileDetailsController> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Icon(
-                          Iconsax.edit,
+                          IconX.edit,
                           color: Theme.of(context).primaryColor,
                           size: 20,
                         ),
@@ -94,6 +87,7 @@ class AppBarSectionX extends GetView<ProfileDetailsController> {
           /// If you are not logged in
           /// Auth Buttons
           return ProfileAccountCardX(
+            isButtonPadding: true,
             children: [
               ButtonX.second(
                 onTap: () => Get.offAllNamed(RouteNameX.login),

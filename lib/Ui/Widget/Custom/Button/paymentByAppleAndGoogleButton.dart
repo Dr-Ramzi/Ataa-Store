@@ -16,7 +16,7 @@ class PaymentByAppleAndGoogleButtonX extends StatelessWidget {
       text: isApple?"Pay with Apple Pay".tr:"Pay with Google Pay",
       onTap: onTap,
       icon: Image.asset(
-        isApple ? IconX.apple : IconX.google,
+        isApple ? ImageX.apple : ImageX.google,
         height: 20,
       ),
     );

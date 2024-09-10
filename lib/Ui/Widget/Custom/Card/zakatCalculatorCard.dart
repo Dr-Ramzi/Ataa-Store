@@ -21,7 +21,6 @@ class ZakatCalculatorCardX extends StatelessWidget {
       child: Column(
         children: [
           SwitchX(
-            isChangeStateInternally:false,
             value: isOpen,
             onChange: onChangeOpen,
             label: title,

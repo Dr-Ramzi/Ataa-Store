@@ -29,7 +29,17 @@ class MainContentOtpX extends GetView<OTPController> {
               color: Theme.of(context).colorScheme.secondary,
               textAlign: TextAlign.center,
             ).fadeAnimation200,
-            const SizedBox(height: 40.0),
+            const SizedBox(height: 32.0),
+
+            /// Error Message
+            if (controller.error.value!=null)
+              GestureDetector(
+                onTap: controller.onTapError,
+                child: MessageCardX(
+                  message: controller.error.value?.message,
+                  isError: true,
+                ),
+              ).marginOnly(bottom: 14).fadeAnimation200,
 
             /// Code Field
             Form(
@@ -40,7 +50,7 @@ class MainContentOtpX extends GetView<OTPController> {
                   TextFieldX(
                     controller: controller.otpCode,
                     label: "Verification Code",
-                    hint: '123456',
+                    hint: '',
                     validate: ValidateX.otp,
                     textInputType: TextInputType.number,
                     textInputAction: TextInputAction.done,

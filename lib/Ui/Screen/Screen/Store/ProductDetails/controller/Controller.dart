@@ -5,7 +5,6 @@ import '../../../../../../Core/Controller/Basket/basketGeneralController.dart';
 import '../../../../../../Core/core.dart';
 import '../../../../../../Data/data.dart';
 import '../../../../../../UI/Widget/widget.dart';
-import '../../../../../ScreenSheet/Other/MandatoryAuth/mandatoryAuth.dart';
 
 class ProductDetailsController extends GetxController {
   //============================================================================
@@ -90,11 +89,7 @@ class ProductDetailsController extends GetxController {
 
   /// Verify the entered data
   bool dataVerification() {
-    if (!app.isLogin.value) {
-      // Mandatory login before add to cart
-      mandatoryAuthSheetX();
-      return false;
-    } else if (product.sizes.isNotEmpty && sizeSelected.isEmpty) {
+    if (product.sizes.isNotEmpty && sizeSelected.isEmpty) {
       // Verify size selection
       throw "You must choose one of the sizes";
     }
