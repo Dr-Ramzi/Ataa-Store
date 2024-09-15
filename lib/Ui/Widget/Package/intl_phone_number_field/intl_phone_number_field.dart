@@ -193,6 +193,7 @@ class _InternationalPhoneNumberInputState
         child: Directionality(
           textDirection: Directionality.of(Get.context!) == TextDirection.rtl ? TextDirection.rtl:TextDirection.ltr,
           child: TextFieldX(
+            color: widget.phoneConfig.color,
             borderRadius:
                 const BorderRadius.horizontal(right: Radius.circular(StyleX.radius)),
             borderErrorRadius:

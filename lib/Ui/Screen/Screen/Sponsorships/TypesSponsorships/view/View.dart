@@ -12,7 +12,7 @@ class TypesSponsorshipsView extends GetView<TypesSponsorshipsController> {
     return Scaffold(
       appBar: AppBarX(
         title: "Sponsorships",
-        actions: [BasketIconButtonsX()],
+        actions: [CartIconButtonsX()],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(

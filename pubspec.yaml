@@ -84,6 +84,7 @@ dependencies:
   flutter_spinbox: ^0.13.1 # Number entry widget
   auto_size_text: ^3.0.0 # Automatic text size
   sms_autofill: ^2.0.0 # OTP sms auto fill
+  syncfusion_flutter_datepicker: ^26.2.14
 
 
   #-------------------------------------

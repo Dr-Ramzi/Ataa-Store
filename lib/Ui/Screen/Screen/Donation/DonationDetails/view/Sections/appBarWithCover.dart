@@ -81,7 +81,7 @@ class AppBarWithCoverSectionX extends GetView<DonationDetailsController> {
           child: AppBarTransparent(
             title: "Donation Details",
             actions: [
-              BasketIconButtonsX(
+              CartIconButtonsX(
                 isAnimation: false,
               )
             ],

@@ -11,7 +11,8 @@ class LocalDataX<T>{
   static late String route;
   static late SettingsX settings;
 
-  static String get basketID => get(LocalKeyX.basketID,defaultData: LocalDefaultDataX.basketID);
+  static String get cartID => get(LocalKeyX.cartId,defaultData: LocalDefaultDataX.cartId);
+  static bool get cartIDIsAssign => get(LocalKeyX.cartIdIsAssign,defaultData: LocalDefaultDataX.cartIdIsAssign);
   static String get token => get(LocalKeyX.token,defaultData: LocalDefaultDataX.token);
 
   static late int unreadNotifications;

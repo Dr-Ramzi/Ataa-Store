@@ -33,8 +33,7 @@ class StaticOptionsSectionX extends GetView<MoreSectionsController> {
             onTap: controller.onGifting,
           ).fadeAnimation300,
 
-          /// TODO: Show >>> Deductions
-          // MoreCardX(title: "Deductions", icon: IconX.creditCard,onTap: controller.onDeductions,).fadeAnimation300,
+          MoreCardX(title: "Deductions", icon: IconX.creditCard,onTap: controller.onDeductions,).fadeAnimation300,
           MoreCardX(
             title: "Zakat",
             icon: Icons.verified,

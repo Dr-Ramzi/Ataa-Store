@@ -15,7 +15,7 @@ class PaymentCardsView extends GetView<PaymentCardsController> {
     return Scaffold(
       appBar: AppBarX(
         title: "Payment cards",
-        actions: [BasketIconButtonsX()],
+        actions: [CartIconButtonsX()],
       ),
       body: SafeArea(
         child: FutureBuilder(

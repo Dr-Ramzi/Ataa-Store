@@ -4,6 +4,7 @@ class TextFieldDateX extends StatefulWidget {
   final TextEditingController controller;
   final String hint;
   final String? label;
+  final String? titleBottomSheet;
   final bool disabled;
   final EdgeInsets margin;
   final IconData? icon;
@@ -13,27 +14,41 @@ class TextFieldDateX extends StatefulWidget {
   final DateTime? initialDate;
   final String? Function(String?)? validate;
   final Function(DateTime?)? onChange;
-  const TextFieldDateX({
+  late final Locale locale;
+
+  TextFieldDateX({
     super.key,
     required this.controller,
     required this.hint,
     this.validate,
     this.initialDate,
     this.color,
-    this.lastDate,
     this.firstDate,
+    this.lastDate,
     this.label,
     this.disabled = false,
     this.margin = const EdgeInsets.symmetric(vertical: 8),
     this.icon,
     this.onChange,
-  });
+    this.titleBottomSheet,
+    Locale? locale,
+  }) {
+    this.locale = locale ?? Locale(TranslationX.getLanguageCode);
+  }
 
   @override
   State<TextFieldDateX> createState() => _TextFieldDateXState();
 }
 
 class _TextFieldDateXState extends State<TextFieldDateX> {
+  DateTime? date;
+  TimeOfDay? time;
+  @override
+  void initState() {
+    initializeDateFormatting(widget.locale.languageCode, null);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -69,31 +84,31 @@ class _TextFieldDateXState extends State<TextFieldDateX> {
               border: InputBorder.none,
               hintText: widget.hint.tr,
               isCollapsed: true,
-              helperStyle: TextStyleX.titleSmall.copyWith(color: Theme.of(context).hintColor),
+              hintStyle: TextStyleX.titleSmall
+                  .copyWith(color: Theme.of(context).hintColor),
             ),
             onTap: () async {
               FocusScope.of(context).requestFocus(FocusNode());
-
-              DateTime? date;
               await bottomSheetX(
+                title: widget.titleBottomSheet,
                 child: Column(
                   children: [
-                    CalendarDatePicker2(
-                      config: CalendarDatePicker2Config(
-                        currentDate: widget.initialDate ??
-                            widget.lastDate ??
-                            DateTime.now(),
-                        calendarType: CalendarDatePicker2Type.single,
-                        firstDate: widget.firstDate ?? DateTime(1900),
-                        lastDate: widget.lastDate ?? DateTime(2100),
-                        selectedMonthTextStyle: TextStyleX.titleSmall.copyWith(color: context.isDarkMode?ColorX.primary.shade100:Colors.white),
-                        selectedYearTextStyle: TextStyleX.titleSmall.copyWith(color: context.isDarkMode?ColorX.primary.shade100:Colors.white),
-                        selectedDayTextStyle: TextStyleX.titleSmall.copyWith(color: context.isDarkMode?ColorX.primary.shade100:Colors.white)
-                      ),
-                      value: [widget.initialDate],
-                      onValueChanged: (dates) {
-                        date = dates[0];
+                    DatePickerX(
+                      initialDate: widget.initialDate,
+                      firstDate: widget.firstDate,
+                      lastDate: widget.lastDate,
+                      selectedDate: date,
+                      firstDayOfWeek: DateTime.saturday,
+                      onDateSelected: (newDate) {
+                        date = newDate;
                       },
+                    ),
+                    const SizedBox(height: 10),
+                    Center(
+                      child: TimeInputX(
+                        initialTime: time,
+                        onChange: (time) => this.time=time,
+                      ),
                     ),
                     const SizedBox(height: 10),
                     Row(
@@ -102,11 +117,13 @@ class _TextFieldDateXState extends State<TextFieldDateX> {
                           child: ButtonX(
                             text: "Ok",
                             onTap: () {
-                              widget.controller.text = date != null
-                                  ? intl.DateFormat.yMMMMEEEEd().format(date!)
-                                  : '';
+                              widget.controller.text = (date != null
+                                  ? (intl.DateFormat('EEEE، d MMMM y', 'ar')
+                                          .format(date!))
+                                      .arabicToEnglishNumbers
+                                  : '');
                               if (widget.onChange != null) {
-                                widget.onChange!(date);
+                                widget.onChange!(time!=null?date?.addTime(time!):date);
                               }
                               Get.back();
                             },
@@ -115,9 +132,11 @@ class _TextFieldDateXState extends State<TextFieldDateX> {
                         const SizedBox(width: 8),
                         Flexible(
                           child: ButtonX.gray(
-                            text: "Clear",
+                            text: "Reset",
                             onTap: () {
                               widget.controller.text = '';
+                              date=null;
+                              time=null;
                               widget.onChange!(null);
                               Get.back();
                             },

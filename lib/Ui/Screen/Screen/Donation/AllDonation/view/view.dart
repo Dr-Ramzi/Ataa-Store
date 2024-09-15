@@ -27,8 +27,6 @@ class AllDonationView extends GetView<AllDonationController> {
                 filters: controller.filterController.filters.value,
                 orderBy: controller.filterController.orderBy.value,
                 searchQueryController: controller.search,
-                isEmptyCenter: false,
-                isEmptySearchCenter: false,
                 padding: const EdgeInsets.only(
                   right: StyleX.hPaddingApp,
                   left: StyleX.hPaddingApp,

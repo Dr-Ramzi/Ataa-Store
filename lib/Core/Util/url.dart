@@ -57,7 +57,11 @@ class UrlUtilX {
     // Adding additional filter parameters
     filterParams?.forEach((key, value) {
       if (value != null && value.toString().isNotEmpty) {
+        if(value is List){
+          queryParams['$key[]'] = value.map((item) => item.toString()).join(',');
+        }else{
         queryParams[key] = value.toString();
+        }
       }
     });
 

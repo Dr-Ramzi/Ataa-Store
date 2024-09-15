@@ -21,7 +21,7 @@ class DonationDataSectionX extends GetView<GiftingController> {
               "Donation Data",
               fontWeight: FontWeight.w700,
             ).fadeAnimation700,
-            const SizedBox(height: 8),
+            const SizedBox(height: 14),
 
             /// Donation Amount Field
             ContainerX(
@@ -34,11 +34,12 @@ class DonationDataSectionX extends GetView<GiftingController> {
                     selected: controller.freeDonationSelected.value,
                   ),
                   Form(
-                    key: controller.formKey,
-                    autovalidateMode: controller.autoValidate,
+                    key: controller.formKeyDonationAmount,
+                    autovalidateMode: controller.autoValidateDonationAmount,
                     child: TextFieldX(
                       controller: controller.donationAmount,
-                      onChanged: controller.removeFreeDonationSelected,
+                      onChanged:
+                          controller.onChangeAmountForFreeDonationSelected,
                       textInputType: TextInputType.number,
                       textInputAction: TextInputAction.done,
                       hint: "0",
@@ -55,7 +56,7 @@ class DonationDataSectionX extends GetView<GiftingController> {
             ).fadeAnimation700,
 
             /// Switches Options
-            const SizedBox(height: 10),
+            const SizedBox(height: 14),
             SwitchX(
               label: "Show the amount on the gift card",
               value: controller.isShowAmount.value,
@@ -68,7 +69,22 @@ class DonationDataSectionX extends GetView<GiftingController> {
               onChange: controller.onChangeSendToMe,
               margin: EdgeInsets.zero,
             ).fadeAnimation800,
+
+            /// Phone for send to me
+            if (controller.isSendToMe.value)
+              Form(
+                key: controller.formKeyPhoneSendToMe,
+                autovalidateMode: controller.autoValidatePhoneSendToMe,
+                child: PhoneFieldX(
+                  label: 'Mobile Number',
+                  color: context.isDarkMode ? null : Theme.of(context).cardColor,
+                  controller: controller.phoneSendToMe,
+                  onChangeCountryCode: controller.onChangeCountryCodeForSendToMe,
+                ).fadeAnimation100,
+              ).paddingOnly(top: 4),
+
             SwitchX(
+              key: const Key('Send later'),
               label: "Send later",
               value: controller.isSendLater.value,
               onChange: controller.onChangeSendLater,
@@ -78,19 +94,21 @@ class DonationDataSectionX extends GetView<GiftingController> {
             /// Sending Date
             if (controller.isSendLater.value)
               TextFieldDateX(
+                key: const Key('Date'),
+                titleBottomSheet:"Date and time of submission",
                 label: "Date and time of dispatch",
                 controller: controller.date,
-                icon: Icons.calendar_month_rounded,
-                hint: "-- Select date --",
-                color: context.isDarkMode?null:Theme.of(context).cardColor,
+                icon: IconX.date,
+                hint: "-- Select the date and time to send --",
+                color: context.isDarkMode ? null : Theme.of(context).cardColor,
                 validate: ValidateX.date,
                 onChange: controller.onChangeDate,
                 initialDate: controller.sendLaterDate.value,
-                firstDate: DateTime.now().add(const Duration(days: 1)),
+                firstDate: DateTime.now(),
                 lastDate: DateTime.now().add(const Duration(days: 365)),
-              ).paddingOnly(top: 10).fadeAnimation200,
+              ).paddingOnly(top: 8).fadeAnimation100,
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 18),
           ],
         ),
       ),

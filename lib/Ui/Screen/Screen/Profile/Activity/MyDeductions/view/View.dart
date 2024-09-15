@@ -16,7 +16,7 @@ class MyDeductionsView extends GetView<MyDeductionsController> {
     return Scaffold(
       appBar: AppBarX(
         title: "My Deductions",
-        actions: [BasketIconButtonsX()],
+        actions: [CartIconButtonsX()],
       ),
       body: SafeArea(
         child: FutureBuilder(

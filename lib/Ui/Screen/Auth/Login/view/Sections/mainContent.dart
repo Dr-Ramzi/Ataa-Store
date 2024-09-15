@@ -60,7 +60,7 @@ class MainContentLoginX extends GetView<LoginController> {
                     PhoneFieldX(
                       label: "Mobile Number",
                       controller: controller.phone,
-                      onChange: controller.onChangeCountryCode,
+                      onChangeCountryCode: controller.onChangeCountryCode,
                       countryCode: controller.countryCode.value,
                       isDisableChangeCountryCode:
                           !controller.app.generalSettings.isShowCountryCodeList,

@@ -16,7 +16,7 @@ class QuickActionX {
     ),
     ShortcutItem(
       type: 'basket',
-      localizedTitle: 'Basket'.tr,
+      localizedTitle: 'Cart'.tr,
       icon: 'basket',
     ),
     ShortcutItem(
@@ -38,7 +38,7 @@ class QuickActionX {
           RootController root = Get.find();
           await root.openQuickDonation(isFromAction: true);
         case 'basket':
-          Get.toNamed(RouteNameX.basket);
+          Get.toNamed(RouteNameX.cart);
         case 'notifications':
           Get.toNamed(RouteNameX.notifications);
         default:

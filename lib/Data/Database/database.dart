@@ -157,7 +157,8 @@ class DatabaseX {
           authToken: LocalDataX.token,
         ),
       );
-      return UserX.fromJson(data.$1[NameX.data], LocalDataX.token);
+      return UserX.fromJson(
+          Map<String, dynamic>.from(data.$1[NameX.data]), LocalDataX.token);
     } catch (error) {
       error.toErrorX.log();
       if (error.toErrorX.errorCode == ErrorCodesX.unauthorized) {
@@ -431,6 +432,81 @@ class DatabaseX {
   }
 
   //============================================================================
+  // Deduction
+
+  static Future<DeductionX> getDeductionDetails({required String id}) async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getDeductionDetails,
+      param: DataSourceParamX(
+        localCacheKey: 'deduction_details_$id',
+        localCacheMaxAge: const Duration(days: 1),
+        authToken: LocalDataX.token,
+        pathParams: {NameX.id: id},
+      ),
+    );
+    return DeductionX.fromJson(
+      Map<String, dynamic>.from(
+        data.$1[NameX.data],
+      ),
+    );
+  }
+
+  static Future<List<DeductionX>> getAllDeductions({
+    bool? isHome,
+    String? categoryID,
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    Map<String, dynamic>? filterParams = {
+      NameX.isShowHome: isHome.toIntNullableX,
+      NameX.donationCategoryId: categoryID,
+    };
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getAllDeductions,
+      param: DataSourceParamX(
+        localCacheKey: 'deduction_$filterParams',
+        localCacheMaxAge: const Duration(days: 3),
+        page: page,
+        limit: perPage,
+        filterParams: filterParams,
+      ),
+    );
+    List<DeductionX> result =
+        ModelUtilX.generateItems(data.$1[NameX.data], DeductionX.fromJson);
+    return result;
+  }
+
+  static Future<List<DeductionX>> getDeductionsBySearch({
+    String? sortType,
+    String? recurring,
+    String? categoryID,
+    String? searchQuery,
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    Map<String, dynamic>? filterParams = {
+      NameX.sortType: sortType,
+      if (recurring != null) NameX.manyRecurring: [recurring],
+      NameX.donationCategoryId: categoryID,
+    };
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getDeductionsBySearch,
+      param: DataSourceParamX(
+        localCacheKey: 'deductions_by_search_$filterParams',
+        localCacheMaxAge: const Duration(days: 3),
+        page: page,
+        limit: perPage,
+        filterParams: filterParams,
+        search: searchQuery,
+        searchKey: NameX.search,
+      ),
+    );
+    List<DeductionX> result =
+        ModelUtilX.generateItems(data.$1[NameX.data], DeductionX.fromJson);
+    return result;
+  }
+
+  //============================================================================
   // Donations
 
   static Future<List<DonationX>> getAllDonations({
@@ -625,63 +701,96 @@ class DatabaseX {
     );
   }
 
-  //============================================================================
-  // Basket
+  static Future<GiftMessageX> getGiftMessageTemplate() async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getGiftMessageTemplate,
+      param: DataSourceParamX(
+        localCacheKey: 'get_gift_message_template',
+        localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
+      ),
+    );
+    return GiftMessageX.fromJson(
+      Map<String, dynamic>.from(
+        data.$1[NameX.data],
+      ),
+    );
+  }
 
-  static Future assignBasket(String basketID) async {
+  //============================================================================
+  // Cart
+
+  static Future assignCart(String cartId) async {
     try {
       return await RemoteDataSourceX.post(
-          DBEndPointX.postAssignBasket(basketID));
-    } catch (error) {
-      return Future.error(error);
+        DBEndPointX.postAssignCart,
+        param: DataSourceParamX(
+          maxRetries: 3,
+          authToken: LocalDataX.token,
+          pathParams: {NameX.cartId: cartId},
+        ),
+      );
+    } catch (e) {
+      if (e.toErrorX.errorCode == ErrorCodesX.notFound) {
+        return;
+      } else {
+        rethrow;
+      }
     }
   }
 
-  static Future<BasketX> createBasket() async {
+  static Future<CartX> createCart() async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getCreateCartID,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+      ),
+    );
+    return CartX.fromJson(
+      Map<String, dynamic>.from(data.$1[NameX.data]),
+    );
+  }
+
+  static Future<CartX> getAllCartItems(String cartId) async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getAllCartItems,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        pathParams: {NameX.cartId: cartId},
+      ),
+    );
+    return CartX.fromJson(
+      Map<String, dynamic>.from(data.$1[NameX.data]),
+    );
+  }
+
+  static Future createCartItem(
+    String cartId,
+    String modelType,
+    String modelId, {
+    int quantity = 1,
+  }) async {
     try {
-      return BasketX.fromJson(
-        (await RemoteDataSourceX.get(
-          DBEndPointX.getCreateBasketID,
-          param: DataSourceParamX(authToken: LocalDataX.token),
-        ))
-            .$1,
+      var data = await RemoteDataSourceX.post(
+        DBEndPointX.postCreateCartItem,
+        param: DataSourceParamX(
+          authToken: LocalDataX.token,
+          pathParams: {NameX.cartId: cartId},
+          requestBody: {
+            NameX.cartId:cartId,
+            NameX.modelType:modelType,
+            NameX.modelId:modelId,
+          }
+        ),
       );
     } catch (error) {
       return Future.error(error);
     }
   }
-
-  static Future<BasketX> getAllBasketItems(String basketID) async {
-    try {
-      return BasketX.fromJson(
-        (await RemoteDataSourceX.get(
-          DBEndPointX.getAllBasketItems + basketID,
-          param: DataSourceParamX(authToken: LocalDataX.token),
-        ))
-            .$1,
-      );
-    } catch (error) {
-      return Future.error(error);
-    }
-  }
-
-  static Future<BasketX> createBasketItem(String basketID) async {
-    try {
-      return BasketX.fromJson(
-        (await RemoteDataSourceX.post(
-          DBEndPointX.postCreateBasketItem + basketID,
-          param: DataSourceParamX(authToken: LocalDataX.token),
-        ))
-            .$1,
-      );
-    } catch (error) {
-      return Future.error(error);
-    }
-  }
-  // postCreateBasketItem
-  // putUpdateBasketItem
-  // deleteBasketItem
-  // deleteAllBasketItems
+  // postCreateCartItem
+  // putUpdateCartItem
+  // deleteCartItem
+  // deleteAllCartItems
   //============================================================================
   // Gold & Silver Price
 

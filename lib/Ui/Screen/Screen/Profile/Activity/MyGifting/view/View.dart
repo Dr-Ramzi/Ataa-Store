@@ -13,7 +13,7 @@ class MyGiftingView extends GetView<MyGiftingController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarX(title: "My Gifting",actions: [BasketIconButtonsX()],),
+      appBar: AppBarX(title: "My Gifting",actions: [CartIconButtonsX()],),
       body: SafeArea(
         child: FutureBuilder(
           future: controller.getData(),

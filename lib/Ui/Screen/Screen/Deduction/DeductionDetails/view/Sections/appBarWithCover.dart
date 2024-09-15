@@ -24,21 +24,21 @@ class AppBarWithCoverSectionX extends GetView<DeductionDetailsController> {
             itemBuilder: (_, index) {
               if ((controller.getNumCover() == 1 &&
                       index == 0 &&
-                      controller.deduction.imageURL.isNotEmpty) ||
+                      controller.deduction.imageUrl.isNotEmpty) ||
                   (controller.getNumCover() == 2 && index == 0)) {
                 return Container(
                   color: Theme.of(context).cardColor,
                   width: double.maxFinite,
                   height: 300,
                   child: ImageNetworkX(
-                    imageUrl: controller.deduction.imageURL,
+                    imageUrl: controller.deduction.imageUrl,
                     fit: BoxFit.cover,
                   ),
                 );
               } else if (!controller.hasErrorVideo.value ||
                   (controller.getNumCover() == 1 &&
                       index == 0 &&
-                      controller.deduction.videoURL.isNotEmpty) ||
+                      controller.deduction.videoUrl.isNotEmpty) ||
                   (controller.getNumCover() == 2 && index == 1)) {
                 return Obx(
                   () {
@@ -80,7 +80,7 @@ class AppBarWithCoverSectionX extends GetView<DeductionDetailsController> {
           child: AppBarTransparent(
             title: "Deduction Details",
             actions: [
-              BasketIconButtonsX(
+              CartIconButtonsX(
                 isAnimation: false,
               )
             ],

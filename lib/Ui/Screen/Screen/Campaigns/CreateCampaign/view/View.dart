@@ -16,7 +16,7 @@ class CreateCampaignView extends GetView<CreateCampaignController> {
     return Scaffold(
       appBar: AppBarX(
         title: "Create a campaign",
-        actions: [BasketIconButtonsX()],
+        actions: [CartIconButtonsX()],
       ),
       body: SafeArea(
         child: FutureBuilder(
@@ -95,7 +95,7 @@ class CreateCampaignView extends GetView<CreateCampaignController> {
                               TextFieldDateX(
                                 label: "Campaign end date",
                                 controller: controller.date,
-                                icon: Icons.calendar_month_rounded,
+                                icon: IconX.date,
                                 hint: "-- Select date --",
                                 validate: ValidateX.date,
                                 onChange: controller.onChangeDate,

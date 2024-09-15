@@ -1,8 +1,8 @@
 enum GiftColorStatusX{
-  purple("#9061F9"),
   teal("#0F9591"),
-  lightBlue("#6875F5"),
+  purple("#9061F9"),
   darkOrange("#C27803"),
+  lightBlue("#6875F5"),
   fuchsiaPink("#E74694"),
   coralRed("#F05252");
 

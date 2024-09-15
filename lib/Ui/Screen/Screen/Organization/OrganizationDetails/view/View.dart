@@ -16,7 +16,7 @@ class OrganizationDetailsView extends GetView<OrganizationDetailsController> {
     return Scaffold(
       appBar: AppBarX(
         title: "Program",
-        actions: [BasketIconButtonsX()],
+        actions: [CartIconButtonsX()],
       ),
       body: SafeArea(
         child: Obx(
@@ -90,7 +90,7 @@ class OrganizationDetailsView extends GetView<OrganizationDetailsController> {
 //     return Scaffold(
 //       appBar: AppBarX(
 //         title: "Program",
-//         actions: [BasketIconButtonsX()],
+//         actions: [CartIconButtonsX()],
 //       ),
 //       body: SafeArea(
 //         child: Obx(

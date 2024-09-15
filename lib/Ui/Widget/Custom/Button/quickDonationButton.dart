@@ -24,6 +24,7 @@ class QuickDonationButton extends StatelessWidget {
                 'Quick Donation',
                 color: Colors.white,
                 style: TextStyleX.titleSmall,
+                fontWeight: FontWeight.w600,
                 textAlign: TextAlign.center,
                 maxLines: 2,
               ),

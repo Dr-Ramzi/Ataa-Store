@@ -47,7 +47,7 @@ class LoginController extends GetxController {
         Get.back();
 
         /// to close login sheet
-        bottomSheetX(child: SignUpView(isSheet: true));
+        bottomSheetX(child: SignUpView(isSheet: true).paddingOnly(top: 14));
       } else if (Get.previousRoute == RouteNameX.signUp) {
         Get.back();
 
@@ -88,6 +88,7 @@ class LoginController extends GetxController {
           }
         } catch (e) {
           error.value = e.toErrorX;
+          error.value!.log();
           buttonState.value = ButtonStateEX.failed;
         }
         isLoading.value = false;
@@ -128,7 +129,7 @@ class LoginController extends GetxController {
     /// go to otp screen
     if (isSheet) {
       Get.back();
-      bottomSheetX(child: OTPView(isSheet: true, otp: otp));
+      bottomSheetX(child: OTPView(isSheet: true, otp: otp).paddingOnly(top: 14));
     } else {
       Get.toNamed(RouteNameX.otp, arguments: otp);
     }

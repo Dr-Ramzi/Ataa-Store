@@ -22,7 +22,7 @@ class DonationsSectionX extends GetView<HomeController> {
 
       /// Header
       header: SectionTitleX(
-        title: "Donation Opportunities",
+        title: "Special donation opportunities",
         icon: IconX.sparkles,
         showMore: controller.onDonationsMore,
       ),

@@ -79,32 +79,49 @@ class _TextFieldXState extends State<TextFieldX> {
   @override
   Widget build(BuildContext context) {
     OutlineInputBorder border = OutlineInputBorder(
-      borderSide: widget.border?? BorderSide(
-        width: StyleX.borderWidth,
-        color: widget.borderColor ?? Theme.of(context).dividerColor,
-      ),
-      borderRadius: widget.borderRadius??BorderRadius.circular(StyleX.radius),
+      borderSide: widget.border ??
+          BorderSide(
+            width: StyleX.borderWidth,
+            color: widget.borderColor ?? Theme.of(context).dividerColor,
+          ),
+      borderRadius: widget.borderRadius ?? BorderRadius.circular(StyleX.radius),
     );
     OutlineInputBorder borderError = OutlineInputBorder(
-      borderSide: widget.borderError??BorderSide(
-        width: StyleX.borderWidth,
-        color: Theme.of(context).colorScheme.error,
-      ),
-      borderRadius: widget.borderErrorRadius??BorderRadius.circular(StyleX.radius),
+      borderSide: widget.borderError ??
+          BorderSide(
+            width: StyleX.borderWidth,
+            color: Theme.of(context).colorScheme.error,
+          ),
+      borderRadius:
+          widget.borderErrorRadius ?? BorderRadius.circular(StyleX.radius),
     );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (widget.label != null) LabelInputX(widget.label!,isRequired:widget.isRequired),
+        if (widget.label != null)
+          LabelInputX(widget.label!, isRequired: widget.isRequired),
         Padding(
           padding: widget.margin,
           child: TextFormField(
-            textAlign: widget.textAlign?? TextAlign.start,
+            textAlign: widget.textAlign ?? TextAlign.start,
             maxLength: widget.maxLength,
             minLines: widget.minLines,
             style: TextStyleX.titleSmall,
             autofocus: widget.autofocus,
-            onChanged: widget.onChanged,
+            onChanged: (text) {
+              if(widget.textInputType==TextInputType.number) {
+                String convertedText = text.arabicToEnglishNumbers;
+                widget.controller.text = convertedText;
+                widget.controller.selection = TextSelection.fromPosition(
+                  TextPosition(offset: convertedText.length),
+                );
+                if (widget.onChanged != null) {
+                  widget.onChanged!(convertedText);
+                }
+              }else if (widget.onChanged != null) {
+                widget.onChanged!(text);
+              }
+            },
             validator: widget.validate,
             readOnly: widget.onlyRead ?? widget.disabled,
             obscureText: passwordVisible,
@@ -122,10 +139,10 @@ class _TextFieldXState extends State<TextFieldX> {
               fillColor: widget.disabled
                   ? Theme.of(context).disabledColor
                   : widget.color ?? Theme.of(context).cardTheme.color,
-
               contentPadding: widget.icon != null
                   ? const EdgeInsets.symmetric(vertical: 1, horizontal: 4)
-                  : const EdgeInsetsDirectional.only(start: 0,end: 16, top: 12,bottom: 12),
+                  : const EdgeInsetsDirectional.only(
+                      start: 0, end: 16, top: 12, bottom: 12),
               enabledBorder: border,
               focusedBorder: border,
               disabledBorder: border,
@@ -138,14 +155,16 @@ class _TextFieldXState extends State<TextFieldX> {
                       color: ColorX.grey.shade400,
                     )
                   : const SizedBox(),
-              prefixIconConstraints:widget.icon != null?null:
-              BoxConstraints.tight(
-                  const Size(16, StyleX.inputHeight),
-              ),
-              suffixIcon: widget.suffixWidget!=null?Padding(padding:
-                  const EdgeInsetsDirectional.only(end: 16)
-                  ,child:widget.suffixWidget):
-                  (widget.isPassword
+              prefixIconConstraints: widget.icon != null
+                  ? null
+                  : BoxConstraints.tight(
+                      const Size(16, StyleX.inputHeight),
+                    ),
+              suffixIcon: widget.suffixWidget != null
+                  ? Padding(
+                      padding: const EdgeInsetsDirectional.only(end: 16),
+                      child: widget.suffixWidget)
+                  : (widget.isPassword
                       ? IconButton(
                           icon: Icon(
                             passwordVisible ? Iconsax.eye : Iconsax.eye_slash,
@@ -165,7 +184,8 @@ class _TextFieldXState extends State<TextFieldX> {
               errorStyle: TextStyleX.titleSmall,
               alignLabelWithHint: true,
               hintText: (widget.hint ?? "").tr,
-              hintStyle: TextStyleX.titleSmall.copyWith(color: Theme.of(context).hintColor),
+              hintStyle: TextStyleX.titleSmall
+                  .copyWith(color: Theme.of(context).hintColor),
             ),
           ),
         ),

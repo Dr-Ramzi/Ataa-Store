@@ -19,7 +19,7 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
       backgroundColor: Theme.of(context).cardColor,
       appBar: AppBarX(
         title: "Product Details",
-        actions: [BasketIconButtonsX()],
+        actions: [CartIconButtonsX()],
       ),
       body: FutureBuilder(
         future: controller.getData(),

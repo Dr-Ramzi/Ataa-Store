@@ -15,7 +15,7 @@ class AllOrganizationsView extends GetView<AllOrganizationsController> {
     return Scaffold(
       appBar: AppBarX(
         title: "Our Programs",
-        actions: [BasketIconButtonsX()],
+        actions: [CartIconButtonsX()],
       ),
       body: SafeArea(
         child: ScrollRefreshLoadMoreX<OrganizationX>(

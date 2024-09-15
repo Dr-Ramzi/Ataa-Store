@@ -27,7 +27,7 @@ class LoadingSectionX extends StatelessWidget {
               child: AppBarTransparent(
                 title: "Campaign Details",
                 actions: [
-                  BasketIconButtonsX(
+                  CartIconButtonsX(
                     isAnimation: false,
                   )
                 ],

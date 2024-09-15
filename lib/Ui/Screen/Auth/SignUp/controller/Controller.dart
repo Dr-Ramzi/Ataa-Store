@@ -47,7 +47,7 @@ class SignUpController extends GetxController {
       autoValidate = AutovalidateMode.disabled;
       if (isSheet) {
         Get.back();
-        bottomSheetX(child: LoginView(isSheet: true));
+        bottomSheetX(child: LoginView(isSheet: true).paddingOnly(top: 14));
       } else if (Get.previousRoute == RouteNameX.login) {
         Get.back();
         Get.find<LoginController>()

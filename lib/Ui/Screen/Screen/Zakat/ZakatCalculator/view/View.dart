@@ -18,7 +18,7 @@ class ZakatCalculatorView extends GetView<ZakatCalculatorController> {
     return Scaffold(
       appBar: AppBarX(
         title: "Zakat Calculator",
-        actions: [BasketIconButtonsX()],
+        actions: [CartIconButtonsX()],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(

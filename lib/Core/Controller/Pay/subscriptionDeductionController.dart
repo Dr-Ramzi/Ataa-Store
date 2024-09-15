@@ -12,7 +12,6 @@ class SubscriptionDeductionControllerX extends GetxController {
   // Injection of required controls
 
   final AppControllerX app = Get.find();
-  late DonateOnBehalfOfFamilyController donateOnBehalfOfFamily;
 
   //============================================================================
   // Variables
@@ -36,15 +35,6 @@ class SubscriptionDeductionControllerX extends GetxController {
   init(DeductionX deduction, {bool isSheet = false}) {
     this.deduction = deduction;
     this.isSheet = isSheet;
-
-    /// check if "donate On Behalf Of Family controller" is has or create
-    if (Get.isRegistered<DonateOnBehalfOfFamilyController>(tag: deduction.id)) {
-      donateOnBehalfOfFamily =
-          Get.find<DonateOnBehalfOfFamilyController>(tag: deduction.id);
-    } else {
-      donateOnBehalfOfFamily =
-          Get.put(DonateOnBehalfOfFamilyController(), tag: deduction.id);
-    }
   }
 
   //============================================================================
@@ -61,19 +51,14 @@ class SubscriptionDeductionControllerX extends GetxController {
     freeDeductionSelected.value=val;
   }
 
-  removeFreeDonationSelected(_){
-    if(freeDeductionSelected.value!=0) {
-      freeDeductionSelected.value=0;
+  removeFreeDonationSelected(val){
+    if (int.tryParse(val)!=null) {
+      freeDeductionSelected.value = int.parse(val);
     }
   }
   bool dataVerification() {
-    if (deduction.fixedDeductionAmount != null) {
+    if (!deduction.isOpenPrice) {
       return true;
-    } else if (donateOnBehalfOfFamily.isEnable.value &&
-        !donateOnBehalfOfFamily.formKey.currentState!.validate()) {
-      /// Verify the donation entry fields for family and friends
-      donateOnBehalfOfFamily.autoValidate = AutovalidateMode.always;
-      return throw "Please enter the donor's information on his behalf";
     } else if (!formKey.currentState!.validate()) {
       /// Verify input fields
       autoValidate = AutovalidateMode.always;

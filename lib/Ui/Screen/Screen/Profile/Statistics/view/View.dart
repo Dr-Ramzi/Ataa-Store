@@ -15,7 +15,7 @@ class StatisticsView extends GetView<StatisticsController> {
     return Scaffold(
       appBar: AppBarX(
         title: "Dashboard",
-        actions: [BasketIconButtonsX()],
+        actions: [CartIconButtonsX()],
       ),
       body: SafeArea(
         child: SingleChildScrollView(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import '../../../../../UI/Widget/widget.dart';
+import '../../../../../Config/config.dart';
 import '../../../../Widget/Basic/Utils/future_builder.dart';
 import '../controller/Controller.dart';
 
@@ -12,12 +13,26 @@ class LoadingView extends GetView<LoadingController> {
       body: FutureBuilderX(
         future: controller.init,
         onSuccess: controller.finish,
-        loading: const Column(
+        loading: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            LogoX(),
-            SizedBox(height: 70, width: double.maxFinite),
-            CircularProgressIndicator(),
+            Center(
+              child: Column(
+                children: [
+                  SvgPicture.asset(
+                    ImageX.sponsorLogo,
+                    height: 80,
+                  ),
+                  const SizedBox(height: 25),
+                  SvgPicture.asset(
+                    ImageX.logo,
+                    height: 40,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 70, width: double.maxFinite),
+            const CircularProgressIndicator(),
           ],
         ),
         child: (_)=> const SizedBox(),

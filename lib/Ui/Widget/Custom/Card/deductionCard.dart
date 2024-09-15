@@ -39,7 +39,7 @@ class DeductionCardX extends StatelessWidget {
                     child: ImageNetworkX(
                       height: 170,
                       width: double.maxFinite,
-                      imageUrl: deduction.imageURL,
+                      imageUrl: deduction.imageUrl,
                     ),
                   ),
 
@@ -88,9 +88,15 @@ class DeductionCardX extends StatelessWidget {
                     const SizedBox(height: 8),
 
                     /// Subscribe Button
+                    if(deduction.isSubscribed)
+                    ButtonX.gray(
+                      text: 'Subscribed',
+                      onTap: (){},
+                    ),
+                    if(!deduction.isSubscribed)
                     ButtonX(
                       text: "Subscribe Now",
-                      onTap: () async => await onSubscribe(deduction),
+                      onTap: () async=>await onSubscribe(deduction),
                       iconData: Icons.payments_rounded,
                     ),
                   ],

@@ -9,7 +9,7 @@ class ActivityView extends GetView<ActivityController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarX(title: "My Activity",actions: [BasketIconButtonsX()],),
+      appBar: AppBarX(title: "My Activity",actions: [CartIconButtonsX()],),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: StyleX.hPaddingApp,vertical:StyleX.vPaddingApp),
@@ -25,7 +25,7 @@ class ActivityView extends GetView<ActivityController> {
             // OptionCardX(title: "My Deductions", icon: IconX.creditCard,onTap: controller.onDeductions,),
             /// TODO: Show >>> My Sponsorships
             // OptionCardX(title: "My Sponsorships", icon: Icons.thumb_up_alt_rounded,onTap: controller.onSponsorships,),
-            OptionCardX(title: "Basket", icon: Icons.shopping_cart_rounded,onTap: controller.onGivingBasket,),
+            OptionCardX(title: "Cart", icon: Icons.shopping_cart_rounded,onTap: controller.onGivingCart,),
             OptionCardX(title: "Sharing Links", icon: Icons.share_rounded,onTap: controller.onSharingLinks,),
             OptionCardX(title: "Payment cards", icon: IconX.creditCard,onTap: controller.onPaymentCards,),
             OptionCardX(title: "Notifications", icon: Icons.notifications_rounded,onTap: controller.onNotifications,isBottomLine: false,),

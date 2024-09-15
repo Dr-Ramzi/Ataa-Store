@@ -1,19 +1,17 @@
 import 'dart:async';
-import 'package:ataa/Core/Extension/convert/convert.dart';
 import 'package:ataa/Data/Enum/gift_color_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:get/get.dart';
 import '../../../../../Config/config.dart';
-import '../../../../../Core/Controller/Basket/basketGeneralController.dart';
-import '../../../../../Core/Controller/Other/detailsOfHisDedicateController.dart';
+import '../../../../../Core/Controller/Cart/cartGeneralController.dart';
 import '../../../../../Core/Controller/Other/previewDedicateController.dart';
+import '../../../../../Core/Error/error.dart';
 import '../../../../../Core/core.dart';
+import '../../../../../Data/Model/Gifting/giftCardFormByGender.dart';
 import '../../../../../Data/Model/Gifting/giftCategory.dart';
 import '../../../../../Data/data.dart';
 import '../../../../../UI/Widget/widget.dart';
-import '../../../../ScreenSheet/Other/DetailsOfHisDedicate/detailsOfHisDedicateSheet.dart';
-import '../../../../ScreenSheet/Other/MandatoryAuth/mandatoryAuth.dart';
 import '../../../../ScreenSheet/Other/PreviewDedicate/previewDedicateSheet.dart';
 
 class GiftingController extends GetxController {
@@ -21,58 +19,68 @@ class GiftingController extends GetxController {
   // Injection of required controls
 
   AppControllerX app = Get.find();
-  BasketGeneralControllerX basketController = Get.find();
-  DetailsOfHisDedicateController detailsOfHisDedicateController =
-      Get.put(DetailsOfHisDedicateController());
+  CartGeneralControllerX basketController = Get.find();
   PreviewDedicateControllerX previewDedicateController =
       Get.put(PreviewDedicateControllerX());
 
   //============================================================================
   // Variables
 
-  GiftingX gifting = GiftingX.empty();
+  late GiftingX gifting;
 
-  List<String> colors = [];
-  List<GiftCategoryX> giftCategories = [];
-  List<GiftingCardX> cards = [];
-  List<OrganizationX> organizations = [];
-
-  GlobalKey<FormState> formKey = GlobalKey();
-  AutovalidateMode autoValidate = AutovalidateMode.disabled;
-  TextEditingController donationAmount = TextEditingController();
-  TextEditingController date = TextEditingController();
-
-  RxBool isShowAmount = false.obs;
-  RxBool isSendToMe = false.obs;
-  RxBool isSendLater = false.obs;
-  Rx<DateTime?> sendLaterDate = Rx<DateTime?>(null);
-
+  /// Loading
   RxBool isLoading = false.obs;
+  RxBool isLoadingForGetGiftCategoryDetails = false.obs;
   Rx<ButtonStateEX> addToCartButtonState = ButtonStateEX.normal.obs;
   Rx<ButtonStateEX> giftingButtonState = ButtonStateEX.normal.obs;
   Rx<ButtonStateEX> previewButtonState = ButtonStateEX.normal.obs;
 
-  RxInt typeSelectedIndex = (-1).obs;
-  RxInt cardSelectedIndex = (-1).obs;
+  /// Data
+  final List<String> colors =
+      GiftColorStatusX.values.map((e) => e.code.substring(1)).toList();
+  RxList<GiftCategoryX> giftCategories = <GiftCategoryX>[].obs;
+  RxList<OrganizationX> organizations = <OrganizationX>[].obs;
+
+  /// Input
+  GlobalKey<FormState> formKeyDonationAmount = GlobalKey();
+  AutovalidateMode autoValidateDonationAmount = AutovalidateMode.disabled;
+  GlobalKey<FormState> formKeyPhoneSendToMe = GlobalKey();
+  AutovalidateMode autoValidatePhoneSendToMe = AutovalidateMode.disabled;
+  GlobalKey<FormState> formKeyForDedicatesData = GlobalKey();
+  AutovalidateMode autoValidateForDedicatesData = AutovalidateMode.disabled;
+  TextEditingController donationAmount = TextEditingController();
+  TextEditingController date = TextEditingController();
+
+  /// Options
+  RxBool isShowAmount = false.obs;
+
+  RxBool isSendToMe = false.obs;
+  TextEditingController phoneSendToMe = TextEditingController();
+  int countryCodeForSendToMe = 966;
+
+  RxBool isSendLater = false.obs;
+  Rx<DateTime?> sendLaterDate = Rx<DateTime?>(null);
+
+  /// Selected
   RxInt colorSelectedIndex = 0.obs;
-  RxInt orgSelectedIndex = (-1).obs;
-
+  late Rx<GiftCategoryX> giftCategorySelected;
+  Rx<GiftCardFormByGenderX?> giftCardFormByGenderSelected = Rx(null);
+  Rx<OrganizationX?> orgSelected = Rx(null);
   RxInt freeDonationSelected = 0.obs;
-
-
-  Rx<ButtonStateEX> buttonState = ButtonStateEX.normal.obs;
-
-  late Rx<String> gender = "male".obs;
+  Rx<String> gender = "male".obs;
   RxInt countryCode = 966.obs;
 
+  /// For Card
+  RxString donorNameForCard = ''.obs;
+  RxString giftedNameForCard = ''.obs;
+  RxString donationAmountForCard = ''.obs;
+
+  /// init
   final FlutterContactPicker contactPicker = FlutterContactPicker();
 
-  GlobalKey<FormState> formKey2 = GlobalKey();
-  AutovalidateMode autoValidate2 = AutovalidateMode.disabled;
-
   /// The name Mahdi is fetched through the username
-  late TextEditingController donorName =
-  TextEditingController(text: app.isLogin.value ? app.user.value!.name : "");
+  late TextEditingController donorName = TextEditingController(
+      text: app.isLogin.value ? app.user.value!.name : "");
   TextEditingController giftedName = TextEditingController();
   TextEditingController giftedPhone = TextEditingController();
 
@@ -81,39 +89,54 @@ class GiftingController extends GetxController {
 
   Future<void> getData() async {
     try {
-      // giftCategories = await DatabaseX.getAllGiftCategories();
-      // cards = TestDataX.giftingCardX;
-      // colors = GiftColorStatusX.values.map((e) => e.code.substring(1)).toList();
-      // if (giftCategories.isNotEmpty) {
-      //   organizations = (await DatabaseX.getGiftCategoryDetails(
-      //           id: giftCategories.first.id))
-      //       .donationCategories;
-      // }
+      giftCategories.value = await DatabaseX.getAllGiftCategories();
+      if (giftCategories.isEmpty) {
+        throw ErrorX.createErrorByCode(ErrorCodesX.notFound);
+      } else {
+        giftCategorySelected = giftCategories.first.obs;
+        await getGiftCategoryDetails(giftCategories.first.id);
+      }
     } catch (e) {
-      return Future.error(e);
+      rethrow;
     }
   }
 
   Future<List<GiftCategoryX>> getGiftCategories(
-    ScrollRefreshLoadMoreParametersX data,
-  ) async {
+      ScrollRefreshLoadMoreParametersX data) async {
     return await DatabaseX.getAllGiftCategories(
       page: data.page,
       perPage: data.perPage,
     );
   }
 
+  getGiftCategoryDetails(String id) async {
+    isLoadingForGetGiftCategoryDetails.value = true;
+    giftCategorySelected.value = await DatabaseX.getGiftCategoryDetails(id: id);
+    organizations.value = giftCategorySelected.value.donationCategories;
+    orgSelected.value = null;
+    isLoadingForGetGiftCategoryDetails.value = false;
+    onChangeGiftCardFormByGender();
+  }
+
   //----------------------------------------------------------------------------
   // Change
 
-  onChangeType(index) {
-    typeSelectedIndex.value = index;
-    update();
+  onChangeGiftCardFormByGender() {
+    giftCardFormByGenderSelected.value = gender.value == 'male'
+        ? giftCategorySelected.value.giftCardFormMale
+        : giftCategorySelected.value.giftCardFormFemale;
   }
 
-  onChangeCard(index) => cardSelectedIndex.value = index;
+  onChangeCategory(index) {
+    giftCategorySelected.value = giftCategories[index];
+    getGiftCategoryDetails(giftCategorySelected.value.id);
+  }
+
   onChangeColor(index) => colorSelectedIndex.value = index;
-  onChangeOrg(index) => orgSelectedIndex.value = index;
+  onChangeOrg(index) {
+    orgSelected.value = organizations[index];
+  }
+
   onChangeShowAmount(bool val) => isShowAmount.value = val;
   onChangeSendToMe(bool val) => isSendToMe.value = val;
   onChangeSendLater(bool val) => isSendLater.value = val;
@@ -123,17 +146,23 @@ class GiftingController extends GetxController {
     freeDonationSelected.value = val;
   }
 
-  removeFreeDonationSelected(_) {
-    if (freeDonationSelected.value != 0) {
-      freeDonationSelected.value = 0;
+  onChangeAmountForFreeDonationSelected(val) {
+    if (int.tryParse(val) != null) {
+      freeDonationSelected.value = int.parse(val);
     }
   }
 
-  //----------------------------------------------------------------------------
-  // Other
-  onChangeGender(String? value) => gender.value = value!;
+  onChangeGender(String? value) {
+    gender.value = value!;
+    onChangeGiftCardFormByGender();
+  }
 
   onChangeCountryCode(String val) => countryCode.value = int.parse(val);
+  onChangeCountryCodeForSendToMe(String val) =>
+      countryCodeForSendToMe = int.parse(val);
+
+  //----------------------------------------------------------------------------
+  // Phone From Contacts
 
   /// Get the Mahdi's information from his contacts
   onPhoneFromContacts() async {
@@ -149,6 +178,7 @@ class GiftingController extends GetxController {
           var result = FunctionX.extractCountryCodeAndPhoneNumber(
             contact.phoneNumbers![0],
           );
+
           /// Assign a value to the phone number because it cannot be empty
           giftedPhone.text = result.$1;
 
@@ -160,13 +190,6 @@ class GiftingController extends GetxController {
       return Future.error(e);
     }
   }
-
-  //----------------------------------------------------------------------------
-  // Other
-
-  onTapDetailsDedicate() =>
-      detailsOfHisDedicateSheetX(controller: detailsOfHisDedicateController);
-
   //----------------------------------------------------------------------------
   // Auxiliary functions
 
@@ -175,39 +198,37 @@ class GiftingController extends GetxController {
     gifting = GiftingX.empty();
     donationAmount.text = "";
     date.text = "";
+    giftedName.text = "";
+    giftedPhone.text = "";
     isShowAmount.value = false;
     isSendToMe.value = false;
     isSendLater.value = false;
     sendLaterDate.value = null;
 
-    typeSelectedIndex.value = -1;
-    cardSelectedIndex.value = -1;
+    giftCategorySelected.value = giftCategories.first;
     colorSelectedIndex.value = 0;
-    orgSelectedIndex.value = -1;
-    autoValidate = AutovalidateMode.disabled;
-    detailsOfHisDedicateController.clearData();
+    orgSelected.value = null;
+    autoValidateDonationAmount = AutovalidateMode.disabled;
     update();
   }
 
   /// Verify the entered data
   bool dataVerification({bool isPreview = false}) {
-    /// Mandatory login before paying zakat
-    if (!isPreview && !app.isLogin.value) {
-      mandatoryAuthSheetX();
-      return false;
-    } else if (typeSelectedIndex.value < 0) {
-      return throw "You must choose the type of gift";
-    } else if (cardSelectedIndex.value < 0) {
-      return throw "You must choose the shape of the gift card";
-    } else if (orgSelectedIndex.value < 0) {
+    if (orgSelected.value == null) {
       return throw "You must choose the field of donation";
-    } else if (!formKey.currentState!.validate()) {
-      autoValidate = AutovalidateMode.always;
+    } else if (!formKeyForDedicatesData.currentState!.validate()) {
+      autoValidateForDedicatesData = AutovalidateMode.always;
+      return throw "There is an error in the gift data, please check the fields";
+    } else if (!(formKeyDonationAmount.currentState?.validate() ?? false)) {
+      autoValidateDonationAmount = AutovalidateMode.always;
       return throw "Make sure you enter a valid value in donation amount";
+    } else if (!isPreview &&
+        isSendToMe.isTrue &&
+        !formKeyPhoneSendToMe.currentState!.validate()) {
+      autoValidatePhoneSendToMe = AutovalidateMode.always;
+      return throw "You must enter a phone number in the designated phone field to send a copy to your mobile.";
     } else if (!isPreview && isSendLater.value && sendLaterDate.value == null) {
       return throw "You must enter the date the gift was sent";
-    } else if (!detailsOfHisDedicateController.dataVerification()) {
-      return throw "The dedicates information must be entered";
     } else {
       return true;
     }
@@ -216,108 +237,86 @@ class GiftingController extends GetxController {
   //----------------------------------------------------------------------------
   // Main processors
 
-  onGifting() async {
+  onGifting({bool isAddToCart = false}) async {
     if (isLoading.isFalse) {
       try {
         if (dataVerification()) {
           isLoading.value = true;
-          giftingButtonState.value = ButtonStateEX.loading;
+          if (isAddToCart) {
+            addToCartButtonState.value = ButtonStateEX.loading;
+          } else {
+            giftingButtonState.value = ButtonStateEX.loading;
+          }
 
-          _fillDedicateInformation();
-
-          // TODO: Database >>> Create a connection to start the payment process
-          // TODO: Payment >>> Go to the payment screen
-          // TODO: Database >>> Send a response from the payment screen and complete the process
-          await Future.delayed(const Duration(seconds: 1));
+          // GiftingX gifting = GiftingX(
+          //   id: '',
+          //   categoryID: typeID,
+          //   orgID: orgID,
+          //   donationAmount: donationAmount,
+          //   isShowAmount: isShowAmount,
+          //   isSendToMe: isSendToMe,
+          //   isSendLater: isSendLater,
+          //   mahdiName: mahdiName,
+          //   name: name,
+          //   gender: gender,
+          //   phone: phone,
+          //   countryCode: countryCode,
+          //   typeName: typeName,
+          //   giftingData: giftingData,
+          //   paymentMethod: paymentMethod,
+          //   giftingURL: giftingURL,
+          // );
 
           /// The time delay here is aesthetically beneficial
-          giftingButtonState.value = ButtonStateEX.success;
+          if (isAddToCart) {
+            addToCartButtonState.value = ButtonStateEX.success;
+          } else {
+            giftingButtonState.value = ButtonStateEX.success;
+          }
           await Future.delayed(
             const Duration(seconds: StyleX.successButtonSecond),
           );
 
           clearData();
-          ToastX.success(message: "Successfully dedicated");
-
           isLoading.value = false;
         }
       } catch (error) {
         ToastX.error(message: error.toString());
-        giftingButtonState.value = ButtonStateEX.failed;
+        if (isAddToCart) {
+          addToCartButtonState.value = ButtonStateEX.failed;
+        } else {
+          giftingButtonState.value = ButtonStateEX.failed;
+        }
       }
 
       /// Reset the button state
       Timer(
         const Duration(seconds: StyleX.returnButtonToNormalStateSecond),
         () {
-          giftingButtonState.value = ButtonStateEX.normal;
+          if (isAddToCart) {
+            addToCartButtonState.value = ButtonStateEX.normal;
+          } else {
+            giftingButtonState.value = ButtonStateEX.normal;
+          }
         },
       );
     }
   }
 
-  onAddToCart() async {
-    if (isLoading.isFalse) {
-      try {
-        if (dataVerification()) {
-          isLoading.value = true;
-          addToCartButtonState.value = ButtonStateEX.loading;
-
-          _fillDedicateInformation();
-
-          /// Connect to basket Controller to add to cart in database
-          await basketController.addGifting(gifting);
-
-          /// The time delay here is aesthetically beneficial
-          addToCartButtonState.value = ButtonStateEX.success;
-          await Future.delayed(
-            const Duration(seconds: StyleX.successButtonSecond),
-          );
-
-          clearData();
-          ToastX.success(message: "Added to cart successfully");
-
-          isLoading.value = false;
-        }
-      } catch (error) {
-        ToastX.error(message: error.toString());
-        addToCartButtonState.value = ButtonStateEX.failed;
-      }
-
-      /// Reset the button state
-      Timer(
-        const Duration(seconds: StyleX.returnButtonToNormalStateSecond),
-        () {
-          addToCartButtonState.value = ButtonStateEX.normal;
-        },
-      );
-    }
-  }
-
-  _fillDedicateInformation() {
-    gifting.typeID = giftCategories[typeSelectedIndex.value].id;
-    gifting.cardID = giftCategories[typeSelectedIndex.value].id;
-    gifting.orgID = giftCategories[typeSelectedIndex.value].id;
-    gifting.donationAmount = int.parse(donationAmount.text);
-    gifting.isShowAmount = isShowAmount.value;
-    gifting.isSendToMe = isSendToMe.value;
-    gifting.isSendLater = isSendLater.value;
-    gifting.sendLaterDate = sendLaterDate.value;
-
-    gifting.mahdiName = detailsOfHisDedicateController.donorName.text;
-    gifting.name = detailsOfHisDedicateController.giftedName.text;
-    gifting.gender = detailsOfHisDedicateController.gender.value;
-    gifting.phone = detailsOfHisDedicateController.giftedPhone.text.toIntX;
-    gifting.countryCode = detailsOfHisDedicateController.countryCode.value;
-  }
-
-  onPreviewDedicate() async {
+  onPreviewGift() async {
     if (isLoading.isFalse) {
       try {
         if (dataVerification(isPreview: true)) {
           isLoading.value = true;
-          _fillDedicateInformation();
-          previewDedicateController.gifting = gifting;
+          previewDedicateController.nameFrom = donorNameForCard.value;
+          previewDedicateController.nameTo = giftedNameForCard.value;
+          previewDedicateController.amount = donationAmountForCard.value;
+          previewDedicateController.isShowAmount = isShowAmount.value;
+          previewDedicateController.orgName = orgSelected.value!.name;
+          previewDedicateController.color =
+              Color(int.parse("0xff${colors[colorSelectedIndex.value]}"));
+          previewDedicateController.giftCardFormByGender =
+              giftCardFormByGenderSelected.value!;
           await previewDedicateSheetX(controller: previewDedicateController);
         }
       } catch (error) {
@@ -334,5 +333,25 @@ class GiftingController extends GetxController {
         },
       );
     }
+  }
+
+  //============================================================================
+  // Initialization
+
+  @override
+  void onInit() {
+    donorName.addListener(() => donorNameForCard.value = donorName.text);
+    giftedName.addListener(() => giftedNameForCard.value = giftedName.text);
+    donationAmount
+        .addListener(() => donationAmountForCard.value = donationAmount.text);
+    super.onInit();
+  }
+
+  @override
+  void dispose() {
+    donorName.dispose();
+    giftedName.dispose();
+    donationAmount.dispose();
+    super.dispose();
   }
 }

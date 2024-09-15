@@ -67,9 +67,9 @@ class QuickDonationController extends GetxController {
     freeDonationSelected.value = val;
   }
 
-  removeFreeDonationSelected(_) {
-    if (freeDonationSelected.value != 0) {
-      freeDonationSelected.value = 0;
+  removeFreeDonationSelected(String val) {
+    if (int.tryParse(val)!=null) {
+      freeDonationSelected.value = int.parse(val);
     }
   }
 
@@ -85,10 +85,9 @@ class QuickDonationController extends GetxController {
   /// Erase all data and return it to its default state
   clearData() {
     donationAmount.text = '';
-    donationProgramSelected.value = "All";
+    donationProgramSelected.value = donationProjectSelectedController.allOption.name;
     autoValidate = AutovalidateMode.disabled;
-    donationProjectSelectedController.orgSelected.value =
-        donationProgramSelected.value;
+    donationProjectSelectedController.orgSelected.value = donationProjectSelectedController.allOption;
   }
 
   /// Verify the entered data

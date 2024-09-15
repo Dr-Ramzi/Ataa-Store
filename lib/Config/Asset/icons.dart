@@ -10,22 +10,23 @@ class IconX {
   static const _kFontFam = 'Icon_x';
   static const String? _kFontPkg = null;
 
-  static const IconData briefcase = IconData(0xe80c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData creditCard = IconData(0xe80d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData contactUs = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData edit = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData gift = IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData speakerPhone = IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData sortDescending = IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData male = IconData(0xe80e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData female = IconData(0xe80f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData calendar = IconData(0xe810, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-
-  static const IconData contactUs = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData edit = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData facebook = IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData instagram = IconData(0xe806, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData facebook = IconData(0xe808, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData copy = IconData(0xe807, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData date = IconData(0xe808, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData telegram = IconData(0xe809, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData twitter = IconData(0xe80a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData whatsapp = IconData(0xe80b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData briefcase = IconData(0xe80c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData creditCard = IconData(0xe80d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData male = IconData(0xe80e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData female = IconData(0xe80f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData calendar = IconData(0xe810, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData myActivity = IconData(0xe811, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData notifications = IconData(0xe812, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData ourBanks = IconData(0xe813, fontFamily: _kFontFam, fontPackage: _kFontPkg);

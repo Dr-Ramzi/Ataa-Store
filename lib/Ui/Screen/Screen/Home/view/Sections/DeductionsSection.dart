@@ -31,6 +31,10 @@ class DeductionsSectionX extends GetView<HomeController> {
       isHideHeaderIfInitLoading: false,
       isHeaderPadding: false,
 
+      /// If there is an error in this section or it is empty, the section does not appear
+      empty: const SizedBox(),
+      errorWidget: (_) => const SizedBox(),
+
       /// Items
       itemBuilder: (data, index) {
         return DeductionCardX(
@@ -40,10 +44,6 @@ class DeductionsSectionX extends GetView<HomeController> {
           isSmallCard: true,
         ).fadeAnimation300;
       },
-
-      /// If there is an error in this section or it is empty, the section does not appear
-      empty: const SizedBox(),
-      errorWidget: (_) => const SizedBox(),
 
       /// If the data is still loading, a flash is displayed in the same shape as the item expected to appear
       initLoading: Row(

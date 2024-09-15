@@ -7,7 +7,8 @@ part of '../../data.dart';
 class LocalDefaultDataX{
   static String route=RouteNameX.onboarding;
   static String token='';
-  static String basketID='';
+  static String cartId = '';
+  static bool cartIdIsAssign = false;
   static String userID='';
   static int unreadNotifications=0;
   static List<Map<String,dynamic>> allNotifications=[];

@@ -32,15 +32,12 @@ class DeductionDetailsController extends GetxController {
 
   getData() async {
     try {
-      /// TODO: Database >>> Fetch deduction details
-      await Future.delayed(const Duration(seconds: 1));
 
-      /// delete this
-      deduction = TestDataX.deductions.firstWhere((element) => element.id == id);
+      deduction = await DatabaseX.getDeductionDetails(id: id);
 
       /// Init Video Player
-      if (deduction.videoURL.isNotEmpty && deduction.videoURL.isURL) {
-        initVideoPlayer(deduction.videoURL);
+      if (deduction.videoUrl.isNotEmpty && deduction.videoUrl.isURL) {
+        initVideoPlayer(deduction.videoUrl);
       }
     } catch (e) {
       return Future.error(e);
@@ -51,7 +48,7 @@ class DeductionDetailsController extends GetxController {
       await subscriptionDeductionSheetX(deduction);
 
   int getNumCover() {
-    return deduction.imageURL.isNotEmpty && deduction.videoURL.isNotEmpty? 2 : 1;
+    return deduction.imageUrl.isNotEmpty && deduction.videoUrl.isNotEmpty? 2 : 1;
   }
 
   initVideoPlayer(String url) async {
@@ -78,7 +75,7 @@ class DeductionDetailsController extends GetxController {
 
   @override
   void onClose() {
-    if (deduction.videoURL.isNotEmpty && deduction.videoURL.isURL) {
+    if (deduction.videoUrl.isNotEmpty && deduction.videoUrl.isURL) {
       chewieController.dispose();
       videoPlayerController.value.dispose();
     }

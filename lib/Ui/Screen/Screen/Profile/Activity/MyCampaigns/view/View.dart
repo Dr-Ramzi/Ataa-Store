@@ -16,7 +16,7 @@ class MyCampaignsView extends GetView<MyCampaignsController> {
     return Scaffold(
       appBar: AppBarX(
         title: "Donation campaigns",
-        actions: [BasketIconButtonsX()],
+        actions: [CartIconButtonsX()],
       ),
       body: SafeArea(
         child: FutureBuilder(

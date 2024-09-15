@@ -6,7 +6,6 @@ import '../../../../Core/Controller/Pay/subscriptionDeductionController.dart';
 import '../../../../Core/core.dart';
 import '../../../../Data/data.dart';
 import '../../../Widget/widget.dart';
-import '../../PartOfSheet/DonateOnBehalfOfFamily/donateOnBehalfOfFamily.dart';
 
 // ~~~~~~~~~~~~~~~~~~~~~~~{{ Why this bottom sheet }}~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// View the deduction details and subscribe to it
@@ -51,7 +50,7 @@ subscriptionDeductionSheetX(DeductionX deduction) {
             child: Column(
               children: [
                 /// Display the fixed deduction value
-                if (deduction.fixedDeductionAmount != null)
+                if (!deduction.isOpenPrice)
                   ContainerX(
                     margin: const EdgeInsets.only(bottom: 10),
                     color: Get.theme.colorScheme.onSecondary,
@@ -67,7 +66,7 @@ subscriptionDeductionSheetX(DeductionX deduction) {
 
                         /// Fixed Deduction Amount
                         TextX(
-                          "${controller.deduction.fixedDeductionAmount.toString()} ${"SAR".tr}",
+                          "${controller.deduction.initialPrice.toString()} ${"SAR".tr}",
                           style: TextStyleX.titleLarge,
                           fontWeight: FontWeight.w600,
                         )
@@ -76,7 +75,7 @@ subscriptionDeductionSheetX(DeductionX deduction) {
                   ).fadeAnimation200,
 
                 /// Enter the deduction amount manually
-                if (deduction.fixedDeductionAmount == null)
+                if (deduction.isOpenPrice)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -105,40 +104,13 @@ subscriptionDeductionSheetX(DeductionX deduction) {
                           ),
                         ),
                       ).fadeAnimation300,
-
-                      /// View the deduction section for family and friends
-                      DonateOnBehalfOfFamilyPartOfSheetX(
-                        controller: controller.donateOnBehalfOfFamily,
-                      ),
                     ],
                   ),
 
                 /// Alert message about deduction
-                ContainerX(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  color: Get.theme.colorScheme.onPrimary,
-                  width: double.maxFinite,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.info_rounded,
-                        color: ColorX.primary.shade800,
-                        size: 22,
-                      ),
-                      const SizedBox(width: 6),
-                      Flexible(
-                        child: TextX(
-                          "The amount will be automatically deducted on the first day of every calendar month.",
-                          color: ColorX.primary.shade800,
-                          style: TextStyleX.titleSmall,
-                          fontWeight: FontWeight.w600,
-                          maxLines: 5,
-                        ),
-                      )
-                    ],
-                  ),
-                ).fadeAnimation400,
+                const MessageCardX(
+                  message: "The amount will be automatically deducted on the first day of every calendar month.",
+                ).marginSymmetric(vertical: 11).fadeAnimation400,
 
                 /// Subscription Button
                 ButtonStateX(

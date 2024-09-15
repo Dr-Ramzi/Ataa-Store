@@ -24,6 +24,11 @@ class NameX {
   static const String isShowDonorsCount = 'is_show_donors_count';
   static const String isShowGifting = 'is_active_gifting';
   static const String isShowHome = 'is_show_homepage';
+  static const String initialPrice = 'initial_price';
+  static const String isOpenPrice = 'is_open_price';
+  static const String day = 'day';
+  static const String dayLocalized = 'day_localized';
+  static const String isSubscribed = 'is_subscribed';
   static const String isShowDonationsPercentage =
       'is_show_donations_percentage';
   static const String isShowCompletionIndicator =
@@ -79,6 +84,7 @@ class NameX {
   static const String total = 'total';
   static const String count = 'count';
   static const String price = 'price';
+  static const String quantity = 'quantity';
   static const String numStock = 'numStock';
   static const String package = 'package';
   static const String productID = 'productID';
@@ -88,6 +94,7 @@ class NameX {
   static const String giftCategoryId = 'gift_category_id';
   static const String donationCategoryId = 'donation_category_id';
   static const String sortType = 'sort_type';
+  static const String manyRecurring = 'many_recurring';
   static const String isZakat = 'is_active_accepts_zakat';
   static const String categoryID = 'categoryID';
   static const String isNewMuslim = 'isNewMuslim';
@@ -105,6 +112,8 @@ class NameX {
   static const String paymentGatewayCardId = 'payment_gateway_card_id';
   static const String donation = 'project';
   static const String status = 'status';
+  static const String achievedAmount = 'achieved_amount';
+  static const String subscribersCount = 'subscribers_count';
   static const String iconUrl = 'icon';
   static const String verificationUrl = 'verification_url';
   static const String month = 'month';
@@ -162,6 +171,7 @@ class NameX {
   static const String cartItems = 'cart_items';
   static const String orderDate = 'order_date';
   static const String orderProductsIDs = 'orderProductsIDs';
+  static const String createdAt = 'created_at';
 
   static const String totalDonations = 'total_donation';
   static const String currentDonations = 'price';
@@ -170,10 +180,12 @@ class NameX {
   static const String countDonor = 'count_donor';
   static const String completionRate = 'completion_rate';
   static const String order = 'order';
+  static const String model = 'model_data';
   static const String isShowPackages = 'is_packages_enabled';
   static const String isCanEditAmount = 'is_total_amount_editable';
   static const String sharesCount = 'shares_count';
   static const String recurring = 'recurring';
+  static const String recurringLocalized = 'recurring_localized';
   static const String endDate = 'end_date';
   static const String karat = 'karat';
   static const String gram = 'gram';
@@ -220,6 +232,13 @@ class NameX {
   static const String number = 'number';
   static const String codePhone = 'code';
   static const String textAfterNumber = 'text_beside_number';
+
+  static const String isActiveSms = 'is_active_sms';
+  static const String isActiveWhatsapp = 'is_active_whatsapp';
+  static const String variables = 'variables';
+  static const String nameLocalized = 'name_localized';
+  static const String organizationName = 'organization_name';
+  static const String example = 'example';
 
   static const String aboutPage = 'about-us';
   static const String contactUsPage = 'contact';
@@ -275,4 +294,8 @@ class NameX {
   static const String countOrders = 'countOrders';
   static const String countCompletedOrders = 'countCompletedOrders';
   static const String totalAmountOrders = 'totalAmountOrders';
+
+  static const String cartId = 'cart_id';
+  static const String modelType = 'model_type';
+  static const String modelId = 'model_id';
 }

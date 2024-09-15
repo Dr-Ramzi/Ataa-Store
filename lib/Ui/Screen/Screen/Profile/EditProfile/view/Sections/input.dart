@@ -31,7 +31,7 @@ class InputSectionX extends GetView<EditProfileController> {
                 controller: controller.phone,
                 label: "Mobile",
                 isRequired: true,
-                onChange: controller.onChangePhone,
+                onChangeCountryCode: controller.onChangeCountryCode,
                 countryCode: controller.countryCode,
                 isDisableChangeCountryCode: !controller.app.generalSettings.isShowCountryCodeList,
               ).marginSymmetric(vertical: 10.0).fadeAnimation300,

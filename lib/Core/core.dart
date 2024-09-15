@@ -15,7 +15,7 @@ import '../UI/Screen/Auth/Login/view/loginView.dart';
 import '../UI/Widget/widget.dart';
 import 'package:flutter_share_me/flutter_share_me.dart';
 
-import 'Controller/Basket/basketGeneralController.dart';
+import 'Controller/Cart/cartGeneralController.dart';
 import 'Helper/http/http.dart';
 import 'Util/info.dart';
 part 'Controller/App/appController.dart';

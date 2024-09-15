@@ -92,6 +92,13 @@ class DBEndPointX {
   //============================================================================
   // Donation
 
+  static const String getAllDeductions = '${mainAPI}donations/recurring-donations';
+  static const String getDeductionsBySearch = '${mainAPI}donations/recurring-donations/search';
+  static const String getDeductionDetails = '${mainAPI}donations/recurring-donations/{id}';
+
+  //============================================================================
+  // Donation
+
   static const String getAllDonations = '${mainAPI}projects';
   static const String getDonationsBySearch = '${mainAPI}projects/search';
   static const String getDonationDetails = '${mainAPI}projects/{code}';
@@ -99,15 +106,15 @@ class DBEndPointX {
   static const String getProjectIsShowInQuickDonation = '${mainAPI}projects/show_quick_donation';
 
   //============================================================================
-  // Basket
+  // Cart
 
-  static postAssignBasket (String id)=> '${mainAPI}carts/$id/assign-my-cart';
-  static const String getCreateBasketID = '${mainAPI}carts/items';
-  static const String getAllBasketItems = '${mainAPI}carts/items/';
-  static const String postCreateBasketItem = '${mainAPI}carts/items/';
-  static const String putUpdateBasketItem = '${mainAPI}carts/items/';
-  static const String deleteBasketItem = '${mainAPI}carts/items/';
-  static const String deleteAllBasketItems = '${mainAPI}carts/items/delete-all/';
+  static const String postAssignCart = '${mainAPI}carts/{cart_id}/assign-my-cart';
+  static const String getCreateCartID = '${mainAPI}carts/items/';
+  static const String getAllCartItems = '${mainAPI}carts/items/{cart_id}';
+  static const String postCreateCartItem = '${mainAPI}carts/items/{cart_id}';
+  static const String putUpdateCartItem = '${mainAPI}carts/items/{cart_id}';
+  static const String deleteCartItem = '${mainAPI}carts/items/{item_id}';
+  static const String deleteAllCartItems = '${mainAPI}carts/items/delete-all/{cart_id}';
 
   //============================================================================
   // Gift
@@ -117,5 +124,6 @@ class DBEndPointX {
   static const String postCreateGiftOrder = '${mainAPI}gift/orders';
   static const String getAllMyGiftOrders = '${mainAPI}gift/orders';
   static const String getMyGiftOrderDetails = '${mainAPI}gift/orders/{id}';
+  static const String getGiftMessageTemplate = '${mainAPI}portal-settings/notification-templates/gift';
 
 }

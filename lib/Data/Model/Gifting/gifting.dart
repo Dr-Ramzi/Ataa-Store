@@ -3,7 +3,7 @@ part of '../../data.dart';
 class GiftingX{
   GiftingX({
     required this.id,
-    required this.typeID,
+    required this.categoryID,
     this.cardID,
     required this.orgID,
     required this.donationAmount,
@@ -24,7 +24,7 @@ class GiftingX{
   });
   GiftingX.empty(){
     id="";
-    typeID="";
+    categoryID="";
     cardID="";
     orgID="";
     donationAmount=0;
@@ -46,7 +46,7 @@ class GiftingX{
   }
 
   late String id;
-  late String typeID;
+  late String categoryID;
   String? cardID;
   late String orgID;
   late int donationAmount;

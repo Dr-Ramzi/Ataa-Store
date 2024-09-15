@@ -42,8 +42,8 @@ class RouteNameX {
   /// Gifting
   static const String gifting = '/gifting';
 
-  /// Basket
-  static const String basket = '/basket';
+  /// Cart
+  static const String cart = '/cart';
 
   /// Campaigns
   static const String allCampaigns = '/allCampaigns';

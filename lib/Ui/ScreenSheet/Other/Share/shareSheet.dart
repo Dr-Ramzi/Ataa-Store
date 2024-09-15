@@ -87,6 +87,7 @@ shareSheet(String shareUrl) async {
                       ? "Share your link"
                       : "Share a public link",
                   fontWeight: FontWeight.w600,
+                  style: TextStyleX.titleMedium.copyWith(letterSpacing:0.05),
                 ).fadeAnimation200,
                 const SizedBox(height: 8),
 
@@ -99,7 +100,8 @@ shareSheet(String shareUrl) async {
                       child: ButtonX.gray(
                         onTap: () async => ClipboardX.copy(shareUrl),
                         text: "Copy",
-                        iconData: Icons.copy,
+                        iconData: IconX.copy,
+                        colorText: Theme.of(context).iconTheme.color,
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -129,30 +131,16 @@ shareSheet(String shareUrl) async {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    /// Telegram
-                    InkResponse(
-                      onTap: () => ShareX.share(
-                        share: ShareOn.telegram,
-                        msg: controller.shareMsg,
-                        url: controller.shareUrl,
-                      ),
-                      child: Icon(
-                        IconX.telegram,
-                        size: 27,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
 
-                    /// Facebook
+                    /// Twitter
                     InkResponse(
                       onTap: () => ShareX.share(
-                        share: ShareOn.facebook,
+                        share: ShareOn.twitter,
                         msg: controller.shareMsg,
                         url: controller.shareUrl,
                       ),
                       child: Icon(
-                        IconX.facebook,
+                        IconX.x,
                         size: 27,
                         color: Theme.of(context).colorScheme.secondary,
                       ),
@@ -174,15 +162,30 @@ shareSheet(String shareUrl) async {
                     ),
                     const SizedBox(width: 16),
 
-                    /// Twitter
+                    /// Facebook
                     InkResponse(
                       onTap: () => ShareX.share(
-                        share: ShareOn.twitter,
+                        share: ShareOn.facebook,
                         msg: controller.shareMsg,
                         url: controller.shareUrl,
                       ),
                       child: Icon(
-                        IconX.twitter,
+                        IconX.facebook,
+                        size: 27,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+
+                    /// Telegram
+                    InkResponse(
+                      onTap: () => ShareX.share(
+                        share: ShareOn.telegram,
+                        msg: controller.shareMsg,
+                        url: controller.shareUrl,
+                      ),
+                      child: Icon(
+                        IconX.telegram,
                         size: 27,
                         color: Theme.of(context).colorScheme.secondary,
                       ),

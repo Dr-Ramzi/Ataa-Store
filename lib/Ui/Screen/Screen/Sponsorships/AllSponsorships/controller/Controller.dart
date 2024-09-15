@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../Config/config.dart';
-import '../../../../../../Core/Controller/Basket/basketGeneralController.dart';
+import '../../../../../../Core/Controller/Cart/cartGeneralController.dart';
 import '../../../../../../Core/Controller/Filter/sponsorshipFilterController.dart';
 import '../../../../../../Core/core.dart';
 import '../../../../../../Data/data.dart';
@@ -14,7 +14,7 @@ class AllSponsorshipsController extends GetxController {
   // Injection of required controls
 
   AppControllerX app = Get.find();
-  BasketGeneralControllerX basketController = Get.find();
+  CartGeneralControllerX basketController = Get.find();
   SponsorshipFilterControllerX sponsorshipFilterController =
       Get.put(SponsorshipFilterControllerX());
 

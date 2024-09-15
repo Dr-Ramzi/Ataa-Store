@@ -6,7 +6,7 @@ import '../../../Config/config.dart';
 import '../../../Data/data.dart';
 import '../../../Ui/Widget/widget.dart';
 import '../../core.dart';
-import '../Basket/basketGeneralController.dart';
+import '../Cart/cartGeneralController.dart';
 import '../Other/donateOnBehalfOfFamilyController.dart';
 
 class PayDonationControllerX extends GetxController {
@@ -14,7 +14,7 @@ class PayDonationControllerX extends GetxController {
   // Injection of required controls
 
   final AppControllerX app = Get.find();
-  final BasketGeneralControllerX basketGeneral = Get.find();
+  final CartGeneralControllerX basketGeneral = Get.find();
   late DonateOnBehalfOfFamilyController donateOnBehalfOfFamily;
 
   //============================================================================
@@ -79,9 +79,9 @@ class PayDonationControllerX extends GetxController {
     freeDonationSelected.value=val;
   }
 
-  removeFreeDonationSelected(_){
-    if(freeDonationSelected.value!=0) {
-      freeDonationSelected.value=0;
+  removeFreeDonationSelected(val){
+    if (int.tryParse(val)!=null) {
+      freeDonationSelected.value = int.parse(val);
     }
   }
   /// clear date on controller

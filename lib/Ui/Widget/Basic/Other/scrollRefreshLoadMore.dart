@@ -203,12 +203,14 @@ class _ScrollRefreshLoadMoreXState<T> extends State<ScrollRefreshLoadMoreX<T>> {
 
   Future<void> checkIfNeedScroll() async {
     if (!mounted) return;
-    while (true) {
-      if (scrollController.position.maxScrollExtent == 0 && hasMoreData) {
-        updateShouldShowLoadMore(isShowLoadMore: true);
-        await checkGetMoreData();
-      } else {
-        break;
+    if(items.isNotEmpty){
+      while (true) {
+        if (scrollController.position.maxScrollExtent == 0 && hasMoreData) {
+          updateShouldShowLoadMore(isShowLoadMore: true);
+          await checkGetMoreData();
+        } else {
+          break;
+        }
       }
     }
   }

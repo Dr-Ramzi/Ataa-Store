@@ -28,7 +28,7 @@ class ShareLinkCardX extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Icon(
-                    Icons.copy,
+                    IconX.copy,
                     size: 22,
                     color: Theme.of(context).primaryColor,
                   )

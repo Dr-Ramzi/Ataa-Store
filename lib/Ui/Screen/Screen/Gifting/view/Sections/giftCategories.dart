@@ -7,38 +7,38 @@ import '../../../../../../../Config/config.dart';
 import '../../../../../../../UI/Widget/widget.dart';
 import '../../controller/Controller.dart';
 
-class GiftCategoriesSectionX extends StatelessWidget {
+class GiftCategoriesSectionX extends GetView<GiftingController> {
   const GiftCategoriesSectionX({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<GiftingController>(
-      builder: (controller) => ScrollRefreshLoadMoreX(
-        fetchData: controller.getGiftCategories,
-        firstFixedData: controller.giftCategories,
-        initPage: 2,
-        isShowFixedDataAsInitLoading: true,
-        scrollDirection: Axis.horizontal,
-        margin: const EdgeInsets.only(bottom: 20),
-        padding: const EdgeInsets.symmetric(
-          horizontal: StyleX.hPaddingApp,
-        ),
-        spaceBetweenHeaderAndContent: 10,
-        header: Row(
-          children: [
-            const TextX(
-              "Type of gift",
-              fontWeight: FontWeight.w700,
-              textAlign: TextAlign.start,
-            ).fadeAnimation200,
-          ],
-        ),
-        itemBuilder: (data, index) => GiftCategoryCardX(
-          giftCategory: data,
-          onTap: () => controller.onChangeType(index),
-          isSelected: controller.typeSelectedIndex.value == index,
-        ).fadeAnimation200,
+    return ScrollRefreshLoadMoreX(
+      fetchData: controller.getGiftCategories,
+      firstFixedData: controller.giftCategories,
+      initPage: 2,
+      isShowFixedDataAsInitLoading: true,
+      scrollDirection: Axis.horizontal,
+      margin: const EdgeInsets.only(bottom: 24),
+      padding: const EdgeInsets.symmetric(
+        horizontal: StyleX.hPaddingApp,
       ),
+      spaceBetweenHeaderAndContent: 14,
+      header: Row(
+        children: [
+          const TextX(
+            "Type of gift",
+            fontWeight: FontWeight.w700,
+            textAlign: TextAlign.start,
+          ).fadeAnimation200,
+        ],
+      ),
+      itemBuilder: (data, index) => Obx(
+            () => GiftCategoryCardX(
+              giftCategory: data,
+              onTap: () => controller.onChangeCategory(index),
+              isSelected: controller.giftCategorySelected.value.id == data.id,
+            ).fadeAnimation200,
+      )
     );
   }
 }

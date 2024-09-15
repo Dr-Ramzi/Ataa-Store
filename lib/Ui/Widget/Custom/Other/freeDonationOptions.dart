@@ -31,6 +31,7 @@ class FreeDonationOptionsX extends StatelessWidget {
                   : ButtonX.gray(
                       onTap: () => onSelected(20),
                       text: "20 ${"SAR".tr}",
+                      colorText: Theme.of(context).iconTheme.color,
                     ),
             ),
             const SizedBox(width: 10),
@@ -43,6 +44,7 @@ class FreeDonationOptionsX extends StatelessWidget {
                   : ButtonX.gray(
                       onTap: () => onSelected(50),
                       text: "50 ${"SAR".tr}",
+                      colorText: Theme.of(context).iconTheme.color,
                     ),
             ),
             const SizedBox(width: 10),
@@ -55,6 +57,7 @@ class FreeDonationOptionsX extends StatelessWidget {
                   : ButtonX.gray(
                       onTap: () => onSelected(100),
                       text: "100 ${"SAR".tr}",
+                      colorText: Theme.of(context).iconTheme.color,
                     ),
             ),
           ],

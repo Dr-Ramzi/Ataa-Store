@@ -16,7 +16,7 @@ class AllSponsorshipsView extends GetView<AllSponsorshipsController> {
     return Scaffold(
       appBar: AppBarX(
         title: "Sponsorships",
-        actions: [BasketIconButtonsX()],
+        actions: [CartIconButtonsX()],
       ),
       body: SafeArea(
         child: FutureBuilder(

@@ -20,6 +20,7 @@ class DynamicOptionsSectionX extends GetView<MoreSectionsController> {
               top: StyleX.vPaddingApp,
               bottom: StyleX.vPaddingApp+33,
             ),
+            emptyMessage: 'There are no more pages currently.',
             fetchData: controller.getData,
             itemBuilder: (page, index) {
               return MoreCardX(

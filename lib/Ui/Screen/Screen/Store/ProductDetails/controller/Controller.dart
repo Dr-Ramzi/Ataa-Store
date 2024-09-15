@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import '../../../../../../Config/config.dart';
-import '../../../../../../Core/Controller/Basket/basketGeneralController.dart';
+import '../../../../../../Core/Controller/Cart/cartGeneralController.dart';
 import '../../../../../../Core/core.dart';
 import '../../../../../../Data/data.dart';
 import '../../../../../../UI/Widget/widget.dart';
@@ -11,7 +11,7 @@ class ProductDetailsController extends GetxController {
   // Injection of required controls
 
   final AppControllerX app = Get.find();
-  final BasketGeneralControllerX basketController = Get.find();
+  final CartGeneralControllerX basketController = Get.find();
 
   //============================================================================
   // Variables

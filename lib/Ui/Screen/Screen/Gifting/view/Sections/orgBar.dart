@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../../Config/config.dart';
 import '../../../../../../../UI/Widget/widget.dart';
+import '../../../../../Widget/Custom/Card/giftOrgCard.dart';
 import '../../controller/Controller.dart';
 
 class OrgBarSectionX extends GetView<GiftingController> {
@@ -17,60 +18,52 @@ class OrgBarSectionX extends GetView<GiftingController> {
         const TextX(
           "Choose the donation field",
           fontWeight: FontWeight.w700,
-        ).paddingSymmetric(horizontal: StyleX.hPaddingApp).fadeAnimation500,
-        const SizedBox(height: 8),
+        ).paddingSymmetric(horizontal: StyleX.hPaddingApp).fadeAnimation600,
+        const SizedBox(height: 14),
 
-        /// Organization Options
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(
-            horizontal: StyleX.hPaddingApp,
-          ),
-          child: GetBuilder<GiftingController>(builder:
-            (controller) => Row(
-              children: [
-                for (int index = 0;
-                    index < controller.organizations.length;
-                    index++)
-                  GestureDetector(
-                    onTap: () => controller.onChangeOrg(index),
-                    child: ContainerX(
-                      padding: const EdgeInsets.all(16),
-                      margin: const EdgeInsetsDirectional.only(end: 8),
-                      borderColor: controller.orgSelectedIndex.value == index
-                          ? Theme.of(context).primaryColor
-                          : null,
-                      borderWidth: 2,
-                      isBorder: true,
-                      height: 125,
-                      width: 160,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          ImageNetworkX(
-                            imageUrl: controller.organizations[index].imageUrl,
-                            height: 50,
-                            fit: BoxFit.contain,
-                          ),
-                          const SizedBox(height: 14),
-                          FittedBox(
-                            child: TextX(
-                              controller.organizations[index].name,
-                              maxLines: 2,
-                              style: TextStyleX.titleSmall,
-                              fontWeight: FontWeight.w600,
-                              textAlign: TextAlign.center,
-                            ),
-                          )
-                        ],
-                      ),
-                    ).fadeAnimation500,
+        Obx(() {
+          if (controller.organizations.isEmpty) {
+            return ContainerX(
+              margin: const EdgeInsets.symmetric(
+                horizontal: StyleX.hPaddingApp,
+              ),
+              color: Theme.of(context).colorScheme.onError,
+              height: 110,
+              child: Center(
+                child:  Expanded(
+                  child: TextX(
+                    'There are currently no available donation options for this type of gift. Please change the type of gift.',
+                  textAlign: TextAlign.center,
+                    color: Theme.of(context).colorScheme.error,
                   ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: 20),
+                ),
+              ),
+            );
+          } else {
+            /// Organization Options
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(
+                horizontal: StyleX.hPaddingApp,
+              ),
+              child: Row(
+                children: [
+                  for (int index = 0;
+                      index < controller.organizations.length;
+                      index++)
+                    GiftOrgCardX(
+                      onTap: () => controller.onChangeOrg(index),
+                      org: controller.organizations[index],
+                      isSelected: controller.orgSelected.value?.id ==
+                          controller.organizations[index].id,
+                    ),
+                ],
+              ),
+            ).fadeAnimation200;
+          }
+        }).fadeAnimation600,
+
+        const SizedBox(height: 24),
       ],
     );
   }

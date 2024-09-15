@@ -49,10 +49,10 @@ class TranslationX extends Translations {
   }
 
   /// Fetch the locale of the current language
-  static Locale get getLocale => Locale(LocalDataX.settings.language);
+  static Locale get getLocale => Locale(Get.locale?.languageCode??LocalDataX.settings.language);
 
   /// Fetch the code of the current language
-  static String get getLanguageCode => LocalDataX.settings.language;
+  static String get getLanguageCode => Get.locale?.languageCode??LocalDataX.settings.language;
 
   /// Change the application language
   static changeLocale(String lang) async {

@@ -8,12 +8,14 @@ class PhoneFieldX extends StatelessWidget {
   final bool? isRequired;
   final bool isShowCountryCode;
   final bool isDisableChangeCountryCode;
-  final Function(String countryCode) onChange;
+  final Color? color;
+  final Function(String countryCode) onChangeCountryCode;
   const PhoneFieldX({
     required this.controller,
-    required this.onChange,
+    required this.onChangeCountryCode,
     this.label,
     this.isRequired,
+    this.color,
     this.hint = "512345678",
     this.countryCode = 966,
     this.isShowCountryCode = true,
@@ -39,7 +41,7 @@ class PhoneFieldX extends StatelessWidget {
               isShowCountryCode:isShowCountryCode,
               isDisableChangeCountryCode:isDisableChangeCountryCode,
               onInputChanged: (phone) {
-                onChange(phone.dial_code);
+                onChangeCountryCode(phone.dial_code);
               },
               dialogConfig: DialogConfig(
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -68,7 +70,7 @@ class PhoneFieldX extends StatelessWidget {
               ),
               validate: ValidateX.phone,
               phoneConfig: PhoneConfig(
-
+                color:color,
                 focusedColor: Colors.transparent,
                 enabledColor: Colors.transparent,
                 labelStyle: null,

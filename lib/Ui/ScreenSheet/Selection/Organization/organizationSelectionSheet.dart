@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../Core/Controller/SelectedOptions/organizationSelectionController.dart';
+import '../../../../Data/data.dart';
 import '../../../Widget/Basic/Other/scrollRefreshLoadMore.dart';
 import '../../../Widget/widget.dart';
 
@@ -10,8 +11,9 @@ import '../../../Widget/widget.dart';
 organizationSelectionSheetX(OrganizationSelectionController controller) {
   return bottomSheetX(
     title: "Donation project",
-    child: ScrollRefreshLoadMoreX<String>(
+    child: ScrollRefreshLoadMoreX<OrganizationX>(
       fetchData: controller.getData,
+      firstFixedData: controller.isQuickDonation??false?[]:[controller.allOption],
       initLoading: const SizedBox(
         height: 180,
         child: Center(
@@ -20,11 +22,11 @@ organizationSelectionSheetX(OrganizationSelectionController controller) {
       ),
       isExpanded: false,
       itemBuilder: (data, index) {
-        return RadioButtonX(
-          label: data,
-          value: data,
-          onChanged: controller.onChange,
-          groupValue: controller.orgSelected.value,
+        return RadioButtonX<String>(
+          label: data.name,
+          value: data.id,
+          onChanged: (_)=>controller.onChange(data),
+          groupValue: controller.orgSelected.value?.id,
         );
       },
     ),

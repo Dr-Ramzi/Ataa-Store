@@ -24,7 +24,7 @@ class HomeController extends GetxController {
   List<AdsX> ads = [];
   List<DonationX> donations = [];
   List<OrganizationX> organizations = [];
-  List<DeductionX> deductions = TestDataX.deductions;
+  List<DeductionX> deductions = [];
   List<DonationX> zakat = [];
   List<ProductX> products = [];
 
@@ -86,20 +86,17 @@ class HomeController extends GetxController {
   Future<List<DeductionX>> getDeductions(
       ScrollRefreshLoadMoreParametersX data) async {
     try {
-      // var result = await DatabaseX.getAllDeductions(
-      //   isHome: true,
-      //   perPage: data.perPage,
-      //   page: data.page,
-      // );
-      // isHasErrorInDeductions.value = false;
-      // deductions += result;
-      // return result;
-
-      /// TODO: Database >>> Fetch All deductions
-      await Future.delayed(const Duration(seconds: 1)); // delete this
-
-      return TestDataX.deductions;
+      var result = await DatabaseX.getAllDeductions(
+        isHome: true,
+        perPage: data.perPage,
+        page: data.page,
+      );
+      isHasErrorInDeductions.value = false;
+      deductions += result;
+      print(deductions.length);
+      return result;
     } catch (e) {
+      print(e);
       isHasErrorInDeductions.value = deductions.isNotEmpty;
       return Future.error(e);
     }

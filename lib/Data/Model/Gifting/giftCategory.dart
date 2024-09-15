@@ -1,4 +1,5 @@
 import 'package:ataa/Core/Extension/convert/convert.dart';
+import 'package:ataa/Data/Model/Gifting/giftCardFormByGender.dart';
 import '../../../Core/Helper/model/model.dart';
 import '../../data.dart';
 
@@ -7,6 +8,8 @@ class GiftCategoryX{
     required this.id,
     required this.name,
     this.order,
+    this.giftCardFormMale,
+    this.giftCardFormFemale,
     required this.status,
     required this.imageUrl,
     this.donationCategories = const [],
@@ -16,6 +19,8 @@ class GiftCategoryX{
   String name;
   bool status;
   int? order;
+  GiftCardFormByGenderX? giftCardFormMale;
+  GiftCardFormByGenderX? giftCardFormFemale;
   String imageUrl;
   List<OrganizationX> donationCategories;
 
@@ -30,6 +35,8 @@ class GiftCategoryX{
           order: json[NameX.order].toIntNullableX,
           imageUrl: imageJson[NameX.url].toStrX,
           donationCategories: ModelUtilX.generateItems((json[NameX.giftDonationCategories]??[]) as List, OrganizationX.fromJson),
+          giftCardFormMale:json[NameX.giftCategoryFormMale].toFromJsonNullableX(GiftCardFormByGenderX.fromJson),
+          giftCardFormFemale:json[NameX.giftCategoryFormFemale].toFromJsonNullableX(GiftCardFormByGenderX.fromJson),
         ),
         requiredAnyDataOfKeys: [
           [
@@ -48,6 +55,8 @@ class GiftCategoryX{
       NameX.name: name,
       NameX.status: status,
       NameX.order: order,
+      NameX.giftCategoryFormMale: giftCardFormMale?.toJson(),
+      NameX.giftCategoryFormFemale: giftCardFormFemale?.toJson(),
       NameX.image: {NameX.url: imageUrl},
       NameX.donationCategories: donationCategories.map((e) => e.toJson()).toList(),
     };

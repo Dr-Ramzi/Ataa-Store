@@ -57,7 +57,7 @@ class DonateOnBehalfOfFamilyPartOfSheetX extends StatelessWidget {
                   /// Gifted to him
                   TextFieldX(
                     controller: controller.giftedName,
-                    label: "The name of the gifted person",
+                    label: "Recipient’s Name",
                     textInputType: TextInputType.name,
                     textInputAction: TextInputAction.next,
                     hint: "name of gifted",
@@ -66,10 +66,10 @@ class DonateOnBehalfOfFamilyPartOfSheetX extends StatelessWidget {
 
                   /// Phone Number
                   PhoneFieldX(
-                    label: "Mehdi's mobile number",
+                    label: "Recipient’s Mobile Number",
                     key: Key(controller.countryCode.value.toString()),
                     controller: controller.giftedPhone,
-                    onChange: controller.onChangeCountryCode,
+                    onChangeCountryCode: controller.onChangeCountryCode,
                     countryCode: controller.countryCode.value,
                     isDisableChangeCountryCode: !controller.app.generalSettings.isShowCountryCodeList,
                   ).fadeAnimation400,

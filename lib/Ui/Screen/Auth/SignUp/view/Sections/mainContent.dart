@@ -66,7 +66,7 @@ class MainContentSignUpX extends GetView<SignUpController> {
                           controller: controller.phone,
                           label: "Mobile Number",
                           isRequired:true,
-                          onChange: controller.onChangePhone,
+                          onChangeCountryCode: controller.onChangePhone,
                           countryCode: controller.countryCode,
                           isDisableChangeCountryCode: !controller.app.generalSettings.isShowCountryCodeList,
                         ).fadeAnimation400,

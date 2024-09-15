@@ -19,7 +19,6 @@ extension ConvertExtensionX on dynamic {
       }
       if (this is String) {
         String value = (this as String).trim();
-        value = _convertArabicToEnglishNumbers(value);
         try {
           int? num = int.tryParse(value);
           if (num != null) {
@@ -43,9 +42,9 @@ extension ConvertExtensionX on dynamic {
   String get arabicToEnglishNumbers{
     const arabicNumbers = '٠١٢٣٤٥٦٧٨٩';
     const englishNumbers = '0123456789';
-    String result='';
+    String result=this;
     for (int i = 0; i < arabicNumbers.length; i++) {
-      result = '$this'.replaceAll(arabicNumbers[i], englishNumbers[i]);
+      result = result.replaceAll(arabicNumbers[i], englishNumbers[i]);
     }
     return result;
   }
@@ -192,6 +191,35 @@ extension ConvertExtensionX on dynamic {
         }
       }
       throw Exception();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  double toDoubleDefaultX(defaultValue) {
+    try {
+      if (this is double) {
+        return this;
+      }
+      if (this is int || this is num) {
+        return this+.0;
+      }
+      if (this == null || this is Object) {
+        return defaultValue;
+      }
+      if (this is String) {
+        String value = this.trim();
+        try {
+          if (double.tryParse(value) != null) {
+            return double.parse(value);
+          } else {
+            throw defaultValue;
+          }
+        } catch (e) {
+          throw defaultValue;
+        }
+      }
+      throw defaultValue;
     } catch (e) {
       rethrow;
     }

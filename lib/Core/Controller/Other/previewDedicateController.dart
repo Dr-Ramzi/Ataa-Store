@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../Data/Model/Gifting/giftCardFormByGender.dart';
+import '../../../Data/Model/Gifting/giftMessage.dart';
 import '../../../Data/data.dart';
 import '../../../Ui/Widget/widget.dart';
 
@@ -9,39 +11,56 @@ class PreviewDedicateControllerX  extends GetxController {
   //============================================================================
   // Variables
 
-  GiftingX gifting = GiftingX.empty();
-  String imageUrl='';
-  String message='';
-  String url='';
+  late String nameTo;
+  late String nameFrom;
+  late String amount;
+  late Color color;
+  late bool isShowAmount;
+  late String orgName;
+  late GiftCardFormByGenderX giftCardFormByGender;
 
-  RxBool isImage = true.obs;
+
+  RxBool isCard = true.obs;
   final previewVia = ValueNotifier(1);
+  late GiftMessageX message;
+  bool isGetMessage = false;
 
   //============================================================================
   // Functions
 
-  getDate()async{
-    try{
-      /// TODO: Database >>> Fetch the gift offer data
-      await Future.delayed(const Duration(seconds: 1)); // delete this
-
-      /// Fake data
-      imageUrl="https://github.com/SakerDakak/Images/blob/main/dedications-card-1.png?raw=true";
-      message="Congratulations on your graduation, our dear graduate. On this occasion, I donated 1,000 riyals on your behalf via the Ataa platform.\n\nFrom: Abdulaziz Salman Ali";
-      url="https://donate.edialoguec.org.sa/gift/3245";
-
-    }catch(e){
-      return Future.error(e);
+  Future<void> getDate()async{
+    if(!isGetMessage) {
+      message = await DatabaseX.getGiftMessageTemplate();
+      isGetMessage=true;
     }
   }
 
   /// Move the user to the gift link
   onTapUrl()async{
     try{
-      await launchUrl(Uri.parse(url));
+      String url = message.variables.firstWhereOrNull((e) => e.name==NameX.giftUrl,)?.example??'';
+      if(url.isNotEmpty) {
+        await launchUrl(Uri.parse(url));
+      }
     }catch(e){
       ToastX.error(message: "There is an error the link cannot be opened.\nTry again");
     }
+  }
+
+  String getMessageString(){
+    String result = message.content;
+    final Map<String, String?> values = {
+      NameX.recipientName: nameTo,
+      NameX.donorName: nameFrom,
+      NameX.donationAmount: amount,
+      NameX.organizationName: orgName,
+    };
+    for (var variable in message.variables) {
+      final value = values[variable.name] ?? variable.example;
+      result = result.replaceAll('{${variable.name}}', value);
+    }
+
+    return result;
   }
 
   //============================================================================
@@ -53,7 +72,7 @@ class PreviewDedicateControllerX  extends GetxController {
 
     /// listener if change tap is image or massage
     previewVia.addListener(() {
-      isImage.value = previewVia.value == 1;
+      isCard.value = previewVia.value == 1;
     });
   }
 }

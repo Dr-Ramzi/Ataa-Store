@@ -75,6 +75,7 @@ class _SwitchXState extends State<SwitchX> {
                   child: TextX(
                     widget.label!,
                     style: widget.isSmallTitle ? TextStyleX.titleSmall : null,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),

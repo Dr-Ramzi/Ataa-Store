@@ -109,9 +109,9 @@ class RemoteEndPointX {
   static const String getAllCities = '${mainAPI}cities';
 
   //============================================================================
-  // Basket
+  // Cart
 
-  static const String postAssignBasket = '${mainAPI}carts/{cart_id}/assign-my-cart';
+  static const String postAssignCart = '${mainAPI}carts/{cart_id}/assign-my-cart';
   static const String getAllCartItems = '${mainAPI}carts/items/{cart_id}';
   static const String postCreateCartItem = '${mainAPI}carts/items/{cart_id}';
   static const String putUpdateCartItem = '${mainAPI}carts/items/{cart_id}';

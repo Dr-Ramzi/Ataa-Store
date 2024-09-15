@@ -192,52 +192,6 @@ class TestDataX {
     ),
   ];
 
-  static List<DeductionX> deductions = [
-    DeductionX(
-      id: "1",
-      name: "Zakat on the first ten days of Dhul-Hijjah",
-      currentDonations: 324,
-      recurring: "Daily",
-      totalNumberSubscriptions: 273,
-      fixedDeductionAmount: 50,
-      briefDescription: "",
-      description:
-          "Donate daily automatically by participating in the charity of the blessed ten days of Dhul-Hijjah.",
-      shareURL: "https://www.ataa.com/231",
-      imageURL:
-          "https://github.com/SakerDakak/Images/blob/main/deduction-1.jpeg?raw=true",
-      videoURL: '',
-    ),
-    DeductionX(
-      id: "2",
-      name: "Monthly sponsorship for preacher Youssef",
-      currentDonations: 324,
-      recurring: "Monthly",
-      totalNumberSubscriptions: 273,
-      briefDescription: "",
-      description:
-          "Contribute to sponsoring a preacher on a monthly basis and receive his reward, God willing.",
-      shareURL: "https://www.ataa.com/231",
-      imageURL: "",
-      videoURL:
-          'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
-    ),
-    DeductionX(
-      id: "3",
-      name: "Weekly Friday charity",
-      currentDonations: 324,
-      recurring: "Weekly",
-      totalNumberSubscriptions: 273,
-      briefDescription: "",
-      description:
-          "Donate weekly automatically by subscribing to the weekly Friday charity.",
-      shareURL: "https://www.ataa.com/231",
-      imageURL:
-          "https://github.com/SakerDakak/Images/blob/main/deduction-3.jpeg?raw=true",
-      videoURL:
-          'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
-    ),
-  ];
 
   static List<ShareLinkX> shareLinks = [
     ShareLinkX(
@@ -619,29 +573,10 @@ class TestDataX {
       donationAmount: 2500,
     ),
   ];
-  static List<GiftingCardX> giftingCardX = [
-    GiftingCardX(
-        id: "1",
-        imageURL:
-            "https://github.com/SakerDakak/Images/blob/main/dedications-card-1.png?raw=true"),
-    GiftingCardX(
-        id: "1",
-        imageURL:
-            "https://github.com/SakerDakak/Images/blob/main/dedications-card-2.png?raw=true"),
-  ];
-  static List<String> giftingColors = [
-    "0F9591",
-    "F05252",
-    "C76028",
-    "C27803",
-    "6875F5",
-    "9061F9",
-    "E74694"
-  ];
   static List<GiftingX> gifting = [
     GiftingX(
       id: "1",
-      typeID: "1",
+      categoryID: "1",
       cardID: "1",
       orgID: "1",
       donationAmount: 100,
@@ -661,7 +596,7 @@ class TestDataX {
     ),
     GiftingX(
       id: "2",
-      typeID: "2",
+      categoryID: "2",
       cardID: "2",
       orgID: "2",
       donationAmount: 50,

@@ -20,6 +20,7 @@ class ButtonsSectionX extends GetView<GiftingController> {
                 Flexible(
                   child: ButtonStateX(
                     text: "Dedicate now",
+                    marginVertical: 0,
                     state: controller.giftingButtonState.value,
                     iconData: IconX.gift,
                     onTap: controller.onGifting,
@@ -29,18 +30,20 @@ class ButtonsSectionX extends GetView<GiftingController> {
                 Flexible(
                   child: ButtonStateX.second(
                     text: "Add to cart",
+                    marginVertical: 0,
                     state: controller.addToCartButtonState.value,
                     iconData: Icons.shopping_cart_rounded,
-                    onTap: controller.onAddToCart,
+                    onTap: ()async=> await controller.onGifting(isAddToCart: true),
                   ),
                 ),
               ],
             ).fadeAnimation800,
+            const SizedBox(height: 4),
             ButtonStateX.second(
               text: "Preview the donation",
               state: controller.previewButtonState.value,
               iconData: Icons.visibility_rounded,
-              onTap: controller.onPreviewDedicate,
+              onTap: controller.onPreviewGift,
             ).fadeAnimation800,
           ],
         ),

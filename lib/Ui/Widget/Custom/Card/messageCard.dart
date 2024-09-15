@@ -25,7 +25,7 @@ class MessageCardX extends StatelessWidget {
   Widget build(BuildContext context) {
     return ContainerX(
       color: backgroundColor??(isError?context.isDarkMode?ColorX.danger.shade900.withOpacity(0.05):Theme.of(context).colorScheme.onError:Theme.of(context).colorScheme.onPrimary),
-      isBorder: true,
+      isBorder: borderColor!=null||isError,
       borderColor: borderColor??(isError?context.isDarkMode?ColorX.danger.shade400:ColorX.danger.shade300:ColorX.primary.shade300),
       child: Row(
         children: [

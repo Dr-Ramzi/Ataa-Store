@@ -22,7 +22,7 @@ class ZakatSectionX extends GetView<HomeController> {
 
       /// Header
       header: SectionTitleX(
-        title: "Zakat",
+        title: "From Zakat expenditures",
         icon: Icons.verified_rounded,
         showMore: controller.onZakatMore,
       ),

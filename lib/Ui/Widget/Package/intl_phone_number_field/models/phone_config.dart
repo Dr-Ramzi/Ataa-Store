@@ -15,6 +15,7 @@ class PhoneConfig {
   bool popUpErrorText;
   EdgeInsetsGeometry errorPadding;
   AutovalidateMode autoValidateMode;
+  Color? color;
   final TextStyle? floatingLabelStyle;
   final TextInputAction textInputAction;
   PhoneConfig(
@@ -30,6 +31,7 @@ class PhoneConfig {
       this.backgroundColor,
       this.decoration,
       this.focusNode,
+      this.color,
       this.popUpErrorText = true,
       this.autoFocus = false,
       this.showCursor = false,

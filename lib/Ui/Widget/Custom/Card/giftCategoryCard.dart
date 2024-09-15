@@ -54,7 +54,7 @@ class GiftCategoryCardX extends StatelessWidget {
                 giftCategory.name,
                 style: TextStyleX.supTitleLarge.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: isSelected?Theme.of(context).primaryColor:context.isDarkMode?ColorX.grey.shade900:null,
+                    color: isSelected?Theme.of(context).primaryColor:context.isDarkMode?null:ColorX.grey.shade900,
                 ),
                 overflow: TextOverflow.ellipsis,
                 minFontSize: 10,

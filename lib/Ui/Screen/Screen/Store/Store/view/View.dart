@@ -15,7 +15,7 @@ class StoreView extends GetView<StoreController> {
     return Scaffold(
       appBar: AppBarX(
         title: "The Store",
-        actions: [BasketIconButtonsX()],
+        actions: [CartIconButtonsX()],
       ),
       body: SafeArea(
         child: FutureBuilder(

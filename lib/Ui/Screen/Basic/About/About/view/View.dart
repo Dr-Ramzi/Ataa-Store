@@ -19,7 +19,7 @@ class AboutView extends GetView<AboutController> {
     return Scaffold(
       appBar: AppBarX(
         title: 'About Us',
-        actions: [BasketIconButtonsX()],
+        actions: [CartIconButtonsX()],
       ),
       body: SafeArea(
         child: SingleChildScrollView(

@@ -33,7 +33,7 @@ class ContactCardX extends StatelessWidget {
           InkResponse(
             onTap: () => ClipboardX.copy(text),
             child: Icon(
-              Icons.copy,
+              IconX.copy,
               color: Theme.of(context).colorScheme.secondary,
             ),
           ),

@@ -16,8 +16,8 @@ class ColorsBarSectionX extends GetView<GiftingController> {
         const TextX(
           "Choose the card color",
           fontWeight: FontWeight.w700,
-        ).paddingSymmetric(horizontal: StyleX.hPaddingApp).fadeAnimation400,
-        const SizedBox(height: 10),
+        ).paddingSymmetric(horizontal: StyleX.hPaddingApp).fadeAnimation500,
+        const SizedBox(height: 14),
 
         /// Colors Options
         Obx(
@@ -26,8 +26,8 @@ class ColorsBarSectionX extends GetView<GiftingController> {
             colorSelectedIndex: controller.colorSelectedIndex.value,
             onChangeColor: controller.onChangeColor,
           ),
-        ).fadeAnimation400,
-        const SizedBox(height: 20),
+        ).fadeAnimation500,
+        const SizedBox(height: 24),
       ],
     );
   }

@@ -42,7 +42,7 @@ class EditProfileController extends GetxController {
 
   void onChangeGender(String? value) => gender.value = value!;
 
-  void onChangePhone(String val) => countryCode = int.parse(val);
+  void onChangeCountryCode(String val) => countryCode = int.parse(val);
 
   bool nameIsRequired() {
     return app.user.value!.name.isNotEmpty ||

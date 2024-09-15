@@ -14,7 +14,7 @@ class ZakatDisbursementsView extends GetView<ZakatDisbursementsController> {
     return Scaffold(
       appBar: AppBarX(
         title: "Projects that accept Zakat",
-        actions: [BasketIconButtonsX()],
+        actions: [CartIconButtonsX()],
       ),
       body: Obx(
             () {

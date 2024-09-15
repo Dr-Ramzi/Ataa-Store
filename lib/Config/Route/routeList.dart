@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
-import '../../Core/Controller/Basket/deliveryAddressController.dart';
+import '../../Core/Controller/Cart/deliveryAddressController.dart';
 import '../../Core/Controller/Pay/directZakatPaymentController.dart';
 import '../../Ui/Screen/Basic/About/About/controller/Controller.dart';
 import '../../Ui/Screen/Basic/About/About/view/View.dart';
 import '../../Ui/Screen/Basic/Loading/View/View.dart';
 import '../../Ui/Screen/Basic/Loading/controller/Controller.dart';
-import '../../Ui/Screen/Screen/Basket/controller/Controller.dart';
-import '../../Ui/Screen/Screen/Basket/view/View.dart';
+import '../../Ui/Screen/Screen/Cart/controller/Controller.dart';
+import '../../Ui/Screen/Screen/Cart/view/View.dart';
 import '../../Ui/Screen/Screen/Campaigns/AllCampaigns/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Campaigns/AllCampaigns/view/View.dart';
 import '../../Ui/Screen/Screen/Campaigns/CampaignDetails/controller/Controller.dart';
@@ -50,7 +50,7 @@ import '../../Ui/Screen/Screen/Zakat/ZakatCalculator/view/View.dart';
 import '../../Ui/Screen/Screen/Zakat/ZakatDisbursements/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Zakat/ZakatDisbursements/view/View.dart';
 import '../config.dart';
-import '../../Core/Controller/Basket/basketGeneralController.dart';
+import '../../Core/Controller/Cart/cartGeneralController.dart';
 import '../../Ui/Screen/Screen/Donation/AllDonation/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Organization/AllOrganizations/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Organization/AllOrganizations/view/View.dart';
@@ -132,7 +132,7 @@ class RouteListX {
           Get.lazyPut(
             () => ProfileDetailsController(),
           );
-          Get.lazyPut(() => BasketGeneralControllerX(), fenix: true);
+          Get.lazyPut(() => CartGeneralControllerX(), fenix: true);
         },
       ),
     ),
@@ -360,13 +360,13 @@ class RouteListX {
           Get.lazyPut(() => GiftingController());
         })),
     //========================================================
-    /// Basket
+    /// Cart
     GetPage(
-      name: RouteNameX.basket,
-      page: () => const BasketView(),
+      name: RouteNameX.cart,
+      page: () => const CartView(),
       binding: BindingsBuilder(
         () {
-          Get.lazyPut(() => BasketController());
+          Get.lazyPut(() => CartController());
           Get.lazyPut(() => DeliveryAddressControllerX());
         },
       ),

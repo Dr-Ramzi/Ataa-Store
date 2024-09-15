@@ -66,7 +66,8 @@ class ThemeX {
         onSecondary: ColorX.grey.shade50,
         error: ColorX.danger,
         onError: ColorX.danger.shade50,
-        outline: ColorX.grey.shade200),
+        outline: ColorX.grey.shade200,
+    ),
     appBarTheme: AppBarTheme(
       backgroundColor: ColorX.primary,
       shadowColor: Colors.transparent,

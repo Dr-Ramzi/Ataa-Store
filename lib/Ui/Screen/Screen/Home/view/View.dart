@@ -8,6 +8,7 @@ import '../../../../Widget/widget.dart';
 import '../controller/Controller.dart';
 import 'Sections/AdsSection.dart';
 import 'Sections/AssociationProgramsSection.dart';
+import 'Sections/DeductionsSection.dart';
 import 'Sections/DonationsSection.dart';
 import 'Sections/ZakatSection.dart';
 
@@ -28,15 +29,14 @@ class HomeView extends GetView<HomeController> {
               child: SingleChildScrollView(
                 controller: controller.scrollController,
                 /// this padding for height quick donation in nav bar
-                padding: const EdgeInsets.only(bottom: 40),
+                padding: const EdgeInsets.only(bottom: 60),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const AdsSectionX(),
                     const DonationsSectionX(),
                     const AssociationProgramsSectionX(),
-                    /// TODO: Show >>> Deductions on home
-                    // DeductionsSectionX(),
+                    const DeductionsSectionX(),
                     const ZakatSectionX(),
                     /// TODO: Show >>> Store on home
                     // ProductsSectionX(),

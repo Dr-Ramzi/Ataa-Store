@@ -14,7 +14,7 @@ class OurBankView extends GetView<OurBankController> {
     return Scaffold(
       appBar: AppBarX(
         title: 'Our Bank Accounts',
-        actions: [BasketIconButtonsX()],
+        actions: [CartIconButtonsX()],
       ),
       body: SafeArea(
         child: ScrollRefreshLoadMoreX<BankX>(

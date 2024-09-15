@@ -8,27 +8,30 @@ class OrganizationSelectionController extends GetxController {
   //============================================================================
   // Variables
 
-  RxString orgSelected = "All".obs;
+  Rx<OrganizationX?> orgSelected = Rx<OrganizationX?>(null);
+  OrganizationX allOption = OrganizationX(id: '', name: 'All', isShowHome: false, isShowQuickDonation: false);
 
   //============================================================================
   // Functions
 
-  onChange(String? val) {
-    orgSelected.value = val ?? "";
+  onChange(OrganizationX? val) {
+    orgSelected.value = val;
     Get.back();
   }
 
-  Future<List<String>> getData(
+  Future<List<OrganizationX>> getData(
       ScrollRefreshLoadMoreParametersX data) async {
-    try {
-      List<OrganizationX> results = await DatabaseX.getAllOrganizations(
-        isQuickDonation: isQuickDonation,
-        page: data.page,
-        perPage: data.perPage,
-      );
-      return ["All", ...results.map((e) => e.name)];
-    } catch (e) {
-      return Future.error(e);
+    return await DatabaseX.getAllOrganizations(
+      isQuickDonation: isQuickDonation,
+      page: data.page,
+      perPage: data.perPage,
+    );
+  }
+  @override
+  void onInit() {
+    if(isQuickDonation==true && orgSelected.value==null) {
+      orgSelected.value=allOption;
     }
+    super.onInit();
   }
 }

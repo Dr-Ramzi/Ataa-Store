@@ -76,7 +76,7 @@ class BankCardX extends StatelessWidget {
                   ),
                   const SizedBox(width: 20),
                    Icon(
-                    Icons.copy,
+                    IconX.copy,
                     color: Theme.of(context).primaryColor,
                     size: 18,
                   ),

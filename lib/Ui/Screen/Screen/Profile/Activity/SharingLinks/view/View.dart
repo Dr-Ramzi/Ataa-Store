@@ -15,7 +15,7 @@ class SharingLinksView extends GetView<SharingLinksController> {
     return Scaffold(
       appBar: AppBarX(
         title: "Sharing links",
-        actions: [BasketIconButtonsX()],
+        actions: [CartIconButtonsX()],
       ),
       body: FutureBuilder(
         future: controller.getData(),

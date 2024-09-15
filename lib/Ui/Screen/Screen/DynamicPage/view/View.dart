@@ -14,7 +14,7 @@ class DynamicPageView extends GetView<DynamicPageController> {
     return Scaffold(
       appBar: AppBarX(
         title: controller.page.title,
-        actions: [BasketIconButtonsX()],
+        actions: [CartIconButtonsX()],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(

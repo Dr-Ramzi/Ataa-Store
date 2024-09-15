@@ -15,7 +15,7 @@ class MyOrdersView extends GetView<MyOrdersController> {
     return Scaffold(
       appBar: AppBarX(
         title: "My Orders",
-        actions: [BasketIconButtonsX()],
+        actions: [CartIconButtonsX()],
       ),
       body: SafeArea(
         child: FutureBuilder(

@@ -17,7 +17,7 @@ class GenderSectionX extends GetView<GiftingController> {
           "The Mahdi's gender is his",
           fontWeight: FontWeight.w700,
         ).fadeAnimation300,
-        const SizedBox(height: 10),
+        const SizedBox(height: 14),
 
         /// Gender Options
         Obx(
@@ -30,6 +30,7 @@ class GenderSectionX extends GetView<GiftingController> {
                   groupValue: controller.gender.value,
                   value: "male",
                   onChanged: controller.onChangeGender,
+                  color: Theme.of(context).cardColor,
                 ),
               ),
               const SizedBox(width: 10),
@@ -45,8 +46,8 @@ class GenderSectionX extends GetView<GiftingController> {
               ),
             ],
           ),
-        ).fadeAnimation400,
-        const SizedBox(height: 20),
+        ).fadeAnimation300,
+        const SizedBox(height: 24),
       ],
     ).paddingSymmetric(horizontal: StyleX.hPaddingApp);
   }

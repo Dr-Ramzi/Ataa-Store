@@ -1,5 +1,6 @@
 import 'package:ataa/UI/Animation/animation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
 import '../../../../../../../Config/config.dart';
 import '../../../../../../../UI/Widget/widget.dart';
@@ -26,10 +27,9 @@ class DeductionDetailsSectionX extends GetView<DeductionDetailsController> {
               style: TextStyleX.titleLarge,
             ).fadeAnimation500,
             const SizedBox(height: 6),
-            TextX(
+            HtmlWidget(
               controller.deduction.description,
-              style: TextStyleX.titleSmall,
-              maxLines: 100,
+              textStyle: TextStyleX.titleSmall,
             ).fadeAnimation500,
             const SizedBox(height: 26),
 
@@ -41,7 +41,7 @@ class DeductionDetailsSectionX extends GetView<DeductionDetailsController> {
                   child: StatisticCardX(
                     color: Theme.of(context).cardColor,
                     icon: Icons.payments_rounded,
-                    statistic: controller.deduction.currentDonations,
+                    statistic: controller.deduction.achievedAmount,
                     isMoney: true,
                     subtitle: "Total amount of donations",
                   ),
@@ -53,7 +53,7 @@ class DeductionDetailsSectionX extends GetView<DeductionDetailsController> {
                   child: StatisticCardX(
                     color: Theme.of(context).cardColor,
                     icon: Icons.group_rounded,
-                    statistic: controller.deduction.totalNumberSubscriptions,
+                    statistic: controller.deduction.subscribersCount,
                     subtitle: "Total number of subscribers",
                   ),
                 ),

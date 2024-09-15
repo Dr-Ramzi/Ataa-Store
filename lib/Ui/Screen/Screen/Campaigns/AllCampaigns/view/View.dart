@@ -16,7 +16,7 @@ class AllCampaignsView extends GetView<AllCampaignsController> {
     return Scaffold(
       appBar: AppBarX(
         title: "User Campaigns",
-        actions: [BasketIconButtonsX()],
+        actions: [CartIconButtonsX()],
       ),
       body: SafeArea(
         child: FutureBuilder(

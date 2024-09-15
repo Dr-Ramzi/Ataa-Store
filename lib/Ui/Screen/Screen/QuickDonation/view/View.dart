@@ -22,7 +22,7 @@ class QuickDonationView extends StatelessWidget {
                 title: "Select a donation project (optional)",
                 onTap: controller.onTapChooseDonationProject,
                 selected: controller
-                    .donationProjectSelectedController.orgSelected.value,
+                    .donationProjectSelectedController.orgSelected.value?.name,
               ).fadeAnimation200,
 
               /// Free Donation Options [ 20 , 50 , 100 ] SAR

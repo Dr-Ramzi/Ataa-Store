@@ -15,7 +15,7 @@ class MyDonationsView extends GetView<MyDonationsController> {
     return Scaffold(
       appBar: AppBarX(
         title: "Register My Donations",
-        actions: [BasketIconButtonsX()],
+        actions: [CartIconButtonsX()],
       ),
       body: SafeArea(
         child: FutureBuilder(

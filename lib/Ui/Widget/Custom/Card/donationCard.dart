@@ -49,23 +49,15 @@ class DonationCardX extends StatelessWidget {
                         ),
                       ),
 
-                      /// Share Button
-                      Positioned.directional(
-                        end: 10,
-                        top: 10,
-                        textDirection: Directionality.of(context),
-                        child: InkResponse(
-                          onTap: () async =>
-                              await shareSheet(donation.shareURL),
-                          child: const ContainerX(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
-                            ),
-                            child: Icon(Icons.share_rounded),
-                          ),
+                      if(donation.isDone)
+                        Positioned.fill(
+                          child: ImageNetworkX(
+                            imageUrl: doneImageUrl ?? ImageX.doneDonation,
+                            isFile: doneImageUrl == null,
+                            empty: const SizedBox(),
+                            fit: BoxFit.contain,
+                          ).paddingAll(5),
                         ),
-                      ),
 
                       /// Zakat Marker
                       if (donation.isZakat)
@@ -101,14 +93,22 @@ class DonationCardX extends StatelessWidget {
                           ),
                         ),
 
-                      if(donation.isDone)
-                      Positioned.fill(
-                        child: ImageNetworkX(
-                          imageUrl: doneImageUrl ?? ImageX.doneDonation,
-                          isFile: doneImageUrl == null,
-                          empty: const SizedBox(),
-                          fit: BoxFit.contain,
-                        ).paddingAll(5),
+                      /// Share Button
+                      Positioned.directional(
+                        end: 10,
+                        top: 10,
+                        textDirection: Directionality.of(context),
+                        child: InkResponse(
+                          onTap: () async =>
+                          await shareSheet(donation.shareURL),
+                          child: const ContainerX(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                            child: Icon(Icons.share_rounded),
+                          ),
+                        ),
                       ),
                     ],
                   ),
