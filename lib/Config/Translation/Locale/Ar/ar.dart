@@ -8,6 +8,6 @@ const Map<String, String> ar = {
   ...arGeneral,
   ...arBasic,
   ...arErrors,
-  ...arFakeData,
+  // ...arFakeData,
   ...arCountries,
 };

@@ -21,7 +21,7 @@ class CartProductCardX extends StatelessWidget {
       child: Row(
         children: [
           ImageNetworkX(
-            imageUrl: product.imageURL.first,
+            imageUrl: product.imageUrl.first,
             height: 55,
             width: 55,
             radius: StyleX.radiusSm,

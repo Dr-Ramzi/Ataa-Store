@@ -117,7 +117,7 @@ class AllSponsorshipsController extends GetxController {
         addToCartButtonsState[sponsorship.id] = ButtonStateEX.loading;
 
         /// Connect to basket Controller to add to cart in database
-        await basketController.addSponsorship(sponsorship);
+        // await basketController.addSponsorship(sponsorship);
 
         /// The time delay here is aesthetically beneficial
         addToCartButtonsState[sponsorship.id] = ButtonStateEX.success;

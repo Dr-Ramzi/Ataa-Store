@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:ataa/Core/Controller/Cart/cartGeneralController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:sms_autofill/sms_autofill.dart';
@@ -14,6 +15,7 @@ class OTPController extends GetxController with CodeAutoFill {
   // Injection of required controls
 
   AppControllerX app = Get.find();
+  CartGeneralControllerX cart = Get.find();
 
   //============================================================================
   // Variables
@@ -25,7 +27,7 @@ class OTPController extends GetxController with CodeAutoFill {
   Rx<ButtonStateEX> buttonState = ButtonStateEX.normal.obs;
 
   /// if open OTP from sheet then get OTP object from view screen parameters
-  OtpX otp = Get.arguments ?? OtpX.empty();
+  late OtpX otp = Get.arguments is Map?Get.arguments[NameX.otp]:OtpX.empty();
 
   GlobalKey<FormState> formKey = GlobalKey();
   AutovalidateMode autoValidate = AutovalidateMode.disabled;
@@ -124,6 +126,14 @@ class OTPController extends GetxController with CodeAutoFill {
             LocalDataX.put(LocalKeyX.route, RouteNameX.root);
             app.isLogin.value = true;
 
+            try{
+              await cart.assignCart(app.user.value!.token);
+            }catch(_){}
+            try{
+              await cart.getData();
+            }catch(_){}
+
+
             /// The time delay here is aesthetically beneficial
             buttonState.value = ButtonStateEX.success;
             await Future.delayed(
@@ -131,9 +141,8 @@ class OTPController extends GetxController with CodeAutoFill {
             );
 
             if (isSheet) {
-              Get.back();
-
               /// to close otp sheet
+              Get.back();
             } else {
               /// go to home
               Get.offAllNamed(RouteNameX.root);

@@ -1,12 +1,15 @@
 part of '../../widget.dart';
 
 class CreditCardCardX extends StatelessWidget {
-  const CreditCardCardX(
-      {super.key,
-      required this.bankCard,
-      required this.onSetDefault,
-      required this.onDelete, required this.isLoadingSetDefault, required this.isLoadingDelete});
-  final PaymentCardX bankCard;
+  const CreditCardCardX({
+    super.key,
+    required this.paymentCard,
+    required this.onSetDefault,
+    required this.onDelete,
+    required this.isLoadingSetDefault,
+    required this.isLoadingDelete,
+  });
+  final PaymentCardX paymentCard;
   final bool isLoadingSetDefault;
   final bool isLoadingDelete;
   final Function() onSetDefault;
@@ -22,70 +25,90 @@ class CreditCardCardX extends StatelessWidget {
           children: [
             Row(
               children: [
-                CreditCardCompanyX(
-                    cardType: CreditCardUtilsX.getCardTypeFrmNumber(bankCard.cardNum),
-                    margin: const EdgeInsets.all(5),
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: ImageNetworkX(
+                    imageUrl: paymentCard.iconUrl ?? '',
+                    width: 50,
+                    height: 50,
+                    failed: const Icon(
+                      Icons.credit_card,
+                      size: 50.0,
+                      color: ColorX.grey,
+                    ),
+                  ),
                 ),
                 const SizedBox(width: 10),
                 Column(
-                  crossAxisAlignment: isLoadingSetDefault?CrossAxisAlignment.center:CrossAxisAlignment.start,
+                  crossAxisAlignment: isLoadingSetDefault
+                      ? CrossAxisAlignment.center
+                      : CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     TextX(
-                      FunctionX.addSpaceBeforeUpperCase(CreditCardUtilsX.getCardTypeFrmNumber(bankCard.cardNum).name),
-                      fontWeight: FontWeight.w600,
+                     paymentCard.name,
+                      style: TextStyleX.titleLarge,
+                      fontWeight: FontWeight.w700,
                     ),
                     const SizedBox(height: 4),
-                    if (bankCard.isDefault)
+                    if (paymentCard.isDefault)
                       TextX(
                         "Default",
-                        style: TextStyleX.supTitleLarge,
+                        fontWeight: FontWeight.w400,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
-                    if (!bankCard.isDefault && !isLoadingSetDefault)
+                    if (!paymentCard.isDefault && !isLoadingSetDefault)
                       InkWell(
                         onTap: onSetDefault,
                         child: TextX(
                           "Select as default card",
-                          style: TextStyleX.supTitleLarge,
+                          fontWeight: FontWeight.w400,
                           color: Theme.of(context).primaryColor,
                         ),
                       ),
-                    if(isLoadingSetDefault)
+                    if (isLoadingSetDefault)
                       const SizedBox(
                         height: 17,
                         width: 17,
-                        child: CircularProgressIndicator(strokeWidth: 2.5,),
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2.5,
+                        ),
                       ),
                   ],
                 ),
               ],
             ),
             Column(
-              crossAxisAlignment: isLoadingDelete?CrossAxisAlignment.center:CrossAxisAlignment.end,
+              crossAxisAlignment: isLoadingDelete
+                  ? CrossAxisAlignment.center
+                  : CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Directionality(
                   textDirection: TextDirection.ltr,
                   child: TextX(
-                    "****${bankCard.cardNum.substring(bankCard.cardNum.length - 4)}",
-                    fontWeight: FontWeight.w600,
+                    "****${paymentCard.last4Digits}",
+                    fontWeight: FontWeight.w700,
+                    style: TextStyleX.titleLarge,
                   ),
                 ),
                 const SizedBox(height: 4),
-                if(!isLoadingDelete)
-                InkWell(
-                  onTap: onDelete,
-                  child: TextX(
-                    "delete",
-                    style: TextStyleX.supTitleLarge,
-                    color: Theme.of(context).colorScheme.error,
+                if (!isLoadingDelete)
+                  InkWell(
+                    onTap: onDelete,
+                    child: TextX(
+                      "delete",
+                      fontWeight: FontWeight.w400,
+                      color: Theme.of(context).colorScheme.error,
+                    ),
                   ),
-                ),
-                if(isLoadingDelete)
+                if (isLoadingDelete)
                   const SizedBox(
                     height: 17,
                     width: 17,
-                    child: CircularProgressIndicator(strokeWidth: 2.5,),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.5,
+                    ),
                   ),
               ],
             ),

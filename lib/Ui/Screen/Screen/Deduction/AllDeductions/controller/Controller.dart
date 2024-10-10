@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../../../../../Config/config.dart';
 import '../../../../../../Core/Controller/Filter/filterController.dart';
 import '../../../../../../Core/core.dart';
+import '../../../../../../Data/Model/Deduction/deduction.dart';
 import '../../../../../../Data/data.dart';
 import '../../../../../ScreenSheet/Filter/GeneralFilter/generalFilterSheet.dart';
 import '../../../../../ScreenSheet/Pay/SubscriptionDeduction/subscriptionDeductionSheet.dart';
@@ -31,7 +32,7 @@ class AllDeductionsController extends GetxController {
       perPage: data.perPage,
       sortType: data.orderBy,
       searchQuery: data.searchQuery,
-      categoryID: data.filters?[NameX.categoryID],
+      categoryID: data.filters?[NameX.categoryId],
       recurring: data.filters?[NameX.recurring],
     );
     return results;

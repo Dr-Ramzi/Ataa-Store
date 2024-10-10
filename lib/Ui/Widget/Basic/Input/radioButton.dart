@@ -6,14 +6,18 @@ class RadioButtonX<T> extends StatelessWidget {
       required this.groupValue,
       required this.value,
       required this.onChanged,
-      required this.label,
+      this.label,
       this.isCardOnly = false,
       this.check,
+      this.child,
+      this.height,
       this.valueCheck,
       this.color,
       this.margin = const EdgeInsets.symmetric(vertical: 5)});
-  final String label;
+  final String? label;
+  final Widget? child;
   final bool isCardOnly;
+  final double? height;
   final EdgeInsets margin;
   final Color? color;
   final T? groupValue;
@@ -36,10 +40,10 @@ class RadioButtonX<T> extends StatelessWidget {
                 : Theme.of(context).colorScheme.onPrimary
             : color ?? Theme.of(context).cardTheme.color,
         borderColor: (check!=null?check!():value.hashCode == groupValue.hashCode)
-            ? Theme.of(context).primaryColor
+            ? context.isDarkMode?Theme.of(context).primaryColor:ColorX.primary.shade200
             : null,
-        padding: isCardOnly ? const EdgeInsets.all(14.0) : EdgeInsets.zero,
-        height: StyleX.inputHeight,
+        padding: isCardOnly ? const EdgeInsets.symmetric(horizontal: 20,vertical: 14.0) : EdgeInsets.zero,
+        height: height??StyleX.inputHeight,
         child: Row(
           mainAxisAlignment:
               isCardOnly ? MainAxisAlignment.center : MainAxisAlignment.start,
@@ -57,8 +61,8 @@ class RadioButtonX<T> extends StatelessWidget {
                 onChanged: (_) => onChanged(value),
               ),
             Flexible(
-              child: TextX(
-                label,
+              child: child??TextX(
+                label??'',
                 color: (check!=null?check!():value.hashCode == groupValue.hashCode)
                     ? Theme.of(context).primaryColor
                     : null,

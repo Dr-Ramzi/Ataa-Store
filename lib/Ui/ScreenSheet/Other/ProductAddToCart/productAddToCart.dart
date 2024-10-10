@@ -43,7 +43,7 @@ productAddToCartSheetX(ProductX product) async {
                       height: 50,
                       width: 50,
                       imageUrl: controller.product
-                          .imageURL[controller.imageSelectedIndex.value],
+                          .imageUrl[controller.imageSelectedIndex.value],
                     ),
                   ),
                   const SizedBox(width: 10),

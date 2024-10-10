@@ -34,10 +34,10 @@ class DonateOnBehalfOfFamilyPartOfSheetX extends StatelessWidget {
           SwitchX(
             value: controller.isEnable.value,
             onChange: controller.onEnable,
+            margin: const EdgeInsets.only(top: 5),
             label: "Donate on behalf of your family and friends",
           ).fadeAnimation300,
           if (controller.isEnable.value)
-
             ///
             Form(
               key: controller.formKey,
@@ -56,7 +56,7 @@ class DonateOnBehalfOfFamilyPartOfSheetX extends StatelessWidget {
 
                   /// Gifted to him
                   TextFieldX(
-                    controller: controller.giftedName,
+                    controller: controller.recipientName,
                     label: "Recipient’s Name",
                     textInputType: TextInputType.name,
                     textInputAction: TextInputAction.next,
@@ -75,11 +75,11 @@ class DonateOnBehalfOfFamilyPartOfSheetX extends StatelessWidget {
                   ).fadeAnimation400,
 
                   /// Get data from contacts
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: InkWell(
-                      onTap: controller.onPhoneFromContacts,
-                      borderRadius: BorderRadius.circular(StyleX.radius),
+                  InkWell(
+                    onTap: controller.onPhoneFromContacts,
+                    borderRadius: BorderRadius.circular(StyleX.radius),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Row(
                         children: [
                           Icon(
@@ -98,6 +98,7 @@ class DonateOnBehalfOfFamilyPartOfSheetX extends StatelessWidget {
                       ),
                     ),
                   ).fadeAnimation500,
+                  const SizedBox(height: 4),
                 ],
               ),
             ),

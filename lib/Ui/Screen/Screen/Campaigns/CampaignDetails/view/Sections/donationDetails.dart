@@ -59,19 +59,19 @@ class DonationDetailsSectionX extends GetView<CampaignDetailsController> {
             const SizedBox(height: 16),
 
             /// Donations progress bar
-            if(controller.donation.isShowCompletionIndicator)
+            if(controller.donation.donationSettings.isShowCompletionIndicator)
               Row(
                 children: [
                   Expanded(
                     child: LinearProgressIndicator(
-                      value: controller.donation.donationProgress / 100,
+                      value: controller.donation.donationBasic.completionRate / 100,
                       borderRadius: BorderRadius.circular(50),
                       minHeight: 8,
                     ),
                   ),
                   const SizedBox(width: 16),
                   TextX(
-                    "${controller.donation.donationProgress.toStringAsFixed(2)} %",
+                    "${controller.donation.donationBasic.completionRate.toStringAsFixed(2)} %",
                     style: TextStyleX.supTitleLarge,
                   )
                 ],
@@ -85,7 +85,7 @@ class DonationDetailsSectionX extends GetView<CampaignDetailsController> {
             ).fadeAnimation500,
             const SizedBox(height: 6),
             HtmlWidget(
-              controller.donation.description,
+              controller.donation.donationDetails.description,
               textStyle: TextStyleX.titleSmall,
             ).fadeAnimation500,
             const SizedBox(height: 16),

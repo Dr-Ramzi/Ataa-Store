@@ -5,6 +5,6 @@ part of '../data.dart';
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 class ConstantX{
-  static const List<int> goldCarats=[24,22,21,18,16,14,12,10,9];
+  static const List<int> goldKarats=[24,22,21,18,16,14,12,10,9];
   static const double ounceWeight = 31.1034768;
 }

@@ -40,7 +40,7 @@ class CampaignCardX extends StatelessWidget {
                   child: ImageNetworkX(
                     height: 170,
                     width: double.maxFinite,
-                    imageUrl: campaign.imageURL[0],
+                    imageUrl: campaign.imageUrl??'',
                   ),
                 ),
                 if(!isPreview)

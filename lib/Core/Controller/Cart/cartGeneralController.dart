@@ -1,3 +1,6 @@
+import 'package:ataa/Core/Error/error.dart';
+import 'package:ataa/Data/Enum/model_type_status.dart';
+import 'package:ataa/Ui/ScreenSheet/Other/MandatoryAuth/mandatoryAuth.dart';
 import 'package:get/get.dart';
 import '../../../Config/config.dart';
 import '../../../Data/Model/Cart/cart.dart';
@@ -7,107 +10,90 @@ class CartGeneralControllerX extends GetxController {
   //============================================================================
   // Variables
 
-  Rx<CartX?> cart = Rx<CartX?>(null);
-
+  late Rx<CartX> cart;
+  RxInt countItem = 0.obs;
   //============================================================================
   // Functions
 
-  delete(){
-    cart.value = null;
-  }
-
-  saveCartID(){
-    if(cart.value!=null) {
-      LocalDataX.put(LocalKeyX.cartId, cart.value?.id);
-    }
-  }
-  
-  assignCart()async{
-    if(LocalDataX.cartID.isNotEmpty && !LocalDataX.cartIDIsAssign){
-      try{
-        await DatabaseX.assignCart(LocalDataX.cartID);
-      }catch(e){
-        return Future.error(e);
-      }
-    }
-  }
-
-  getData({bool isLogin=false})async{
-    try{
-      if(LocalDataX.cartID.isNotEmpty || LocalDataX.token.isNotEmpty){
-        cart.value = await DatabaseX.getAllCartItems(LocalDataX.cartID);
-      }else{
-        cart.value = await DatabaseX.createCart();
-      }
-      if(isLogin){
-        await assignCart();
-      }
-      saveCartID();
-    }catch(e){
-      return Future.error(e);
-    }
-  }
-
   openCart() => Get.toNamed(RouteNameX.cart);
+  delete() {
+    LocalDataX.put(LocalKeyX.cartIdIsAssign, false);
+    countItem.value = 0;
+    cart.value = CartX(
+      id: '',
+      totalPrice: 0,
+      countItem: 0,
+      currency: '',
+      isProduct: false,
+    );
+  }
 
-  addDonation(DonationX donation) async {
-    try {
-      /// TODO: Database >>> Add donation to cart
-      await Future.delayed(const Duration(seconds: 1)); // delete this
-
-      /// update number items for icon Cart badge
-      cart.value?.countItem++;
-    } catch (e) {
-      return Future.error(e);
+  saveCartID() {
+    if (LocalDataX.token.isEmpty) {
+      LocalDataX.put(LocalKeyX.cartId, cart.value.id);
     }
   }
 
-  addCampaign(CampaignX campaign) async {
+  assignCart(String token) async {
     try {
-      /// TODO: Database >>> Add campaign to cart
-      await Future.delayed(const Duration(seconds: 1)); // delete this
-
-      /// update number items for icon Cart badge
-      cart.value?.countItem++;
+      if (LocalDataX.cartID.isNotEmpty && !LocalDataX.cartIdIsAssign) {
+        await DatabaseX.assignCart(LocalDataX.cartID, token);
+        LocalDataX.remove(LocalKeyX.cartId);
+        LocalDataX.put(LocalKeyX.cartIdIsAssign, true);
+      }
     } catch (e) {
-      return Future.error(e);
+      e.toErrorX.log();
     }
   }
 
-  addGifting(GiftingX gifting) async {
-    try {
-      /// TODO: Database >>> Add gifting to cart
-      await Future.delayed(const Duration(seconds: 1)); // delete this
-
-      /// update number items for icon Cart badge
-      cart.value?.countItem++;
-    } catch (e) {
-      return Future.error(e);
+  getData({bool isLogin = false}) async {
+    if (LocalDataX.token.isNotEmpty) {
+      cart = (await DatabaseX.getAllCartItems()).obs;
+    } else if (LocalDataX.cartID.isNotEmpty) {
+      cart = (await DatabaseX.getAllCartItems(cartId: LocalDataX.cartID)).obs;
+    } else if (LocalDataX.cartID.isEmpty) {
+      cart = (await DatabaseX.createCart()).obs;
+      saveCartID();
     }
+    countItem.value = cart.value.countItem;
   }
 
-  addSponsorship(SponsorshipX sponsorship) async {
-    try {
-      /// TODO: Database >>> Add sponsorship to cart
-      await Future.delayed(const Duration(seconds: 1)); // delete this
-
-      /// update number items for icon Cart badge
-      cart.value?.countItem++;
-    } catch (e) {
-      return Future.error(e);
+  Future<String> addItem({
+    required String modelId,
+    required ModelTypeStatusX modelType,
+    required bool isPayNow,
+    bool isCloseSheet = false,
+    int quantity = 1,
+  }) async {
+    var data =
+        await DatabaseX.createCartItem(cart.value.id, modelType, modelId);
+    countItem.value = data.countItem;
+    cart.value.countItem = data.countItem;
+    cart.value.id = data.id;
+    saveCartID();
+    if (isCloseSheet) {
+      Get.back();
     }
-  }
-
-  addProduct(ProductX product) async {
-    try {
-      /// TODO: Database >>> Add product to cart
-      await Future.delayed(const Duration(seconds: 1)); // delete this
-
-      /// update number items for icon Cart badge
-      cart.value?.countItem++;
-    } catch (e) {
-      return Future.error(e);
+    if (isPayNow) {
+      if (cart.value.countItem == 1 && LocalDataX.token.isEmpty) {
+        await mandatoryAuthSheetX();
+        // انتظر حتى يتم إغلاق جميع شاشات البوتم شيت المفتوحة
+        while (Get.isBottomSheetOpen ?? false) {
+          await Future.delayed(const Duration(
+              milliseconds: 100)); // إضافة تأخير بسيط للتحقق بشكل دوري
+        }
+      }
+      if (cart.value.countItem == 1 && LocalDataX.token.isNotEmpty) {
+        Get.toNamed(
+          RouteNameX.generalPayment,
+          arguments: {
+            NameX.totalCart: cart.value.totalPrice,
+          },
+        );
+      } else {
+        Get.toNamed(RouteNameX.cart);
+      }
     }
+    return data.message;
   }
-
 }

@@ -1,22 +1,33 @@
 import 'dart:async';
+import 'package:ataa/Core/Controller/Cart/cartGeneralController.dart';
+import 'package:ataa/Core/Error/error.dart';
+import 'package:ataa/Core/Extension/convert/convert.dart';
+import 'package:ataa/Data/Enum/model_type_status.dart';
+import 'package:ataa/Data/Model/Donation/Order/donationOrderForm.dart';
+import 'package:ataa/Ui/ScreenSheet/Selection/Zakat/zakatSelectionSheet.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../Config/config.dart';
 import '../../../Data/data.dart';
 import '../../../UI/Widget/widget.dart';
 import '../../core.dart';
+import '../SelectedOptions/zakatSelectionController.dart';
 
 class DirectZakatPaymentControllerX extends GetxController {
   //============================================================================
   // Injection of required controls
 
   final AppControllerX app = Get.find();
+  final CartGeneralControllerX cart = Get.find();
+  final ZakatSelectionControllerX zakatSelectionController =
+      Get.put(ZakatSelectionControllerX(), tag: 'DirectZakatPayment');
 
   //============================================================================
   // Variables
 
   RxBool isLoading = false.obs;
   Rx<ButtonStateEX> buttonState = ButtonStateEX.normal.obs;
+  Rx<ButtonStateEX> addToCartButtonState = ButtonStateEX.normal.obs;
 
   GlobalKey<FormState> formKey = GlobalKey();
   AutovalidateMode autoValidate = AutovalidateMode.disabled;
@@ -26,40 +37,47 @@ class DirectZakatPaymentControllerX extends GetxController {
   //============================================================================
   // Functions
 
-  onCancel() => Get.back();
+  onTapZakatSelection() async {
+    await zakatSelectionSheetX(controller: zakatSelectionController);
+  }
 
   /// Erase all data and return it to its default state
-  clearDate() {
+  clearData() {
     money.text = "";
     autoValidate = AutovalidateMode.disabled;
   }
 
-  onDirectZakatPayment() async {
+  onAddToCart({bool isPay = false}) async {
     if (isLoading.isFalse) {
-      if (formKey.currentState!.validate()) {
+       if(zakatSelectionController.optionSelected.value==null){
+         ToastX.error(message: 'You must choose one of the donations');
+       }else if (formKey.currentState!.validate()) {
         isLoading.value = true;
-        buttonState.value = ButtonStateEX.loading;
-        try {
-          /// TODO: Database >>> Create a connection to start the payment process
-          /// TODO: Payment >>> Go to the payment screen
-          /// TODO: Database >>> Send a response from the payment screen and complete the process
-          await Future.delayed(const Duration(seconds: 1)); // delete this
+        isPay?buttonState.value = ButtonStateEX.loading:addToCartButtonState.value= ButtonStateEX.loading;
 
-          /// The time delay here is aesthetically beneficial
-          buttonState.value = ButtonStateEX.success;
-          await Future.delayed(
-            const Duration(seconds: StyleX.successButtonSecond),
+        try {
+          var data = await DatabaseX.createDonationOrder(
+            form: DonationOrderFormX(
+              donationId: zakatSelectionController.optionSelected.value!.id,
+              price: money.text.toDoubleX,
+              donationOnBehalfOfFamilyAndFriends: false,
+            ),
           );
 
+          String message = await cart.addItem(modelId: data.modelId,modelType: ModelTypeStatusX.donation,isPayNow:isPay,isCloseSheet:true);
+
           /// This controller form bottom sheet
-          Get.back();
-          ToastX.success(message: "Zakat has been paid successfully");
+          if(!isPay) {
+            ToastX.success(message: message);
+          }
 
           /// Clear date on controller
-          clearDate();
+          clearData();
+          zakatSelectionController.clearData();
         } catch (error) {
+          error.toErrorX.log();
           ToastX.error(message: error.toString());
-          buttonState.value = ButtonStateEX.failed;
+          isPay?buttonState.value = ButtonStateEX.failed:addToCartButtonState.value= ButtonStateEX.failed;
         }
         isLoading.value = false;
 
@@ -67,6 +85,7 @@ class DirectZakatPaymentControllerX extends GetxController {
         Timer(
           const Duration(seconds: StyleX.returnButtonToNormalStateSecond),
           () {
+            addToCartButtonState.value = ButtonStateEX.normal;
             buttonState.value = ButtonStateEX.normal;
           },
         );

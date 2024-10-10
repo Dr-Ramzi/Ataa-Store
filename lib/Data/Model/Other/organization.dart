@@ -7,8 +7,8 @@ class OrganizationX {
     this.description='',
     this.status = true,
     this.order,
-    required this.isShowHome,
-    required this.isShowQuickDonation,
+    this.isShowHome = false,
+    this.isShowQuickDonation = false,
     this.externalUrl = '',
     this.imageUrl = '',
     this.bannerUrl = '',
@@ -26,7 +26,7 @@ class OrganizationX {
 
   String externalUrl;
   String imageUrl;
-  String bannerUrl;
+  String? bannerUrl;
 
   factory OrganizationX.fromJson(Map<String, dynamic> json) {
     Map<String, Object?> imageJson =
@@ -46,7 +46,7 @@ class OrganizationX {
         isShowQuickDonation: json[NameX.isShowQuickDonation].toBoolX,
         externalUrl: imageJson[NameX.externalUrl].toStrDefaultX(''),
         imageUrl: imageJson[NameX.url].toStrDefaultX(''),
-        bannerUrl: bannerJson[NameX.url].toStrX,
+        bannerUrl: bannerJson[NameX.url].toStrNullableX,
       ),
       requiredAnyDataOfKeys: [
         [

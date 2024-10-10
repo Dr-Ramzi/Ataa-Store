@@ -26,7 +26,7 @@ class ProfileImageSectionX extends GetView<EditProfileController> {
                 child: ImageNetworkX(
                   imageUrl: controller.image != null
                       ? controller.image!.path
-                      : controller.app.user.value!.imageURL ?? "",
+                      : controller.app.user.value!.imageUrl ?? "",
                   height: 100,
                   width: 100,
                   isFile: controller.image != null,

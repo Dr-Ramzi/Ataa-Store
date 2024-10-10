@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 import '../../../../../../Core/Controller/Other/donateOnBehalfOfFamilyController.dart';
+import '../../../../../../Data/Model/Deduction/deduction.dart';
 import '../../../../../../Data/data.dart';
 import '../../../../../ScreenSheet/Pay/SubscriptionDeduction/subscriptionDeductionSheet.dart';
 

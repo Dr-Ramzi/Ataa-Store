@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../../Config/config.dart';
 import '../../../../../Core/core.dart';
+import '../../../../../Data/Model/Deduction/deduction.dart';
+import '../../../../../Data/Model/Donation/donation.dart';
 import '../../../../../Data/data.dart';
 import '../../../../ScreenSheet/Other/ProductAddToCart/productAddToCart.dart';
 import '../../../../ScreenSheet/Pay/PayDonation/payDonationSheet.dart';
@@ -87,16 +89,13 @@ class HomeController extends GetxController {
       ScrollRefreshLoadMoreParametersX data) async {
     try {
       var result = await DatabaseX.getAllDeductions(
-        isHome: true,
         perPage: data.perPage,
         page: data.page,
       );
       isHasErrorInDeductions.value = false;
       deductions += result;
-      print(deductions.length);
       return result;
     } catch (e) {
-      print(e);
       isHasErrorInDeductions.value = deductions.isNotEmpty;
       return Future.error(e);
     }

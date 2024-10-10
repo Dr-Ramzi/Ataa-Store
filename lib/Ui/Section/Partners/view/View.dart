@@ -22,6 +22,7 @@ class PartnersSectionX extends StatelessWidget {
       isHideHeaderIfEmpty: true,
       isHideHeaderIfInitLoading: false,
       isHeaderPadding: false,
+      isGetMoreEnabled: false,
       header: header,
       initLoading: Row(
         children: [

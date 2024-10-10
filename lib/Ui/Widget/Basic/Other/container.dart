@@ -9,7 +9,7 @@ class ContainerX extends StatelessWidget {
   final double minHeight;
   final double maxHeight;
   final double radius;
-  final BorderRadius? borderRadius;
+  final BorderRadiusGeometry? borderRadius;
   final double borderWidth;
   final Color? color;
   final EdgeInsetsGeometry margin;
@@ -45,7 +45,7 @@ class ContainerX extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        borderRadius: borderRadius??BorderRadius.circular(radius),
+        borderRadius: borderRadius?.resolve(Directionality.of(context))??BorderRadius.circular(radius),
         boxShadow: isShadow
             ? [
                 const BoxShadow(

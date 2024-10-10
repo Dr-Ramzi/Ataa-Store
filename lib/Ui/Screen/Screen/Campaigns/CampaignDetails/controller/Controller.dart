@@ -1,3 +1,4 @@
+import 'package:ataa/Data/Model/Donation/donation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../Config/config.dart';

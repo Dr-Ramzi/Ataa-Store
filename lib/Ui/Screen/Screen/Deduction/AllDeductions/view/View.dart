@@ -1,8 +1,8 @@
-import 'package:ataa/Data/data.dart';
 import 'package:ataa/UI/Animation/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../Config/config.dart';
+import '../../../../../../Data/Model/Deduction/deduction.dart';
 import '../../../../../Widget/Basic/Other/scrollRefreshLoadMore.dart';
 import '../../../../../Widget/widget.dart';
 import '../controller/Controller.dart';

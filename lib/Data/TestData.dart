@@ -10,8 +10,6 @@ part of "./data.dart";
 class TestDataX {
   static List<String> countries = ["Saudi Arabia", "The UAE", "Oman"];
   static List<String> cities = ["Riyadh", "Jeddah", "Sharqia"];
-  static ContactUsX contactUs = ContactUsX(
-      phone: "+966 0500 000 000", email: "info@ataa.com", web: "www.atta.com");
   static List<CampaignX> campaigns = [
     CampaignX(
       id: '1',
@@ -21,7 +19,7 @@ class TestDataX {
       totalDonations: 40000,
       isZakat: true,
       shareURL: "https://www.ataa.com/231",
-      imageURL:
+      imageUrl:
           "https://github.com/SakerDakak/Images/blob/main/donate-1.jpeg?raw=true",
       stockValue: 50,
       maxNumStock: 100,
@@ -37,7 +35,7 @@ class TestDataX {
       totalDonations: 50000,
       isZakat: false,
       shareURL: "https://www.ataa.com/231",
-      imageURL:
+      imageUrl:
           "https://github.com/SakerDakak/Images/blob/main/donate-2.jpeg?raw=true",
       targetAmount: 50000,
       orgID: '2',
@@ -52,7 +50,7 @@ class TestDataX {
       totalDonations: 2000000,
       isZakat: true,
       shareURL: "https://www.ataa.com/231",
-      imageURL:
+      imageUrl:
           "https://github.com/SakerDakak/Images/blob/main/donate-3.jpeg?raw=true",
       stockValue: 20,
       maxNumStock: 100,
@@ -61,137 +59,6 @@ class TestDataX {
       endDate: DateTime.now(),
     ),
   ];
-  static List<DonationX> donations = [
-    DonationX(
-      id: "1",
-      name: "Teach 30 Muslims the Pillars of Islam",
-      currentDonations: 5420,
-      totalDonations: 36953,
-      description:
-          "Do you want an easy job with an extended reward and an uninterrupted reward?!Contribute to the conversion of 1,000 people to Islam so that you will be rewarded for their prayers, fasting, and good deeds, God willing.",
-      isZakat: false,
-      shareURL: "https://www.ataa.com/231",
-      code: 1,
-      order: 1,
-      status: true,
-      remainingDonations: 10,
-      countDonations: 10,
-      countDonor: 10,
-      briefDescription: '',
-      imageURL: '',
-      videoURL: '',
-      categories: [],
-      donationType: DonationTypeX.fromJson({}),
-      isShowPackages: true,
-      isCanEditAmount: true,
-      donationShares: DonationSharesX.fromJson({}, []),
-      donationDeductionPackages: [],
-      openPackages: [],
-      isShowHome: true,
-      isShowDonationsPercentage: true,
-      isShowCompletionIndicator: true,
-      isShowGifting: true,
-      isShowDonorsCount: true,
-    ),
-    DonationX(
-        id: "2",
-        name: "Prayer science for 120 new Muslims",
-        currentDonations: 5420,
-        totalDonations: 36953,
-        description:
-            "Do you want an easy job with an extended reward and an uninterrupted reward?!Contribute to the conversion of 1,000 people to Islam so that you will be rewarded for their prayers, fasting, and good deeds, God willing.",
-        isZakat: false,
-        shareURL: "https://www.ataa.com/231",
-      code: 1,
-      order: 1,
-      status: true,
-      remainingDonations: 10,
-      countDonations: 10,
-      countDonor: 10,
-      briefDescription: '',
-      imageURL: '',
-      videoURL: '',
-      categories: [],
-      donationType: DonationTypeX.fromJson({}),
-      isShowPackages: true,
-      isCanEditAmount: true,
-      donationShares: DonationSharesX.fromJson({}, []),
-      donationDeductionPackages: [],
-      openPackages: [],
-      isShowHome: true,
-      isShowDonationsPercentage: true,
-      isShowCompletionIndicator: true,
-      isShowGifting: true,
-      isShowDonorsCount: true,
-    ),
-    DonationX(
-        id: "3",
-        name: "Charity on Friday",
-        currentDonations: 5420,
-        totalDonations: 36953,
-        description:
-            "Do you want an easy job with an extended reward and an uninterrupted reward?!Contribute to the conversion of 1,000 people to Islam so that you will be rewarded for their prayers, fasting, and good deeds, God willing.",
-        isZakat: false,
-        shareURL: "https://www.ataa.com/231",
-      code: 1,
-      order: 1,
-      status: true,
-      remainingDonations: 10,
-      countDonations: 10,
-      countDonor: 10,
-      briefDescription: '',
-      imageURL: '',
-      videoURL: '',
-      categories: [],
-      donationType: DonationTypeX.fromJson({}),
-      isShowPackages: true,
-      isCanEditAmount: true,
-      donationShares: DonationSharesX.fromJson({}, []),
-      donationDeductionPackages: [],
-      openPackages: [],
-      isShowHome: true,
-      isShowDonationsPercentage: true,
-      isShowCompletionIndicator: true,
-      isShowGifting: true,
-      isShowDonorsCount: true,
-    ),
-  ];
-
-  static List<PaymentCardX> bankCards = [
-    PaymentCardX(
-      id: "1",
-      name: "Saker",
-      cardNum: "3489708765678764",
-      expiryDate: "12/26",
-      cvv: 343,
-      isDefault: true,
-    ),
-    PaymentCardX(
-      id: "2",
-      name: "Saker",
-      cardNum: "4589708765670976",
-      expiryDate: "09/25",
-      cvv: 343,
-      isDefault: false,
-    ),
-    PaymentCardX(
-      id: "3",
-      name: "Saker",
-      cardNum: "536970876567786",
-      expiryDate: "15/27",
-      cvv: 343,
-      isDefault: false,
-    ),
-    PaymentCardX(
-      id: "4",
-      name: "Saker",
-      cardNum: "658970876565625",
-      expiryDate: "02/28",
-      cvv: 343,
-      isDefault: false,
-    ),
-  ];
-
 
   static List<ShareLinkX> shareLinks = [
     ShareLinkX(
@@ -226,92 +93,6 @@ class TestDataX {
     ),
   ];
 
-  static List<DeductionRecordX> deductionRecords = [
-    DeductionRecordX(
-      id: "1",
-      deductionID: "1",
-      name: "Zakat on the first ten days of Dhul-Hijjah",
-      deduction: "Daily",
-      deductionAmount: 35,
-      bankCardNumber: "32378978",
-    ),
-    DeductionRecordX(
-      id: "2",
-      deductionID: "2",
-      name: "Monthly sponsorship for preacher Youssef",
-      deduction: "Monthly",
-      deductionAmount: 1200,
-      bankCardNumber: "78083907",
-    ),
-    DeductionRecordX(
-      id: "3",
-      deductionID: "3",
-      name: "Weekly Friday charity",
-      deduction: "Weekly",
-      deductionAmount: 10,
-      bankCardNumber: "32378978",
-    ),
-  ];
-  static List<DonationRecordX> donationsRecords = [
-    DonationRecordX(
-      id: '1',
-      donationId: "1",
-      numStock: 2,
-      package: "Silver",
-      state: 'Active',
-      paymentMethod: 'Mada',
-      donationDate: '2024/05/22',
-      donationReceiptUrl:
-          'https://imgv2-1-f.scribdassets.com/img/document/513990043/original/ab5f03dc75/1710453753?v=1',
-      projectReportUrl: 'https://www.ataa.com/231',
-    ),
-    DonationRecordX(
-      id: '2',
-      donationId: "2",
-      donationAmount: 100,
-      state: 'Complete',
-      paymentMethod: 'Apple Pay',
-      donationDate: '2024/04/13',
-      donationReceiptUrl:
-          'https://imgv2-1-f.scribdassets.com/img/document/513990043/original/ab5f03dc75/1710453753?v=1',
-      projectReportUrl: 'https://www.ataa.com/231',
-    ),
-    DonationRecordX(
-      id: '3',
-      donationId: "3",
-      numStock: 3,
-      state: 'Complete',
-      paymentMethod: 'Google Pay',
-      donationDate: '2024/03/21',
-      donationReceiptUrl:
-          'https://imgv2-1-f.scribdassets.com/img/document/513990043/original/ab5f03dc75/1710453753?v=1',
-      projectReportUrl: 'https://www.ataa.com/231',
-    ),
-  ];
-  static List<OrderX> orders = [
-    OrderX(
-      id: "1",
-      numOrder: 57812,
-      state: "Under shipment",
-      paymentMethod: "Mada",
-      orderInvoiceUrl: "https://www.ataa.com/231",
-      aramexInvoiceUrl: "https://www.ataa.com/231",
-      totalPrice: 302,
-      orderDate: "2024/05/22",
-      orderProductsIDs: ["1", "2"],
-    ),
-    OrderX(
-      id: "2",
-      numOrder: 57812,
-      state: "Complete",
-      paymentMethod: "Apple Pay",
-      orderInvoiceUrl: "https://www.ataa.com/231",
-      aramexInvoiceUrl: "https://www.ataa.com/231",
-      totalPrice: 302,
-      orderDate: "2024/04/13",
-      orderProductsIDs: ["3"],
-    ),
-  ];
   static List<ProductX> products = [
     ProductX(
       id: '1',
@@ -325,7 +106,7 @@ class TestDataX {
       numSales: 14,
       colors: ["0F9591", "F05252", "C76028", "C27803", "6875F5", "9061F9"],
       sizes: ["Lg", "Md", "Sm"],
-      imageURL: [
+      imageUrl: [
         "https://github.com/SakerDakak/Images/blob/main/product-1.png?raw=true",
       ],
     ),
@@ -341,7 +122,7 @@ class TestDataX {
       numSales: 20,
       colors: [],
       sizes: ["Lg", "Md", "Sm"],
-      imageURL: [
+      imageUrl: [
         "https://github.com/SakerDakak/Images/blob/main/product-2.png?raw=true"
       ],
     ),
@@ -357,7 +138,7 @@ class TestDataX {
       numSales: 13,
       colors: ["0F9591", "F05252", "C76028", "C27803", "6875F5", "9061F9"],
       sizes: [],
-      imageURL: [
+      imageUrl: [
         "https://github.com/SakerDakak/Images/blob/main/product-3.png?raw=true",
         "https://github.com/SakerDakak/Images/blob/main/product-3-2.png?raw=true",
         "https://github.com/SakerDakak/Images/blob/main/product-3-3.jpeg?raw=true",
@@ -375,7 +156,7 @@ class TestDataX {
       numSales: 1,
       colors: ["C27803", "6875F5", "9061F9"],
       sizes: ["Lg"],
-      imageURL: [
+      imageUrl: [
         "https://github.com/SakerDakak/Images/blob/main/product-4.png?raw=true"
       ],
     ),
@@ -391,7 +172,7 @@ class TestDataX {
       numSales: 10,
       colors: ["0F9591", "F05252", "C76028", "C27803", "6875F5", "9061F9"],
       sizes: ["Lg", "Md", "Sm"],
-      imageURL: [
+      imageUrl: [
         "https://github.com/SakerDakak/Images/blob/main/product-5.png?raw=true"
       ],
     ),
@@ -407,7 +188,7 @@ class TestDataX {
       numSales: 14,
       colors: [],
       sizes: ["Lg", "Md", "Sm"],
-      imageURL: [
+      imageUrl: [
         "https://github.com/SakerDakak/Images/blob/main/product-6.png?raw=true"
       ],
     ),
@@ -417,7 +198,7 @@ class TestDataX {
       id: '1',
       productID: "1",
       numProduct: 3,
-      imageURL:
+      imageUrl:
           "https://github.com/SakerDakak/Images/blob/main/product-1.png?raw=true",
       name: "Quran speaker with lighting",
       price: 50,
@@ -426,7 +207,7 @@ class TestDataX {
       id: '2',
       productID: "2",
       numProduct: 2,
-      imageURL:
+      imageUrl:
           "https://github.com/SakerDakak/Images/blob/main/product-2.png?raw=true",
       name: "Talking educational prayer rug",
       price: 23,
@@ -435,7 +216,7 @@ class TestDataX {
       id: '3',
       productID: "3",
       numProduct: 7,
-      imageURL:
+      imageUrl:
           "https://github.com/SakerDakak/Images/blob/main/product-3.png?raw=true",
       name: "Modern electronic rosary",
       price: 23,
@@ -573,52 +354,11 @@ class TestDataX {
       donationAmount: 2500,
     ),
   ];
-  static List<GiftingX> gifting = [
-    GiftingX(
-      id: "1",
-      categoryID: "1",
-      cardID: "1",
-      orgID: "1",
-      donationAmount: 100,
-      isShowAmount: true,
-      isSendToMe: true,
-      isSendLater: true,
-      mahdiName: "Saker",
-      name: "Mouhamad",
-      gender: "male",
-      phone: 994343927,
-      countryCode: 963,
-      giftingData: "2024/05/22",
-      giftingURL:
-          "https://ataa-store-frontend-staging.edialoguecenter.com/Store",
-      paymentMethod: "Mada",
-      typeName: "Ramadan",
-    ),
-    GiftingX(
-      id: "2",
-      categoryID: "2",
-      cardID: "2",
-      orgID: "2",
-      donationAmount: 50,
-      isShowAmount: true,
-      isSendToMe: true,
-      isSendLater: true,
-      mahdiName: "Saker",
-      name: "Sara",
-      gender: "female",
-      phone: 578987678,
-      countryCode: 966,
-      giftingData: "2024/05/13",
-      giftingURL:
-          "https://ataa-store-frontend-staging.edialoguecenter.com/Store",
-      paymentMethod: "Apple Pay",
-      typeName: "The arrival of a generator",
-    ),
-  ];
 
   static List<NotificationX> notifications = [
     NotificationX(
       id: 1,
+      title: 'Test',
       body: "Congratulations on the success of your “Sponsor 100 Muslims”",
       dateTime: "Two days ago",
     )

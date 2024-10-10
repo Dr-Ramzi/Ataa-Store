@@ -24,21 +24,21 @@ class AppBarWithCoverSectionX extends GetView<DonationDetailsController> {
             itemBuilder: (_, index) {
               if ((controller.getNumCover() == 1 &&
                   index == 0 &&
-                  controller.donation.imageURL.isNotEmpty) ||
+                  controller.donation.donationDetails.imageUrl!=null) ||
                   (controller.getNumCover() == 2 && index == 0)) {
                 return Container(
                   color: Theme.of(context).cardColor,
                   width: double.maxFinite,
                   height: 300,
                   child: ImageNetworkX(
-                    imageUrl: controller.donation.imageURL,
+                    imageUrl: controller.donation.donationDetails.imageUrl!,
                     fit: BoxFit.cover,
                   ),
                 );
               } else if (!controller.hasErrorVideo.value ||
                   (controller.getNumCover() == 1 &&
                       index == 0 &&
-                      controller.donation.videoURL.isNotEmpty) ||
+                      controller.donation.donationDetails.videoUrl!=null) ||
                   (controller.getNumCover() == 2 && index == 1)) {
                 return Obx(
                       () {

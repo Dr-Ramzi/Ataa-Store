@@ -52,7 +52,7 @@ class _AccordionXState extends State<AccordionX> {
             child: Container(
               color: isOpen
                   ? widget.headOpenColor ??
-                      (context.isDarkMode?ColorX.primary.shade500:Theme.of(context).colorScheme.onPrimary)
+                      (context.isDarkMode?ColorX.primary.shade500:ColorX.grey.shade100)
                   : widget.headColor ?? Theme.of(context).cardColor,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               height: StyleX.accordionHeight,

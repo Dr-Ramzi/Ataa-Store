@@ -1,17 +1,31 @@
 import 'dart:async';
+import 'package:ataa/Core/Error/error.dart';
+import 'package:ataa/Core/Extension/convert/convert.dart';
+import 'package:ataa/Data/Enum/metal_karat_status.dart';
+import 'package:ataa/Data/Enum/zakat_calculation_type_status.dart';
+import 'package:ataa/Data/Model/ZakatCalculation/zakatCalculationForm.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../Config/config.dart';
+import '../../../../../../Core/Controller/Cart/cartGeneralController.dart';
+import '../../../../../../Core/Controller/SelectedOptions/zakatSelectionController.dart';
 import '../../../../../../Core/core.dart';
+import '../../../../../../Data/Enum/model_type_status.dart';
+import '../../../../../../Data/Model/Donation/Order/donationOrderForm.dart';
+import '../../../../../../Data/Model/ZakatCalculation/Subclass/zakatCalculationGold.dart';
+import '../../../../../../Data/Model/ZakatCalculation/Subclass/zakatCalculationShares.dart';
 import '../../../../../../Data/data.dart';
 import '../../../../../../UI/Widget/widget.dart';
-import '../../../../../ScreenSheet/Other/MandatoryAuth/mandatoryAuth.dart';
+import '../../../../../ScreenSheet/Selection/Zakat/zakatSelectionSheet.dart';
 
 class ZakatCalculatorController extends GetxController {
   ///============================================================================
   /// Injection of required controls
 
   final AppControllerX app = Get.find();
+  final ZakatSelectionControllerX zakatSelectionController =
+      Get.put(ZakatSelectionControllerX(), tag: 'ZakatCalculator');
+  final CartGeneralControllerX cart = Get.find();
 
   ///============================================================================
   /// Variables
@@ -19,32 +33,32 @@ class ZakatCalculatorController extends GetxController {
   //----------------------------------------------------------------------------
   // Processing and validation
 
-  RxBool isLoading = false.obs;
-  Rx<ButtonStateEX> buttonState = ButtonStateEX.normal.obs;
+  RxBool isPayOrCartLoading = false.obs;
+  Rx<ButtonStateEX> payButtonState = ButtonStateEX.normal.obs;
+  Rx<ButtonStateEX> addToCartButtonState = ButtonStateEX.normal.obs;
+  RxBool isFocusAdditionalAmount = false.obs;
 
-  GlobalKey<FormState> formKey = GlobalKey();
-  GlobalKey<FormState> formKeyAdditionalAmount = GlobalKey();
-  AutovalidateMode autoValidate = AutovalidateMode.disabled;
+  GlobalKey<FormState> cashFormKey = GlobalKey();
+  GlobalKey<FormState> goldFormKey = GlobalKey();
+  AutovalidateMode goldAutoValidate = AutovalidateMode.disabled;
+  GlobalKey<FormState> silverFormKey = GlobalKey();
+  GlobalKey<FormState> sharesFormKey = GlobalKey();
+  AutovalidateMode sharesAutoValidate = AutovalidateMode.disabled;
+  GlobalKey<FormState> otherFormKey = GlobalKey();
+  GlobalKey<FormState> additionalAmountFormKey = GlobalKey();
 
   //----------------------------------------------------------------------------
   // Inputs Zakat
 
-  TextEditingController caskMoney = TextEditingController();
-  RxList<int> goldCarats = <int>[].obs;
+  TextEditingController cash = TextEditingController();
+  RxList<int> goldKarats = <int>[].obs;
   RxList<TextEditingController> goldGrams = [TextEditingController()].obs;
   TextEditingController silver = TextEditingController();
   RxList<TextEditingController> stockNames = [TextEditingController()].obs;
-  RxList<int> stockNumbers = <int>[1].obs;
-  RxList<TextEditingController> stockValues = [TextEditingController()].obs;
+  RxList<int> sharesNumbers = <int>[1].obs;
+  RxList<TextEditingController> sharesValues = [TextEditingController()].obs;
   TextEditingController others = TextEditingController();
   TextEditingController additionalAmount = TextEditingController();
-
-  //----------------------------------------------------------------------------
-  // Gold & Silver Price
-
-  RxBool isGetGoldPrice = false.obs;
-  Map<int, double> goldCaratsPrice = {};
-  double silverPrice = 0;
 
   //----------------------------------------------------------------------------
   // Open and Close Zakat Section
@@ -56,150 +70,206 @@ class ZakatCalculatorController extends GetxController {
   RxBool isOther = false.obs;
 
   //----------------------------------------------------------------------------
+  // Done
+
+  RxBool cashIsDone = false.obs;
+  RxBool goldIsDone = false.obs;
+  RxBool silverIsDone = false.obs;
+  RxBool sharesIsDone = false.obs;
+  RxBool otherIsDone = false.obs;
+
+  //----------------------------------------------------------------------------
+  // Loading
+
+  RxBool cashIsLoading = false.obs;
+  RxBool goldIsLoading = false.obs;
+  RxBool silverIsLoading = false.obs;
+  RxBool sharesIsLoading = false.obs;
+  RxBool otherIsLoading = false.obs;
+
+  //----------------------------------------------------------------------------
+  // Errors
+
+  Rx<String?> cashError = Rx<String?>(null);
+  Rx<String?> goldError = Rx<String?>(null);
+  Rx<String?> silverError = Rx<String?>(null);
+  Rx<String?> sharesError = Rx<String?>(null);
+  Rx<String?> otherError = Rx<String?>(null);
+
+  //----------------------------------------------------------------------------
   // Total funds and zakat sections
 
-  RxInt totalZakat = 0.obs;
-  RxInt totalMoney = 0.obs;
-  int totalCash = 0;
-  int totalGold = 0;
-  int totalSilver = 0;
-  int totalShare = 0;
-  int totalOther = 0;
-  int totalAdditionalAmount = 0;
+  RxDouble totalZakat = 0.0.obs;
+  RxDouble totalMoney = 0.0.obs;
+  double totalCash = 0;
+  double totalGold = 0;
+  double totalSilver = 0;
+  double totalShare = 0;
+  double totalOther = 0;
+  double totalAdditionalAmount = 0;
 
   ///============================================================================
   /// Functions
 
   // Verify whether there is an activated Zakat section or not
   isHasZakat() {
-    if (isCashMoney.isTrue ||
-        isGold.isTrue ||
-        isSilver.isTrue ||
-        isShares.isTrue ||
-        isOther.isTrue) {
+    if ((isCashMoney.isTrue ||
+            isGold.isTrue ||
+            isSilver.isTrue ||
+            isShares.isTrue ||
+            isOther.isTrue) &&
+        totalMoney.value > 0) {
       return true;
     } else {
       return false;
     }
   }
 
+  onTapZakatSelection() async {
+    await zakatSelectionSheetX(controller: zakatSelectionController);
+  }
   //----------------------------------------------------------------------------
   // Activate and close sections
   // then calculate the value of the money after removing or adding entries for the section that was changed.
 
-  onOpenCashMoney(bool val) {
+  onOpenCashMoney(bool val) async {
     isCashMoney.value = val;
-    calculateTotal();
+    // Delayed execution due to interface animation
+    await Future.delayed(const Duration(milliseconds: 400));
+    await calculateCashMoney();
   }
 
-  onOpenGold(bool val) {
+  onOpenGold(bool val) async {
     isGold.value = val;
-    calculateTotal();
+    // Delayed execution due to interface animation
+    await Future.delayed(const Duration(milliseconds: 400));
+    await calculateGold();
   }
 
-  onOpenSilver(bool val) {
+  onOpenSilver(bool val) async {
     isSilver.value = val;
-    calculateTotal();
+    // Delayed execution due to interface animation
+    await Future.delayed(const Duration(milliseconds: 400));
+    await calculateSilver();
   }
 
-  onOpenShares(bool val) {
+  onOpenShares(bool val) async {
     isShares.value = val;
-    calculateTotal();
+    await Future.delayed(const Duration(milliseconds: 400));
+    await calculateShares();
   }
 
-  onOpenOther(bool val) {
+  onOpenOther(bool val) async {
     isOther.value = val;
-    calculateTotal();
-  }
-
-  //----------------------------------------------------------------------------
-  // Metal price
-  // Get the prices of silver and gold from the database to calculate the value of Zakat
-
-  getGold() async {
-    try {
-      goldCaratsPrice = FunctionX.goldOunceToCarats(
-        await DatabaseX.getGoldPrice(),
-      );
-
-      /// Conversion from US dollars to Saudi riyals
-      goldCaratsPrice.updateAll((key, caratPrice) => caratPrice * 3.76);
-
-      /// To activate the calculation of zakat, zakat depends on the value
-      /// of gold to calculate 85 grams, which is the legal quorum
-      isGetGoldPrice.value = true;
-    } catch (e) {
-      return Future.error(e);
-    }
-  }
-
-  getSilver() async {
-    try {
-      silverPrice = FunctionX.silverOunceToGram(
-        await DatabaseX.getSilverPrice(),
-      );
-
-      /// Conversion from US dollars to Saudi riyals
-      silverPrice = silverPrice * 3.76;
-    } catch (e) {
-      return Future.error(e);
-    }
+    // Delayed execution due to interface animation
+    await Future.delayed(const Duration(milliseconds: 400));
+    await calculateOther();
   }
 
   //----------------------------------------------------------------------------
   // Metal processing
-  /// To add the word “carat” to the karat to be displayed on the screen
+  /// To add the word “karat” to the karat to be displayed on the screen
 
-  List<String> getGoldCaratsList() {
-    return ConstantX.goldCarats.map((carat) => "$carat ${"Carat".tr}").toList();
+  List<String> getGoldKaratsListToShowInScreen() {
+    return MetalKaratStatusX.values
+        .map((x) => "${x.karat} ${"Karat".tr}")
+        .toList();
   }
 
-  /// To add the word “carat” to the selected value so that it is similar to the values in the list of values
-  getGoldCaratValue(index) {
-    if (goldCarats.asMap()[index] != null) {
-      return "${goldCarats[index]} ${"Carat".tr}";
+  /// To add the word “karat” to the selected value so that it is similar to the values in the list of values
+  getGoldKaratValueToShowInScreen(index) {
+    if (goldKarats.asMap()[index] != null) {
+      return "${goldKarats[index]} ${"Karat".tr}";
     }
   }
 
   /// When changing one of the gold karat values
-  onChangeGoldCarat(String val, int index) {
-    /// The value is returned to a number after the word carat is added to it
-    var carat = int.parse(val.substring(0, val.indexOf(" ")));
+  onChangeGoldKarat(String val, int index) async {
+    /// The value is returned to a number after the word karat is added to it
+    var karat = int.parse(val.substring(0, val.indexOf(" ")));
 
     /// It checks whether there is a previous value to modify or create a new value
-    if (goldCarats.asMap()[index] != null) {
-      goldCarats[index] = carat;
+    if (goldKarats.asMap()[index] != null) {
+      goldKarats[index] = karat;
     } else {
-      goldCarats.insert(index, carat);
+      goldKarats.insert(index, karat);
     }
 
-    /// Checking the value of a gram, if it is correct, the total of the new gold is calculated
-    if (ValidateX.money(goldGrams[index].text) == null) {
-      calculateGold();
-    }
+    await calculateGold();
   }
 
   /// When an additional gold field is added
   onAddZakatGoldRow() {
-    goldGrams.add(TextEditingController());
-  }
-
-  /// When a gold field is removed
-  onRemoveZakatGoldRow(int i) {
-    /// There must be more than one field
-    if (goldGrams.length > 1) {
-      goldGrams.removeAt(i);
-      if (goldCarats.asMap()[i] != null) {
-        goldCarats.removeAt(i);
-      }
-      calculateGold();
+    if (checkIfCanAddRowOnGold()) {
+      goldGrams.add(TextEditingController());
+    } else {
+      goldError.value =
+          'Make sure all existing gold fields are filled before adding new gold.';
     }
   }
 
-  /// Ensure that carat values are present in all input fields
-  bool validateGold() {
-    if (isGold.value && goldGrams.length != goldCarats.length) {
+  /// When a gold field is removed
+  onRemoveZakatGoldRow(int i) async {
+    /// There must be more than one field
+    if (goldGrams.length > 1) {
+      goldGrams.removeAt(i);
+      if (goldKarats.asMap()[i] != null) {
+        goldKarats.removeAt(i);
+      }
+      await calculateGold();
+    }
+  }
+
+  /// Ensure that karat values are present in all input fields
+  checkIfCanAddRowOnGold() {
+    if (goldGrams.length != goldKarats.length) {
       return false;
+    }
+    for (int i = 0; i < goldGrams.length; i++) {
+      if (ValidateX.gram(goldGrams[i].text) != null) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  //----------------------------------------------------------------------------
+  // Shares
+
+  /// When the number of shares is changed
+  onChangeShareNumber(double val, int index) async {
+    sharesNumbers[index] = val.toInt();
+    await calculateShares();
+  }
+
+  /// When an additional field field is added
+  onAddZakatShareRow() {
+    if (checkIfCanAddRowOnShares()) {
+      stockNames.add(TextEditingController());
+      sharesValues.add(TextEditingController());
+      sharesNumbers.add(1);
+    } else {
+      sharesError.value =
+          'Make sure all existing shares fields are filled in before adding a new shares.';
+    }
+  }
+
+  /// When a Share field is removed
+  onRemoveZakatShareRow(int i) async {
+    /// There must be more than one field
+    if (stockNames.length > 1) {
+      stockNames.removeAt(i);
+      sharesValues.removeAt(i);
+      sharesNumbers.removeAt(i);
+      await calculateShares();
+    }
+  }
+
+  checkIfCanAddRowOnShares() {
+    for (int i = 0; i < sharesValues.length; i++) {
+      if (ValidateX.money(sharesValues[i].text) != null) {
+        return false;
+      }
     }
     return true;
   }
@@ -209,71 +279,220 @@ class ZakatCalculatorController extends GetxController {
   /// Calculate the total funds in each section and then activate the calculation of the general zakat value
   /// Important Note: Only the valid value is calculated and errors are later shown when payment is made
 
-  calculateCashMoney() {
+  calculateCashMoney() async {
     /// Verify the activation of the section and ensure that the entries are correct
-    if (isCashMoney.value && ValidateX.money(caskMoney.text) == null) {
-      /// Add the entered value to the department's total funds
-      totalCash = int.parse(caskMoney.text);
+    totalCash = 0;
+    cashError.value = null;
+    cashIsDone.value = false;
+    if (isCashMoney.value) {
+      if (cashFormKey.currentState!.validate()) {
+        cashIsLoading.value = true;
+        if (ValidateX.money(cash.text) == null) {
+          /// Add the entered value to the department's total funds
+          try {
+            totalCash = await DatabaseX.getZakatCalculation(
+              form: ZakatCalculationFormX(
+                type: ZakatCalculationTypeStatusX.money,
+                money: cash.text.toDoubleX,
+              ),
+            );
+            cashIsDone.value = true;
+          } catch (e) {
+            e.toErrorX.log();
+            cashError.value = e.toString();
+          }
+        } else {
+          if (cash.text.isNotEmpty) {
+            cashError.value = ValidateX.money(cash.text);
+          }
+        }
 
-      /// Calculating the value of general zakat
-      calculateTotal();
+        cashIsLoading.value = false;
+
+        /// Calculating the value of general zakat
+      }
     }
+    calculateTotal();
   }
 
-  calculateGold() {
+  calculateGold() async {
+    totalGold = 0;
+    goldError.value = null;
+    goldIsDone.value = false;
+
     /// Verify the activation of the section
     if (isGold.value) {
-      /// Reset the total value to start a new calculation
-      totalGold = 0;
+      if (goldFormKey.currentState!.validate()) {
+        if (goldGrams.length > 1 ||
+            (goldGrams.first.text.isNotEmpty && goldKarats.isNotEmpty)) {
+          goldIsLoading.value = true;
 
-      /// Go through all entered values
-      for (int i = 0; i < goldGrams.length; i++) {
-        /// Check the grams value entered must be correct and make sure to choose a gold karat value for this value
-        if (ValidateX.money(goldGrams[i].text) == null &&
-            goldCarats.asMap()[i] != null) {
-          /// Multiply the number of grams by the value of gold for this caliber and add it to the total of the division
-          totalGold +=
-              (int.parse(goldGrams[i].text) * goldCaratsPrice[goldCarats[i]]!)
-                  .ceil();
+          List<ZakatCalculationGoldX> golds = [];
+
+          /// Go through all entered values
+          for (int i = 0; i < goldGrams.length; i++) {
+            /// Check the grams value entered must be correct and make sure to choose a gold karat value for this value
+            if (ValidateX.gram(goldGrams[i].text) == null &&
+                goldKarats.asMap()[i] != null) {
+              golds.add(
+                ZakatCalculationGoldX(
+                  karat: MetalKaratStatusX.values
+                      .firstWhere((e) => e.karat == goldKarats[i]),
+                  gram: goldGrams[i].text.toIntX,
+                ),
+              );
+            } else {
+              goldIsLoading.value = false;
+              return goldError.value = ValidateX.gram(goldGrams[i].text)!=null?'Check gold weight fields':
+                  'Make sure to select gold carats for all fields.';
+            }
+          }
+          if (goldGrams.length == 1 || golds.length == goldGrams.length) {
+            try {
+              totalGold = await DatabaseX.getZakatCalculation(
+                form: ZakatCalculationFormX(
+                  type: ZakatCalculationTypeStatusX.gold,
+                  golds: golds,
+                ),
+              );
+              goldIsDone.value = true;
+            } catch (e) {
+              goldError.value = e.toString();
+            }
+          } else {
+            return sharesError.value =
+                'Empty gold fields must be filled in or removed.';
+          }
+
+          goldIsLoading.value = false;
         }
       }
-
-      /// Calculating the value of general zakat
-      calculateTotal();
     }
+
+    /// Calculating the value of general zakat
+    calculateTotal();
   }
 
-  calculateSilver() {
-    if (isSilver.value && ValidateX.money(silver.text) == null) {
-      totalSilver = (int.parse(silver.text) * silverPrice).ceil();
-      calculateTotal();
+  calculateSilver() async {
+    totalSilver = 0;
+    silverError.value = null;
+    silverIsDone.value = false;
+    if (isSilver.value) {
+      if (silverFormKey.currentState!.validate()) {
+        silverIsLoading.value = true;
+        if (ValidateX.gram(silver.text) == null) {
+          try {
+            totalSilver = await DatabaseX.getZakatCalculation(
+              form: ZakatCalculationFormX(
+                type: ZakatCalculationTypeStatusX.silver,
+                weight: silver.text.toIntX,
+              ),
+            );
+            silverIsDone.value = true;
+          } catch (e) {
+            silverError.value = e.toString();
+          }
+        } else {
+          if (silver.text.isNotEmpty) {
+            silverError.value = ValidateX.gram(silver.text);
+          }
+        }
+        silverIsLoading.value = false;
+      }
     }
+
+    /// Calculating the value of general zakat
+    calculateTotal();
   }
 
-  calculateShare() {
+  calculateShares() async {
+    totalShare = 0;
+    sharesError.value = null;
+    sharesIsDone.value = false;
     if (isShares.value) {
-      totalShare = 0;
-      for (int i = 0; i < stockNumbers.length; i++) {
-        if (ValidateX.money(stockValues[i].text) == null &&
-            stockNumbers[i] >= 1) {
-          totalShare += int.parse(stockValues[i].text) * stockNumbers[i];
+      if (sharesFormKey.currentState!.validate()) {
+        if (sharesValues.length > 1 || sharesValues.first.text.isNotEmpty) {
+          sharesIsLoading.value = true;
+
+          List<ZakatCalculationSharesX> shares = [];
+
+          for (int i = 0; i < sharesNumbers.length; i++) {
+            if (sharesValues[i].text.isEmpty) {
+              continue;
+            }
+            if (ValidateX.money(sharesValues[i].text) == null &&
+                sharesNumbers[i] >= 1) {
+              shares.add(ZakatCalculationSharesX(
+                  price: sharesValues[i].text.toDoubleX,
+                  count: sharesNumbers[i]));
+            } else {
+              sharesIsLoading.value = false;
+              return sharesError.value = ValidateX.gram(sharesValues[i].text);
+            }
+          }
+          if (sharesValues.length == 1 ||
+              shares.length == sharesValues.length) {
+            try {
+              totalShare = await DatabaseX.getZakatCalculation(
+                form: ZakatCalculationFormX(
+                  type: ZakatCalculationTypeStatusX.share,
+                  shares: shares,
+                ),
+              );
+              sharesIsDone.value = true;
+            } catch (e) {
+              sharesError.value = e.toString();
+            }
+          } else {
+            return sharesError.value =
+                'Empty fields for stocks must be filled in or removed.';
+          }
+
+          sharesIsLoading.value = false;
         }
       }
-      calculateTotal();
     }
+
+    /// Calculating the value of general zakat
+    calculateTotal();
   }
 
-  calculateOther() {
-    if (isOther.value && ValidateX.money(others.text) == null) {
-      totalOther = int.parse(others.text);
-      calculateTotal();
+  calculateOther() async {
+    totalOther = 0;
+    otherError.value = null;
+    otherIsDone.value = false;
+    if (isOther.value) {
+      if (otherFormKey.currentState!.validate()) {
+        otherIsLoading.value = true;
+        if (ValidateX.money(others.text) == null) {
+          try {
+            totalOther = await DatabaseX.getZakatCalculation(
+              form: ZakatCalculationFormX(
+                type: ZakatCalculationTypeStatusX.other,
+                money: others.text.toDoubleX,
+              ),
+            );
+            otherIsDone.value = true;
+          } catch (e) {
+            otherError.value = e.toString();
+          }
+        } else {
+          if (others.text.isNotEmpty) {
+            otherError.value = ValidateX.money(others.text);
+          }
+        }
+        otherIsLoading.value = false;
+      }
     }
+
+    /// Calculating the value of general zakat
+    calculateTotal();
   }
 
   calculateAdditionalAmount() {
     if (additionalAmount.text.isNotEmpty &&
         ValidateX.money(additionalAmount.text) == null) {
-      totalAdditionalAmount = int.parse(additionalAmount.text);
+      totalAdditionalAmount = additionalAmount.text.toDoubleX;
       calculateTotal();
     }
   }
@@ -283,55 +502,18 @@ class ZakatCalculatorController extends GetxController {
   /// Calculating the total public funds with the value of zakat
 
   calculateTotal() {
-    /// The gold price must have been successfully fetched to calculate the zakat value
-    if (goldCaratsPrice.isNotEmpty) {
-      /// Zero the value to start a new calculation
-      totalMoney.value = 0;
+    /// Zero the value to start a new calculation
+    totalZakat.value = 0;
+    totalMoney.value = 0;
 
-      /// Only active departments' funds are added
-      if (isCashMoney.value) totalMoney.value += totalCash;
-      if (isGold.value) totalMoney.value += totalGold;
-      if (isSilver.value) totalMoney.value += totalSilver;
-      if (isShares.value) totalMoney.value += totalShare;
-      if (isOther.value) totalMoney.value += totalOther;
-      totalMoney.value += totalAdditionalAmount;
-
-      /// The total amount of money must be more than or equal to 85 grams of 24 karat gold in order for him to pay zakat on it.
-      if (totalMoney / goldCaratsPrice[24]! >= 85) {
-        /// The value of 2.5% of the total value of the funds is calculated, with the intervals rounded to the top for safety
-        totalZakat.value = (totalMoney * 0.025).ceil();
-      } else {
-        /// If the total funds do not achieve the value of the zakat quorum, the value is zeroed
-        totalZakat.value = 0;
-      }
-    }
-  }
-
-  //----------------------------------------------------------------------------
-  // Shares
-
-  /// When the number of shares is changed
-  onChangeShareNumber(double val, int index) {
-    stockNumbers[index] = val.toInt();
-    calculateShare();
-  }
-
-  /// When an additional field field is added
-  onAddZakatShareRow() {
-    stockNames.add(TextEditingController());
-    stockValues.add(TextEditingController());
-    stockNumbers.add(1);
-  }
-
-  /// When a Share field is removed
-  onRemoveZakatShareRow(int i) {
-    /// There must be more than one field
-    if (stockNames.length > 1) {
-      stockNames.removeAt(i);
-      stockValues.removeAt(i);
-      stockNumbers.removeAt(i);
-      calculateShare();
-    }
+    /// Only active departments' funds are added
+    if (isCashMoney.value) totalZakat.value += totalCash;
+    if (isGold.value) totalZakat.value += totalGold;
+    if (isSilver.value) totalZakat.value += totalSilver;
+    if (isShares.value) totalZakat.value += totalShare;
+    if (isOther.value) totalZakat.value += totalOther;
+    totalMoney.value = totalZakat.value;
+    totalZakat.value += totalAdditionalAmount;
   }
 
   //===============================================================
@@ -339,13 +521,13 @@ class ZakatCalculatorController extends GetxController {
   /// Reset all values after paying zakat
 
   clearData() {
-    caskMoney.text = "";
-    goldCarats.value = [];
+    cash.text = "";
+    goldKarats.value = [];
     goldGrams.value = [TextEditingController()];
     silver.text = "";
     stockNames.value = [TextEditingController()];
-    stockNumbers.value = [1];
-    stockValues.value = [TextEditingController()];
+    sharesNumbers.value = [1];
+    sharesValues.value = [TextEditingController()];
     others.text = "";
 
     isCashMoney.value = false;
@@ -363,64 +545,72 @@ class ZakatCalculatorController extends GetxController {
     totalOther = 0;
     totalAdditionalAmount = 0;
     additionalAmount.text = "";
-
-    autoValidate = AutovalidateMode.disabled;
   }
 
   //===============================================================
   // Main processors
 
-  onPayZakat() async {
-    /// Mandatory login before paying zakat
-    if (!app.isLogin.value) {
-      mandatoryAuthSheetX();
-    } else if (isLoading.isFalse) {
-      /// Check all input fields
-      if (formKey.currentState!.validate() &
-          formKeyAdditionalAmount.currentState!.validate()) {
-        /// Check input fields for gold
-        if (!validateGold()) {
-          return ToastX.error(
-              message:
-                  "There are gold karats that have not yet been determined");
-        } else {
-          isLoading.value = true;
-          buttonState.value = ButtonStateEX.loading;
-          try {
-            // TODO: Database >>> Create a connection to start the payment process
-            // TODO: Payment >>> Go to the payment screen
-            // TODO: Database >>> Send a response from the payment screen and complete the process
-            await Future.delayed(const Duration(seconds: 1)); // delete this
+  onAddToCart({bool isPay = false}) async {
+    if (isPayOrCartLoading.isFalse) {
+      if (zakatSelectionController.optionSelected.value == null) {
+        ToastX.error(message: 'You must choose one of the donations');
+      } else if (additionalAmountFormKey.currentState!.validate()) {
+        isPayOrCartLoading.value = true;
+        isPay
+            ? payButtonState.value = ButtonStateEX.loading
+            : addToCartButtonState.value = ButtonStateEX.loading;
 
-            /// The time delay here is aesthetically beneficial
-            buttonState.value = ButtonStateEX.success;
-            await Future.delayed(
-              const Duration(seconds: StyleX.successButtonSecond),
-            );
-
-            ToastX.success(message: "Zakat has been paid successfully");
-
-            /// clear date on controller
-            clearData();
-          } catch (error) {
-            ToastX.error(message: error.toString());
-            buttonState.value = ButtonStateEX.failed;
-          }
-          isLoading.value = false;
-
-          /// Reset the button state
-          Timer(
-            const Duration(seconds: StyleX.returnButtonToNormalStateSecond),
-            () {
-              buttonState.value = ButtonStateEX.normal;
-            },
+        try {
+          var data = await DatabaseX.createDonationOrder(
+            form: DonationOrderFormX(
+              donationId: zakatSelectionController.optionSelected.value!.id,
+              price: totalZakat.value,
+              donationOnBehalfOfFamilyAndFriends: false,
+            ),
           );
+
+          String message = await cart.addItem(
+            modelId: data.modelId,
+            modelType: ModelTypeStatusX.donation,
+            isPayNow: isPay,
+          );
+
+          /// The time delay here is aesthetically beneficial
+          isPay
+              ? payButtonState.value = ButtonStateEX.success
+              : addToCartButtonState.value = ButtonStateEX.success;
+
+          await Future.delayed(
+            const Duration(seconds: StyleX.successButtonSecond),
+          );
+
+          /// This controller form bottom sheet
+          if (!isPay) {
+            ToastX.success(message: message);
+          }
+
+          /// Clear date on controller
+          clearData();
+          zakatSelectionController.clearData();
+        } catch (error) {
+          error.toErrorX.log();
+          ToastX.error(message: error.toString());
+          isPay
+              ? payButtonState.value = ButtonStateEX.failed
+              : addToCartButtonState.value = ButtonStateEX.failed;
         }
-      } else {
-        ToastX.error(
-          message: "Check the input fields, there are incorrect values entered",
+        isPayOrCartLoading.value = false;
+
+        /// Reset the button state
+        Timer(
+          const Duration(seconds: StyleX.returnButtonToNormalStateSecond),
+          () {
+            addToCartButtonState.value = ButtonStateEX.normal;
+            payButtonState.value = ButtonStateEX.normal;
+          },
         );
-        autoValidate = AutovalidateMode.always;
+      }else{
+        ToastX.error(message: 'There is an error in the additional amount field data.');
       }
     }
   }

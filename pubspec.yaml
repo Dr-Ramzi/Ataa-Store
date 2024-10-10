@@ -4,7 +4,7 @@
 name: ataa
 description: "description_project_x"
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 1.0.1+1
+version: 1.0.4+4
 
 #====================================================================
 # Flutter Version
@@ -31,7 +31,6 @@ dependencies:
 
   #-------------------------------------
   ## Network
-  dio: ^5.7.0
 
   #-------------------------------------
   ## Map
@@ -80,12 +79,14 @@ dependencies:
   flutter_advanced_segment: ^3.0.2 # Multiple tabs item
   flutter_share_me: ^1.4.0 # To share links externally
   flutter_native_contact_picker: ^0.0.6 # To fetch data from contacts
-  calendar_date_picker2: ^1.0.2 # To enter the date via the calendar
   flutter_spinbox: ^0.13.1 # Number entry widget
   auto_size_text: ^3.0.0 # Automatic text size
   sms_autofill: ^2.0.0 # OTP sms auto fill
-  syncfusion_flutter_datepicker: ^26.2.14
-
+  webview_flutter: ^4.9.0
+  pay: ^2.0.0
+  flex_list: ^1.0.0
+  image_gallery_saver: any
+  permission_handler: any
 
   #-------------------------------------
   ## Edit Package
@@ -101,7 +102,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
 
 #====================================================================
 # Splash Screen
@@ -138,10 +139,12 @@ flutter:
     - assets/images/empty/
     - assets/images/creditCard/
     - assets/images/gift/
+    - assets/images/rate/
     - assets/images/other/
     - assets/icons/
     - assets/splash/
     - assets/fonts/
+    - assets/paymentConfiguration/
 
   #-------------------------------------
   ## Fonts

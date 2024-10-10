@@ -9,7 +9,7 @@ class UserX {
     required this.token,
     this.email,
     this.gender,
-    this.imageURL,
+    this.imageUrl,
   });
 
   late String id;
@@ -19,7 +19,7 @@ class UserX {
   late int countryCode;
   String? email;
   String? gender;
-  String? imageURL;
+  String? imageUrl;
 
   factory UserX.fromJson(Map<String, dynamic> json, String token) {
     Map<String, Object?> imageJson =
@@ -34,7 +34,7 @@ class UserX {
           countryCode: json[NameX.countryCode].toIntDefaultX(966),
           email: json[NameX.email].toStrNullableX,
           gender: json[NameX.gender].toStrNullableX,
-          imageURL: imageJson[NameX.url].toStrNullableX,
+          imageUrl: imageJson[NameX.url].toStrNullableX,
           token: token,
         );
       },
@@ -50,7 +50,7 @@ class UserX {
       NameX.phone: phone,
       NameX.email: email,
       NameX.gender: gender,
-      NameX.imageUrl: imageURL,
+      NameX.imageUrl: imageUrl,
     };
   }
 }

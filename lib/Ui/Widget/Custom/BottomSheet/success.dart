@@ -3,7 +3,7 @@ part of '../../widget.dart';
 bottomSheetSuccessX({
   required IconData icon,
   required String title,
-  required String message,
+  String? message,
   required Function onOk,
   required String okText,
   String cancelText = "Cancel",
@@ -31,15 +31,13 @@ bottomSheetSuccessX({
           color: Get.theme.primaryColor,
           textAlign: TextAlign.center,
         ),
-        const SizedBox(
-          height: 5,
-        ),
+        if(message!=null)
         TextX(
           message,
           style: TextStyleX.titleSmall,
           color: Get.theme.colorScheme.secondary,
           textAlign: TextAlign.center,
-        ),
+        ).marginOnly(top: 5),
         const SizedBox(
           height: 25,
         ),
@@ -58,7 +56,7 @@ bottomSheetSuccessX({
               width: 10,
             ),
             Flexible(
-              child: ButtonX.second(
+              child: ButtonX.gray(
                 onTap: () => Get.back(),
                 text: cancelText,
               ),

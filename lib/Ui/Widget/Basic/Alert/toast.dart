@@ -85,7 +85,7 @@ class ToastX {
                 if (message != null || title != null) const SizedBox(height: 4),
                 if (message != null)
                   TextX(
-                    message,
+                    message.toString(),
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w500,

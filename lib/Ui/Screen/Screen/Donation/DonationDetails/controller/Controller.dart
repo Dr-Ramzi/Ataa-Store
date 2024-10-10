@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 import '../../../../../../Core/Controller/Other/donateOnBehalfOfFamilyController.dart';
+import '../../../../../../Data/Model/Donation/donation.dart';
 import '../../../../../../Data/data.dart';
 import '../../../../../ScreenSheet/Pay/PayDonation/payDonationSheet.dart';
 
@@ -39,8 +40,8 @@ class DonationDetailsController extends GetxController {
       donation = await DatabaseX.getDonationDetails(code: code);
 
       /// Init Video Player
-      if (donation.videoURL.isNotEmpty && donation.videoURL.isURL) {
-        initVideoPlayer(donation.videoURL);
+      if (donation.donationDetails.videoUrl!=null && donation.donationDetails.videoUrl!.isURL) {
+        initVideoPlayer(donation.donationDetails.videoUrl!);
       }
     } catch (e) {
       return Future.error(e);
@@ -52,7 +53,7 @@ class DonationDetailsController extends GetxController {
       await payDonationSheet(donation, onlyAddToCart: true);
 
   int getNumCover() {
-    return donation.imageURL.isNotEmpty && donation.videoURL.isNotEmpty? 2 : 1;
+    return donation.donationDetails.imageUrl!=null && donation.donationDetails.videoUrl!=null? 2 : 1;
   }
 
   initVideoPlayer(String url) async {
@@ -79,7 +80,7 @@ class DonationDetailsController extends GetxController {
 
   @override
   void onClose() {
-    if (donation.videoURL.isNotEmpty && donation.videoURL.isURL) {
+    if (donation.donationDetails.videoUrl!=null && donation.donationDetails.videoUrl!.isURL) {
       chewieController.dispose();
       videoPlayerController.value.dispose();
     }

@@ -57,7 +57,7 @@ class CreateCampaignView extends GetView<CreateCampaignController> {
                           hint: "-- Choose donation project --",
                           value: controller.orgSelected.value,
                           list: controller.organizations,
-                          valuesShow: controller.valuesShowOrg,
+                          valueShow: controller.valuesShowOrg,
                           onChanged: controller.onChangeOrg,
                         ).fadeAnimation200,
                         const SizedBox(height: 10),
@@ -72,7 +72,7 @@ class CreateCampaignView extends GetView<CreateCampaignController> {
                                 controller.donationOpportunityController,
                           ),
                           selected: controller.donationOpportunityController
-                              .donationSelected.value?.name,
+                              .donationSelected.value?.donationBasic.name,
                         ).fadeAnimation200,
                         const SizedBox(height: 10),
                         Form(
@@ -203,7 +203,7 @@ class CreateCampaignView extends GetView<CreateCampaignController> {
                           isSmallTitle: true,
                           isFittedTitle: false,
                           label:
-                              "I agree that the donations that will be collected will be spent on the campaign by the Ataa platform",
+                              "I agree that the donations I will collect will be spent by the Ataa platform for the project identified in this campaign.",
                         ).fadeAnimation500,
                         const SizedBox(
                           height: 10,

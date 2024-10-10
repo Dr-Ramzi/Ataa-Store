@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../Config/config.dart';
 import '../../../../../../Core/Controller/SelectedOptions/donationSelectionController.dart';
+import '../../../../../../Data/Model/Donation/donation.dart';
 import '../../../../../../Data/data.dart';
 import '../../../../../../UI/Widget/widget.dart';
 import '../../../../../ScreenSheet/Other/ConfirmCampaignCreation/confirmCampaignCreationSheet.dart';
@@ -52,7 +53,7 @@ class CreateCampaignController extends GetxController {
 
   //----------------------------------------------------------------------------
 
-  String valuesShowOrg(org) => org.name ?? "";
+  String valuesShowOrg(org) => org.cardUserName ?? "";
   void onChangeOrg(org) => orgSelected.value = org;
   void onChangeDonationMethod(bool? val) => isOpenDonation.value = val ?? true;
   void onChangeAgreed(bool val) => isAgreed.value = val;
@@ -112,18 +113,18 @@ class CreateCampaignController extends GetxController {
             donationID:
                 donationOpportunityController.donationSelected.value!.id,
             isZakat:
-                donationOpportunityController.donationSelected.value!.isZakat,
+                donationOpportunityController.donationSelected.value!.donationSettings.isZakat,
             shareURL:
                 donationOpportunityController.donationSelected.value!.shareURL,
-            imageURL:
-                donationOpportunityController.donationSelected.value!.imageURL,
+            imageUrl:
+                donationOpportunityController.donationSelected.value!.donationDetails.imageUrl,
           );
 
           var isConfirmCreate = await confirmCampaignCreationSheetX(
             campaign: campaign,
             orgName: orgSelected.value!.name,
             projectName:
-                donationOpportunityController.donationSelected.value!.name,
+                donationOpportunityController.donationSelected.value!.donationBasic.name,
           );
 
           if (isConfirmCreate == true) {

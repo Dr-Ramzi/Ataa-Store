@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../../../../../Config/config.dart';
 import '../../../../../../Core/Controller/Filter/filterController.dart';
 import '../../../../../../Core/core.dart';
+import '../../../../../../Data/Model/Donation/donation.dart';
 import '../../../../../../Data/data.dart';
 import '../../../../../ScreenSheet/Filter/GeneralFilter/generalFilterSheet.dart';
 import '../../../../../ScreenSheet/Other/MandatoryAuth/mandatoryAuth.dart';
@@ -34,7 +35,7 @@ class AllCampaignsController extends GetxController {
 
       campaigns = TestDataX.campaigns;
       for(int i=0;i<campaigns.length;i++){
-        donations.add(TestDataX.donations.firstWhere((x) => x.id==campaigns[i].donationID));
+        // donations.add(TestDataX.donations.firstWhere((x) => x.modelId==campaigns[i].donationID));
       }
 
       campaignsResult.value = campaigns;

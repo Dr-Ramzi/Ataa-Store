@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../Data/Model/Gifting/giftCardFormByGender.dart';
-import '../../../Data/Model/Gifting/giftMessage.dart';
+import '../../../Data/Model/Gift/GiftMessage/giftMessage.dart';
+import '../../../Data/Model/Gift/Subclass/giftCardFormByGender.dart';
 import '../../../Data/data.dart';
 import '../../../Ui/Widget/widget.dart';
 

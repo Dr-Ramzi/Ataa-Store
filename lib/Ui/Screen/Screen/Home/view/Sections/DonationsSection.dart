@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../Config/config.dart';
-import '../../../../../../Data/data.dart';
+import '../../../../../../Data/Model/Donation/donation.dart';
 import '../../../../../Animation/animation.dart';
 import '../../../../../Widget/Basic/Other/scrollRefreshLoadMore.dart';
 import '../../../../../Widget/widget.dart';

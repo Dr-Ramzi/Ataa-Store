@@ -38,7 +38,10 @@ class DatabaseX {
   }) async {
     var data = await RemoteDataSourceX.post(
       DBEndPointX.postLoginByPhone,
-      body: {NameX.phone: phone, NameX.countryCode: countryCode},
+      body: {
+        NameX.phone: phone,
+        NameX.countryCode: countryCode,
+      },
     );
     return data.$2;
   }
@@ -50,6 +53,41 @@ class DatabaseX {
     );
     return data.$2;
   }
+
+  static Future<UserX?> completeDataSingUp({
+    required String gender,
+    required String email,
+  }) async {
+    var data = await RemoteDataSourceX.put(
+      DBEndPointX.putCompleteDataSingUp,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        requestBody: {
+          NameX.email: email.toLowerCase().trim(),
+          NameX.gender: gender.toLowerCase().trim()
+        },
+      ),
+    );
+    try {
+      return UserX.fromJson(data.$1[NameX.data], LocalDataX.token);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static Future<void> logout() async {
+    await RemoteDataSourceX.post(
+      DBEndPointX.postLogout,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        ignoreUnauthorized: true,
+        ignoreError: true,
+      ),
+    );
+  }
+
+  //============================================================================
+  // OTP
 
   static Future<UserX> otpByPhone({
     required int otp,
@@ -73,31 +111,17 @@ class DatabaseX {
   }) async {
     var data = await RemoteDataSourceX.post(
       DBEndPointX.postVerifyOtpEmail,
-      body: {NameX.email: email, NameX.otp: otp.toString()},
+      body: {
+        NameX.email: email,
+        NameX.otp: otp.toString(),
+      },
     );
     return UserX.fromJson(data.$1[NameX.data], data.$1[NameX.token]);
   }
 
-  static Future<UserX?> completeDataSingUp({
-    required String gender,
-    required String email,
-  }) async {
-    var data = await RemoteDataSourceX.put(DBEndPointX.putCompleteDataSingUp,
-        param: DataSourceParamX(authToken: LocalDataX.token),
-        body: {
-          NameX.email: email.toLowerCase().trim(),
-          NameX.gender: gender.toLowerCase().trim()
-        });
-    try {
-      return UserX.fromJson(data.$1[NameX.data], LocalDataX.token);
-    } catch (_) {
-      return null;
-    }
-  }
-
   static Future<UserX?> otpUpdateProfile({required int otp}) async {
     var data = await RemoteDataSourceX.post(
-      DBEndPointX.postVerifyUpdateProfile,
+      DBEndPointX.postOtpVerifyUpdateProfile,
       param: DataSourceParamX(
         authToken: LocalDataX.token,
         requestBody: {NameX.otp: otp},
@@ -105,7 +129,7 @@ class DatabaseX {
     );
     try {
       return UserX.fromJson(data.$1[NameX.data], LocalDataX.token);
-    } catch (e) {
+    } catch (_) {
       return null;
     }
   }
@@ -132,17 +156,6 @@ class DatabaseX {
     return data.$2;
   }
 
-  static Future<void> logout() async {
-    await RemoteDataSourceX.post(
-      DBEndPointX.postLogout,
-      param: DataSourceParamX(
-        authToken: LocalDataX.token,
-        ignoreUnauthorized: true,
-        ignoreError: true,
-      ),
-    );
-  }
-
   //============================================================================
   // Profile
 
@@ -158,9 +171,10 @@ class DatabaseX {
         ),
       );
       return UserX.fromJson(
-          Map<String, dynamic>.from(data.$1[NameX.data]), LocalDataX.token);
+        Map<String, dynamic>.from(data.$1[NameX.data]),
+        LocalDataX.token,
+      );
     } catch (error) {
-      error.toErrorX.log();
       if (error.toErrorX.errorCode == ErrorCodesX.unauthorized) {
         AppControllerX app = Get.find();
         await app.logOut();
@@ -177,45 +191,36 @@ class DatabaseX {
     required int countryCode,
     required String? name,
     required String? email,
-    required File? image,
   }) async {
+    var data = await RemoteDataSourceX.put(
+      DBEndPointX.putUpdateProfile,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        requestBody: {
+          NameX.name: name?.trim(),
+          NameX.phone: phone,
+          NameX.countryCode: countryCode,
+          NameX.gender: gender.toLowerCase().trim(),
+          NameX.email: email?.toLowerCase().trim(),
+        },
+      ),
+    );
     try {
-      var requestBody = {
-        NameX.name: name?.trim(),
-        NameX.phone: phone,
-        NameX.countryCode: countryCode,
-        NameX.gender: gender.toLowerCase().trim(),
-        NameX.email: email?.toLowerCase().trim(),
-      };
-      (dynamic, String?) data;
-      if (image != null) {
-        data = await RemoteDataSourceX.putFiles(
-          DBEndPointX.putUpdateProfile,
-          {NameX.imageFile: image},
-          param: DataSourceParamX(
-            requestBody: requestBody,
-            authToken: LocalDataX.token,
-            requestTimeout: const Duration(seconds: 20),
-          ),
-        );
-      } else {
-        data = await RemoteDataSourceX.put(
-          DBEndPointX.putUpdateProfile,
-          param: DataSourceParamX(
-            authToken: LocalDataX.token,
-            requestBody: requestBody,
-          ),
-        );
-      }
-      try {
-        return (UserX.fromJson(data.$1[NameX.data], LocalDataX.token), data.$2);
-      } catch (e) {
-        return (null, data.$2);
-      }
+      return (UserX.fromJson(data.$1[NameX.data], LocalDataX.token), data.$2);
     } catch (e) {
-      e.toErrorX.log();
-      rethrow;
+      return (null, data.$2);
     }
+  }
+
+  static Future<String?> uploadProfileImage({
+    required File image,
+  }) async {
+    var data = await RemoteDataSourceX.putFiles(
+      DBEndPointX.deleteProfileImage,
+      {NameX.imageFile: image},
+      param: DataSourceParamX(authToken: LocalDataX.token),
+    );
+    return data.$2;
   }
 
   static Future<void> deleteProfileImage() async {
@@ -235,6 +240,7 @@ class DatabaseX {
         maxRetries: 3,
         localCacheKey: 'general_settings',
         localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
       ),
     );
     return GeneralAppSettingsX.fromJson(
@@ -243,31 +249,9 @@ class DatabaseX {
   }
 
   //============================================================================
-  // Ads
-
-  static Future<List<AdsX>> getAds() async {
-    try {
-      var data = await RemoteDataSourceX.get(
-        DBEndPointX.getAds,
-        param: DataSourceParamX(
-          localCacheKey: 'ads',
-          localCacheMaxAge: const Duration(days: 1),
-          authToken: LocalDataX.token,
-        ),
-      );
-      return ModelUtilX.generateItems<AdsX>(data.$1[NameX.data], AdsX.fromJson);
-    } catch (error) {
-      return Future.error(error);
-    }
-  }
-
-  //============================================================================
   // General Statistics
 
-  static Future<List<GeneralStatisticX>> getGeneralStatistics({
-    int page = 1,
-    int perPage = 20,
-  }) async {
+  static Future<List<GeneralStatisticX>> getGeneralStatistics() async {
     var data = await RemoteDataSourceX.get(
       DBEndPointX.getGeneralStatistics,
       param: DataSourceParamX(
@@ -277,52 +261,31 @@ class DatabaseX {
       ),
     );
     return ModelUtilX.generateItems<GeneralStatisticX>(
-        data.$1[NameX.data], GeneralStatisticX.fromJson);
+      data.$1[NameX.data],
+      GeneralStatisticX.fromJson,
+    );
   }
 
   //============================================================================
-  // Testimonials
+  // General Payment Methods Settings
 
-  static Future<List<TestimonialX>> getTestimonials({
-    int page = 1,
-    int perPage = 20,
-  }) async {
+  static Future<GeneralPaymentMethodsSettingsX>
+      getGeneralPaymentMethodsSettings() async {
     var data = await RemoteDataSourceX.get(
-      DBEndPointX.getTestimonials,
+      DBEndPointX.getGeneralPaymentMethodsSettings,
       param: DataSourceParamX(
-        localCacheKey: 'testimonials',
+        localCacheKey: 'general_payment_methods_settings',
         localCacheMaxAge: const Duration(days: 3),
         authToken: LocalDataX.token,
       ),
     );
-    return ModelUtilX.generateItems<TestimonialX>(
-      data.$1[NameX.data],
-      TestimonialX.fromJson,
-    );
-  }
-  //============================================================================
-  // Partners
-
-  static Future<List<PartnerX>> getPartners({
-    int page = 1,
-    int perPage = 20,
-  }) async {
-    var data = await RemoteDataSourceX.get(
-      DBEndPointX.getPartners,
-      param: DataSourceParamX(
-        localCacheKey: 'partners',
-        localCacheMaxAge: const Duration(days: 3),
-        authToken: LocalDataX.token,
-      ),
-    );
-    return ModelUtilX.generateItems<PartnerX>(
-      data.$1[NameX.data],
-      PartnerX.fromJson,
+    return GeneralPaymentMethodsSettingsX.fromJson(
+      Map<String, dynamic>.from(data.$1[NameX.data]),
     );
   }
 
   //============================================================================
-  // Pages
+  // Dynamic Pages
 
   static Future<List<PageX>> getDynamicPages({
     int page = 1,
@@ -345,11 +308,12 @@ class DatabaseX {
       ),
     );
     return ModelUtilX.generateItems<PageX>(data.$1[NameX.data], PageX.fromJson)
-        .where(
-          (page) => !exclude.contains(page.tag),
-        )
+        .where((page) => !exclude.contains(page.tag))
         .toList();
   }
+
+  //============================================================================
+  // About
 
   static Future<PageX> getAboutPage() async {
     var data = await RemoteDataSourceX.get(
@@ -357,39 +321,14 @@ class DatabaseX {
       param: DataSourceParamX(
         localCacheKey: 'about_page',
         localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
       ),
     );
-    var aboutData = List.from(data.$1[NameX.data] ?? [])
-        .firstWhereOrNull((page) => page[NameX.tag] == NameX.aboutPage);
-    return PageX.fromJson(Map<String, dynamic>.from(aboutData ?? {}));
-  }
-
-  static Future<PageX> getContactUsPage() async {
-    var data = await RemoteDataSourceX.get(
-      DBEndPointX.getContactUsPage,
-      param: DataSourceParamX(
-        localCacheKey: 'contact_us_page',
-        localCacheMaxAge: const Duration(days: 3),
-      ),
+    var aboutData = List.from(data.$1[NameX.data] ?? []).firstWhere(
+      (page) => page[NameX.tag] == NameX.aboutPage,
+      orElse: () => {},
     );
-    var contactUsData = List.from(data.$1[NameX.data] ?? [])
-        .firstWhereOrNull((page) => page[NameX.tag] == NameX.contactUsPage);
-    return PageX.fromJson(Map<String, dynamic>.from(contactUsData ?? {}));
-  }
-
-  static Future<PageX> getTermsAndConditionsPage() async {
-    var data = await RemoteDataSourceX.get(
-      DBEndPointX.getTermsAndConditionsPage,
-      param: DataSourceParamX(
-        localCacheKey: 'terms_and_conditions_page',
-        localCacheMaxAge: const Duration(days: 3),
-      ),
-    );
-    var termsAndConditionsData = List.from(data.$1[NameX.data] ?? [])
-        .firstWhereOrNull(
-            (page) => page[NameX.tag] == NameX.termsAndConditionsPage);
-    return PageX.fromJson(
-        Map<String, dynamic>.from(termsAndConditionsData ?? {}));
+    return PageX.fromJson(Map<String, dynamic>.from(aboutData));
   }
 
   static Future<PageX> getPrivacyPolicyPage() async {
@@ -398,11 +337,82 @@ class DatabaseX {
       param: DataSourceParamX(
         localCacheKey: 'privacy_policy_page',
         localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
       ),
     );
-    var privacyPolicyData = List.from(data.$1[NameX.data] ?? [])
-        .firstWhereOrNull((page) => page[NameX.tag] == NameX.privacyPolicyPage);
-    return PageX.fromJson(Map<String, dynamic>.from(privacyPolicyData ?? {}));
+    var privacyPolicyData = List.from(data.$1[NameX.data] ?? []).firstWhere(
+      (page) => page[NameX.tag] == NameX.privacyPolicyPage,
+      orElse: () => {},
+    );
+    return PageX.fromJson(Map<String, dynamic>.from(privacyPolicyData));
+  }
+
+  static Future<PageX> getTermsAndConditionsPage() async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getTermsAndConditionsPage,
+      param: DataSourceParamX(
+        localCacheKey: 'terms_and_conditions_page',
+        localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
+      ),
+    );
+    var termsAndConditionsData =
+        List.from(data.$1[NameX.data] ?? []).firstWhere(
+      (page) => page[NameX.tag] == NameX.termsAndConditionsPage,
+      orElse: () => {},
+    );
+    return PageX.fromJson(Map<String, dynamic>.from(termsAndConditionsData));
+  }
+
+  //============================================================================
+  // Contact Us
+
+  static Future<ContactUsX> getContactUs() async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getContentUs,
+      param: DataSourceParamX(
+        localCacheKey: 'contact_us',
+        localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
+      ),
+    );
+    return ContactUsX.fromJson(
+      Map<String, dynamic>.from(
+        data.$1?[NameX.data] ?? {},
+      ),
+    );
+  }
+
+  static Future<ContactUsSocialMediaX> getContactUsSocialMedia() async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getContentUsSocialMedia,
+      param: DataSourceParamX(
+        localCacheKey: 'contact_us_social_media',
+        localCacheMaxAge: const Duration(days: 30),
+        authToken: LocalDataX.token,
+      ),
+    );
+    return ContactUsSocialMediaX.fromJson(
+      Map<String, dynamic>.from(
+        data.$1?[NameX.data] ?? {},
+      ),
+    );
+  }
+
+  static Future<PageX> getContactUsPage() async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getContactUsPage,
+      param: DataSourceParamX(
+        localCacheKey: 'contact_us_page',
+        localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
+      ),
+    );
+    var contactUsData = List.from(data.$1[NameX.data] ?? []).firstWhere(
+      (page) => page[NameX.tag] == NameX.contactUsPage,
+      orElse: () => {},
+    );
+    return PageX.fromJson(Map<String, dynamic>.from(contactUsData));
   }
 
   //============================================================================
@@ -411,252 +421,37 @@ class DatabaseX {
   static Future<List<BankX>> getAllBanks({
     int page = 1,
     int perPage = 20,
+    bool onlyActive = true,
   }) async {
-    try {
-      var data = await RemoteDataSourceX.get(
-        DBEndPointX.getAllBanks,
-        param: DataSourceParamX(
-          page: page,
-          limit: perPage,
-          localCacheKey: 'all-banks',
-          localCacheMaxAge: const Duration(days: 3),
-        ),
-      );
-      return ModelUtilX.generateItems<BankX>(
-        data.$1[NameX.data],
-        BankX.fromJson,
-      );
-    } catch (error) {
-      return Future.error(error);
-    }
-  }
-
-  //============================================================================
-  // Deduction
-
-  static Future<DeductionX> getDeductionDetails({required String id}) async {
     var data = await RemoteDataSourceX.get(
-      DBEndPointX.getDeductionDetails,
+      onlyActive ? DBEndPointX.getAllActiveBanks : DBEndPointX.getAllBanks,
       param: DataSourceParamX(
-        localCacheKey: 'deduction_details_$id',
-        localCacheMaxAge: const Duration(days: 1),
-        authToken: LocalDataX.token,
-        pathParams: {NameX.id: id},
-      ),
-    );
-    return DeductionX.fromJson(
-      Map<String, dynamic>.from(
-        data.$1[NameX.data],
-      ),
-    );
-  }
-
-  static Future<List<DeductionX>> getAllDeductions({
-    bool? isHome,
-    String? categoryID,
-    int page = 1,
-    int perPage = 20,
-  }) async {
-    Map<String, dynamic>? filterParams = {
-      NameX.isShowHome: isHome.toIntNullableX,
-      NameX.donationCategoryId: categoryID,
-    };
-    var data = await RemoteDataSourceX.get(
-      DBEndPointX.getAllDeductions,
-      param: DataSourceParamX(
-        localCacheKey: 'deduction_$filterParams',
+        localCacheKey: 'all-banks',
         localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
         page: page,
         limit: perPage,
-        filterParams: filterParams,
       ),
     );
-    List<DeductionX> result =
-        ModelUtilX.generateItems(data.$1[NameX.data], DeductionX.fromJson);
-    return result;
-  }
-
-  static Future<List<DeductionX>> getDeductionsBySearch({
-    String? sortType,
-    String? recurring,
-    String? categoryID,
-    String? searchQuery,
-    int page = 1,
-    int perPage = 20,
-  }) async {
-    Map<String, dynamic>? filterParams = {
-      NameX.sortType: sortType,
-      if (recurring != null) NameX.manyRecurring: [recurring],
-      NameX.donationCategoryId: categoryID,
-    };
-    var data = await RemoteDataSourceX.get(
-      DBEndPointX.getDeductionsBySearch,
-      param: DataSourceParamX(
-        localCacheKey: 'deductions_by_search_$filterParams',
-        localCacheMaxAge: const Duration(days: 3),
-        page: page,
-        limit: perPage,
-        filterParams: filterParams,
-        search: searchQuery,
-        searchKey: NameX.search,
-      ),
-    );
-    List<DeductionX> result =
-        ModelUtilX.generateItems(data.$1[NameX.data], DeductionX.fromJson);
-    return result;
-  }
-
-  //============================================================================
-  // Donations
-
-  static Future<List<DonationX>> getAllDonations({
-    bool? isHome,
-    bool? isZakat,
-    String? categoryID,
-    int page = 1,
-    int perPage = 20,
-  }) async {
-    try {
-      Map<String, dynamic>? filterParams = {
-        NameX.isShowHome: isHome.toIntNullableX,
-        NameX.isZakat: isZakat.toIntNullableX,
-        NameX.donationCategoryId: categoryID,
-      };
-      var data = await RemoteDataSourceX.get(
-        DBEndPointX.getAllDonations,
-        param: DataSourceParamX(
-          localCacheKey: 'donations_$filterParams',
-          localCacheMaxAge: const Duration(days: 3),
-          page: page,
-          limit: perPage,
-          filterParams: filterParams,
-        ),
-      );
-      List<DonationX> result =
-          ModelUtilX.generateItems(data.$1[NameX.data], DonationX.fromJson);
-      if (result.isEmpty && isZakat == true) {
-        result = [await getDefaultZakat()];
-      }
-      return result;
-    } catch (error) {
-      return Future.error(error);
-    }
-  }
-
-  static Future<List<DonationX>> getDonationsBySearch({
-    bool? isZakat,
-    String? sortType,
-    String? categoryID,
-    String? searchQuery,
-    int page = 1,
-    int perPage = 20,
-  }) async {
-    try {
-      Map<String, dynamic>? filterParams = {
-        NameX.isZakat: isZakat.toIntNullableX,
-        NameX.donationCategoryId: categoryID,
-        NameX.sortType: sortType,
-      };
-      var data = await RemoteDataSourceX.get(
-        DBEndPointX.getDonationsBySearch,
-        param: DataSourceParamX(
-          localCacheKey: 'donations_by_search_$filterParams',
-          localCacheMaxAge: const Duration(days: 3),
-          page: page,
-          limit: perPage,
-          filterParams: filterParams,
-          search: searchQuery,
-          searchKey: NameX.search,
-        ),
-      );
-      List<DonationX> result =
-          ModelUtilX.generateItems(data.$1[NameX.data], DonationX.fromJson);
-      if (result.isEmpty &&
-          isZakat == true &&
-          (searchQuery == null || searchQuery.isEmpty)) {
-        result = [await getDefaultZakat()];
-      }
-      return result;
-    } catch (error) {
-      return Future.error(error);
-    }
-  }
-
-  static Future<DonationX> getDonationDetails({required int code}) async {
-    var data = await RemoteDataSourceX.get(
-      DBEndPointX.getDonationDetails,
-      param: DataSourceParamX(
-        localCacheKey: 'donation_details_$code',
-        localCacheMaxAge: const Duration(days: 1),
-        authToken: LocalDataX.token,
-        pathParams: {NameX.code: code},
-      ),
-    );
-    return DonationX.fromJson(
-      Map<String, dynamic>.from(
-        data.$1[NameX.data],
-      ),
+    return ModelUtilX.generateItems<BankX>(
+      data.$1[NameX.data],
+      BankX.fromJson,
     );
   }
 
-  static Future<DonationX> getDefaultZakat() async {
-    var data = await RemoteDataSourceX.get(
-      DBEndPointX.getDefaultZakat,
-      param: DataSourceParamX(
-        localCacheKey: 'default_zakat',
-        localCacheMaxAge: const Duration(days: 3),
-        authToken: LocalDataX.token,
-      ),
-    );
-    return DonationX.fromJson(Map<String, dynamic>.from(data.$1[NameX.data]));
-  }
-  //============================================================================
-  // Organizations
-
-  static Future<List<OrganizationX>> getAllOrganizations({
-    bool? isHome,
-    bool? isQuickDonation,
-    int page = 1,
-    int perPage = 20,
-  }) async {
-    try {
-      Map<String, dynamic>? filterParams = {
-        NameX.isShowHome: isHome.toIntNullableX,
-        NameX.isQuickDonation: isQuickDonation.toIntNullableX,
-      };
-      var data = await RemoteDataSourceX.get(
-        DBEndPointX.getAllOrganizations,
-        param: DataSourceParamX(
-          localCacheKey: 'all_organizations$filterParams',
-          localCacheMaxAge: const Duration(days: 3),
-          page: page,
-          limit: perPage,
-          filterParams: filterParams,
-        ),
-      );
-      return ModelUtilX.generateItems(
-          data.$1[NameX.data], OrganizationX.fromJson);
-    } catch (error) {
-      return Future.error(error);
-    }
-  }
-
-  static Future<OrganizationX> getOrganizationDetails({
+  static Future<BankAccountX> getBankAccountDetails({
     required String id,
   }) async {
     var data = await RemoteDataSourceX.get(
-      DBEndPointX.getOrganizationDetails,
+      DBEndPointX.getBankAccountDetails,
       param: DataSourceParamX(
-        localCacheKey: 'organization_details_$id',
-        localCacheMaxAge: const Duration(days: 1),
+        localCacheKey: 'bank-account-$id',
+        localCacheMaxAge: const Duration(days: 3),
         authToken: LocalDataX.token,
-        pathParams: {NameX.id: id},
       ),
     );
-    return OrganizationX.fromJson(
-      Map<String, dynamic>.from(
-        data.$1[NameX.data],
-      ),
+    return BankAccountX.fromJson(
+      Map<String, dynamic>.from(data.$1[NameX.data]),
     );
   }
 
@@ -672,6 +467,7 @@ class DatabaseX {
       param: DataSourceParamX(
         localCacheKey: 'all_gift_categories',
         localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
         page: page,
         limit: perPage,
       ),
@@ -706,7 +502,7 @@ class DatabaseX {
       DBEndPointX.getGiftMessageTemplate,
       param: DataSourceParamX(
         localCacheKey: 'get_gift_message_template',
-        localCacheMaxAge: const Duration(days: 3),
+        localCacheMaxAge: const Duration(days: 7),
         authToken: LocalDataX.token,
       ),
     );
@@ -717,82 +513,62 @@ class DatabaseX {
     );
   }
 
-  //============================================================================
-  // Cart
-
-  static Future assignCart(String cartId) async {
-    try {
-      return await RemoteDataSourceX.post(
-        DBEndPointX.postAssignCart,
-        param: DataSourceParamX(
-          maxRetries: 3,
-          authToken: LocalDataX.token,
-          pathParams: {NameX.cartId: cartId},
-        ),
-      );
-    } catch (e) {
-      if (e.toErrorX.errorCode == ErrorCodesX.notFound) {
-        return;
-      } else {
-        rethrow;
-      }
-    }
-  }
-
-  static Future<CartX> createCart() async {
-    var data = await RemoteDataSourceX.get(
-      DBEndPointX.getCreateCartID,
-      param: DataSourceParamX(
-        authToken: LocalDataX.token,
-      ),
-    );
-    return CartX.fromJson(
-      Map<String, dynamic>.from(data.$1[NameX.data]),
-    );
-  }
-
-  static Future<CartX> getAllCartItems(String cartId) async {
-    var data = await RemoteDataSourceX.get(
-      DBEndPointX.getAllCartItems,
-      param: DataSourceParamX(
-        authToken: LocalDataX.token,
-        pathParams: {NameX.cartId: cartId},
-      ),
-    );
-    return CartX.fromJson(
-      Map<String, dynamic>.from(data.$1[NameX.data]),
-    );
-  }
-
-  static Future createCartItem(
-    String cartId,
-    String modelType,
-    String modelId, {
-    int quantity = 1,
+  static Future<GiftOrderX> createGiftOrder({
+    required GiftX gift,
   }) async {
-    try {
-      var data = await RemoteDataSourceX.post(
-        DBEndPointX.postCreateCartItem,
-        param: DataSourceParamX(
-          authToken: LocalDataX.token,
-          pathParams: {NameX.cartId: cartId},
-          requestBody: {
-            NameX.cartId:cartId,
-            NameX.modelType:modelType,
-            NameX.modelId:modelId,
-          }
-        ),
-      );
-    } catch (error) {
-      return Future.error(error);
-    }
+    var data = await RemoteDataSourceX.post(
+      DBEndPointX.postCreateGiftOrder,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        requestBody: gift.toJson(),
+      ),
+    );
+    return GiftOrderX.fromJson(
+      Map<String, dynamic>.from(
+        data.$1[NameX.data],
+      ),
+    );
   }
-  // postCreateCartItem
-  // putUpdateCartItem
-  // deleteCartItem
-  // deleteAllCartItems
+
+  static Future<List<GiftOrderX>> getAllMyGiftOrders({
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getAllMyGiftOrders,
+      param: DataSourceParamX(
+        localCacheKey: 'all_my_gift_orders',
+        localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
+        page: page,
+        limit: perPage,
+      ),
+    );
+    return ModelUtilX.generateItems(
+      data.$1[NameX.data],
+      GiftOrderX.fromJson,
+    );
+  }
+
+  static Future<GiftOrderX> getMyGiftOrderDetails({
+    required String id,
+  }) async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getMyGiftOrderDetails,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        pathParams: {NameX.id: id},
+      ),
+    );
+    return GiftOrderX.fromJson(
+      Map<String, dynamic>.from(
+        data.$1[NameX.data],
+      ),
+    );
+  }
+
   //============================================================================
-  // Gold & Silver Price
+  // Statistics
 
   static Future<DonationStatisticsX> getDonationStatistics() async {
     var data = await RemoteDataSourceX.get(
@@ -893,23 +669,761 @@ class DatabaseX {
   }
 
   //============================================================================
-  // Gold & Silver Price
+  // Ads
 
-  static Future getGoldPrice() async {
+  static Future<List<AdsX>> getAds() async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getAds,
+      param: DataSourceParamX(
+        localCacheKey: 'ads',
+        localCacheMaxAge: const Duration(days: 1),
+        authToken: LocalDataX.token,
+      ),
+    );
+    return ModelUtilX.generateItems<AdsX>(data.$1[NameX.data], AdsX.fromJson);
+  }
+
+  //============================================================================
+  // Testimonials
+
+  static Future<List<TestimonialX>> getTestimonials({
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getTestimonials,
+      param: DataSourceParamX(
+        localCacheKey: 'testimonials',
+        localCacheMaxAge: const Duration(days: 30),
+        authToken: LocalDataX.token,
+      ),
+    );
+    return ModelUtilX.generateItems<TestimonialX>(
+      data.$1[NameX.data],
+      TestimonialX.fromJson,
+    );
+  }
+
+  //============================================================================
+  // Partners
+
+  static Future<List<PartnerX>> getPartners({
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getPartners,
+      param: DataSourceParamX(
+        localCacheKey: 'partners',
+        localCacheMaxAge: const Duration(days: 30),
+        authToken: LocalDataX.token,
+      ),
+    );
+    return ModelUtilX.generateItems<PartnerX>(
+      data.$1[NameX.data],
+      PartnerX.fromJson,
+    );
+  }
+
+  //============================================================================
+  // Organizations
+
+  static Future<List<OrganizationX>> getAllOrganizations({
+    bool? isHome,
+    bool? isQuickDonation,
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    Map<String, dynamic>? filterParams = {
+      NameX.isShowHome: isHome.toIntNullableX,
+      NameX.isQuickDonation: isQuickDonation.toIntNullableX,
+    };
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getAllOrganizations,
+      param: DataSourceParamX(
+        localCacheKey: 'all_organizations$filterParams',
+        localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
+        page: page,
+        limit: perPage,
+        filterParams: filterParams,
+      ),
+    );
+    return ModelUtilX.generateItems(
+      data.$1[NameX.data],
+      OrganizationX.fromJson,
+    );
+  }
+
+  static Future<OrganizationX> getOrganizationDetails({
+    required String id,
+  }) async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getOrganizationDetails,
+      param: DataSourceParamX(
+        localCacheKey: 'organization_details_$id',
+        localCacheMaxAge: const Duration(days: 1),
+        authToken: LocalDataX.token,
+        pathParams: {NameX.id: id},
+      ),
+    );
+    return OrganizationX.fromJson(
+      Map<String, dynamic>.from(
+        data.$1[NameX.data],
+      ),
+    );
+  }
+
+  //============================================================================
+  // Deduction
+
+  static Future<List<DeductionX>> getAllDeductions({
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getAllDeductions,
+      param: DataSourceParamX(
+        localCacheKey: 'all_deductions',
+        localCacheMaxAge: const Duration(days: 3),
+        page: page,
+        limit: perPage,
+      ),
+    );
+    return ModelUtilX.generateItems(data.$1[NameX.data], DeductionX.fromJson);
+  }
+
+  static Future<List<DeductionX>> getDeductionsBySearch({
+    String? sortType,
+    String? recurring,
+    String? categoryID,
+    String? searchQuery,
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    Map<String, dynamic>? filterParams = {
+      NameX.sortType: sortType,
+      NameX.donationCategoryId: categoryID,
+      if (recurring != null) NameX.manyRecurring: [recurring],
+    };
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getDeductionsBySearch,
+      param: DataSourceParamX(
+        localCacheKey: 'deductions_by_search_$filterParams',
+        localCacheMaxAge: const Duration(days: 3),
+        page: page,
+        limit: perPage,
+        filterParams: filterParams,
+        search: searchQuery,
+        searchKey: NameX.search,
+      ),
+    );
+    return ModelUtilX.generateItems(data.$1[NameX.data], DeductionX.fromJson);
+  }
+
+  static Future<DeductionX> getDeductionDetails({required String id}) async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getDeductionDetails,
+      param: DataSourceParamX(
+        localCacheKey: 'deduction_details_$id',
+        localCacheMaxAge: const Duration(days: 1),
+        authToken: LocalDataX.token,
+        pathParams: {NameX.id: id},
+      ),
+    );
+    return DeductionX.fromJson(
+      Map<String, dynamic>.from(
+        data.$1[NameX.data],
+      ),
+    );
+  }
+
+  //============================================================================
+  // Subscription
+
+  static Future<DeductionOrderX> updateMyDeductionSubscriptionStatus({
+    required String id,
+    required bool status,
+  }) async {
+    var data = await RemoteDataSourceX.put(
+      DBEndPointX.putUpdateMyDeductionSubscriptionStatus,
+      param: DataSourceParamX(
+          authToken: LocalDataX.token,
+          pathParams: {NameX.donationSubscriptionId: id},
+          requestBody: {NameX.status: status.toIntX}),
+    );
+    return DeductionOrderX.fromJson(
+      Map<String, dynamic>.from(
+        data.$1[NameX.data],
+      ),
+    );
+  }
+
+  static Future<List<DeductionOrderX>> getAllMyDeductionSubscription() async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getAllMyDeductionSubscription,
+      param: DataSourceParamX(
+        localCacheKey: 'all_my_deduction_subscription',
+        localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
+      ),
+    );
+    return ModelUtilX.generateItems(
+      data.$1[NameX.data],
+      DeductionOrderX.fromJson,
+    );
+  }
+
+  static Future<DeductionOrderX> getMyDeductionSubscriptionDetails(
+      {required String id}) async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getDeductionDetails,
+      param: DataSourceParamX(
+        localCacheKey: 'my_deduction_subscription_details_$id',
+        localCacheMaxAge: const Duration(days: 1),
+        authToken: LocalDataX.token,
+        pathParams: {NameX.id: id},
+      ),
+    );
+    return DeductionOrderX.fromJson(
+      Map<String, dynamic>.from(
+        data.$1[NameX.data],
+      ),
+    );
+  }
+
+  //============================================================================
+  // Donations
+
+  static Future<List<DonationX>> getAllDonations({
+    bool? isHome,
+    bool? isZakat,
+    String? categoryID,
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    Map<String, dynamic>? filterParams = {
+      NameX.isShowHome: isHome.toIntNullableX,
+      NameX.isZakat: isZakat.toIntNullableX,
+      NameX.donationCategoryId: categoryID,
+    };
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getAllDonations,
+      param: DataSourceParamX(
+        localCacheKey: 'donations_$filterParams',
+        localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
+        page: page,
+        limit: perPage,
+        filterParams: filterParams,
+      ),
+    );
+    List<DonationX> result = ModelUtilX.generateItems(data.$1[NameX.data], DonationX.fromJson);
+    if (result.isEmpty && isZakat == true) {
+      result = [await getDefaultZakat()];
+    }
+    return result;
+  }
+
+  static Future<List<DonationX>> getDonationsBySearch({
+    bool? isZakat,
+    String? sortType,
+    String? categoryID,
+    String? searchQuery,
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    Map<String, dynamic>? filterParams = {
+      NameX.isZakat: isZakat.toIntNullableX,
+      NameX.donationCategoryId: categoryID,
+      NameX.sortType: sortType,
+    };
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getDonationsBySearch,
+      param: DataSourceParamX(
+        localCacheKey: 'donations_by_search_$filterParams',
+        localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
+        page: page,
+        limit: perPage,
+        filterParams: filterParams,
+        search: searchQuery,
+        searchKey: NameX.search,
+      ),
+    );
+    List<DonationX> result =
+        ModelUtilX.generateItems(data.$1[NameX.data], DonationX.fromJson);
+    if (result.isEmpty &&
+        isZakat == true &&
+        (searchQuery == null || searchQuery.isEmpty)) {
+      result = [await getDefaultZakat()];
+    }
+    return result;
+  }
+
+  static Future<DonationX> getDonationDetails({required int code}) async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getDonationDetails,
+      param: DataSourceParamX(
+        localCacheKey: 'donation_details_$code',
+        localCacheMaxAge: const Duration(days: 1),
+        authToken: LocalDataX.token,
+        pathParams: {NameX.code: code},
+      ),
+    );
+    return DonationX.fromJson(
+      Map<String, dynamic>.from(
+        data.$1[NameX.data],
+      ),
+    );
+  }
+
+  static Future<List<DonationX>> getAllDonationInQuickDonation() async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getDonationIsShowInQuickDonation,
+      param: DataSourceParamX(
+        localCacheKey: 'all_donation_in_quick_donation',
+        localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
+      ),
+    );
+    return ModelUtilX.generateItems(data.$1[NameX.data], DonationX.fromJson);
+  }
+
+  static Future<DonationOrderX> createDonationOrder(
+      {required DonationOrderFormX form}) async {
+    var data = await RemoteDataSourceX.post(
+      DBEndPointX.postCreateDonationOrder,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        requestBody: form.toJson(),
+      ),
+    );
+    return DonationOrderX.fromJson(
+      Map<String, dynamic>.from(
+        data.$1[NameX.data],
+      ),
+    );
+  }
+
+  //============================================================================
+  // Zakat
+
+  static Future<List<DonationX>> getAllDonationOfZakat() async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getAllDonationOfZakat,
+      param: DataSourceParamX(
+        localCacheKey: 'all_donation_of_zakat',
+        localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
+      ),
+    );
+    return ModelUtilX.generateItems(data.$1[NameX.data], DonationX.fromJson);
+  }
+
+  static Future<DonationX> getDefaultZakat() async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getDefaultZakat,
+      param: DataSourceParamX(
+        localCacheKey: 'default_zakat',
+        localCacheMaxAge: const Duration(days: 7),
+        authToken: LocalDataX.token,
+      ),
+    );
+    return DonationX.fromJson(Map<String, dynamic>.from(data.$1[NameX.data]));
+  }
+
+  //============================================================================
+  // Zakat Calculation Management
+
+  static Future<MetalPriceX> getMetalPrice({
+    required MetalStatusX metal,
+    int? karat,
+  }) async {
+    var data = await RemoteDataSourceX.post(
+      DBEndPointX.postMetalPrice,
+      param: DataSourceParamX(authToken: LocalDataX.token, requestBody: {
+        NameX.metal: metal.name,
+        NameX.karat: karat?.toString(),
+      }),
+    );
+    return MetalPriceX.fromJson(Map<String, dynamic>.from(data.$1[NameX.data]));
+  }
+
+  static Future<double> getZakatCalculation({
+    required ZakatCalculationFormX form,
+  }) async {
+    var data = await RemoteDataSourceX.post(
+      DBEndPointX.postZakatCalculation,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        requestBody: form.toJson(),
+      ),
+    );
+    if (data.$1.runtimeType == int || data.$1.runtimeType == double) {
+      return data.$1 + .0;
+    } else {
+      return throw ErrorX(message: data.$2);
+    }
+  }
+
+  //============================================================================
+  // Payment Transaction
+
+  static Future<PaymentTransactionX> createPaymentTransactionForQuickDonation({
+    required PaymentTransactionFormX form,
+    required String orgId,
+  }) async {
+    dynamic data;
+    if (form.transferImageFile != null) {
+      data = await RemoteDataSourceX.postFiles(
+        DBEndPointX.postCreatePaymentTransactionForQuickDonation,
+        {NameX.transferImageFile: form.transferImageFile!},
+        param: DataSourceParamX(
+          authToken: LocalDataX.token,
+          requestBody: form.toJson(),
+          pathParams: {NameX.categoryId: orgId},
+          maxRetries: 3,
+        ),
+      );
+    } else {
+      data = await RemoteDataSourceX.post(
+        DBEndPointX.postCreatePaymentTransactionForQuickDonation,
+        param: DataSourceParamX(
+          authToken: LocalDataX.token,
+          pathParams: {NameX.categoryId: orgId},
+          requestBody: form.toJson(),
+          maxRetries: 3,
+        ),
+      );
+    }
+    return PaymentTransactionX.fromJson(
+      Map<String, dynamic>.from(data.$1[NameX.data]),
+    );
+  }
+
+  static Future<PaymentTransactionX> createPaymentTransactionForCart({
+    required PaymentTransactionFormX form,
+  }) async {
+    dynamic data;
+    if (form.transferImageFile != null) {
+      data = await RemoteDataSourceX.postFiles(
+        DBEndPointX.postCreatePaymentTransactionForCart,
+        {NameX.transferImageFile: form.transferImageFile!},
+        param: DataSourceParamX(
+          authToken: LocalDataX.token,
+          requestBody: form.toJson(),
+          maxRetries: 3,
+        ),
+      );
+    } else {
+      data = await RemoteDataSourceX.post(
+        DBEndPointX.postCreatePaymentTransactionForCart,
+        param: DataSourceParamX(
+          authToken: LocalDataX.token,
+          requestBody: form.toJson(),
+          maxRetries: 3,
+        ),
+      );
+    }
+    return PaymentTransactionX.fromJson(
+      Map<String, dynamic>.from(data.$1[NameX.data]),
+    );
+  }
+
+  static Future<PaymentTransactionX> createPaymentTransactionForDeduction({
+    required PaymentTransactionFormX form,
+    required String deductionId,
+  }) async {
+    var data = await RemoteDataSourceX.post(
+      DBEndPointX.postCreatePaymentTransactionForDeduction,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        pathParams: {NameX.deductionId: deductionId},
+        requestBody: form.toJson(),
+        maxRetries: 3,
+      ),
+    );
+    return PaymentTransactionX.fromJson(
+      Map<String, dynamic>.from(data.$1[NameX.data]),
+    );
+  }
+
+  static Future<String?> assignPaymentTransaction({
+    required int paymentTransactionCode,
+  }) async {
+    var data = await RemoteDataSourceX.post(
+      DBEndPointX.postAssignPaymentTransaction,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        pathParams: {NameX.paymentTransactionsCode: paymentTransactionCode},
+        maxRetries: 3,
+      ),
+    );
+    return data.$2;
+  }
+
+  //============================================================================
+  // Cart
+
+  static Future assignCart(String cartId,String token) async {
     try {
-      var data = await RemoteDataSourceX.get(DBEndPointX.gold);
-      if (data.$1 != null) {
-        return data.$1[NameX.price];
+      return await RemoteDataSourceX.post(
+        DBEndPointX.postAssignCart,
+        param: DataSourceParamX(
+          maxRetries: 3,
+          authToken: token,
+          pathParams: {NameX.cartId: cartId},
+        ),
+      );
+    } catch (e) {
+      e.toErrorX.log();
+      if (e.toErrorX.errorCode == ErrorCodesX.notFound) {
+        return;
+      } else {
+        rethrow;
       }
+    }
+  }
+
+  static Future<CartX> createCart() async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getCreateCartID,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+      ),
+    );
+    return CartX.fromJson(
+      Map<String, dynamic>.from(data.$1[NameX.data]),
+    );
+  }
+
+  static Future<CartX> getAllCartItems({String? cartId}) async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getAllCartItems,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        localCacheKey: 'cart',
+        localCacheMaxAge: const Duration(days: 1),
+        pathParams: {NameX.cartId: cartId??''},
+      ),
+    );
+    return CartX.fromJson(
+      Map<String, dynamic>.from(data.$1[NameX.data]),
+    );
+  }
+
+  static Future<MiniCartX> createCartItem(
+    String cartId,
+    ModelTypeStatusX modelType,
+    String modelId, {
+    int quantity = 1,
+  }) async {
+    try {
+      var data = await RemoteDataSourceX.post(
+        DBEndPointX.postCreateCartItem,
+        param: DataSourceParamX(
+          authToken: LocalDataX.token,
+          pathParams: {NameX.cartId: cartId},
+          requestBody: {
+            NameX.cartId: cartId,
+            NameX.modelType: modelType.name,
+            NameX.modelId: modelId,
+          },
+        ),
+      );
+      return MiniCartX.fromJson(
+        Map<String, dynamic>.from(data.$1),
+      );
     } catch (error) {
       return Future.error(error);
     }
   }
 
-  static Future getSilverPrice() async {
-    var data = await RemoteDataSourceX.get(DBEndPointX.silver);
-    if (data.$1 != null) {
-      return data.$1[NameX.price];
+  static Future<(CartX, String?)> updateCartItem({
+    required UpdateCartItemFormX form,
+  }) async {
+    try {
+      var data = await RemoteDataSourceX.put(
+        DBEndPointX.putUpdateCartItem,
+        param: DataSourceParamX(
+          authToken: LocalDataX.token,
+          pathParams: {NameX.itemId: form.id},
+          requestBody: form.toJson(),
+        ),
+      );
+      return (
+        CartX.fromJson(
+          Map<String, dynamic>.from(data.$1[NameX.data]),
+        ),
+        data.$2
+      );
+    } catch (error) {
+      return Future.error(error);
     }
+  }
+
+  static Future<MiniCartX> deleteCartItem({
+    required String itemId,
+    required String cartId,
+  }) async {
+    var data = await RemoteDataSourceX.delete(
+      DBEndPointX.deleteCartItem,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        pathParams: {NameX.itemId: itemId},
+      ),
+    );
+    return MiniCartX.fromJson(
+      Map<String, dynamic>.from(data.$1),
+    );
+  }
+
+  //============================================================================
+  // Payment Card
+
+  static Future<List<PaymentCardX>> getAllPaymentCards() async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getAllPaymentCards,
+      param: DataSourceParamX(
+        localCacheKey: 'payment_cards',
+        localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
+      ),
+    );
+    return ModelUtilX.generateItems(
+      data.$1[NameX.data],
+      PaymentCardX.fromJson,
+    );
+  }
+
+  static Future<PaymentCardX> getPaymentCardDetails({
+    required String cardId,
+  }) async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getPaymentCardDetails,
+      param: DataSourceParamX(
+        localCacheKey: 'payment_card_$cardId',
+        localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
+        pathParams: {NameX.cardId: cardId},
+      ),
+    );
+    return PaymentCardX.fromJson(data.$1[NameX.data]);
+  }
+
+  static Future<PaymentCardX> createPaymentCard({
+    required PaymentCardFormX form,
+  }) async {
+    try {
+      var data = await RemoteDataSourceX.post(
+        DBEndPointX.postCreatePaymentCard,
+        param: DataSourceParamX(
+          authToken: LocalDataX.token,
+          requestBody: form.toJson(),
+        ),
+      );
+      return PaymentCardX.fromJson(
+        Map<String, dynamic>.from(
+          data.$1[NameX.data],
+        ),
+      );
+    } catch (e) {
+      ErrorX error = e.toErrorX;
+      if (error.details[NameX.data]?[NameX.data]?[NameX.message] != null) {
+        error.message = error.details[NameX.data][NameX.data][NameX.message];
+      }
+      return throw error;
+    }
+  }
+
+  static Future<PaymentCardX> updatePaymentCardSetAsDefault({
+    required String cardId,
+  }) async {
+    var data = await RemoteDataSourceX.put(
+      DBEndPointX.putUpdatePaymentCardAsDefault,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        pathParams: {NameX.cardId: cardId},
+      ),
+    );
+    return PaymentCardX.fromJson(
+      Map<String, dynamic>.from(
+        data.$1[NameX.data],
+      ),
+    );
+  }
+
+  static Future<String?> deletePaymentCard({
+    required String cardId,
+  }) async {
+    var data = await RemoteDataSourceX.delete(
+      DBEndPointX.deletePaymentCard,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        pathParams: {NameX.cardId: cardId},
+      ),
+    );
+    return data.$2;
+  }
+
+  //============================================================================
+  // Rating
+
+  static Future<String?> rating({
+    required String id,
+    required RateTypeStatusX type,
+    required int rate,
+    required String? comment,
+  }) async {
+    var data = await RemoteDataSourceX.post(
+      DBEndPointX.postRating,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        requestBody: {
+          NameX.id: id,
+          NameX.type: type.name,
+          NameX.rate: rate,
+          NameX.comment: comment,
+        },
+      ),
+    );
+    return data.$2;
+  }
+
+  //============================================================================
+  // My Records
+
+  static Future<List<PaymentTransactionItemX<T>>>
+      getAllMyRecords<T extends OrderX>({
+    required ModelTypeStatusX type,
+    required T Function(Map<String, dynamic>) orderModelFromJson,
+    bool isAllWithoutPaginated = false,
+    String? byModelId,
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    var data = await RemoteDataSourceX.get(
+      !isAllWithoutPaginated
+          ? DBEndPointX.getAllPaymentTransactionItemByModelType
+          : DBEndPointX.getAllPaymentTransactionItemByModelTypeWithoutPaginated,
+      param: DataSourceParamX(
+        localCacheKey:
+            'all_my_records_by_model_type_${type.name}_$isAllWithoutPaginated',
+        localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
+        filterParams: {
+          NameX.modelType: type.name,
+          if (byModelId != null) NameX.modelId: byModelId,
+        },
+        page: page,
+        limit: perPage,
+      ),
+    );
+    return ModelUtilX.generateItems<PaymentTransactionItemX<T>>(
+      data.$1[NameX.data],
+      (Map<String, dynamic> json) =>
+          PaymentTransactionItemX<T>.fromJson(json, orderModelFromJson),
+    );
   }
 }

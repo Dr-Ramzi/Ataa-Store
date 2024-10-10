@@ -19,7 +19,7 @@ addShareLinkSheetX({required AddShareLinkControllerX controller}) {
             title: "Choose a donation opportunity",
             onTap: controller.onTapChooseDonation,
             selected: controller
-                .donationOpportunityController.donationSelected.value?.name,
+                .donationOpportunityController.donationSelected.value?.donationBasic.name,
           ).fadeAnimation200,
           const SizedBox(height: 10),
 

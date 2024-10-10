@@ -62,7 +62,7 @@ class _FutureBuilderXState<T> extends State<FutureBuilderX<T>> {
         /// Loading State
         if (snapshot.connectionState == ConnectionState.waiting) {
           Future.microtask(() => widget.onLoading?.call());
-          return widget.loading ?? const CircularProgressIndicator();
+          return widget.loading ?? const Center(child: CircularProgressIndicator());
         }
 
         /// Error State

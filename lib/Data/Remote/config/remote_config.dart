@@ -10,7 +10,7 @@ class RemoteConfigX{
 
   // Connection
   static int maxRetries = 1;
-  static Duration timeout = const Duration(seconds: 10);
+  static Duration timeout = const Duration(seconds: 30);
 
   static TransmissionMethodStatusX languageMethod =
       TransmissionMethodStatusX.headers;

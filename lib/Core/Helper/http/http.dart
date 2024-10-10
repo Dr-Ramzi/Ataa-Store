@@ -18,7 +18,7 @@ class HttpX {
 
   static init({
     String internetCheckUrl = "one.one.one.one",
-    Duration timeout = const Duration(seconds: 10),
+    Duration timeout = const Duration(seconds: 15),
     Duration internetRetryDelay = const Duration(seconds: 5),
   }) {
     _internetCheckUrl = internetCheckUrl;
@@ -151,7 +151,7 @@ class HttpX {
     // Add body if any
     if (body != null) {
       // Convert body to Map<String, String> by converting each value to a string
-      var fields = body.map((key, value) => MapEntry(key, Uri.encodeComponent(value)));
+      var fields = body.map((key, value) => MapEntry(key, value.toString()));
       request.fields.addAll(fields);
     }
     return await _call(

@@ -18,8 +18,8 @@ class CartIconButtonsX extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
         child: Obx(
-          () => badges.Badge(
-            showBadge: (controller.cart.value?.countItem??0) > 0,
+           () => badges.Badge(
+            showBadge: (controller.countItem.value) > 0,
             position: badges.BadgePosition.topEnd(top: -4, end: -2),
             badgeStyle: badges.BadgeStyle(
               badgeColor: colorBadge,
@@ -29,7 +29,7 @@ class CartIconButtonsX extends StatelessWidget {
               ),
             ),
             badgeContent: TextX(
-              (controller.cart.value?.countItem??0).toString(),
+              (controller.countItem.value).toString(),
               color: Colors.white,
               style: TextStyleX.supTitleSmall.copyWith(fontSize: 11),
               fontWeight: FontWeight.w600,

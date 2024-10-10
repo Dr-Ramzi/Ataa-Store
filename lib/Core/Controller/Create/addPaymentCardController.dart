@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'package:ataa/Core/Error/error.dart';
+import 'package:ataa/Data/Enum/payment_card_status_status.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../Config/config.dart';
+import '../../../Data/Model/PaymentCard/paymentCardForm.dart';
 import '../../../Data/data.dart';
 import '../../../Ui/Widget/widget.dart';
 
@@ -42,18 +45,30 @@ class AddPaymentCardControllerX extends GetxController {
         isLoading.value = true;
         buttonState.value = ButtonStateEX.loading;
         try {
-          // TODO: Database >>> Add a payment card to the database
-          await Future.delayed(const Duration(seconds: 1)); // delete this
-
           /// Create a bank card object
-          PaymentCardX paymentCard = PaymentCardX(
-            id: "",
+          PaymentCardFormX paymentCardForm = PaymentCardFormX(
             name: name.text,
             cardNum: cardNum.text.removeAllWhitespace,
-            expiryDate: date.text,
+            month: int.parse(date.text.split(RegExp(r'(/)'))[0]),
+            year: int.parse(date.text.split(RegExp(r'(/)'))[1]),
             cvv: int.parse(cvv.text),
             isDefault: isDefault.value,
           );
+
+          PaymentCardX paymentCard =
+              await DatabaseX.createPaymentCard(form: paymentCardForm);
+
+          if (paymentCard.verificationUrl == null &&
+              paymentCard.status != PaymentCardStatusStatusX.active) {
+            throw 'There is an error on our part, we were unable to verify the card.';
+          }
+          if (paymentCard.status != PaymentCardStatusStatusX.active) {
+            dynamic result = await Get.toNamed(RouteNameX.verificationUrl,
+                arguments: paymentCard.verificationUrl);
+            if (result != true) {
+              throw 'Card not verified, try again';
+            }
+          }
 
           /// The time delay here is aesthetically beneficial
           buttonState.value = ButtonStateEX.success;
@@ -68,6 +83,7 @@ class AddPaymentCardControllerX extends GetxController {
           /// Clear data on the controller
           clearData();
         } catch (error) {
+          error.toErrorX.log();
           ToastX.error(message: error.toString());
           buttonState.value = ButtonStateEX.failed;
         }

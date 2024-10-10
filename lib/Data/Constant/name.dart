@@ -10,6 +10,7 @@ class NameX {
   static const String tokenType = 'token_type';
   static const String tokenExpiresAt = 'expires_at';
   static const String name = 'name';
+  static const String project = 'project';
   static const String donationName = 'portal_project_name';
   static const String donationBasic = 'project_basic';
   static const String donationDetails = 'project_details';
@@ -36,6 +37,7 @@ class NameX {
   static const String briefDescription = 'excerpt';
   static const String location = 'location';
   static const String code = 'code';
+  static const String recurringDonation = 'recurring_donation';
   static const String isoCode = 'iso_code';
   static const String nameWithTranslations = 'name';
   static const String countryId = 'country_id';
@@ -50,7 +52,11 @@ class NameX {
   static const String password = 'password';
   static const String isConfirmed = 'isConfirmed';
   static const String type = 'type';
-  static const String imageUrl = 'imageURL';
+  static const String rate = 'rate';
+  static const String comment = 'comment';
+  static const String donationOrder = 'type';
+  static const String typeLocalized = 'type_localized';
+  static const String imageUrl = 'imageUrl';
   static const String image = 'image';
   static const String imageFile = 'image_file';
   static const String url = 'url';
@@ -63,7 +69,7 @@ class NameX {
   static const String donationOpenPackages = 'project_donation_open_packages';
   static const String donationDeductions =
       'project_donation_deduction_attributes';
-  static const String donationShare = 'project_donation_shares_attributes';
+  static const String donationShares = 'project_donation_shares_attributes';
   static const String endUser = 'endUser';
   static const String userID = 'userID';
   static const String auth = 'auth';
@@ -84,6 +90,8 @@ class NameX {
   static const String total = 'total';
   static const String count = 'count';
   static const String price = 'price';
+  static const String totalCart = 'totalCart';
+  static const String isDefaultZakat = 'is_default_zakat';
   static const String quantity = 'quantity';
   static const String numStock = 'numStock';
   static const String package = 'package';
@@ -96,7 +104,9 @@ class NameX {
   static const String sortType = 'sort_type';
   static const String manyRecurring = 'many_recurring';
   static const String isZakat = 'is_active_accepts_zakat';
-  static const String categoryID = 'categoryID';
+  static const String categoryId = 'category_id';
+  static const String deductionId = 'recurring_donation_id';
+  static const String paymentTransactionsCode = 'payment_transactions_code';
   static const String isNewMuslim = 'isNewMuslim';
   static const String isEducationNewMuslim = 'isEducationNewMuslim';
   static const String isEducationQuran = 'isEducationQuran';
@@ -112,6 +122,8 @@ class NameX {
   static const String paymentGatewayCardId = 'payment_gateway_card_id';
   static const String donation = 'project';
   static const String status = 'status';
+  static const String bankId = 'bank_id';
+  static const String orgId = 'organization_id';
   static const String achievedAmount = 'achieved_amount';
   static const String subscribersCount = 'subscribers_count';
   static const String iconUrl = 'icon';
@@ -137,7 +149,10 @@ class NameX {
   static const String donationAmount = 'price';
   static const String sharesQuantity = 'shares_quantity';
   static const String donationOpenPackageId = 'donation_open_package_id';
+  static const String donationSharesPackageId = 'donation_shares_package_id';
+  static const String donationDeductionPackageId = 'donation_deduction_attribute_id';
   static const String donationOpenPackage = 'open_package';
+  static const String openPackage = 'open_package';
   static const String donationSharePackageId = 'donation_shares_package_id';
   static const String donationSharePackage = 'shares_package';
   static const String isDonateOnBehalfOfFamily = 'donation_on_behalf_of_family_and_friends';
@@ -151,10 +166,11 @@ class NameX {
   static const String bankAccountId = 'bank_account_id';
   static const String transferImageFile = 'transfer_image_file';
   static const String donationDate = 'donation_date';
-  static const String donationData = 'donation_data';
   static const String donationReceiptUrl = 'donationReceiptUrl';
   static const String projectReportUrl = 'projectReportUrl';
   static const String giftCategory = 'gift_category';
+  static const String paymentTransactionItem = 'payment_transaction_item';
+  static const String sendStatusLocalized = 'send_status_localized';
   static const String color = 'color';
   static const String isShowAmount = 'is_show_price';
   static const String isSendToMe = 'is_send_to_donor';
@@ -166,12 +182,14 @@ class NameX {
   static const String aramexInvoiceUrl = 'aramexInvoiceUrl';
   static const String totalPrice = 'total_price';
   static const String countItem = 'count_item';
+  static const String cartItemsCount = 'cart_items_count';
   static const String currency = 'currency';
   static const String isProduct = 'is_product';
   static const String cartItems = 'cart_items';
   static const String orderDate = 'order_date';
   static const String orderProductsIDs = 'orderProductsIDs';
   static const String createdAt = 'created_at';
+  static const String updatedAt = 'updated_at';
 
   static const String totalDonations = 'total_donation';
   static const String currentDonations = 'price';
@@ -182,14 +200,20 @@ class NameX {
   static const String order = 'order';
   static const String model = 'model_data';
   static const String isShowPackages = 'is_packages_enabled';
+  static const String isPackagesEnabled = 'is_packages_enabled';
   static const String isCanEditAmount = 'is_total_amount_editable';
   static const String sharesCount = 'shares_count';
   static const String recurring = 'recurring';
   static const String recurringLocalized = 'recurring_localized';
+  static const String startDate = 'start_date';
   static const String endDate = 'end_date';
+  static const String metal = 'metal';
   static const String karat = 'karat';
   static const String gram = 'gram';
   static const String weight = 'weight';
+  static const String money = 'money';
+  static const String golds = 'golds';
+  static const String shares = 'shares';
 
   static const String isShowQuickDonation = 'is_show_quick_donation';
   static const String externalUrl = 'external_url';
@@ -210,6 +234,7 @@ class NameX {
   static const String minimumDonationAmount = 'minimum_donation_amount';
   static const String productShippingAmount = 'product_shipping_amount';
   static const String browserApplePayMessage = 'browser_applepay_message';
+  static const String donationData = 'donation_data';
 
   static const String countGift = 'count_gift';
   static const String totalGift = 'total_gift';
@@ -218,6 +243,9 @@ class NameX {
   static const String countPaymentCompleted = 'count_payment_completed';
   static const String totalPayment = 'total_payment';
   static const String countProjectPayment = 'count_project_payment';
+  static const String typeValue = 'count_project_payment';
+  static const String nextSubscriptionDiscountDate = 'next_subscription_discount_date';
+  static const String recurringDonationId = 'recurring_donation_id';
 
   static const String title = 'title';
   static const String totalNumberDonations = 'total_number_donations';
@@ -253,11 +281,13 @@ class NameX {
   static const String sendStatus = 'send_status';
   static const String sendStatusMessage = 'send_status_localized';
   static const String donorName = 'donor_name';
+  static const String donorMobile = 'donor_mobile';
   static const String recipientName = 'recipient_name';
+  static const String recipientMobile = 'recipient_mobile';
   static const String recipientGender = 'recipient_gender';
   static const String recipientPhone = 'recipient_mobile';
   static const String recipientCountryCode = 'recipient_country_code';
-  static const String paymentTransaction = 'payment_transaction_item';
+  static const String paymentTransaction = 'payment_transaction';
   static const String giftCategoryFormMale = 'gift_category_form_male';
   static const String giftCategoryFormFemale = 'gift_category_form_female';
 
@@ -296,6 +326,63 @@ class NameX {
   static const String totalAmountOrders = 'totalAmountOrders';
 
   static const String cartId = 'cart_id';
+  static const String cardId = 'card_id';
   static const String modelType = 'model_type';
   static const String modelId = 'model_id';
+  static const String itemId = 'item_id';
+
+  static const String paymentData = 'payment_data';
+  static const String amount = 'amount';
+  static const String fee = 'fee';
+  static const String refunded = 'refunded';
+  static const String refundedAt = 'refunded_at';
+  static const String captured = 'captured';
+  static const String capturedAt = 'captured_at';
+  static const String voidedAt = 'voided_at';
+  static const String amountFormat = 'amount_format';
+  static const String feeFormat = 'fee_format';
+  static const String refundedFormat = 'refundedFormat';
+  static const String capturedFormat = 'capturedFormat';
+  static const String invoiceId = 'invoice_id';
+  static const String callbackUrl = 'callback_url';
+  static const String source = 'source';
+  static const String company = 'company';
+  static const String gatewayId = 'gateway_id';
+  static const String referenceNumber = 'reference_number';
+  static const String transactionUrl = 'transaction_url';
+  static const String receiptUrl = 'receipt_url';
+  static const String receiptUrlShort = 'receipt_url_short';
+  static const String paymentTransactionCard = 'payment_transaction_card';
+  static const String paymentCardId = 'payment_card_id';
+  static const String newPaymentCard = 'new_payment_card';
+  static const String brand = 'brand';
+  static const String isSave = 'is_save';
+  static const String paymentMethodLocalized = 'payment_method_localized';
+  static const String statusLocalized = 'status_localized';
+  static const String applepayToken = 'applepay_token';
+  static const String googlePayToken = 'googlepay_token';
+  static const String modelData = 'model_data';
+  static const String projectId = 'project_id';
+  static const String donationOnBehalfOfFamilyAndFriends = 'donation_on_behalf_of_family_and_friends';
+  static const String transferImageUrl = 'transfer_image';
+  static const String bankAccount = 'bank_account';
+
+
+  static const String siteUrl = 'portal_site_url';
+  static const String donationsSiteUrl = 'donations_site_url';
+  static const String facebookUrl = 'facebook_url';
+  static const String twitterUrl = 'twitter_url';
+  static const String youtubeUrl = 'youtube_url';
+  static const String instagramUrl = 'instagram_url';
+  static const String snapchatUrl = 'snapchat_url';
+  static const String organization = 'organization';
+  static const String whatsappNumber = 'whatsapp_number';
+  static const String mobile = 'mobile';
+
+  static const String isCreditCards = 'is_active_credit_cards';
+  static const String isBankTransfers = 'is_active_bank_transfers';
+  static const String isGooglePay = 'is_active_google_pay';
+  static const String isApplePay = 'is_active_apple_pay';
+
+  static const String donationSubscriptionId = 'donation_subscription_id';
 }

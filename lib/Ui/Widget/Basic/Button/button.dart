@@ -14,6 +14,7 @@ class ButtonX extends StatelessWidget {
   final bool disabled;
   final bool isMaxFinite;
   final double? height;
+  final EdgeInsets padding;
   Color? borderColor;
   Color? colorButton;
   Color? colorText;
@@ -32,6 +33,7 @@ class ButtonX extends StatelessWidget {
     this.marginHorizontal = 0,
     this.colorText = Colors.white,
     this.radius = StyleX.radius,
+    this.padding = const EdgeInsets.symmetric(horizontal: 12),
     super.key, this.height,
   }) {
     this.colorButton = colorButton ?? ColorX.primary;
@@ -49,6 +51,7 @@ class ButtonX extends StatelessWidget {
     this.halfWidth = false,
     this.marginHorizontal = 0,
     this.radius = StyleX.radius,
+    this.padding = const EdgeInsets.symmetric(horizontal: 12),
     super.key, this.height,
   }) {
     colorText = ColorX.primary;
@@ -67,6 +70,7 @@ class ButtonX extends StatelessWidget {
     this.halfWidth = false,
     this.marginHorizontal = 0,
     this.radius = StyleX.radius,
+    this.padding = const EdgeInsets.symmetric(horizontal: 12),
     super.key, this.height,
   }) {
     this.colorText =  colorText??Get.theme.colorScheme.secondary;
@@ -85,6 +89,7 @@ class ButtonX extends StatelessWidget {
       this.marginVertical = 5,
       this.marginHorizontal = 0,
         this.radius = StyleX.radius,
+        this.padding = const EdgeInsets.symmetric(horizontal: 12),
       super.key, this.height,
       }) {
     colorText = ColorX.danger;

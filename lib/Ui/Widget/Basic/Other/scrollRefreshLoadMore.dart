@@ -41,6 +41,7 @@ class ScrollRefreshLoadMoreX<T> extends StatefulWidget {
   final String? emptyMessage;
   final Widget? emptySearch;
   final String? emptySearchMessage;
+  final bool isHideEmpty;
   final bool isEmptyCenter;
   final bool isEmptySearchCenter;
   final Widget Function(String error)? errorWidget;
@@ -52,6 +53,7 @@ class ScrollRefreshLoadMoreX<T> extends StatefulWidget {
   final Widget? initLoading;
   final bool isScrollingInitLoading;
   final Widget? loadMoreLoading;
+  final bool isShowLoadMoreLoading;
 
   final EdgeInsets? padding;
   final EdgeInsets? margin;
@@ -65,6 +67,7 @@ class ScrollRefreshLoadMoreX<T> extends StatefulWidget {
   final double spacingWrap;
 
   late final bool isExpanded;
+  final bool isGetMoreEnabled;
   final double? height;
   final double? width;
   final BoxConstraints? constraints;
@@ -88,6 +91,7 @@ class ScrollRefreshLoadMoreX<T> extends StatefulWidget {
     this.isScrollingInitLoading = true,
     this.isScrollingHeader = false,
     this.loadMoreLoading,
+    this.isShowLoadMoreLoading = true,
     this.errorWidget,
     this.padding,
     this.margin,
@@ -108,6 +112,7 @@ class ScrollRefreshLoadMoreX<T> extends StatefulWidget {
     this.isEmptyCenter = false,
     this.isEmptySearchCenter = false,
     bool isExpanded = true,
+    this.isGetMoreEnabled = true,
     this.scrollDirection = Axis.vertical,
     this.height,
     this.width,
@@ -117,6 +122,7 @@ class ScrollRefreshLoadMoreX<T> extends StatefulWidget {
     this.isHideHeaderIfError = false,
     this.isHideHeaderIfInitLoading = true,
     this.isHeaderPadding = true,
+    this.isHideEmpty = false,
     this.constraints,
     this.parentScrollController,
     bool isScrollEnabled = false,
@@ -128,15 +134,15 @@ class ScrollRefreshLoadMoreX<T> extends StatefulWidget {
 
   @override
   State<ScrollRefreshLoadMoreX<T>> createState() =>
-      _ScrollRefreshLoadMoreXState<T>();
+      ScrollRefreshLoadMoreXState<T>();
 }
 
-class _ScrollRefreshLoadMoreXState<T> extends State<ScrollRefreshLoadMoreX<T>> {
+class ScrollRefreshLoadMoreXState<T> extends State<ScrollRefreshLoadMoreX<T>> {
   List<T> items = [];
   late int currentPage;
   bool isInitLoading = false;
   bool isLoadMoreLoading = false;
-  bool hasMoreData = true;
+  late bool hasMoreData;
   bool isRefreshing = false;
   ErrorX? error;
   String? lastSearchQuery;
@@ -154,6 +160,7 @@ class _ScrollRefreshLoadMoreXState<T> extends State<ScrollRefreshLoadMoreX<T>> {
   }
 
   void initialize() async {
+    hasMoreData = widget.isGetMoreEnabled;
     if (widget.filters != null) {
       filters.addAll(widget.filters!);
     }
@@ -198,14 +205,15 @@ class _ScrollRefreshLoadMoreXState<T> extends State<ScrollRefreshLoadMoreX<T>> {
   Future<void> _scrollListener() async {
     if (!mounted) return;
     await checkGetMoreData();
+    if (!mounted) return;
     updateShouldShowLoadMore();
   }
 
   Future<void> checkIfNeedScroll() async {
     if (!mounted) return;
-    if(items.isNotEmpty){
+    if(items.isNotEmpty && scrollController.hasClients){
       while (true) {
-        if (scrollController.position.maxScrollExtent == 0 && hasMoreData) {
+        if (scrollController.hasClients && scrollController.position.maxScrollExtent == 0 && hasMoreData) {
           updateShouldShowLoadMore(isShowLoadMore: true);
           await checkGetMoreData();
         } else {
@@ -213,6 +221,47 @@ class _ScrollRefreshLoadMoreXState<T> extends State<ScrollRefreshLoadMoreX<T>> {
         }
       }
     }
+  }
+
+  // تحديث عنصر باستخدام الفهرس
+  void updateItemByIndex(int index, T newItem) {
+    setState(() {
+      items[index] = newItem;
+    });
+  }
+
+  // تحديث عنصر باستخدام شرط
+  void updateItemByCondition(bool Function(T) condition, T newItem) {
+    setState(() {
+      int index = items.indexWhere(condition);
+      if (index != -1) {
+        items[index] = newItem;
+      }
+    });
+  }
+
+  // دالة لإضافة عنصر جديد مع إمكانية تحديد index
+  void addItem(T newItem, {int? index}) {
+    setState(() {
+      if (index != null && index >= 0 && index < items.length) {
+        items.insert(index, newItem); // إدراج العنصر في الـ index المحدد
+      } else {
+        items.add(newItem); // إضافة العنصر في نهاية القائمة إذا لم يتم تحديد index صحيح
+      }
+    });
+  }
+  // حذف عنصر باستخدام الفهرس
+  void removeItemByIndex(int index) {
+    setState(() {
+      items.removeAt(index);
+    });
+  }
+
+  // حذف عنصر باستخدام شرط
+  void removeItemByCondition(bool Function(T) condition) {
+    setState(() {
+      items.removeWhere(condition);
+    });
   }
 
   @override
@@ -308,7 +357,7 @@ class _ScrollRefreshLoadMoreXState<T> extends State<ScrollRefreshLoadMoreX<T>> {
   }
 
   Future<void> checkGetMoreData() async {
-    if (((widget.parentScrollController != null &&
+    if (widget.isGetMoreEnabled && ((widget.parentScrollController != null &&
                 widget.parentScrollController!.position.pixels ==
                     widget.parentScrollController!.position.maxScrollExtent) ||
             (scrollController.hasClients &&
@@ -321,7 +370,11 @@ class _ScrollRefreshLoadMoreXState<T> extends State<ScrollRefreshLoadMoreX<T>> {
   }
 
   void updateShouldShowLoadMore({bool? isShowLoadMore}) {
-    if (isShowLoadMore != null ||
+    if(!widget.isGetMoreEnabled){
+      setState(() {
+        shouldShowLoadMore = false;
+      });
+    }else if (isShowLoadMore != null ||
         (!scrollController.hasClients && hasMoreData && !isRefreshing)) {
       setState(() {
         shouldShowLoadMore = isShowLoadMore ?? true;
@@ -426,7 +479,7 @@ class _ScrollRefreshLoadMoreXState<T> extends State<ScrollRefreshLoadMoreX<T>> {
           ),
           child: widget.isScrollingInitLoading
               ? SingleChildScrollView(
-                  padding: widget.padding,
+                  padding: EdgeInsets.only(bottom: widget.padding?.bottom??0,left: widget.padding?.left??0,right: widget.padding?.right??0,top: widget.isHideHeaderIfInitLoading?widget.padding?.top??0:0),
                   scrollDirection: widget.scrollDirection,
                   child: widget.initLoading ??
                       const Center(child: CircularProgressIndicator()),
@@ -437,7 +490,7 @@ class _ScrollRefreshLoadMoreXState<T> extends State<ScrollRefreshLoadMoreX<T>> {
   }
 
   Widget buildEmptyView() {
-    if (widget.isHideHeaderIfEmpty) {
+    if (widget.isHideEmpty) {
       return const SizedBox();
     } else {
       return LayoutBuilder(builder: (context, constraints) {
@@ -503,9 +556,9 @@ class _ScrollRefreshLoadMoreXState<T> extends State<ScrollRefreshLoadMoreX<T>> {
                 (index) => widget.itemBuilder(items[index], index)),
           ),
           if (shouldShowLoadMore && hasMoreData && !isRefreshing)
-            widget.loadMoreLoading ??
-                const Center(child: CircularProgressIndicator()),
-          if (shouldShowLoadMore &&
+            widget.isShowLoadMoreLoading?widget.loadMoreLoading ??
+                const Center(child: CircularProgressIndicator()):const SizedBox(),
+          if (widget.isGetMoreEnabled && shouldShowLoadMore &&
               shouldShowNoMoreData &&
               widget.isShowNoMoreData &&
               !hasMoreData &&
@@ -536,8 +589,9 @@ class _ScrollRefreshLoadMoreXState<T> extends State<ScrollRefreshLoadMoreX<T>> {
             itemBuilder: (context, index) {
               if (index == items.length) {
                 if (shouldShowLoadMore && hasMoreData && !isRefreshing) {
-                  return widget.loadMoreLoading ??
-                      const Center(child: CircularProgressIndicator());
+                  return
+                    widget.isShowLoadMoreLoading?widget.loadMoreLoading ??
+                        const Center(child: CircularProgressIndicator()):const SizedBox();
                 }
                 if (shouldShowLoadMore &&
                     shouldShowNoMoreData &&
@@ -559,14 +613,14 @@ class _ScrollRefreshLoadMoreXState<T> extends State<ScrollRefreshLoadMoreX<T>> {
       physics: physics,
       scrollDirection: widget.scrollDirection,
       shrinkWrap: true,
-      padding: widget.padding,
+      padding: EdgeInsets.only(bottom: widget.padding?.bottom??0,left: widget.padding?.left??0,right: widget.padding?.right??0,top: widget.header==null?(widget.padding?.top??0):widget.isScrollingHeader?(widget.padding?.top??0):0),
       controller: scrollController,
       itemCount: countItems(),
       itemBuilder: (context, index) {
         if (widget.isScrollingHeader &&
             widget.header != null &&
             index == 0 &&
-            !(widget.isHideHeaderIfError && error != null && !isInitLoading) &&
+            !(widget.isHideHeaderIfError && error != null && items.isEmpty && !isInitLoading) &&
             !(widget.isHideHeaderIfEmpty && items.isEmpty && !isInitLoading)) {
           return MediaQuery.removePadding(
             context: context,
@@ -579,10 +633,11 @@ class _ScrollRefreshLoadMoreXState<T> extends State<ScrollRefreshLoadMoreX<T>> {
         }
         if (index == countItems() - 1) {
           if (shouldShowLoadMore && hasMoreData && !isRefreshing) {
-            return widget.loadMoreLoading ??
-                const Center(child: CircularProgressIndicator());
+            return
+              widget.isShowLoadMoreLoading?widget.loadMoreLoading ??
+                  const Center(child: CircularProgressIndicator()):const SizedBox();
           }
-          if (shouldShowLoadMore &&
+          if (widget.isGetMoreEnabled && shouldShowLoadMore &&
               shouldShowNoMoreData &&
               widget.isShowNoMoreData &&
               !hasMoreData &&
@@ -625,7 +680,7 @@ class _ScrollRefreshLoadMoreXState<T> extends State<ScrollRefreshLoadMoreX<T>> {
                     !isInitLoading)) &&
                 !(widget.isHideHeaderIfError &&
                     error != null &&
-                    !isInitLoading) &&
+                    !isInitLoading && items.isEmpty) &&
                 !(widget.isHideHeaderIfEmpty &&
                     items.isEmpty &&
                     !isInitLoading) &&

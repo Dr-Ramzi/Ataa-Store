@@ -19,6 +19,17 @@ class ColorX {
     900:Color(0xff074D49),
   });
 
+  static MaterialColor green =const MaterialColor(0xff03543F, {
+    100:Color(0xffDEF7EC),
+    200:Color(0xffd3f6e7),
+    800:Color(0xff03543F),
+  });
+  static MaterialColor red =const MaterialColor(0xff9B1C1C, {
+    100:Color(0xffFDE8E8),
+    200:Color(0xfffdd6d6),
+    800:Color(0xff9B1C1C),
+  });
+
   /// Results Cases
   static final MaterialColor success =
   ColorHelperX.toMaterial(const Color(0xff12B76A));

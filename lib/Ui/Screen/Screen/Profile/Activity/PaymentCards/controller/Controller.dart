@@ -30,10 +30,7 @@ class PaymentCardsController extends GetxController {
       isLoadingSetDefault.value = [];
       isLoadingDelete.value = [];
 
-      /// TODO: Database >>> Fetch All Payment Cards
-      await Future.delayed(const Duration(seconds: 1)); // delete this
-
-      paymentCards.value = TestDataX.bankCards;
+      paymentCards.value = await DatabaseX.getAllPaymentCards();
 
       /// Initialize variables with the number of cards
       for (int i = 0; i < paymentCards.length; i++) {
@@ -53,7 +50,7 @@ class PaymentCardsController extends GetxController {
       isLoading.value = true;
       try {
         /// A sheet is displayed below for entering data and creating a new card
-        var newCard = await addPaymentCardSheetX(controller: addPaymentCardController);
+        PaymentCardX? newCard = await addPaymentCardSheetX(controller: addPaymentCardController);
 
         /// It is checked whether a card has been created or not
         if (newCard != null) {
@@ -64,10 +61,12 @@ class PaymentCardsController extends GetxController {
           isLoadingDelete.add(false);
           isLoadingSetDefault.add(false);
 
-          /// It checks if the new card is set as a default card and updates the data internally without connecting to the database
-          int oldDefaultIndex = paymentCards.indexWhere((x) => x.isDefault);
-          if (oldDefaultIndex != -1) {
-            paymentCards[oldDefaultIndex].isDefault = false;
+          if(newCard.isDefault){
+            /// It checks if the new card is set as a default card and updates the data internally without connecting to the database
+            int oldDefaultIndex = paymentCards.indexWhere((x) => x.isDefault);
+            if (oldDefaultIndex != -1) {
+              paymentCards[oldDefaultIndex].isDefault = false;
+            }
           }
         }
       } catch (e) {
@@ -78,13 +77,13 @@ class PaymentCardsController extends GetxController {
   }
 
   /// Set one of the cards as default
-  onSetDefault(int index) async {
+  onSetDefault(String id ,int index) async {
     if (isLoading.isFalse) {
       isLoading.value = true;
       isLoadingSetDefault[index] = true;
       try {
-        /// TODO: Database >>> Update the virtual card
-        await Future.delayed(const Duration(seconds: 1)); // delete this
+
+        await DatabaseX.updatePaymentCardSetAsDefault(cardId: id);
 
         /// Find the previous virtual card
         int oldDefaultIndex = paymentCards.indexWhere((x) => x.isDefault);
@@ -107,14 +106,14 @@ class PaymentCardsController extends GetxController {
   }
 
   /// Delete one of the cards
-  onDeleteCard(int index) async {
+  onDeleteCard(String id ,int index) async {
     try {
       if (isLoading.isFalse) {
         isLoading.value = true;
         isLoadingDelete[index] = true;
         try {
-          /// TODO: Database >>> Delete the bank card
-          await Future.delayed(const Duration(seconds: 1)); // delete this
+
+          await DatabaseX.deletePaymentCard(cardId: id);
 
           /// Delete card data from variables
           paymentCards.removeAt(index);

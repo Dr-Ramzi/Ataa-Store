@@ -15,7 +15,7 @@ class CampaignX{
     this.maxNumStock,
     this.targetAmount,
     required this.shareURL,
-    required this.imageURL,
+    required this.imageUrl,
   });
   late String id;
   late String title;
@@ -30,7 +30,7 @@ class CampaignX{
   late int currentDonations;
   late int totalDonations;
   late int countDonations;
-  late String imageURL;
+  late String? imageUrl;
 
   get getTargetAmount => targetAmount ?? stockValue!*maxNumStock!;
   get remainingDonations=> totalDonations-currentDonations;

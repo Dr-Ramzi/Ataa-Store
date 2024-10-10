@@ -28,19 +28,22 @@ class ModelUtilX {
       List<dynamic>? jsonData, T Function(Map<String, dynamic>) fromJson) {
     List<T> items = [];
 
-    for (var json in jsonData ?? []) {
+    for (Map json in jsonData ?? []) {
       try {
         T item = fromJson(Map<String, dynamic>.from(json));
         items.add(item);
-      } catch (_) {}
+      } catch (e,stackTrace) {
+        var x =e.toErrorX;
+        x.stackTrace=stackTrace;
+        x.log();
+      }
     }
 
     return items;
   }
 
   /// Check if data for mandatory fields is available
-  static void _checkRequiredDataKeys(
-      Map<String, dynamic> json, List<String> keys) {
+  static void _checkRequiredDataKeys(Map<String, dynamic> json, List<String> keys) {
     for (String key in keys) {
       if (!containsKey(json, key)) {
         throw ErrorX.createErrorByCode(
@@ -122,8 +125,8 @@ class ModelUtilX {
       if (entry.key == key) {
         return true;
       }
-      if (entry.value is Map<String, dynamic>) {
-        bool found = containsKey(entry.value, key);
+      if (entry.value is Map) {
+        bool found = containsKey(Map<String,dynamic>.from(entry.value), key);
         if (found) {
           return true;
         }

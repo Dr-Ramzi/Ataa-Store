@@ -4,7 +4,8 @@ import 'package:get/get.dart';
 import '../../../../Config/config.dart';
 import '../../../../Core/Controller/Pay/subscriptionDeductionController.dart';
 import '../../../../Core/core.dart';
-import '../../../../Data/data.dart';
+import '../../../../Data/Enum/recurring_status.dart';
+import '../../../../Data/Model/Deduction/deduction.dart';
 import '../../../Widget/widget.dart';
 
 // ~~~~~~~~~~~~~~~~~~~~~~~{{ Why this bottom sheet }}~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -33,7 +34,7 @@ subscriptionDeductionSheetX(DeductionX deduction) {
           return Column(
             children: [
               const TextX(
-                "Log in to donate to the project",
+                "Log in to participate in the deduction",
                 fontWeight: FontWeight.w600,
               ).fadeAnimation200,
               const SizedBox(height: 16),
@@ -108,8 +109,12 @@ subscriptionDeductionSheetX(DeductionX deduction) {
                   ),
 
                 /// Alert message about deduction
-                const MessageCardX(
-                  message: "The amount will be automatically deducted on the first day of every calendar month.",
+                MessageCardX(
+                  message: controller
+                      .deduction.recurring.name ==
+                      RecurringStatusX.monthly.name
+                      ? 'The amount will be automatically deducted on the first day of every calendar month.'.tr
+                      : '${'The amount is automatically deducted every'.tr} ${(deduction.recurring.name == RecurringStatusX.daily.name) ? 'day'.tr : '${controller.deduction.dayLocalized ?? controller.deduction.day?.tr} ${'of each week.'.tr}'}',
                 ).marginSymmetric(vertical: 11).fadeAnimation400,
 
                 /// Subscription Button

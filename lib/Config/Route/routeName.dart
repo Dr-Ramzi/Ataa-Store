@@ -17,11 +17,22 @@ class RouteNameX {
   /// Pages
   static const String dynamicPage = '/dynamicPage';
 
+  /// Receipt Preview
+  static const String receiptPreview = '/receiptPreview';
+
+  /// Verification Url
+  static const String verificationUrl = '/verificationUrl';
+
   /// Auth
   static const String login = '/login';
   static const String signUp = '/signUp';
   static const String otp = '/otp';
   static const String completeAccountData = '/completeAccountData';
+
+  /// Payment
+  static const String generalPayment = '/generalPayment';
+  static const String deductionPayment = '/deductionPayment';
+  static const String paymentSuccessful = '/paymentSuccessful';
 
   /// Profile
   static const String editProfile = '/editProfile';
@@ -35,12 +46,13 @@ class RouteNameX {
   static const String myOrders = '/myOrders';
   static const String myDeductions = '/myDeductions';
   static const String myGifts = '/myGifts';
-  static const String sharingLinks = '/sharingLinks';
+  static const String myShareLinks = '/myShareLinks';
   static const String mySponsorships = '/mySponsorships';
   static const String paymentCards = '/paymentCards';
 
   /// Gifting
-  static const String gifting = '/gifting';
+  static const String gift = '/gift';
+  static const String previewGift = '/previewGift';
 
   /// Cart
   static const String cart = '/cart';

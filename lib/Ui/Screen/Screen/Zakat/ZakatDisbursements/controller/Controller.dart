@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../Core/Controller/Filter/filterController.dart';
 import '../../../../../../Core/core.dart';
+import '../../../../../../Data/Model/Donation/donation.dart';
 import '../../../../../../Data/data.dart';
 import '../../../../../ScreenSheet/Filter/GeneralFilter/generalFilterSheet.dart';
 import '../../../../../ScreenSheet/Pay/PayDonation/payDonationSheet.dart';
@@ -30,7 +31,7 @@ class ZakatDisbursementsController extends GetxController {
         sortType: data.orderBy,
         searchQuery: data.searchQuery,
         isZakat: true,
-        categoryID: data.filters?[NameX.categoryID],
+        categoryID: data.filters?[NameX.categoryId],
       );
       return results;
     } catch (e) {

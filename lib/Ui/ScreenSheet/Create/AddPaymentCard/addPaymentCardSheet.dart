@@ -29,7 +29,7 @@ addPaymentCardSheetX({required AddPaymentCardControllerX controller}) async {
                     label: "Name on the card",
                     hint: "name",
                     controller: controller.name,
-                    validate: ValidateX.name,
+                    validate: ValidateX.fullName,
                     textInputType: TextInputType.name,
                     textInputAction: TextInputAction.next,
                   ).fadeAnimation200,
@@ -65,7 +65,7 @@ addPaymentCardSheetX({required AddPaymentCardControllerX controller}) async {
                       const SizedBox(width: 10),
                       Flexible(
                         child: TextFieldX(
-                          label: "CVV",
+                          label: "CVV Verification Number",
                           hint: "123",
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,

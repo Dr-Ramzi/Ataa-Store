@@ -43,21 +43,23 @@ class RootView extends GetView<RootController> {
                 bottom: StyleX.navBarHeight / 4, // Adjust this value based on the FAB size
                 left: 0,
                 right: 0,
-                child: Visibility(
-                  /// for don't move when open keyboard
-                  visible: MediaQuery.of(context).viewInsets.bottom == 0.0 ||
-                      !controller.app.generalSettings.isActiveQuickDonation,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ContainerX(
-                        width: 96, // Diameter of the CircleAvatar (radius * 2)
-                        height: 96,
-                        isShadow: true,
-                        color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-                        borderRadius: BorderRadius.circular(200), child: const SizedBox(),
-                      ),
-                    ],
+                child: SafeArea(
+                  child: Visibility(
+                    /// for don't move when open keyboard
+                    visible: MediaQuery.of(context).viewInsets.bottom == 0.0 ||
+                        !controller.app.generalSettings.isActiveQuickDonation,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ContainerX(
+                          width: 96, // Diameter of the CircleAvatar (radius * 2)
+                          height: 96,
+                          isShadow: true,
+                          color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+                          borderRadius: BorderRadius.circular(200), child: const SizedBox(),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -99,11 +101,13 @@ class RootView extends GetView<RootController> {
                 bottom: StyleX.navBarHeight / 4, // Adjust this value based on the FAB size
                 left: 0,
                 right: 0,
-                child: Visibility(
-                  /// for don't move when open keyboard
-                  visible: MediaQuery.of(context).viewInsets.bottom == 0.0 ||
-                      !controller.app.generalSettings.isActiveQuickDonation,
-                  child: Row(mainAxisAlignment: MainAxisAlignment.center,children: [QuickDonationButton(onTap: controller.openQuickDonation)]),
+                child: SafeArea(
+                  child: Visibility(
+                    /// for don't move when open keyboard
+                    visible: MediaQuery.of(context).viewInsets.bottom == 0.0 ||
+                        !controller.app.generalSettings.isActiveQuickDonation,
+                    child: Row(mainAxisAlignment: MainAxisAlignment.center,children: [QuickDonationButton(onTap: controller.openQuickDonation)]),
+                  ),
                 ),
               ),
             ],

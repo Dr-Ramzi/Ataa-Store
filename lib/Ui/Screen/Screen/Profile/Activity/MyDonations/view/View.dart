@@ -1,9 +1,8 @@
 import 'package:ataa/UI/Animation/animation.dart';
+import 'package:ataa/Ui/Widget/Basic/Other/scrollRefreshLoadMore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../../Config/config.dart';
-import '../../../../../../GeneralState/empty.dart';
-import '../../../../../../GeneralState/error.dart';
 import '../../../../../../Widget/widget.dart';
 import 'Sections/loading.dart';
 import '../controller/Controller.dart';
@@ -18,41 +17,40 @@ class MyDonationsView extends GetView<MyDonationsController> {
         actions: [CartIconButtonsX()],
       ),
       body: SafeArea(
-        child: FutureBuilder(
-          future: controller.getData(),
-          builder: (context, snapshot) {
-            /// Loading State
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const LoadingSectionX();
-            }
-
-            /// Error State
-            if (snapshot.hasError) {
-              return ErrorView(
-                error: snapshot.error.toString(),
-              );
-            }
-
-            /// Empty State
-            if (controller.myDonations.isEmpty) {
-              return const EmptyView(
-                message: "There are no current donations",
-              );
-            }
-
-            /// Main Content
-            return ListView.builder(
-              padding: const EdgeInsets.symmetric(
-                horizontal: StyleX.hPaddingApp,
-                vertical: StyleX.vPaddingApp,
-              ),
-              itemCount: controller.myDonations.length,
-              itemBuilder: (context, index) => MyDonationCardX(
-                myDonation: controller.myDonations[index],
-                donation: controller.donations[index],
-              ).fadeAnimationX(60 * (index + 1)),
-            );
-          },
+        child: GetBuilder<MyDonationsController>(
+          builder: (controller) => ScrollRefreshLoadMoreX(
+            fetchData: controller.getData,
+            padding: const EdgeInsets.symmetric(
+              vertical: StyleX.vPaddingApp,
+              horizontal: StyleX.hPaddingApp,
+            ),
+            initLoading: const LoadingSectionX(),
+            pageSize: 20,
+            isShowLoadMoreLoading: controller.isShowMore,
+            isShowNoMoreData: controller.isShowMore,
+            emptyMessage: 'You have not made any donations yet.',
+            itemBuilder: (data, index) {
+              if (index > 6 && !controller.isShowMore) {
+                return const SizedBox();
+              } else if (index == 6 && !controller.isShowMore) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ButtonX.second(
+                      width: 140,
+                      text: 'Show more',
+                      iconData: IconX.ourBanks,
+                      onTap: controller.onShowMore,
+                    ).fadeAnimationX(60 * (index>6?6:index + 1)),
+                  ],
+                );
+              } else {
+                return MyDonationCardX(
+                  myDonation: data,
+                ).fadeAnimationX(60 * (index>6?6:index + 1));
+              }
+            },
+          ),
         ),
       ),
     );

@@ -88,7 +88,7 @@ class FilterControllerX extends GetxController {
     }
     if (isShowOrganization) {
       if (filterByOrgController.optionSelected.value.$2.id.isNotEmpty) {
-        filters[NameX.categoryID] =
+        filters[NameX.categoryId] =
             filterByOrgController.optionSelected.value.$2.id;
       }
     }

@@ -25,7 +25,7 @@ class OrganizationCardX extends StatelessWidget {
               child: AutoSizeText(
                 org.name,
                 style: TextStyleX.titleSmall.copyWith(fontWeight: FontWeight.w600),
-                minFontSize: TextStyleX.supTitleMedium.fontSize!,
+                minFontSize: 12,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,

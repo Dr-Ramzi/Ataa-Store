@@ -49,15 +49,17 @@ class MultipleSelectionCardX extends StatelessWidget {
               ),
             const SizedBox(width: 14),
             if(selected!=null && !asInputField)
-            Container(
-              constraints: const BoxConstraints(
-                maxWidth: 60,
-              ),
-              child: TextX(
-                selected!,
-                style: TextStyleX.supTitleLarge,
-                maxLines: 1,
-                color: context.isDarkMode?ColorX.grey.shade200:Theme.of(context).colorScheme.secondary,
+            FittedBox(
+              child: Container(
+                constraints: const BoxConstraints(
+                  maxWidth: 100,
+                ),
+                child: TextX(
+                  selected!,
+                  style: TextStyleX.supTitleLarge,
+                  maxLines: 1,
+                  color: context.isDarkMode?ColorX.grey.shade200:Theme.of(context).colorScheme.secondary,
+                ),
               ),
             ),
             const SizedBox(width: 8),

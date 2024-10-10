@@ -15,60 +15,69 @@ class ZakatCalculatorView extends GetView<ZakatCalculatorController> {
   const ZakatCalculatorView({super.key});
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Obx(() => Scaffold(
+      /// for don't move navbar when open keyboard
+      resizeToAvoidBottomInset: controller.isFocusAdditionalAmount.value,
       appBar: AppBarX(
         title: "Zakat Calculator",
         actions: [CartIconButtonsX()],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(
-          horizontal: StyleX.hPaddingApp,
-          vertical: StyleX.vPaddingApp,
-        ),
-        child: Obx(
-          /// To lock data modification during payment
-          () => AbsorbPointer(
-            absorbing: controller.isLoading.value,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: StyleX.hPaddingApp,
+                    vertical: StyleX.vPaddingApp,
+                  ),
+                  /// To lock data modification during payment
+                  child: AbsorbPointer(
+                    absorbing: controller.isPayOrCartLoading.value,
 
-            /// To verify all text inputs
-            child: Form(
-              key: controller.formKey,
-              autovalidateMode: controller.autoValidate,
-              child: Column(
-                children: [
-                  /// Title
-                  TextX(
-                    "Choose the type of zakat you want to calculate",
-                    color: Theme.of(context).primaryColor,
-                    style: TextStyleX.titleLarge,
-                    fontWeight: FontWeight.w600,
-                    textAlign: TextAlign.center,
-                  ).fadeAnimation200,
-                  const SizedBox(height: 12),
+                    /// To verify all text inputs
+                    child: Column(
+                      children: [
+                        /// Title
+                        TextX(
+                          "Choose the type of zakat you want to calculate",
+                          color: Theme.of(context).primaryColor,
+                          style: TextStyleX.titleLarge,
+                          fontWeight: FontWeight.w600,
+                          textAlign: TextAlign.center,
+                        ).fadeAnimation200,
+                        const SizedBox(height: 12),
 
-                  /// Zakat on cash money
-                  const CashMoneySectionX(),
+                        /// Zakat on cash money
+                        const CashMoneySectionX(),
 
-                  /// Zakat on gold
-                  const GoldSectionX(),
+                        /// Zakat on gold
+                        const GoldSectionX(),
 
-                  /// Zakat on silver
-                  const SilverSectionX(),
+                        /// Zakat on silver
+                        const SilverSectionX(),
 
-                  /// Zakat on shares
-                  const SharesSectionX(),
+                        /// Zakat on shares
+                        const SharesSectionX(),
 
-                  /// Zakat on Others
-                  const OthersSectionX(),
-                ],
+                        /// Zakat on Others
+                        const OthersSectionX(),
+                      ],
+                    ),
+                  )
               ),
             ),
-          ),
+
+            /// Nav bar to pay zakat
+            const Positioned(
+              bottom: 0,
+              right: 0,
+              left: 0,
+              child: NavBarSectionX(),
+            ),
+          ],
         ),
       ),
-
-      /// Nav bar to pay zakat
-      bottomNavigationBar: const NavBarSectionX(),
-    );
+    ),);
   }
 }

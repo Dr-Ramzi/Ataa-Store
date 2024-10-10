@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../../Config/config.dart';
 import '../../../../Animation/animation.dart';
 import '../../../../Widget/widget.dart';
 import '../controller/Controller.dart';
@@ -31,7 +32,7 @@ class SignUpView extends GetView<SignUpController> {
               children: [
                 const LogoX().fadeAnimation200,
                 const SizedBox(height: 40.0),
-                const MainContentSignUpX(),
+                const MainContentSignUpX().paddingSymmetric(horizontal:StyleX.hPaddingApp),
                 const SponsorLogoX().marginOnly(top: 40).fadeAnimation900,
               ],
             ),

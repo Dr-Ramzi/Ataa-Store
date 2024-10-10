@@ -23,76 +23,71 @@ directZakatPaymentSheetX() {
     title: "Pay your Zakat with ease",
     child: Obx(
       () {
-        /// Mandatory login
-        if (!controller.app.isLogin.value) {
-          return Column(
+        /// Main Content
+        return AbsorbPointer(
+          absorbing: controller.isLoading.value,
+          child: Column(
             children: [
-              const TextX(
-                "Log in to pay zakat",
-                fontWeight: FontWeight.w600,
-              ).fadeAnimation200,
-              const SizedBox(height: 16),
-              ButtonX(
-                onTap: controller.app.onLoginSheet,
-                text: "Login",
+              /// Label of Zakat amount
+              const LabelInputX(
+                "The Amount",
+                marginTop: 0,
               ).fadeAnimation300,
-            ],
-          );
-        } else {
-          /// Main Content
-          return AbsorbPointer(
-            absorbing: controller.isLoading.value,
-            child: Column(
-              children: [
-                /// Label of Zakat amount
-                const LabelInputX(
-                  "The Amount",
-                  marginTop: 0,
-                ).fadeAnimation300,
 
-                /// Input Zakat amount
-                Form(
-                  key: controller.formKey,
-                  autovalidateMode: controller.autoValidate,
-                  child: TextFieldX(
-                    controller: controller.money,
-                    textInputType: TextInputType.number,
-                    textInputAction: TextInputAction.done,
-                    hint: "0",
-                    validate: ValidateX.money,
-                    suffixWidget: TextX(
-                      "SAR",
-                      style: TextStyleX.titleSmall,
-                      color: Get.theme.colorScheme.secondary,
+              /// Input Zakat amount
+              Form(
+                key: controller.formKey,
+                autovalidateMode: controller.autoValidate,
+                child: TextFieldX(
+                  controller: controller.money,
+                  textInputType: TextInputType.number,
+                  textInputAction: TextInputAction.done,
+                  hint: "0",
+                  validate: ValidateX.money,
+                  suffixWidget: TextX(
+                    "SAR",
+                    style: TextStyleX.titleSmall,
+                    color: Get.theme.colorScheme.secondary,
+                  ),
+                ),
+              ).fadeAnimation300,
+              const SizedBox(height: 8),
+              const LabelInputX('Project').fadeAnimation400,
+
+              Obx(
+                    () => MultipleSelectionCardX(
+                  title: controller.zakatSelectionController.optionSelected
+                      .value?.donationBasic.name ?? '',
+                  onTap: controller.onTapZakatSelection,
+                ),
+              ).fadeAnimation400,
+              const SizedBox(height: 14),
+
+              /// Buttons
+              Row(
+                children: [
+                  Flexible(
+                    child: ButtonStateX(
+                      state: controller.buttonState.value,
+                      onTap: ()async=>await controller.onAddToCart(isPay:true),
+                      text: "Pay Zakat Now",
+                      iconData: Icons.payments_rounded,
                     ),
                   ),
-                ).fadeAnimation300,
-                const SizedBox(height: 10),
-
-                /// Buttons
-                Row(
-                  children: [
-                    Flexible(
-                      child: ButtonStateX(
-                        state: controller.buttonState.value,
-                        onTap: controller.onDirectZakatPayment,
-                        text: "Pay Zakat Now",
-                        iconData: Icons.payments_rounded,
-                      ),
+                  const SizedBox(width: 10),
+                  Flexible(
+                    child: ButtonStateX.second(
+                      state: controller.addToCartButtonState.value,
+                      onTap: controller.onAddToCart,
+                      text: "Add to cart",
+                      iconData: Icons.shopping_cart_rounded,
                     ),
-                    const SizedBox(width: 10),
-                    Flexible(
-                      child: ButtonX.gray(
-                        onTap: controller.onCancel,
-                        text: "Cancel",
-                      ),
-                    ),
-                  ],
-                ).fadeAnimation400
-              ],
-            ),
-          );
-        }
+                  ),
+                ],
+              ).fadeAnimation400
+            ],
+          ),
+        );
       },
     ),
   );

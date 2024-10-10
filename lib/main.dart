@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'Config/Route/routeList.dart';
 import 'Config/Translation/translation.dart';
 import 'Config/config.dart';
+import 'Core/Controller/Cart/cartGeneralController.dart';
 import 'Core/Logging/logging.dart';
 import 'Core/core.dart';
 import 'Data/data.dart';
@@ -17,6 +18,7 @@ void main() async {
     // Ensures that the Flutter framework is properly initialized
     WidgetsFlutterBinding.ensureInitialized();
 
+    await LoggingX.init();
     await ConfigX.init();
     await DataX.init();
     await CoreX.init();
@@ -39,6 +41,10 @@ class MyApp extends StatelessWidget {
       initialBinding: BindingsBuilder(() {
         Get.put<AppControllerX>(
           AppControllerX(),
+          permanent: true,
+        );
+        Get.put<CartGeneralControllerX>(
+          CartGeneralControllerX(),
           permanent: true,
         );
       }),

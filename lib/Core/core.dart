@@ -12,6 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../Config/config.dart';
 import '../Data/data.dart';
 import '../UI/Screen/Auth/Login/view/loginView.dart';
+import '../UI/Screen/Auth/SignUp/view/View.dart';
 import '../UI/Widget/widget.dart';
 import 'package:flutter_share_me/flutter_share_me.dart';
 

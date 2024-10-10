@@ -20,14 +20,14 @@ class HeaderSectionX extends GetView<DonationDetailsController> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               /// Zakat marker
-              if (controller.donation.isZakat)
+              if (controller.donation.donationSettings.isZakat)
                 const ZakatDisbursementsCardX().fadeAnimation300,
 
               /// Replace the title if the zakat mark is empty
-              if (!controller.donation.isZakat)
+              if (!controller.donation.donationSettings.isZakat)
                 Flexible(
                   child: TextX(
-                    controller.donation.name,
+                    controller.donation.donationBasic.name,
                     color: Theme.of(context).primaryColor,
                     style: TextStyleX.headerSmall,
                   ).fadeAnimation300,
@@ -48,11 +48,11 @@ class HeaderSectionX extends GetView<DonationDetailsController> {
           ),
 
           /// Location of the original address if there is a zakat mark
-          if (controller.donation.isZakat)
+          if (controller.donation.donationSettings.isZakat)
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: TextX(
-                controller.donation.name,
+                controller.donation.donationBasic.name,
                 color: Theme.of(context).primaryColor,
                 style: TextStyleX.headerSmall,
               ),

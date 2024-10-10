@@ -11,7 +11,7 @@ class ProductX{
     required this.reviews,
     required this.colors,
     required this.sizes,
-    required this.imageURL,
+    required this.imageUrl,
     required this.numSales,
   });
 
@@ -25,6 +25,6 @@ class ProductX{
   late int numSales;
   late List<String> colors;
   late List<String> sizes;
-  late List<String> imageURL;
+  late List<String> imageUrl;
 
 }

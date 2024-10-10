@@ -5,18 +5,21 @@ class TextFieldX extends StatefulWidget {
   final TextEditingController controller;
   final String? label;
   final String? hint;
+  final int? hintMaxLines;
+  final int? errorMaxLines;
   final bool disabled;
   final bool? onlyRead;
   final bool autofocus;
   final EdgeInsets margin;
   final IconData? icon;
+  final Widget? prefixWidget;
   final double iconSize;
   final Color? color;
   final Color? borderColor;
   final BorderSide? border;
-  final BorderRadius? borderRadius;
+  final BorderRadiusGeometry? borderRadius;
   final BorderSide? borderError;
-  final BorderRadius? borderErrorRadius;
+  final BorderRadiusGeometry? borderErrorRadius;
   final bool isPassword;
   final bool? isRequired;
   late int maxLines;
@@ -28,6 +31,8 @@ class TextFieldX extends StatefulWidget {
   final TextInputAction? textInputAction;
   final String? Function(String?)? validate;
   final Function(String)? onChanged;
+  final Function(bool)? onChangedFocus;
+  final void Function(String value)? onEditingComplete;
   final List<TextInputFormatter>? inputFormatters;
   TextFieldX({
     super.key,
@@ -35,6 +40,8 @@ class TextFieldX extends StatefulWidget {
     this.label,
     this.isRequired,
     this.hint,
+    this.hintMaxLines,
+    this.errorMaxLines,
     this.validate,
     this.autofocus = false,
     this.textInputType,
@@ -43,6 +50,7 @@ class TextFieldX extends StatefulWidget {
     this.onlyRead,
     this.margin = const EdgeInsets.symmetric(vertical: 5),
     this.icon,
+    this.prefixWidget,
     this.iconSize = 24.0,
     this.disabled = false,
     this.color,
@@ -53,6 +61,8 @@ class TextFieldX extends StatefulWidget {
     this.borderErrorRadius,
     this.textAlign,
     this.onChanged,
+    this.onChangedFocus,
+    this.onEditingComplete,
     this.maxLines = 1,
     this.minLines = 1,
     this.maxLength,
@@ -70,10 +80,17 @@ class TextFieldX extends StatefulWidget {
 
 class _TextFieldXState extends State<TextFieldX> {
   late bool passwordVisible;
+  final FocusNode _focusNode = FocusNode();
+  Timer? _debounce;
   @override
   void initState() {
     passwordVisible = widget.isPassword;
     super.initState();
+    if(widget.onChangedFocus!=null){
+      _focusNode.addListener(() async{
+       await widget.onChangedFocus!(_focusNode.hasFocus);
+      });
+    }
   }
 
   @override
@@ -84,7 +101,7 @@ class _TextFieldXState extends State<TextFieldX> {
             width: StyleX.borderWidth,
             color: widget.borderColor ?? Theme.of(context).dividerColor,
           ),
-      borderRadius: widget.borderRadius ?? BorderRadius.circular(StyleX.radius),
+      borderRadius: widget.borderRadius?.resolve(Directionality.of(context)) ?? BorderRadius.circular(StyleX.radius),
     );
     OutlineInputBorder borderError = OutlineInputBorder(
       borderSide: widget.borderError ??
@@ -93,7 +110,7 @@ class _TextFieldXState extends State<TextFieldX> {
             color: Theme.of(context).colorScheme.error,
           ),
       borderRadius:
-          widget.borderErrorRadius ?? BorderRadius.circular(StyleX.radius),
+          widget.borderErrorRadius?.resolve(Directionality.of(context)) ?? BorderRadius.circular(StyleX.radius),
     );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,6 +125,8 @@ class _TextFieldXState extends State<TextFieldX> {
             minLines: widget.minLines,
             style: TextStyleX.titleSmall,
             autofocus: widget.autofocus,
+            focusNode: _focusNode,
+            onEditingComplete: ()=>widget.onEditingComplete?.call(''),
             onChanged: (text) {
               if(widget.textInputType==TextInputType.number) {
                 String convertedText = text.arabicToEnglishNumbers;
@@ -121,6 +140,10 @@ class _TextFieldXState extends State<TextFieldX> {
               }else if (widget.onChanged != null) {
                 widget.onChanged!(text);
               }
+              if (_debounce?.isActive ?? false) _debounce!.cancel();
+              _debounce = Timer(const Duration(milliseconds: 600), () async {
+                widget.onEditingComplete?.call(text);
+              });
             },
             validator: widget.validate,
             readOnly: widget.onlyRead ?? widget.disabled,
@@ -139,7 +162,7 @@ class _TextFieldXState extends State<TextFieldX> {
               fillColor: widget.disabled
                   ? Theme.of(context).disabledColor
                   : widget.color ?? Theme.of(context).cardTheme.color,
-              contentPadding: widget.icon != null
+              contentPadding: (widget.icon != null || widget.prefixWidget!=null)
                   ? const EdgeInsets.symmetric(vertical: 1, horizontal: 4)
                   : const EdgeInsetsDirectional.only(
                       start: 0, end: 16, top: 12, bottom: 12),
@@ -154,8 +177,8 @@ class _TextFieldXState extends State<TextFieldX> {
                       size: widget.iconSize,
                       color: ColorX.grey.shade400,
                     )
-                  : const SizedBox(),
-              prefixIconConstraints: widget.icon != null
+                  : widget.prefixWidget ?? const SizedBox(),
+              prefixIconConstraints: (widget.icon != null || widget.prefixWidget!=null)
                   ? null
                   : BoxConstraints.tight(
                       const Size(16, StyleX.inputHeight),
@@ -182,8 +205,10 @@ class _TextFieldXState extends State<TextFieldX> {
               border: InputBorder.none,
               isCollapsed: true,
               errorStyle: TextStyleX.titleSmall,
+              errorMaxLines: widget.errorMaxLines,
               alignLabelWithHint: true,
               hintText: (widget.hint ?? "").tr,
+              hintMaxLines: widget.hintMaxLines,
               hintStyle: TextStyleX.titleSmall
                   .copyWith(color: Theme.of(context).hintColor),
             ),

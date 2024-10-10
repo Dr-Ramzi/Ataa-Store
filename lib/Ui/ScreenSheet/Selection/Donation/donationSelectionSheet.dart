@@ -1,10 +1,10 @@
 import 'package:ataa/Ui/Animation/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../Config/config.dart';
 import '../../../../Core/Controller/SelectedOptions/donationSelectionController.dart';
-import '../../../../Data/data.dart';
-import '../../../GeneralState/empty.dart';
-import '../../../GeneralState/error.dart';
+import '../../../../Data/Model/Donation/donation.dart';
+import '../../../Widget/Basic/Other/scrollRefreshLoadMore.dart';
 import '../../../Widget/widget.dart';
 
 // ~~~~~~~~~~~~~~~~~~~~~~~{{ Why this bottom sheet }}~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -19,70 +19,44 @@ donationSelectionSheetX({
     title: "Choose a donation opportunity",
     child: SizedBox(
       height: 400,
-      child: FutureBuilder(
-        future: controller.getData(),
-        builder: (context, snapshot) {
-          /// Loading State
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          /// Error State
-          if (snapshot.hasError) {
-            return ErrorView(
-              error: snapshot.error.toString(),
-            );
-          }
-
-          /// Main Content
-          return Column(
-            children: [
-              /// Search Bar
-              TextFieldX(
-                color: Get.theme.cardColor,
-                controller: controller.search,
-                hint: "search...",
-                icon: Icons.search,
-                onChanged: controller.onSearching,
-              ).fadeAnimation200,
-              const SizedBox(height: 3),
-              Obx(
-                () {
-                  /// Empty State
-                  if (controller.donationsResult.isEmpty) {
-                    return const Expanded(
-                      child: EmptyView(
-                        message:
-                            "There are no search results.\nTry searching for something else",
-                      ),
-                    );
-                  } else {
-                    /// Donations Card Results
-                    return Expanded(
-                      child: SingleChildScrollView(
-                        padding: const EdgeInsets.only(bottom: 10, top: 3),
-                        child: Column(
-                          children: [
-                            ...controller.donationsResult.map(
-                              (val) => RadioButtonX<DonationX?>(
-                                groupValue: controller.donationSelected.value,
-                                value: val,
-                                onChanged: controller.onChange,
-                                label: val.name,
-                              ).fadeAnimation300,
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }
-                },
-              ),
-            ],
-          );
-        },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextFieldX(
+            disabled: !controller.app.generalSettings.isActiveProjectSearch,
+            color: Get.theme.cardColor,
+            controller: controller.search,
+            hint: "Search by project name",
+            icon: Icons.search,
+          ).fadeAnimation200,
+          ScrollRefreshLoadMoreX<DonationX>(
+            fetchData: controller.getData,
+            spaceBetweenHeaderAndContent: 4,
+            initLoading: Column(
+              children: [
+                for (int i = 0; i < 12; i++)
+                  const ShimmerAnimationX(
+                    height: StyleX.inputHeight,
+                    margin: EdgeInsets.only(bottom: 10),
+                  )
+              ],
+            ),
+            searchQueryController: controller.search,
+            padding: const EdgeInsets.only(
+              top: 6,
+              bottom: 10,
+            ),
+            emptyMessage: "There are no search results.\nTry searching for something else",
+            itemBuilder: (data, index) {
+              return RadioButtonX<String?>(
+                groupValue: controller.donationSelected.value?.id,
+                value: data.id,
+                onChanged: (_)async=>await controller.onChange(data),
+                label: data.donationBasic.name,
+              ).fadeAnimation300;
+            },
+          ),
+        ],
       ),
     ),
   );

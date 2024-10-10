@@ -62,8 +62,7 @@ class MainContentLoginX extends GetView<LoginController> {
                       controller: controller.phone,
                       onChangeCountryCode: controller.onChangeCountryCode,
                       countryCode: controller.countryCode.value,
-                      isDisableChangeCountryCode:
-                          !controller.app.generalSettings.isShowCountryCodeList,
+                      isDisableChangeCountryCode:!controller.app.generalSettings.isShowCountryCodeList,
                     ).fadeAnimation400,
                   if (!controller.isPhone.value)
                     TextFieldX(

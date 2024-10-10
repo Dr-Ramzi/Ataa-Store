@@ -14,10 +14,12 @@ class EmptyView extends StatelessWidget {
     this.buttonText,
     this.onTap,
     this.isMargin = true,
+    this.mainAxisAlignment= MainAxisAlignment.center,
   });
   final String message;
   final String? buttonText;
   final bool isMargin;
+  final MainAxisAlignment mainAxisAlignment;
   final Function()? onTap;
 
   @override
@@ -25,10 +27,10 @@ class EmptyView extends StatelessWidget {
     return Padding(
       padding: isMargin?const EdgeInsets.symmetric(
         horizontal: StyleX.hPaddingApp,
-        vertical: 6,
+        vertical: StyleX.vPaddingApp,
       ):EdgeInsets.zero,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: mainAxisAlignment,
         children: [
           /// Message Card
           ContainerX(

@@ -1,0 +1,4 @@
+enum MetalStatusX{
+  gold,
+  silver,
+}

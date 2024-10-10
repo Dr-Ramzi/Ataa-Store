@@ -196,7 +196,36 @@ extension ConvertExtensionX on dynamic {
     }
   }
 
-  double toDoubleDefaultX(defaultValue) {
+  double? get toDoubleNullableX{
+    try {
+      if (this == null) {
+        return null;
+      }
+      if (this is double) {
+        return this;
+      }
+      if (this is int || this is num) {
+        return this+.0;
+      }
+      if (this is String) {
+        String value = this.trim();
+        try {
+          if (double.tryParse(value) != null) {
+            return double.parse(value);
+          } else {
+            return null;
+          }
+        } catch (e) {
+          return null;
+        }
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  double toDoubleDefaultX(double defaultValue) {
     try {
       if (this is double) {
         return this;
@@ -273,7 +302,7 @@ extension ConvertExtensionX on dynamic {
       if (this is bool) {
         return this;
       }
-      if (this == null || this is Object) {
+      if (this == null) {
         throw Exception();
       }
 
@@ -301,7 +330,7 @@ extension ConvertExtensionX on dynamic {
       if (this is bool) {
         return this;
       }
-      if (this == null || this is! String) {
+      if (this == null) {
         return defaultValue;
       }
 
@@ -329,7 +358,7 @@ extension ConvertExtensionX on dynamic {
       if (this is bool) {
         return this;
       }
-      if (this == null || this is! String) {
+      if (this == null) {
         return null;
       }
 
@@ -398,7 +427,7 @@ extension ConvertExtensionX on dynamic {
 
 
   /// TODO: Add to date time convert function
-  DateTime get toDateTime{
+  DateTime get toDateTimeX{
     return DateTime.now();
   }
 }

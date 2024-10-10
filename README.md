@@ -24,7 +24,7 @@
 
 # Futures on Screens
 - Lock the modification of basket items during the checkout process ✅
-- Added a button to remove carats and company shares after adding them to the Zakat calculation screen
+- Added a button to remove karats and company shares after adding them to the Zakat calculation screen
 - Added total money in Zakat calculation screen
 - Gold and silver prices were directly linked to international prices and converted to the Saudi riyal
 - Calculating all types of gold karats in the Zakat calculation

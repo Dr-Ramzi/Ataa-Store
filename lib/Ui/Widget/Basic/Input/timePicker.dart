@@ -54,7 +54,13 @@ class _TimeInputXState extends State<TimeInputX> {
     }
 
     if (widget.onChange != null) {
-      int finalHour = _amPm == 'AM' ? _hours : (_hours % 12) + 12;
+      int finalHour;
+
+      if (_amPm == 'AM') {
+        finalHour = _hours % 12; // في حالة AM، إذا كانت الساعة 12 تكون 0
+      } else {
+        finalHour = (_hours % 12) + 12; // في حالة PM، إذا كانت الساعة 12 تظل 12
+      }
       widget.onChange!(TimeOfDay(hour: finalHour, minute: _minutes));
     }
   }

@@ -2,20 +2,21 @@ part of '../../widget.dart';
 
 // ignore: must_be_immutable
 class DropdownX<T> extends StatefulWidget {
-  DropdownX(
-      {super.key,
-      this.title,
-      required this.value,
-      this.color,
-      required this.list,
-      required this.onChanged,
-      this.icon,
-      this.hint,
-      this.disable=false,
-      this.valuesShow,
-      }){
+  DropdownX({
+    super.key,
+    this.title,
+    required this.value,
+    this.color,
+    required this.list,
+    required this.onChanged,
+    this.icon,
+    this.hint,
+    this.disable = false,
+    this.valueShow,
+    this.valueWidget,
+  }) {
     if (value == "") {
-      value=null;
+      value = null;
     }
   }
   final String? title;
@@ -26,31 +27,31 @@ class DropdownX<T> extends StatefulWidget {
   final bool disable;
   final IconData? icon;
   final void Function(T) onChanged;
-  final String Function(T)? valuesShow;
+  final String Function(T)? valueShow;
+  final Widget Function(T)? valueWidget;
 
   @override
-  State<DropdownX> createState() => _DropdownXState();
+  State<DropdownX<T>> createState() => _DropdownXState<T>();
 }
 
-class _DropdownXState<T> extends State<DropdownX> {
-
-
+class _DropdownXState<T> extends State<DropdownX<T>> {
   @override
   Widget build(BuildContext context) {
     return AbsorbPointer(
       absorbing: widget.disable,
       child: Column(
         children: [
-          if(widget.title != null)
-             LabelInputX(widget.title!),
+          if (widget.title != null)
+            LabelInputX(widget.title!).marginOnly(bottom: 5),
           ContainerX(
             height: StyleX.inputHeight,
             padding: widget.icon != null
-                ? const EdgeInsets.symmetric(vertical: 1, horizontal: 4):
-            const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
+                ? const EdgeInsets.symmetric(vertical: 1, horizontal: 4)
+                : const EdgeInsets.symmetric(vertical: 1, horizontal: 10),
             isBorder: true,
-            color:widget.disable?Theme.of(context).disabledColor: widget.color ??
-                Theme.of(context).cardTheme.color,
+            color: widget.disable
+                ? Theme.of(context).disabledColor
+                : widget.color ?? Theme.of(context).cardTheme.color,
             child: Row(
               children: [
                 if (widget.icon != null)
@@ -71,7 +72,9 @@ class _DropdownXState<T> extends State<DropdownX> {
                     hint: TextX(
                       widget.hint ?? '',
                       style: TextStyleX.titleSmall,
-                      color: widget.disable?Theme.of(context).iconTheme.color:null,
+                      color: widget.disable
+                          ? Theme.of(context).iconTheme.color
+                          : null,
                     ),
                     isExpanded: true,
                     icon: const Icon(Iconsax.arrow_down_1, size: 15),
@@ -80,7 +83,14 @@ class _DropdownXState<T> extends State<DropdownX> {
                     items: widget.list.map((value) {
                       return DropdownMenuItem<T>(
                         value: value,
-                        child: TextX(widget.valuesShow!=null?widget.valuesShow!(value):value.toString(),style: TextStyleX.titleSmall,),
+                        child: widget.valueWidget!=null?
+                        widget.valueWidget!(value)
+                            :TextX(
+                          widget.valueShow != null
+                              ? widget.valueShow!(value)
+                              : value.toString(),
+                          style: TextStyleX.titleSmall,
+                        ),
                       );
                     }).toList(),
                     onChanged: (T? val) {

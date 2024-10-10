@@ -31,11 +31,12 @@ class IconX {
   static const IconData notifications = IconData(0xe812, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData ourBanks = IconData(0xe813, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData snapchat = IconData(0xe814, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData youtube = IconData(0xe815, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData statisticsAndFigures = IconData(0xe816, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData testimonial = IconData(0xe817, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData testimonials = IconData(0xe818, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData whatsappBold = IconData(0xe819, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData x = IconData(0xe81a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData youtube = IconData(0xe81b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData sparkles = IconData(0xe81c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData payTransfer = IconData(0xe81d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

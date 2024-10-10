@@ -1,137 +1,134 @@
-part of '../../data.dart';
+import 'package:ataa/Core/Extension/convert/convert.dart';
+import '../../../../Core/Helper/model/model.dart';
+import '../../data.dart';
+import 'Package/donationDeductionPackage.dart';
+import 'Package/donationOpenPackage.dart';
+import 'Shares/donationShares.dart';
+import 'Shares/donationSharesPackage.dart';
+import 'Subclass/donationBasic.dart';
+import 'Subclass/donationCategory.dart';
+import 'Subclass/donationDetails.dart';
+import 'Subclass/donationSettings.dart';
+import 'Subclass/donationType.dart';
 
-class DonationX{
+class DonationX {
+  final String id;
+  final DonationBasicX donationBasic;
+  final DonationDetailsX donationDetails;
+  final DonationSettingsX donationSettings;
+  final List<DonationCategoryX> categories;
+
+  final DonationTypeX donationType;
+  final bool isShowPackages;
+  final bool isCanEditAmount;
+  final DonationSharesX? donationShares;
+  final List<DonationSharesPackageX> sharesPackages;
+  final List<DonationOpenPackageX> openPackages;
+  final List<DonationDeductionPackageX> donationDeductionPackages;
+
+  /// TODO: Add share Url on from json of donation
+  final String shareURL;
+
   DonationX({
     required this.id,
-    required this.name,
-    required this.code,
-
-    required this.order,
-    required this.status,
-
-    required this.currentDonations,
-    required this.totalDonations,
-    required this.remainingDonations,
-    required this.countDonations,
-    required this.countDonor,
-    this.completionRate,
-
-    required this.description,
-    required this.briefDescription,
-
-    required this.imageURL,
-    required this.videoURL,
-
+    required this.donationBasic,
+    required this.donationDetails,
+    required this.donationSettings,
     required this.categories,
-
     required this.donationType,
     required this.isShowPackages,
     required this.isCanEditAmount,
-    required this.donationShares,
-    required this.donationDeductionPackages,
+    this.donationShares,
+    this.sharesPackages = const [],
     required this.openPackages,
+    required this.donationDeductionPackages,
 
-    required this.isShowHome,
-    required this.isShowDonationsPercentage,
-    required this.isShowCompletionIndicator,
-    required this.isShowGifting,
-    required this.isZakat,
-    required this.isShowDonorsCount,
-
-
-    this.shareURL="",
+    /// TODO: Add share Url on from json of donation
+    this.shareURL = "",
   });
 
-  late String id;
-  late int code;
-  late String name;
-
-  late int order; // don't know
-  late bool status; // don't know
-
-  late num currentDonations;
-  late num totalDonations;
-  late num remainingDonations;
-  late num countDonations;
-  late num countDonor;
-  late num? completionRate;
-
-  late String description;
-  late String briefDescription;
-
-  late String imageURL;
-  late String videoURL;
-
-  late List<DonationCategoryX> categories;
-
-
-  late DonationTypeX donationType;
-  late bool isShowPackages;
-  late bool isCanEditAmount;
-  late DonationSharesX donationShares;
-  late List<DonationDeductionPackageX> donationDeductionPackages;
-  late List<DonationOpenPackageX> openPackages;
-
-
-  late bool isShowHome;
-  late bool isShowDonationsPercentage;
-  late bool isShowCompletionIndicator;
-  late bool isShowGifting; // don't know
-  late bool isZakat;
-  late bool isShowDonorsCount;
-
-
-  late String shareURL;
-
-
-  num get donationProgress=> completionRate??currentDonations/totalDonations*100;
-  bool get isDone=> (completionRate??0)>=100;
-
   factory DonationX.fromJson(Map<String, dynamic> json) {
-    return DonationX(
-      id: json[NameX.id]??"",
-      code: json[NameX.donationBasic][NameX.code]??0,
-      name: json[NameX.donationBasic][NameX.donationName]??"",
+      Map<String, Object?> donationBasicJson =
+          Map<String, Object?>.from(json[NameX.donationBasic] ?? {});
+      Map<String, Object?> donationDetailsJson =
+          Map<String, Object?>.from(json[NameX.donationDetails] ?? {});
+      Map<String, Object?> donationSettingsJson =
+          Map<String, Object?>.from(json[NameX.donationSettings] ?? {});
+      Map<String, Object?> donationTypeDetailsJson =
+          Map<String, Object?>.from(json[NameX.donationTypeDetails] ?? {});
+      Map<String, Object?> donationTypeJson = Map<String, Object?>.from(
+          (donationTypeDetailsJson[NameX.donationType] ?? {}) as Map);
+      Map<String, Object?> donationShareJson = Map<String, Object?>.from(
+          (donationTypeDetailsJson[NameX.donationShares] ?? {}) as Map);
 
-      order: json[NameX.donationBasic][NameX.order]??0,
-      status: json[NameX.donationBasic][NameX.status]??true,
+      List<Map<String, dynamic>> donationSharesPackagesJsonList = ((donationTypeDetailsJson[NameX.donationSharesPackages] ?? [])as List)
+          .map<Map<String, dynamic>>((e) => Map<String, dynamic>.from(e))
+          .toList();
 
-      currentDonations: json[NameX.donationBasic][NameX.currentDonations]??0,
-      totalDonations: json[NameX.donationBasic][NameX.totalDonations]??0,
-      remainingDonations: json[NameX.donationBasic][NameX.remainingDonations]??0,
-      countDonations: json[NameX.donationBasic][NameX.countDonations]??0,
-      countDonor: json[NameX.donationBasic][NameX.countDonor]??0,
-      completionRate: json[NameX.donationBasic][NameX.completionRate]??0,
+      List<Map<String, dynamic>> donationDeductionPackagesJsonList = ((donationTypeDetailsJson[NameX.donationDeductionPackages] ?? [])as List)
+          .map<Map<String, dynamic>>((e) => Map<String, dynamic>.from(e))
+          .toList();
 
-      description: json[NameX.donationDetails][NameX.description]??"",
-      briefDescription: json[NameX.donationDetails][NameX.briefDescription]??"",
+      List<Map<String, dynamic>> donationOpenPackagesJsonList = ((donationTypeDetailsJson[NameX.donationOpenPackages] ?? [])as List)
+          .map<Map<String, dynamic>>((e) => Map<String, dynamic>.from(e))
+          .toList();
 
-      imageURL: json[NameX.donationDetails][NameX.image][NameX.url]??"",
-      videoURL: json[NameX.donationDetails][NameX.videoUrl]??"",
+      List<Map<String, dynamic>> categoriesJsonList = (json[NameX.donationCategories] ?? [])
+          .map<Map<String, dynamic>>((e) => Map<String, dynamic>.from(e))
+          .toList();
 
-      categories: List<Map<String,dynamic>>.from(json[NameX.donationCategories]??[])
-          .map((json) => DonationCategoryX.fromJson(json)).toList(),
+      return ModelUtilX.checkFromJson(
+        json,
+        (json) => DonationX(
+          id: json[NameX.id].toStrX,
+          donationBasic: DonationBasicX.fromJson(donationBasicJson),
+          donationDetails: DonationDetailsX.fromJson(donationDetailsJson),
+          donationSettings: DonationSettingsX.fromJson(donationSettingsJson),
+          categories: categoriesJsonList.map((json) => DonationCategoryX.fromJson(json)).toList(),
+          donationType: DonationTypeX.fromJson(donationTypeJson),
 
-      donationType: DonationTypeX.fromJson(json[NameX.donationTypeDetails][NameX.donationType]??{}),
-      isShowPackages: json[NameX.donationTypeDetails][NameX.isShowPackages]??false,
-      isCanEditAmount: json[NameX.donationTypeDetails][NameX.isCanEditAmount]??false,
-      donationShares: DonationSharesX.fromJson(json[NameX.donationTypeDetails][NameX.donationShare]??{},
-          List<Map<String,dynamic>>.from(json[NameX.donationTypeDetails][NameX.donationSharesPackages]??[]),
-      ),
-      donationDeductionPackages: List<Map<String,dynamic>>.from(json[NameX.donationTypeDetails][NameX.donationDeductionPackages]??[])
-          .map((json) => DonationDeductionPackageX.fromJson(json)).toList(),
-      openPackages: List<Map<String,dynamic>>.from(json[NameX.donationTypeDetails][NameX.donationOpenPackages]??[])
-          .map((json) => DonationOpenPackageX.fromJson(json)).toList(),
+          isShowPackages: donationTypeDetailsJson[NameX.isShowPackages].toBoolDefaultX(false),
+          isCanEditAmount: donationTypeDetailsJson[NameX.isCanEditAmount].toBoolDefaultX(false),
 
-      isShowHome: json[NameX.donationSettings][NameX.isShowHome]??false,
-      isShowDonationsPercentage: json[NameX.donationSettings][NameX.isShowDonationsPercentage]??false,
-      isShowCompletionIndicator: json[NameX.donationSettings][NameX.isShowCompletionIndicator]??false,
-      isShowGifting: json[NameX.donationSettings][NameX.isShowGifting]??false,
-      isZakat: json[NameX.donationSettings][NameX.isZakat]??false,
-      isShowDonorsCount: json[NameX.donationSettings][NameX.isShowDonorsCount]??false,
+          donationShares:donationShareJson.toFromJsonNullableX(DonationSharesX.fromJson),
+          sharesPackages: donationSharesPackagesJsonList.map((json) => DonationSharesPackageX.fromJson(json)).toList(),
+          donationDeductionPackages: donationDeductionPackagesJsonList.map((json) => DonationDeductionPackageX.fromJson(json)).toList(),
+          openPackages: donationOpenPackagesJsonList.map((json) => DonationOpenPackageX.fromJson(json)).toList(),
 
-      // shareURL: json[NameX.]??'',
-    );
+          /// TODO: Add share Url on from json of donation
+          // shareURL: json[NameX.]??'',
+        ),
+        requiredDataKeys: [
+          NameX.id,
+          NameX.donationBasic,
+          NameX.donationType,
+        ],
+      );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      NameX.id: id,
+      NameX.donationBasic: donationBasic.toJson(),
+      NameX.donationDetails: donationDetails.toJson(),
+      NameX.donationSettings: donationSettings.toJson(),
+      NameX.donationCategories: [...categories.map((category) => category.toJson())],
+      NameX.donationTypeDetails: {
+        NameX.donationType: donationType.toJson(),
+        NameX.isShowPackages: isShowPackages,
+        NameX.isCanEditAmount: isCanEditAmount,
+        NameX.donationShares: donationShares?.toJson(),
+        NameX.donationSharesPackages:
+            sharesPackages.map((package) => package.toJson()).toList(),
+        NameX.donationDeductionPackages: donationDeductionPackages
+            .map((package) => package.toJson())
+            .toList(),
+        NameX.donationOpenPackages:
+            openPackages.map((package) => package.toJson()).toList(),
+      },
+
+      /// TODO: Add share Url on from json of donation
+      // NameX.shareURL: shareURL,
+    };
+  }
 }

@@ -1,8 +1,17 @@
 import 'dart:async';
+import 'package:ataa/Core/Error/error.dart';
+import 'package:ataa/Core/Extension/convert/convert.dart';
+import 'package:ataa/Data/Model/Donation/Subclass/donationFamilyAndFriends.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../Config/config.dart';
+import '../../../Data/Enum/model_type_status.dart';
+import '../../../Data/Model/Donation/Order/donationOrderForm.dart';
+import '../../../Data/Model/Donation/Package/donationDeductionPackage.dart';
+import '../../../Data/Model/Donation/Package/donationOpenPackage.dart';
+import '../../../Data/Model/Donation/Shares/donationSharesPackage.dart';
+import '../../../Data/Model/Donation/donation.dart';
 import '../../../Data/data.dart';
 import '../../../Ui/Widget/widget.dart';
 import '../../core.dart';
@@ -14,7 +23,7 @@ class PayDonationControllerX extends GetxController {
   // Injection of required controls
 
   final AppControllerX app = Get.find();
-  final CartGeneralControllerX basketGeneral = Get.find();
+  final CartGeneralControllerX cart = Get.find();
   late DonateOnBehalfOfFamilyController donateOnBehalfOfFamily;
 
   //============================================================================
@@ -23,28 +32,28 @@ class PayDonationControllerX extends GetxController {
   RxBool isLoading = false.obs;
   bool isSheet = false;
 
-  Rx<ButtonStateEX> payDonationButtonState = ButtonStateEX.normal.obs;
+  Rx<ButtonStateEX> buttonState = ButtonStateEX.normal.obs;
   Rx<ButtonStateEX> addToCartButtonState = ButtonStateEX.normal.obs;
 
   GlobalKey<FormState> formKey = GlobalKey();
   AutovalidateMode autoValidate = AutovalidateMode.disabled;
   TextEditingController donationAmount = TextEditingController();
 
-  RxString packageSelected = ''.obs;
-  double numOfStock = 1;
+  Rx<DonationOpenPackageX?> openPackageSelected =
+      Rx<DonationOpenPackageX?>(null);
+  Rx<DonationSharesPackageX?> sharesPackageSelected =
+      Rx<DonationSharesPackageX?>(null);
+  Rx<DonationDeductionPackageX?> deductionPackageSelected =
+      Rx<DonationDeductionPackageX?>(null);
+  RxInt numOfStock = 1.obs;
   RxInt freeDonationSelected = 0.obs;
 
   late DonationX donation;
-  CampaignX? campaign;
 
   //============================================================================
   // Initialization
 
-  init(DonationX donation, CampaignX? campaign, {bool isSheet = false}) {
-    this.donation = donation;
-    this.campaign = campaign;
-    this.isSheet = isSheet;
-
+  init() {
     /// check if "donate On Behalf Of Family controller" is has or create
     if (Get.isRegistered<DonateOnBehalfOfFamilyController>(tag: donation.id)) {
       donateOnBehalfOfFamily =
@@ -62,28 +71,40 @@ class PayDonationControllerX extends GetxController {
   // Functions
 
   onChangeStockValue(double val) {
-    numOfStock = val;
-    if (campaign == null && donation.donationShares.isShare) {
+    numOfStock.value = val.toInt();
+    if (donation.donationShares != null) {
       donationAmount.text =
-          ((donation.donationShares.price * numOfStock).toInt()).toString();
-    } else if (campaign != null && campaign!.stockValue != null) {
-      donationAmount.text =
-          ((campaign!.stockValue! * numOfStock).toInt()).toString();
+          (donation.donationShares!.price * numOfStock.value).toString();
     }
   }
 
-  onChangePackage(String? val) => packageSelected.value = val!;
+  onChangeOpenPackage(DonationOpenPackageX val) {
+    openPackageSelected.value = val;
+    donationAmount.text = val.price.toString();
+  }
+  onChangeDeductionPackage(DonationDeductionPackageX val) {
+    deductionPackageSelected.value = val;
+    donationAmount.text = val.price.toString();
+  }
+
+  onChangeSharesPackage(DonationSharesPackageX val) {
+    sharesPackageSelected.value = val;
+    donationAmount.text =
+        (val.sharesCount * donation.donationShares!.price).toString();
+    numOfStock.value = val.sharesCount;
+  }
 
   onChangeDonationAmount(int val) {
     donationAmount.text = val.toString();
-    freeDonationSelected.value=val;
+    freeDonationSelected.value = val;
   }
 
-  removeFreeDonationSelected(val){
-    if (int.tryParse(val)!=null) {
+  removeFreeDonationSelected(val) {
+    if (int.tryParse(val) != null) {
       freeDonationSelected.value = int.parse(val);
     }
   }
+
   /// clear date on controller
   removeController() {
     Get.delete<DonateOnBehalfOfFamilyController>(tag: donation.id);
@@ -91,26 +112,22 @@ class PayDonationControllerX extends GetxController {
   }
 
   bool dataVerification() {
-    // if(!donation.donationShares.isShare &&
-    //     donation.openPackages.isEmpty && donation.donationDeductionPackages.isEmpty && num.parse(donationAmount.text) < app.generalSettings.minimumDonationAmount){
-    //   /// Verify the lowest possible donation value in Free Donation
-    //   return throw "${"The minimum donation amount is".tr} ${app.generalSettings.minimumDonationAmount} ${"SAR".tr}";
-    // }else
-    //
-      if (campaign == null &&
-        donation.openPackages.isNotEmpty &&
-        packageSelected.value.isEmpty) {
-      /// Verify package selection
-      return throw "You must choose one of the packages";
-    } else if (((campaign != null && campaign!.stockValue != null) ||
-            donation.donationShares.isShare) &&
-        numOfStock <= 0) {
-      /// Verify the number of shares
-      return throw "You must choose to enter a number of shares of at least 1";
+    if (donation.openPackages.isNotEmpty && openPackageSelected.value == null) {
+      return throw "You must choose one of the available packages.";
+    } else if (donation.sharesPackages.isNotEmpty &&
+        sharesPackageSelected.value == null) {
+      return throw "You must choose one of the available packages.";
+    } else if (donation.donationDeductionPackages.isNotEmpty &&
+        deductionPackageSelected.value == null) {
+      return throw "You must select the type of deduction.";
     } else if (!formKey.currentState!.validate()) {
       /// Verify input fields
       autoValidate = AutovalidateMode.always;
       return throw "Make sure you enter a valid value in donation amount";
+    } else if (num.parse(donationAmount.text) <
+        app.generalSettings.minimumDonationAmount) {
+      /// Verify the lowest possible donation value in Free Donation
+      return throw "${"The minimum donation amount is".tr} ${app.generalSettings.minimumDonationAmount} ${"SAR".tr}";
     } else if (donateOnBehalfOfFamily.isEnable.value &&
         !donateOnBehalfOfFamily.formKey.currentState!.validate()) {
       /// Verify the donation entry fields for family and friends
@@ -120,38 +137,61 @@ class PayDonationControllerX extends GetxController {
     return true;
   }
 
-  onPayDonation() async {
+  onAddToCart({bool isPay = false}) async {
     if (isLoading.isFalse) {
       try {
         /// check is validate data
         if (dataVerification()) {
           isLoading.value = true;
-          payDonationButtonState.value = ButtonStateEX.loading;
+          isPay
+              ? buttonState.value = ButtonStateEX.loading
+              : addToCartButtonState.value = ButtonStateEX.loading;
 
-          /// TODO: Database >>> Create a connection to start the payment process
-          /// TODO: Payment >>> Go to the payment screen
-          /// TODO: Database >>> Send a response from the payment screen and complete the process
-          await Future.delayed(const Duration(seconds: 1)); // delete this
+            var data = await DatabaseX.createDonationOrder(
+              form: DonationOrderFormX(
+                donationId: donation.id,
+                price: donationAmount.text.toDoubleX,
+                donationOpenPackageId: openPackageSelected.value?.id,
+                donationSharesPackageId: sharesPackageSelected.value?.id,
+                donationDeductionPackageId: deductionPackageSelected.value?.id,
+                sharesQuantity: numOfStock.value,
+                donationOnBehalfOfFamilyAndFriends:
+                    donateOnBehalfOfFamily.isEnable.value,
+                familyAndFriends: donateOnBehalfOfFamily.isEnable.value
+                    ? DonationFamilyAndFriendsX(
+                        donorName: donateOnBehalfOfFamily.donorName.text,
+                        recipientName:
+                            donateOnBehalfOfFamily.recipientName.text,
+                        recipientCountryCode:
+                            donateOnBehalfOfFamily.countryCode.value,
+                        recipientPhoneWithoutCountry:
+                            int.parse(donateOnBehalfOfFamily.giftedPhone.text),
+                      )
+                    : null,
+              ),
+            );
 
-          /// The time delay here is aesthetically beneficial
-          payDonationButtonState.value = ButtonStateEX.success;
-          await Future.delayed(
-            const Duration(seconds: StyleX.successButtonSecond),
-          );
+            String message = await cart.addItem(
+              modelId: data.modelId,
+              modelType: ModelTypeStatusX.donation,
+              isPayNow: isPay,
+              isCloseSheet: isSheet,
+            );
 
-          /// if use this controller form bottom sheet
-          if (isSheet) {
-            Get.back();
-          }
+            /// This controller form bottom sheet
+            if (!isPay) {
+              ToastX.success(message: message);
+            }
 
-          ToastX.success(message: "The donation was successful");
-
-          /// clear date on controller
-          removeController();
+            /// clear date on controller
+            removeController();
         }
       } catch (error) {
+        error.toErrorX.log();
         ToastX.error(message: error.toString());
-        payDonationButtonState.value = ButtonStateEX.failed;
+        isPay
+            ? buttonState.value = ButtonStateEX.failed
+            : addToCartButtonState.value = ButtonStateEX.failed;
       }
       isLoading.value = false;
 
@@ -159,50 +199,9 @@ class PayDonationControllerX extends GetxController {
       Timer(
         const Duration(seconds: StyleX.returnButtonToNormalStateSecond),
         () {
-          payDonationButtonState.value = ButtonStateEX.normal;
-        },
-      );
-    }
-  }
-
-  onDonationAddToCart() async {
-    if (isLoading.isFalse) {
-      try {
-        /// check is validate data
-        if (dataVerification()) {
-          isLoading.value = true;
-          addToCartButtonState.value = ButtonStateEX.loading;
-
-          /// Connect to basket Controller to add to cart in database
-          await basketGeneral.addDonation(donation);
-
-          /// The time delay here is aesthetically beneficial
-          addToCartButtonState.value = ButtonStateEX.success;
-          await Future.delayed(
-            const Duration(seconds: StyleX.successButtonSecond),
-          );
-
-          /// if use this controller form bottom sheet
-          if (isSheet) {
-            Get.back();
-          }
-
-          ToastX.success(message: "Added to cart successfully");
-
-          /// clear date on controller
-          removeController();
-        }
-      } catch (error) {
-        ToastX.error(message: error.toString());
-        addToCartButtonState.value = ButtonStateEX.failed;
-      }
-      isLoading.value = false;
-
-      /// Reset the button state
-      Timer(
-        const Duration(seconds: StyleX.returnButtonToNormalStateSecond),
-        () {
-          addToCartButtonState.value = ButtonStateEX.normal;
+          isPay
+              ? buttonState.value = ButtonStateEX.normal
+              : addToCartButtonState.value = ButtonStateEX.normal;
         },
       );
     }

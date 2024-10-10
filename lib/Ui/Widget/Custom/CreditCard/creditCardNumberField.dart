@@ -39,50 +39,32 @@ class _CreditCardNumberFieldXState extends State<CreditCardNumberFieldX> {
   }
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (widget.label != null) LabelInputX(widget.label!),
-        Directionality(
-          textDirection: TextDirection.ltr,
-          child: ContainerX(
-            margin: widget.margin,
-            padding:  const EdgeInsets.symmetric(horizontal: 22, vertical: 11),
-            isBorder: true,
-            color: widget.disabled
-                ? Theme.of(context).disabledColor
-                : widget.color??Theme.of(context).cardTheme.color,
-            child: TextFormField(
-              style: TextStyleX.titleSmall,
-              autofocus: widget.autofocus,
-              onChanged: widget.onChanged,
-              validator: CreditCardUtilsX.validateCardNum,
-              readOnly: widget.onlyRead??widget.disabled,
-              keyboardType: TextInputType.number,
-              textInputAction: widget.textInputAction,
-              textAlignVertical: TextAlignVertical.center,
-              controller: widget.controller,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(19),
-                CardNumberInputFormatter(),
-              ],
-              decoration: InputDecoration(
-                prefixIcon: null,
-                suffixIcon: CreditCardCompanyX(cardType: type,width: 30,),
-                suffixIconConstraints: const BoxConstraints(
-                    maxWidth: StyleX.inputHeight
-                ),
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                border: InputBorder.none,
-                isCollapsed: true,
-                hintText: (widget.hint ?? "").tr,
-                hintStyle: TextStyleX.titleSmall,
-              ),
-            ),
-          ),
-        ),
-      ],
+    return Padding(
+      padding: widget.margin,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (widget.label != null) LabelInputX(widget.label!),
+          TextFieldX(
+            disabled: widget.disabled,
+            autofocus: widget.autofocus,
+            onChanged: widget.onChanged,
+            validate: CreditCardUtilsX.validateCardNum,
+            onlyRead: widget.onlyRead??widget.disabled,
+            textInputType: TextInputType.number,
+            textInputAction: widget.textInputAction,
+            controller: widget.controller,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              LengthLimitingTextInputFormatter(19),
+              CardNumberInputFormatter(),
+            ],
+            hint: widget.hint,
+
+            prefixWidget: CreditCardCompanyX(cardType: type,width: 20,margin: const EdgeInsets.all(10),),
+          )
+        ],
+      ),
     );
   }
   @override

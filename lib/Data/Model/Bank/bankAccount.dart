@@ -6,14 +6,21 @@ class BankAccountX {
     required this.name,
     required this.iban,
     required this.status,
+    this.bankId,
+    this.organizationId,
+    this.bank,
   });
 
-  late String id;
-  late String name;
-  late String iban;
-  late bool status;
+  String id;
+  String name;
+  String iban;
+  bool status;
+  String? bankId;
+  String? organizationId;
+  BankX? bank;
 
   factory BankAccountX.fromJson(Map<String, dynamic> json) {
+    Map<String, Object?> bankJson = Map<String, Object?>.from(json[NameX.bank] ?? {});
     return ModelUtilX.checkFromJson(
       json,
       (json) => BankAccountX(
@@ -21,6 +28,9 @@ class BankAccountX {
         name: json[NameX.accountNumber].toStrX,
         iban: json[NameX.iban].toStrX,
         status: json[NameX.status].toBoolDefaultX(true),
+        bankId: json[NameX.bankId].toStrNullableX,
+        organizationId: json[NameX.orgId].toStrNullableX,
+        bank: bankJson.toFromJsonNullableX(BankX.fromJson),
       ),
       requiredAnyDataOfKeys: [
         [
@@ -37,6 +47,9 @@ class BankAccountX {
       NameX.name: name,
       NameX.iban: iban,
       NameX.status: status,
+      if(bankId!=null) NameX.bankId: bankId,
+      if(organizationId!=null) NameX.orgId: organizationId,
+      if(bank!=null) NameX.bank: bank?.toJson(),
     };
   }
 }

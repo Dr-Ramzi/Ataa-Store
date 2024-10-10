@@ -11,7 +11,7 @@ class CartX {
     required this.countItem,
     required this.currency,
     required this.isProduct,
-    this.cartItems = const [],
+    this.items = const [],
     this.createdAt,
   });
 
@@ -21,7 +21,7 @@ class CartX {
   String currency;
   bool isProduct;
   DateTime? createdAt;
-  List<CartItemX> cartItems;
+  List<CartItemX> items;
   DeliveryLocationX? location;
 
 
@@ -35,7 +35,7 @@ class CartX {
         currency: json[NameX.currency].toStrX,
         isProduct: json[NameX.isProduct].toBoolX,
         createdAt: json[NameX.createdAt].toDateTimeNullableX,
-        cartItems: ModelUtilX.generateItems(json[NameX.cartItems] as List, CartItemX.fromJson),
+        items: ModelUtilX.generateItems(json[NameX.cartItems] as List, CartItemX.fromJson),
         location: json[NameX.location].toFromJsonNullableX(DeliveryLocationX.fromJson),
       ),
       requiredDataKeys: [
@@ -56,7 +56,7 @@ class CartX {
       NameX.countItem: countItem,
       NameX.currency: currency,
       NameX.isProduct: isProduct,
-      NameX.cartItems: cartItems.map((e) => e.toJson(),).toList(),
+      NameX.cartItems: items.map((e) => e.toJson(),).toList(),
       NameX.location: location?.toJson(),
     };
   }

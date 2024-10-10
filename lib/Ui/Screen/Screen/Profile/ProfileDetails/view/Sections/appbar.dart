@@ -24,11 +24,11 @@ class AppBarSectionX extends GetView<ProfileDetailsController> {
                     child: ImageNetworkX(
                       /// So that the image is updated if it changes
                       key: Key(
-                        controller.app.user.value?.imageURL ?? "profile image",
+                        controller.app.user.value?.imageUrl ?? "profile image",
                       ),
                       height: 120,
                       width: 120,
-                      imageUrl: controller.app.user.value?.imageURL ?? "",
+                      imageUrl: controller.app.user.value?.imageUrl ?? "",
                       fit: BoxFit.cover,
                       /// Empty State
                       empty: Center(

@@ -5,14 +5,14 @@ part of '../core.dart';
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 class FunctionX {
-  /// Convert ounces to grams with all carats
-  static Map<int, double> goldOunceToCarats(double ounce) {
+  /// Convert ounces to grams with all karats
+  static Map<int, double> goldOunceToKarats(double ounce) {
     double gram = ounce / ConstantX.ounceWeight;
-    Map<int, double> carats = {};
-    for (int carat in ConstantX.goldCarats) {
-      carats[carat] = (gram * carat) / 24;
+    Map<int, double> karats = {};
+    for (int karat in ConstantX.goldKarats) {
+      karats[karat] = (gram * karat) / 24;
     }
-    return carats;
+    return karats;
   }
 
   ///Convert ounces to grams

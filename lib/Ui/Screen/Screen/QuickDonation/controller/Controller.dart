@@ -1,12 +1,18 @@
 import 'dart:async';
+import 'dart:io';
+import 'package:ataa/Core/Error/error.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../Config/config.dart';
 import '../../../../../Core/Controller/SelectedOptions/organizationSelectionController.dart';
 import '../../../../../Core/core.dart';
+import '../../../../../Data/Enum/payment_method_status.dart';
+import '../../../../../Data/Model/PaymentTransaction/paymentTransaction.dart';
+import '../../../../../Data/Model/PaymentTransaction/paymentTransactionForm.dart';
 import '../../../../../Data/data.dart';
 import '../../../../../UI/Widget/widget.dart';
 import '../../../../ScreenSheet/Selection/Organization/organizationSelectionSheet.dart';
+import '../../../../Section/AppleAndGooglePay/controller/Controller.dart';
 
 class QuickDonationController extends GetxController {
   //============================================================================
@@ -17,17 +23,22 @@ class QuickDonationController extends GetxController {
     OrganizationSelectionController(isQuickDonation: true),
     tag: "Quick Donation",
   );
+  late final AppleAndGooglePayController appleAndGooglePayController = Get.put(
+    AppleAndGooglePayController()
+      ..onPayDoneCallback = onPayByAppleOrGoogle
+      ..isDisabled.value = true
+      ..onTapDisabledCallback = onTapDisabledAppleAndGooglePay,
+    tag: 'QuickDonation-AppleAndGooglePay',
+  );
 
   //============================================================================
   // Variables
 
   RxBool isLoading = false.obs;
+  bool isInit = false;
   Rx<ButtonStateEX> buttonState = ButtonStateEX.normal.obs;
-  Rx<ButtonStateEX> appleButtonState = ButtonStateEX.normal.obs;
-  Rx<ButtonStateEX> googleButtonState = ButtonStateEX.normal.obs;
 
   List<OrganizationX> organizations = [];
-  RxString donationProgramSelected = "All".obs;
   RxInt freeDonationSelected = 0.obs;
 
   GlobalKey<FormState> formKey = GlobalKey();
@@ -37,12 +48,13 @@ class QuickDonationController extends GetxController {
   //============================================================================
   // Functions
 
-  getOrganizations() async {
-    try {
-      await Future.delayed(const Duration(seconds: 1));
-      // organizations = TestDataX.organizations;
-    } catch (e) {
-      return Future.error(e);
+  Future init() async {
+    if (!isInit) {
+      await appleAndGooglePayController.init(
+        title: 'quick donation',
+        total: 0,
+      );
+      isInit = true;
     }
   }
 
@@ -51,33 +63,47 @@ class QuickDonationController extends GetxController {
     message = ValidateX.money(val);
 
     /// Verify the lowest possible donation value in Free Donation
-    if (num.parse(donationAmount.text) <
-        app.generalSettings.minimumDonationAmount) {
+    if (message == null &&
+        num.parse(donationAmount.text) <
+            app.generalSettings.minimumDonationAmount) {
       message =
           "${"The minimum donation amount is".tr} ${app.generalSettings.minimumDonationAmount} ${"SAR".tr}";
     }
     return message;
   }
 
+  onTapDisabledAppleAndGooglePay() {
+    try {
+      dataVerification();
+    } catch (error) {
+      ToastX.error(message: error.toString());
+    }
+  }
   //----------------------------------------------------------------------------
   // Other
 
   onChangeDonationAmount(int val) {
     donationAmount.text = val.toString();
     freeDonationSelected.value = val;
+    appleAndGooglePayController.isDisabled.value = !isDataVerification();
+    appleAndGooglePayController.createPaymentItems(
+        'quick donation', freeDonationSelected.value + 0.0);
   }
 
   removeFreeDonationSelected(String val) {
-    if (int.tryParse(val)!=null) {
+    if (int.tryParse(val) != null) {
       freeDonationSelected.value = int.parse(val);
+      appleAndGooglePayController.createPaymentItems(
+          'quick donation', freeDonationSelected.value + 0.0,
+      );
     }
+    appleAndGooglePayController.isDisabled.value = !isDataVerification();
   }
 
-  onTapChooseDonationProject() async =>
-      await organizationSelectionSheetX(donationProjectSelectedController);
-
-  onChangeDonationProgram(String? val) =>
-      donationProgramSelected.value = val ?? "";
+  onTapChooseDonationProject() async {
+    await organizationSelectionSheetX(donationProjectSelectedController);
+    appleAndGooglePayController.isDisabled.value = !isDataVerification();
+  }
 
   //----------------------------------------------------------------------------
   // Data processing
@@ -85,9 +111,13 @@ class QuickDonationController extends GetxController {
   /// Erase all data and return it to its default state
   clearData() {
     donationAmount.text = '';
-    donationProgramSelected.value = donationProjectSelectedController.allOption.name;
+    freeDonationSelected.value = 0;
     autoValidate = AutovalidateMode.disabled;
-    donationProjectSelectedController.orgSelected.value = donationProjectSelectedController.allOption;
+    donationProjectSelectedController.orgSelected.value = null;
+    appleAndGooglePayController.isDisabled.value = true;
+    appleAndGooglePayController.paymentItems.value = [];
+    // donationProjectSelectedController.orgSelected.value =
+    //     donationProjectSelectedController.allOption;
   }
 
   /// Verify the entered data
@@ -95,122 +125,78 @@ class QuickDonationController extends GetxController {
     if (!formKey.currentState!.validate()) {
       // check input fields
       autoValidate = AutovalidateMode.always;
-      return Future.error(
-          "Make sure you enter a valid value in donation amount");
+      throw "Make sure you enter a valid value in donation amount";
+    }
+    if (donationProjectSelectedController.orgSelected.value == null) {
+      throw "You must choose one of the donations";
+    }
+  }
+
+  isDataVerification() {
+    if (validateAmount(donationAmount.text)!=null || donationProjectSelectedController.orgSelected.value == null) {
+      return false;
+    } else {
+      return true;
     }
   }
 
   // ----------------------------------------------------------------------------
   // Main processors
 
-  /// Note: The different payment methods below can be combined into one function,
-  ///       but this depends on the possibility of there being a different treatment
-  ///       for linking with payment methods and interacting with them.
-
-  onDonatingByApple() async {
-    if (isLoading.isFalse) {
-      isLoading.value = true;
-      appleButtonState.value = ButtonStateEX.loading;
-      try {
-        /// check is validate data
-        await dataVerification();
-
-        // TODO: Database >>> Create a connection to start the payment process
-        // TODO: Payment >>> Go to the payment screen
-        // TODO: Database >>> Send a response from the payment screen and complete the process
-        await Future.delayed(const Duration(seconds: 1)); // delete this
-
-        /// The time delay here is aesthetically beneficial
-        appleButtonState.value = ButtonStateEX.success;
-        await Future.delayed(
-          const Duration(seconds: StyleX.successButtonSecond),
-        );
-
-        /// Close the bottom sheet
-        Get.back();
-        ToastX.success(message: "The donation was successful");
-
-        /// Clear date on controller
-        clearData();
-      } catch (error) {
-        ToastX.error(message: error.toString());
-        appleButtonState.value = ButtonStateEX.failed;
-      }
-      isLoading.value = false;
-
-      /// Reset the button state
-      Timer(
-        const Duration(seconds: StyleX.returnButtonToNormalStateSecond),
-        () {
-          appleButtonState.value = ButtonStateEX.normal;
-        },
+  onPayByAppleOrGoogle(String token) async {
+    try {
+      PaymentTransactionFormX form = PaymentTransactionFormX(
+        price: double.parse(donationAmount.text),
+        paymentMethod: Platform.isIOS
+            ? PaymentMethodStatusX.applePay
+            : PaymentMethodStatusX.googlePay,
+        applePayToken: Platform.isIOS ? token : null,
+        googlePayToken: Platform.isIOS ? null : token,
       );
+      await sendPayToServer(form: form);
+    } catch (error) {
+      error.toErrorX.log();
+      ToastX.error(message: error.toString());
     }
   }
 
-  onDonatingByGoogle() async {
-    if (isLoading.isFalse) {
-      isLoading.value = true;
-      googleButtonState.value = ButtonStateEX.loading;
-      try {
-        /// check is validate data
-        await dataVerification();
+  sendPayToServer({required PaymentTransactionFormX form}) async {
+    PaymentTransactionX paymentTransaction =
+        await DatabaseX.createPaymentTransactionForQuickDonation(
+      form: form,
+      orgId: donationProjectSelectedController.orgSelected.value!.id,
+    );
 
-        // TODO: Database >>> Create a connection to start the payment process
-        // TODO: Payment >>> Go to the payment screen
-        // TODO: Database >>> Send a response from the payment screen and complete the process
-        await Future.delayed(const Duration(seconds: 1)); // delete this
+    /// Clear date on controller
+    clearData();
 
-        /// The time delay here is aesthetically beneficial
-        googleButtonState.value = ButtonStateEX.success;
-        await Future.delayed(
-          const Duration(seconds: StyleX.successButtonSecond),
-        );
+    /// Close the bottom sheet
+    Get.back();
 
-        /// Close the bottom sheet
-        Get.back();
-        ToastX.success(message: "The donation was successful");
-
-        /// clear date on controller
-        clearData();
-      } catch (error) {
-        ToastX.error(message: error.toString());
-        googleButtonState.value = ButtonStateEX.failed;
-      }
-      isLoading.value = false;
-
-      /// Reset the button state
-      Timer(
-        const Duration(seconds: StyleX.returnButtonToNormalStateSecond),
-        () {
-          googleButtonState.value = ButtonStateEX.normal;
-        },
-      );
-    }
+    Get.toNamed(
+      RouteNameX.paymentSuccessful,
+      arguments: paymentTransaction,
+    );
   }
 
   onDonatingByApp() async {
     if (isLoading.isFalse) {
       isLoading.value = true;
-      buttonState.value = ButtonStateEX.loading;
       try {
         /// check is validate data
         await dataVerification();
 
-        // TODO: Database >>> Create a connection to start the payment process
-        // TODO: Payment >>> Go to the payment screen
-        // TODO: Database >>> Send a response from the payment screen and complete the process
-        await Future.delayed(const Duration(seconds: 1)); // delete this
-
-        /// The time delay here is aesthetically beneficial
-        buttonState.value = ButtonStateEX.success;
-        await Future.delayed(
-          const Duration(seconds: StyleX.successButtonSecond),
-        );
-
         /// Close the bottom sheet
         Get.back();
-        ToastX.success(message: "The donation was successful");
+
+        await Get.toNamed(
+          RouteNameX.generalPayment,
+          arguments: {
+            NameX.amount: double.parse(donationAmount.text),
+            NameX.orgId:
+                donationProjectSelectedController.orgSelected.value?.id,
+          },
+        );
 
         /// clear date on controller
         clearData();

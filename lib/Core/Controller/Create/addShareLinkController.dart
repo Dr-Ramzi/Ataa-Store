@@ -50,7 +50,7 @@ class AddShareLinkControllerX extends GetxController {
             donationID:
                 donationOpportunityController.donationSelected.value!.id,
             donationName:
-                donationOpportunityController.donationSelected.value!.name,
+                donationOpportunityController.donationSelected.value!.donationBasic.name,
           );
 
           /// The time delay here is aesthetically beneficial

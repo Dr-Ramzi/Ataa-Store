@@ -1,9 +1,8 @@
-import 'package:ataa/Data/Model/Gifting/giftCategory.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../../Config/config.dart';
+import '../../../../Data/Model/Gift/Subclass/giftCategory.dart';
 import '../../widget.dart';
 
 class GiftCategoryCardX extends StatelessWidget {

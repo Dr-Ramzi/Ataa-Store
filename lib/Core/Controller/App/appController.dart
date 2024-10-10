@@ -23,8 +23,11 @@ class AppControllerX extends GetxController {
     update();
   }
 
-  onLoginSheet() {
-    bottomSheetX(child: LoginView(isSheet: true).paddingOnly(top: 14));
+  onLoginSheet() async{
+    await bottomSheetX(child: LoginView(isSheet: true).paddingOnly(top: 14));
+  }
+  onSignUpSheet() async{
+    await bottomSheetX(child: SignUpView(isSheet: true).paddingOnly(top: 14));
   }
 
   logOut() async {
@@ -33,17 +36,15 @@ class AppControllerX extends GetxController {
       user.value=null;
       LocalDataX.remove(LocalKeyX.token);
       LocalDataX.put(LocalKeyX.route, RouteNameX.login);
-
-      LocalDataX.remove(LocalKeyX.cartId);
-      if (Get.isRegistered<CartGeneralControllerX>()) {
-        Get.find<CartGeneralControllerX>().delete();
-      } else {
-        Get.put(CartGeneralControllerX()).delete();
-      }
+      Get.find<CartGeneralControllerX>().delete();
       if (Get.currentRoute != RouteNameX.login) {
-        await Future.microtask(() => Get.offAllNamed(RouteNameX.login));
+        await Future.wait([
+          DatabaseX.logout(),
+          Future.microtask(() => Get.offAllNamed(RouteNameX.login)),
+        ]);
+      } else {
+        await DatabaseX.logout();
       }
-      await DatabaseX.logout();
     } catch (_) {}
   }
 }

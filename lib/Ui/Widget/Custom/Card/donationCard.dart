@@ -27,7 +27,7 @@ class DonationCardX extends StatelessWidget {
       width: isSmallCard ? StyleX.donationCardWidthSM : double.maxFinite,
       child: GestureDetector(
         onTap: () {
-          Get.toNamed(RouteNameX.donationDetails, arguments: donation.code);
+          Get.toNamed(RouteNameX.donationDetails, arguments: donation.donationBasic.code);
         },
         child: Container(
           color: Colors.transparent,
@@ -45,11 +45,11 @@ class DonationCardX extends StatelessWidget {
                         child: ImageNetworkX(
                           height: 170,
                           width: double.maxFinite,
-                          imageUrl: donation.imageURL,
+                          imageUrl: donation.donationDetails.imageUrl??'',
                         ),
                       ),
 
-                      if(donation.isDone)
+                      if(donation.donationBasic.isDone)
                         Positioned.fill(
                           child: ImageNetworkX(
                             imageUrl: doneImageUrl ?? ImageX.doneDonation,
@@ -60,7 +60,7 @@ class DonationCardX extends StatelessWidget {
                         ),
 
                       /// Zakat Marker
-                      if (donation.isZakat)
+                      if (donation.donationSettings.isZakat)
                         Positioned.directional(
                           textDirection: Directionality.of(context),
                           start: 10,
@@ -69,7 +69,7 @@ class DonationCardX extends StatelessWidget {
                         ),
 
                       /// Value Share
-                      if (donation.donationShares.isShare)
+                      if (donation.donationShares!=null)
                         Positioned.directional(
                           textDirection: Directionality.of(context),
                           start: 0,
@@ -86,7 +86,7 @@ class DonationCardX extends StatelessWidget {
                               vertical: 5,
                             ),
                             child: TextX(
-                              "${"Value share is".tr} ${donation.donationShares.price} ${"SAR".tr}",
+                              "${"Value share is".tr} ${donation.donationShares?.price} ${"SAR".tr}",
                               color: Colors.white,
                               style: TextStyleX.supTitleMedium,
                             ),
@@ -125,7 +125,7 @@ class DonationCardX extends StatelessWidget {
                       children: [
                         /// Donation Name
                         TextX(
-                          donation.name,
+                          donation.donationBasic.name,
                           style: TextStyleX.titleMedium,
                           fontWeight: FontWeight.w700,
                           maxLines: 1,
@@ -143,7 +143,7 @@ class DonationCardX extends StatelessWidget {
                             ),
                             const SizedBox(width: 8),
                             TextX(
-                              "${"Collected".tr}: ${FunctionX.formatLargeNumber(donation.currentDonations)} ${"SAR".tr}",
+                              "${"Collected".tr}: ${FunctionX.formatLargeNumber(donation.donationBasic.currentDonations)} ${"SAR".tr}",
                               color: Theme.of(context).colorScheme.secondary,
                             )
                           ],
@@ -187,7 +187,7 @@ class DonationCardX extends StatelessWidget {
                 left: 16,
                 right: 16,
                 child: AddToCartAndDonationButtonsX(
-                  disabled: donation.isDone,
+                  disabled: donation.donationBasic.isDone,
                   onDonation: () async => await onDonation(donation),
                   onAddToCart: () async => await onAddToCart(donation),
                   payDonationButtonState: ButtonStateEX.normal,

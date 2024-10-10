@@ -39,7 +39,7 @@ class ProductCardX extends StatelessWidget {
                 child: ImageNetworkX(
                   height: 150,
                   width: double.maxFinite,
-                  imageUrl: product.imageURL[0],
+                  imageUrl: product.imageUrl[0],
                 ),
               ),
               const SizedBox(height: 4),

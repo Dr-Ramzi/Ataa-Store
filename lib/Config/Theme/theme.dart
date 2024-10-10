@@ -83,7 +83,7 @@ class ThemeX {
       backgroundColor: Colors.white,
       unselectedItemColor: ColorX.grey.shade500,
       unselectedLabelStyle: TextStyle(
-        fontSize: 13.0,
+        fontSize: 13.1,
         color: ColorX.grey.shade500,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.15,
@@ -153,7 +153,7 @@ class ThemeX {
       unselectedItemColor: ColorX.grey.shade500,
       backgroundColor: ColorX.grey.shade800,
       unselectedLabelStyle: TextStyle(
-        fontSize: 13.0,
+        fontSize: 13.1,
         color: ColorX.grey.shade800,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.15,

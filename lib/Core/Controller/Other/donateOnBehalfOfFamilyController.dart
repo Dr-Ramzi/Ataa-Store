@@ -25,7 +25,7 @@ class DonateOnBehalfOfFamilyController extends GetxController {
   /// The name Mahdi is fetched through the username
   late TextEditingController donorName =
       TextEditingController(text: app.isLogin.value ? app.user.value!.name : "");
-  TextEditingController giftedName = TextEditingController();
+  TextEditingController recipientName = TextEditingController();
   TextEditingController giftedPhone = TextEditingController();
 
   //============================================================================
@@ -33,7 +33,7 @@ class DonateOnBehalfOfFamilyController extends GetxController {
 
   /// Erase all data and return it to its default state
   clearData() {
-    giftedName.text = '';
+    recipientName.text = '';
     giftedPhone.text = "";
     donorName.text = app.isLogin.value ? app.user.value!.name : "";
     isEnable.value = false;
@@ -52,7 +52,7 @@ class DonateOnBehalfOfFamilyController extends GetxController {
       Contact? contact = await contactPicker.selectContact();
       if (contact != null) {
         /// If name is empty, it returns the previous value
-        giftedName.text = contact.fullName ?? giftedName.text;
+        recipientName.text = contact.fullName ?? recipientName.text;
 
         /// To check if there is a phone number and then check if this number is empty or not
         if (contact.phoneNumbers != null && contact.phoneNumbers!.isNotEmpty) {

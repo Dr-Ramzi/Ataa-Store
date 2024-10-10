@@ -1,5 +1,5 @@
-import 'package:ataa/UI/Animation/animation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../../../../../../../Config/config.dart';
 import '../../../../../../../../UI/Widget/widget.dart';
 
@@ -15,15 +15,17 @@ class HeaderSectionX extends StatelessWidget {
           "Deductions",
           style: TextStyleX.headerSmall,
           color: Theme.of(context).primaryColor,
-        ).fadeAnimation200,
+        ),
         const SizedBox(height: 6),
 
         /// Description
         TextX(
-          "All seasonal deductions that have been subscribed to, where a donation amount is deducted periodically from your bank card.",
-          style: TextStyleX.supTitleLarge,
+          "All deductions that have been subscribed to.",
+          style: TextStyleX.titleSmall,
+          color: Get.theme.colorScheme.secondary,
           maxLines: 4,
-        ).fadeAnimation200,
+        ),
+        const SizedBox(width: double.maxFinite)
       ],
     );
   }

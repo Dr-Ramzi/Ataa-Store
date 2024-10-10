@@ -12,7 +12,7 @@ class LoggingConsoleX {
   static void _customErrorLogger(FlutterErrorDetails details) {
     String border = "║       ";
     String errorMessage =
-        '\n\n╔══════════════════════════════════════════════╡ ${details.library ?? "SEZARD"} ╞══════════════════════════════════════════════╗\n';
+        '\n╔══════════════════════════════════════════════╡ ${details.library ?? "SEZARD"} ╞══════════════════════════════════════════════╗\n';
     errorMessage += "${border}Error Details:";
     errorMessage += "\n$border\n";
     errorMessage +=

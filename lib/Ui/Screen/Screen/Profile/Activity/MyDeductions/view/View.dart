@@ -2,8 +2,7 @@ import 'package:ataa/UI/Animation/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../../Config/config.dart';
-import '../../../../../../GeneralState/empty.dart';
-import '../../../../../../GeneralState/error.dart';
+import '../../../../../../Widget/Basic/Other/scrollRefreshLoadMore.dart';
 import '../../../../../../Widget/widget.dart';
 import 'Sections/loading.dart';
 import '../controller/Controller.dart';
@@ -15,86 +14,65 @@ class MyDeductionsView extends GetView<MyDeductionsController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarX(
-        title: "My Deductions",
+        title: "Deductions",
         actions: [CartIconButtonsX()],
       ),
-      body: SafeArea(
-        child: FutureBuilder(
-          future: controller.getData(),
-          builder: (context, snapshot) {
-            /// Loading State
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const LoadingSectionX();
-            }
-
-            /// Error State
-            if (snapshot.hasError) {
-              return ErrorView(
-                error: snapshot.error.toString(),
-              );
-            }
-
-            /// Main Content
-            return Padding(
-              padding: const EdgeInsets.only(
-                left: StyleX.hPaddingApp,
-                right: StyleX.hPaddingApp,
-                top: StyleX.vPaddingApp,
+      body:SafeArea(
+        child: Obx( () => AbsorbPointer(
+          absorbing: controller.isLoading.value,
+          child: ScrollRefreshLoadMoreX(
+              key: controller.scrollRefreshLoadMoreKey,
+              fetchData: controller.getData,
+              padding: const EdgeInsets.symmetric(
+                vertical: StyleX.vPaddingApp,
+                horizontal: StyleX.hPaddingApp,
               ),
-              child: Column(
-                children: [
-                  /// Title & Description
-                  const HeaderSectionX(),
-                  const SizedBox(height: 10),
-
-                  /// Content
-                  Obx(
-                    () {
-                      /// Empty State
-                      if (controller.deductions.isEmpty) {
-                        return const Expanded(
-                          child: EmptyView(
-                            isMargin: false,
-                            message: "There are no deductions",
-                          ),
-                        );
-                      } else {
-                        /// Cards
-                        return Expanded(
-                          child: AbsorbPointer(
-                            absorbing: controller.isLoading.value,
-                            child: ListView.builder(
-                              padding: const EdgeInsets.only(
-                                top: 8,
-                                bottom: StyleX.vPaddingApp,
-                              ),
-                              itemCount: controller.deductions.length,
-                              itemBuilder: (context, index) => MyDeductionCardX(
-                                myDeduction: controller.deductions[index],
-                                buttonState: controller.buttonsState[index],
-                                onUnsubscribe: () async {
-                                  /// Bottom sheet to confirm cancellation of subscription to deduction
-                                  await bottomSheetDangerousX(
-                                    icon: Icons.warning_rounded,
-                                    onOk: () async =>
-                                        await controller.onUnsubscribe(index),
-                                    okText: "Unsubscribe",
-                                    title: "Cancel participation in deduction",
-                                    message:
-                                        "You are about to opt out of the deduction. Are you sure you want to cancel?",
-                                  );
-                                },
-                              ).fadeAnimationX(100 * (index + 3)),
-                            ),
-                          ),
-                        );
-                      }
+              header: const HeaderSectionX(),
+              isScrollingHeader: true,
+              isHideHeaderIfInitLoading: false,
+              spaceBetweenHeaderAndContent: 24,
+              initLoading: const LoadingSectionX(),
+              pageSize: 20,
+              isShowLoadMoreLoading: controller.isShowMore.value,
+              isShowNoMoreData: controller.isShowMore.value,
+              emptyMessage: 'You have not made any deductions yet.',
+              itemBuilder: (data, index) {
+                if (index > 6 && !controller.isShowMore.value) {
+                  return const SizedBox();
+                } else if (index == 6 && !controller.isShowMore.value) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ButtonX.second(
+                        width: 140,
+                        text: 'Show more',
+                        iconData: IconX.ourBanks,
+                        onTap: controller.onShowMore,
+                      ).fadeAnimationX(60 * (index>6?6:index + 1)),
+                    ],
+                  );
+                } else {
+                  return MyDeductionCardX(
+                    myDeduction: data,
+                    buttonState: controller.buttonsState[index],
+                    onTransactionHistory: ()async=> await controller.onTransactionHistory(data),
+                    onUnsubscribe: () async {
+                      /// Bottom sheet to confirm cancellation of subscription to deduction
+                      await bottomSheetDangerousX(
+                        icon: Icons.warning_rounded,
+                        onOk: () async =>
+                        await controller.onUnsubscribe(data,index),
+                        okText: "Unsubscribe",
+                        title: "Cancel participation in deduction",
+                        message:
+                        "You are about to opt out of the deduction. Are you sure you want to cancel?",
+                      );
                     },
-                  ),
-                ],
-              ),
-            );
-          },
+                  ).fadeAnimationX(60 * (index>6?6:index + 1));
+                }
+              },
+            ),
+        ),
         ),
       ),
     );

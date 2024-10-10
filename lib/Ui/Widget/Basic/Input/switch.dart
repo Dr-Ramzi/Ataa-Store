@@ -75,7 +75,7 @@ class _SwitchXState extends State<SwitchX> {
                   child: TextX(
                     widget.label!,
                     style: widget.isSmallTitle ? TextStyleX.titleSmall : null,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
@@ -91,7 +91,7 @@ class _SwitchXState extends State<SwitchX> {
                 },
                 child: TextX(
                   widget.label!,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                   color: Theme.of(context).iconTheme.color,
                   style: widget.isSmallTitle ? TextStyleX.supTitleMedium : null,
                 ),

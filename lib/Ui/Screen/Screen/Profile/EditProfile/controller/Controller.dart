@@ -79,13 +79,19 @@ class EditProfileController extends GetxController {
         buttonState.value = ButtonStateEX.loading;
         try {
           (UserX?,String?) data = await DatabaseX.updateProfile(
-            image: image != null ? File(image!.path) : null,
             name: name.text,
             email: email.text,
             phone: phone.text.toIntX,
             countryCode: countryCode,
             gender: gender.value,
           );
+
+          if(image!=null){
+            await DatabaseX.uploadProfileImage(
+              image: File(image!.path),
+            );
+          }
+
           if (data.$1!=null) {
             app.user.value=data.$1;
           } else {
@@ -94,13 +100,15 @@ class EditProfileController extends GetxController {
             }
             var resultOTP = await Get.toNamed(
               RouteNameX.otp,
-              arguments: OtpX(
-                phone: phone.text.toIntX,
-                countryCode: countryCode,
-                isEdit: true,
-                isLogin: false,
-                isPhone: true,
-              ),
+              arguments: {
+                NameX.otp:OtpX(
+                  phone: phone.text.toIntX,
+                  countryCode: countryCode,
+                  isEdit: true,
+                  isLogin: false,
+                  isPhone: true,
+                )
+              },
             );
             if (resultOTP != true) {
               isLoading.value = false;

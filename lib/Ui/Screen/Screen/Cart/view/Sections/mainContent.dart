@@ -2,6 +2,7 @@ import 'package:ataa/UI/Animation/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../Config/config.dart';
+import '../../../../../../Data/Enum/model_type_status.dart';
 import '../../../../../Widget/widget.dart';
 import '../../controller/Controller.dart';
 
@@ -14,81 +15,55 @@ class MainContentSectionX extends GetView<CartController> {
         horizontal: StyleX.hPaddingApp,
         vertical: StyleX.vPaddingApp,
       ),
-      child: Obx(
-        () => AbsorbPointer(
-          /// This is so that everything is locked during my operation
-          absorbing: controller.isLoading.value,
-          child: Column(
-            children: [
-              /// This from for if update some price in items
-              Form(
-                key: controller.formKey,
-                autovalidateMode: controller.autoValidate,
-                child: Column(
-                  children: [
-                    /// Donation Items
-                    ...controller.donationRecords.map(
-                      (basketItem) {
-                        return CartDonationCardX(
-                          donation: controller.getDonationById(
-                            basketItem.donationId,
-                          ),
-                          basketItem: basketItem,
-                          onDelete: controller.onDeleteDonationItem,
-                          onChangedPrice: controller.onChangedDonationPrice,
-                          onChangedPackage: controller.onChangedPackage,
-                          onChangedNumStock: controller.onChangeNumStock,
-                          priceController:
-                              controller.donationPriceController[basketItem.id],
-                        ).fadeAnimation300;
-                      },
-                    ),
+      child: Form(
+        key: controller.formKey,
+        autovalidateMode: controller.autoValidate,
+        child: GetBuilder<CartController>(builder: (controller) => Obx(() => Column(
+          children: [
+            /// Donation Items
+            ...controller.cartGeneral.cart.value.items.where((e) => e.order.modelType == ModelTypeStatusX.donation).map(
+                  (item) {
+                return CartDonationCardX(
+                  cartItem: item,
+                  onDelete: controller.onDeleteItem,
+                  onUpdate: controller.onUpdate,
+                ).fadeAnimation300;
+              },
+            ),
 
-                    /// Gifting Items
-                    ...controller.gifting.map(
-                      (gifting) {
-                        return CartGiftingCardX(
-                          gifting: gifting,
-                          giftingType: controller.getGiftingTypeById(
-                            gifting.categoryID,
-                          ),
-                          onDelete: controller.onDeleteGiftingItem,
-                          onChangedPrice:
-                              controller.onChangedGiftingDonationAmount,
-                          priceController:
-                              controller.giftingDonationAmountController[
-                                  gifting.id],
-                        ).fadeAnimation300;
-                      },
-                    )
-                  ],
-                ),
-              ),
+            ...controller.cartGeneral.cart.value.items.where((e) => e.order.modelType == ModelTypeStatusX.gift).map(
+                  (item) {
+                return CartGiftCardX(
+                  cartItem: item,
+                  onDelete: controller.onDeleteItem,
+                  onUpdate: controller.onUpdate,
+                ).fadeAnimation300;
+              },
+            ),
 
-              /// Sponsorship Items
-              ...controller.sponsorships.map(
-                    (sponsorship) {
-                  return CartSponsorshipCardX(
-                    sponsorship: sponsorship,
-                    onDelete: controller.onDeleteSponsorshipItem,
-                  ).fadeAnimation400;
-                },
-              ),
-
-              /// Product Items
-              ...controller.orderProducts.map(
-                (productItem) {
-                  return CartProductCardX(
-                    product: controller.getProductById(productItem.productID),
-                    productItem: productItem,
-                    onDelete: controller.onDeleteProductItem,
-                    onChangedNum: controller.onChangeProductNum,
-                  ).fadeAnimation400;
-                },
-              ),
-            ],
-          ),
-        ),
+            // /// Sponsorship Items
+            // ...controller.sponsorships.map(
+            //       (sponsorship) {
+            //     return CartSponsorshipCardX(
+            //       sponsorship: sponsorship,
+            //       onDelete: controller.onDeleteSponsorshipItem,
+            //     ).fadeAnimation400;
+            //   },
+            // ),
+            //
+            // /// Product Items
+            // ...controller.orderProducts.map(
+            //   (productItem) {
+            //     return CartProductCardX(
+            //       product: controller.getProductById(productItem.productID),
+            //       productItem: productItem,
+            //       onDelete: controller.onDeleteProductItem,
+            //       onChangedNum: controller.onChangeProductNum,
+            //     ).fadeAnimation400;
+            //   },
+            // ),
+          ],
+        ),),),
       ),
     );
   }

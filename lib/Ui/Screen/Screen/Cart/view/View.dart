@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../Animation/animation.dart';
-import '../../../../GeneralState/error.dart';
+import '../../../../Widget/Basic/Utils/future_builder.dart';
 import '../../../../Widget/widget.dart';
 import '../controller/Controller.dart';
 import 'Sections/empty.dart';
@@ -14,36 +13,27 @@ class CartView extends GetView<CartController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      /// for don't move navbar when open keyboard
+      resizeToAvoidBottomInset: false,
       appBar: const AppBarX(
         title: "Cart",
       ),
-      body: FutureBuilder(
-        future: controller.getData(),
-        builder: (context, snapshot) {
-          /// Loading State
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const LoadingSectionX();
-          }
-
-          /// Error State
-          if (snapshot.hasError) {
-            return ErrorView(
-              error: snapshot.error.toString(),
-            ).fadeAnimation200;
-          }
+      body: FutureBuilderX(
+        future: controller.getData,
+        loading: const LoadingSectionX(),
+        child: (data) {
           return Obx(
             () {
-              if ((controller.basketGeneral.cart.value?.countItem??0) <= 0) {
+              if (controller.cartGeneral.countItem.value <= 0) {
                 /// Empty State
                 return const EmptySectionX();
               } else {
                 /// Main Content
-                return AbsorbPointer(
-                  absorbing: controller.isLoading.value,
-                  child: const Scaffold(
-                      body: MainContentSectionX(),
-                      bottomNavigationBar: TotalPricesSectionX(),
-                  ),
+                return const Scaffold(
+                    /// for don't move navbar when open keyboard
+                    resizeToAvoidBottomInset: false,
+                    body: MainContentSectionX(),
+                    bottomNavigationBar: TotalPricesSectionX(),
                 );
               }
             },

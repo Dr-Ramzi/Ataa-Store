@@ -10,27 +10,25 @@ class DynamicOptionsSectionX extends GetView<MoreSectionsController> {
   const DynamicOptionsSectionX({super.key});
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: ScrollRefreshLoadMoreX(
-            padding: const EdgeInsets.only(
-              right: StyleX.hPaddingApp,
-              left: StyleX.hPaddingApp,
-              top: StyleX.vPaddingApp,
-              bottom: StyleX.vPaddingApp+33,
-            ),
-            emptyMessage: 'There are no more pages currently.',
-            fetchData: controller.getData,
-            itemBuilder: (page, index) {
-              return MoreCardX(
-                  title: page.title,
-                  onTap: ()=> controller.onDynamicPage(page),
-              ).fadeAnimation200;
-            },
-          ),
-        ),
-      ],
+    return ScrollRefreshLoadMoreX(
+      padding: const EdgeInsets.only(
+        right: StyleX.hPaddingApp,
+        left: StyleX.hPaddingApp,
+        top: StyleX.vPaddingApp,
+        bottom: StyleX.vPaddingApp+33,
+      ),
+      initLoading: Column(children: [
+        for(int i=0;i<10;i++)
+          const ShimmerAnimationX(height: 66,margin: EdgeInsets.only(bottom: 8)),
+      ],),
+      noMoreDataMessage: 'There are no more pages currently.',
+      fetchData: controller.getData,
+      itemBuilder: (page, index) {
+        return MoreCardX(
+            title: page.title,
+            onTap: ()=> controller.onDynamicPage(page),
+        ).fadeAnimation200;
+      },
     );
   }
 }

@@ -1,0 +1,4 @@
+enum RateTypeStatusX{
+  payment,
+  product,
+}

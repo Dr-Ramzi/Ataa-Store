@@ -29,47 +29,59 @@ class TotalPricesSectionX extends GetView<CartController> {
           () => Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              /// If there are products, the delivery price and the basket price will be shown. If there are no products, only the final total will be shown under. There is no need to display details.
-              if (controller.orderProducts.isNotEmpty)
-                Column(
-                  children: [
-                    /// Cart Summary
-                    Row(
-                      children: [
-                        TextX("Cart Summary",
-                            style: TextStyleX.supTitleLarge),
-                        const Spacer(),
-                        TextX(
-                          "${FunctionX.formatLargeNumber(controller.basketSummary.value)} ${"SAR".tr}",
-                          style: TextStyleX.supTitleLarge,
-                        ),
-                      ],
-                    ).fadeAnimation500,
+              Column(
+                children: [
+                  /// Cart Summary
+                  Row(
+                    children: [
+                      TextX(
+                        "Cart Summary",
+                        style: TextStyleX.titleSmall,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                      const Spacer(),
+                      TextX(
+                        "${FunctionX.formatLargeNumber(controller.cartSummary.value)} ${"SAR".tr}",
+                        style: TextStyleX.titleSmall,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ],
+                  ).fadeAnimation500,
 
-                    /// Dash Line
-                    DashLineX(
-                      margin: const EdgeInsets.symmetric(vertical: 16),
-                    ).fadeAnimation500,
+                  /// Dash Line
+                  DashLineX(
+                    margin: const EdgeInsets.symmetric(vertical: 16),
+                    dashColor: context.isDarkMode?null:ColorX.grey.shade200,
+                  ).fadeAnimation500,
+
+                  if (controller.cartGeneral.cart.value.isProduct)
 
                     /// Shipping charges
                     Row(
                       children: [
-                        TextX("Shipping charges",
-                            style: TextStyleX.supTitleLarge),
+                        TextX(
+                          "Shipping charges",
+                          style: TextStyleX.titleSmall,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
                         const Spacer(),
                         TextX(
                           "${FunctionX.formatLargeNumber(controller.shippingCharges.value)} ${"SAR".tr}",
-                          style: TextStyleX.supTitleLarge,
+                          style: TextStyleX.titleSmall,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ],
                     ).fadeAnimation600,
 
+                  if (controller.cartGeneral.cart.value.isProduct)
+
                     ///  Dash Line
                     DashLineX(
                       margin: const EdgeInsets.symmetric(vertical: 16),
+                      dashColor: context.isDarkMode?null:ColorX.grey.shade200,
                     ).fadeAnimation600,
-                  ],
-                ),
+                ],
+              ),
 
               /// Total Cart
               Row(
@@ -81,8 +93,8 @@ class TotalPricesSectionX extends GetView<CartController> {
                   ),
                   const Spacer(),
                   TextX(
-                    "${FunctionX.formatLargeNumber(controller.calculateTotalCart())} ${"SAR".tr}",
-                    style: TextStyleX.titleSmall,
+                    "${FunctionX.formatLargeNumber(controller.cartSummary.value + controller.shippingCharges.value)} ${"SAR".tr}",
+                    size: 16,
                     fontWeight: FontWeight.w700,
                   ),
                 ],
@@ -90,7 +102,7 @@ class TotalPricesSectionX extends GetView<CartController> {
               const SizedBox(height: 18),
 
               /// Delivery information button
-              if (controller.orderProducts.isNotEmpty)
+              if (controller.cartGeneral.cart.value.isProduct)
                 ButtonX.second(
                   onTap: () => deliveryAddressSheetX(
                     controller: controller.deliveryAddressController,
@@ -100,16 +112,17 @@ class TotalPricesSectionX extends GetView<CartController> {
                       : "Add delivery address",
                 ).fadeAnimation700,
 
-              /// Payment button
-              if (controller.orderProducts.isEmpty ||
-                  (controller.orderProducts.isNotEmpty &&
+              // /// Payment button
+              if (!controller.cartGeneral.cart.value.isProduct ||
+                  (controller.cartGeneral.cart.value.isProduct &&
                       controller.deliveryAddressController.isHasData.value))
-                ButtonStateX(
-                  state: controller.buttonState.value,
-                  onTap: controller.onPay,
-                  text: "Complete Payment",
-                  iconData: Icons.payments_rounded,
-                ).fadeAnimation700
+              ButtonStateX(
+                disabled: controller.isLoading.value,
+                onTap: controller.onPay,
+                state: controller.buttonState.value,
+                text: "Complete Payment",
+                iconData: Icons.payments_rounded,
+              ).fadeAnimation700
             ],
           ),
         ),

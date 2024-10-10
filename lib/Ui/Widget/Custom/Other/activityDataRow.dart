@@ -22,14 +22,14 @@ class ActivityDataRowX extends StatelessWidget {
             children: [
               TextX(
                 title,
-                style: TextStyleX.supTitleLarge,
+                color: context.isDarkMode?ColorX.grey.shade400:ColorX.grey.shade500,
               ),
               const SizedBox(width: 40,),
               if (dataWidget == null)
                 Flexible(
                   child: TextX(
                     data,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w700,
                     maxLines: 1,
                   ),
                 ),

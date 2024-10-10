@@ -15,12 +15,24 @@ import '../../Ui/Screen/Screen/Campaigns/CreateCampaign/controller/Controller.da
 import '../../Ui/Screen/Screen/Campaigns/CreateCampaign/view/View.dart';
 import '../../Ui/Screen/Screen/DynamicPage/controller/Controller.dart';
 import '../../Ui/Screen/Screen/DynamicPage/view/View.dart';
-import '../../Ui/Screen/Screen/Gifting/controller/Controller.dart';
-import '../../Ui/Screen/Screen/Gifting/view/View.dart';
 import '../../Ui/Screen/Screen/Deduction/AllDeductions/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Deduction/AllDeductions/view/View.dart';
 import '../../Ui/Screen/Screen/Deduction/DeductionDetails/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Deduction/DeductionDetails/view/View.dart';
+import '../../Ui/Screen/Screen/Gift/CreateGift/controller/Controller.dart';
+import '../../Ui/Screen/Screen/Gift/CreateGift/view/View.dart';
+import '../../Ui/Screen/Screen/Gift/PreviewGift/controller/Controller.dart';
+import '../../Ui/Screen/Screen/Gift/PreviewGift/view/View.dart';
+import '../../Ui/Screen/Screen/Payment/DeductionPayment/controller/Controller.dart';
+import '../../Ui/Screen/Screen/Payment/DeductionPayment/view/View.dart';
+import '../../Ui/Screen/Screen/Payment/GeneralPayment/controller/Controller.dart';
+import '../../Ui/Screen/Screen/Payment/GeneralPayment/view/View.dart';
+import '../../Ui/Screen/Screen/Payment/PaymentSuccessful/controller/Controller.dart';
+import '../../Ui/Screen/Screen/Payment/PaymentSuccessful/view/View.dart';
+import '../../Ui/Screen/Screen/Profile/Activity/MyShareLinks/controller/Controller.dart';
+import '../../Ui/Screen/Screen/Profile/Activity/MyShareLinks/view/View.dart';
+import '../../Ui/Screen/Screen/ReceiptPreview/controller/Controller.dart';
+import '../../Ui/Screen/Screen/ReceiptPreview/view/View.dart';
 import '../../Ui/Screen/Screen/Sponsorships/AllSponsorships/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Sponsorships/AllSponsorships/view/View.dart';
 import '../../Ui/Screen/Screen/Sponsorships/TypesSponsorships/controller/Controller.dart';
@@ -29,8 +41,8 @@ import '../../Ui/Screen/Screen/Profile/Activity/Activity/controller/Controller.d
 import '../../Ui/Screen/Screen/Profile/Activity/Activity/view/View.dart';
 import '../../Ui/Screen/Screen/Profile/Activity/MyCampaigns/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Profile/Activity/MyCampaigns/view/View.dart';
-import '../../Ui/Screen/Screen/Profile/Activity/MyGifting/controller/Controller.dart';
-import '../../Ui/Screen/Screen/Profile/Activity/MyGifting/view/View.dart';
+import '../../Ui/Screen/Screen/Profile/Activity/MyGift/controller/Controller.dart';
+import '../../Ui/Screen/Screen/Profile/Activity/MyGift/view/View.dart';
 import '../../Ui/Screen/Screen/Profile/Activity/MyDeductions/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Profile/Activity/MyDeductions/view/View.dart';
 import '../../Ui/Screen/Screen/Profile/Activity/MyDonations/controller/Controller.dart';
@@ -41,8 +53,8 @@ import '../../Ui/Screen/Screen/Profile/Activity/MyOrders/controller/Controller.d
 import '../../Ui/Screen/Screen/Profile/Activity/MyOrders/view/View.dart';
 import '../../Ui/Screen/Screen/Profile/Activity/PaymentCards/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Profile/Activity/PaymentCards/view/View.dart';
-import '../../Ui/Screen/Screen/Profile/Activity/SharingLinks/controller/Controller.dart';
-import '../../Ui/Screen/Screen/Profile/Activity/SharingLinks/view/View.dart';
+import '../../Ui/Screen/Screen/VerificationUrl/controller/Controller.dart';
+import '../../Ui/Screen/Screen/VerificationUrl/view/View.dart';
 import '../../Ui/Screen/Screen/Zakat/Zakat/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Zakat/Zakat/view/View.dart';
 import '../../Ui/Screen/Screen/Zakat/ZakatCalculator/controller/Controller.dart';
@@ -50,7 +62,6 @@ import '../../Ui/Screen/Screen/Zakat/ZakatCalculator/view/View.dart';
 import '../../Ui/Screen/Screen/Zakat/ZakatDisbursements/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Zakat/ZakatDisbursements/view/View.dart';
 import '../config.dart';
-import '../../Core/Controller/Cart/cartGeneralController.dart';
 import '../../Ui/Screen/Screen/Donation/AllDonation/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Organization/AllOrganizations/controller/Controller.dart';
 import '../../Ui/Screen/Screen/Organization/AllOrganizations/view/View.dart';
@@ -132,7 +143,6 @@ class RouteListX {
           Get.lazyPut(
             () => ProfileDetailsController(),
           );
-          Get.lazyPut(() => CartGeneralControllerX(), fenix: true);
         },
       ),
     ),
@@ -181,6 +191,46 @@ class RouteListX {
           Get.lazyPut(
             () => DynamicPageController(),
           );
+        })),
+    //========================================================
+    /// Receipt Preview
+    GetPage(
+        name: RouteNameX.receiptPreview,
+        page: () => const ReceiptPreviewView(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut(
+            () => ReceiptPreviewController(),
+          );
+        })),
+    //========================================================
+    /// Verification Url
+    GetPage(
+        name: RouteNameX.verificationUrl,
+        page: () => const VerificationUrlView(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut(
+            () => VerificationUrlController(),
+          );
+        })),
+    //========================================================
+    /// Payment
+    GetPage(
+        name: RouteNameX.generalPayment,
+        page: () => const GeneralPaymentView(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut(() => GeneralPaymentController());
+        })),
+    GetPage(
+        name: RouteNameX.deductionPayment,
+        page: () => const DeductionPaymentView(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut(() => DeductionPaymentController());
+        })),
+    GetPage(
+        name: RouteNameX.paymentSuccessful,
+        page: () => const PaymentSuccessfulView(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut(() => PaymentSuccessfulController());
         })),
     //========================================================
     /// Profile
@@ -249,10 +299,10 @@ class RouteListX {
           Get.lazyPut(() => MySponsorshipsController());
         })),
     GetPage(
-        name: RouteNameX.sharingLinks,
-        page: () => const SharingLinksView(),
+        name: RouteNameX.myShareLinks,
+        page: () => const MyShariLinksView(),
         binding: BindingsBuilder(() {
-          Get.lazyPut(() => SharingLinksController());
+          Get.lazyPut(() => MyShareLinksController());
         })),
     GetPage(
         name: RouteNameX.paymentCards,
@@ -354,10 +404,16 @@ class RouteListX {
     //========================================================
     /// Gifting
     GetPage(
-        name: RouteNameX.gifting,
-        page: () => const GiftingView(),
+        name: RouteNameX.gift,
+        page: () => const CreateGiftView(),
         binding: BindingsBuilder(() {
-          Get.lazyPut(() => GiftingController());
+          Get.lazyPut(() => CreateGiftController());
+        })),
+    GetPage(
+        name: RouteNameX.previewGift,
+        page: () => const PreviewGiftView(),
+        binding: BindingsBuilder(() {
+          Get.lazyPut(() => PreviewGiftController());
         })),
     //========================================================
     /// Cart

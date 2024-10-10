@@ -49,7 +49,7 @@ class TextStyleX {
       letterSpacing:0.15
   );
   static TextStyle supTitleMedium = TextStyle(
-      fontSize: 12.0,
+      fontSize: 12.2,
       color: Get.theme.colorScheme.secondary,
       fontWeight: FontWeight.w400,
       letterSpacing:0.15

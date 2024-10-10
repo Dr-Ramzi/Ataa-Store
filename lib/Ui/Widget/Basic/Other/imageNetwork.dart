@@ -66,57 +66,59 @@ class ImageNetworkX extends StatelessWidget {
           ),
         );
       } else {
-        return Image.network(
-          imageUrl,
-          height: height,
-          width: width,
-          fit: fit,
-          color: color,
-          frameBuilder: (BuildContext context, Widget child, int? frame,
-              bool? wasSynchronouslyLoaded) {
-            if (frame == null) {
-              return Container(
-                color: backgroundLoading ??
-                    Theme.of(context).colorScheme.onPrimary,
-                width: width,
-                height: height,
-              );
-            }
-            return child;
-          },
-          loadingBuilder: (BuildContext context, Widget child,
-              ImageChunkEvent? loadingProgress) {
-            if (loadingProgress != null) {
-              return Container(
-                color: backgroundLoading ??
-                    Theme.of(context).colorScheme.onPrimary,
-                width: width,
-                height: height,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
-                          : null,
+        try{
+          return Image.network(
+            imageUrl,
+            height: height,
+            width: width,
+            fit: fit,
+            color: color,
+            frameBuilder: (BuildContext context, Widget child, int? frame,
+                bool? wasSynchronouslyLoaded) {
+              if (frame == null) {
+                return Container(
+                  color: backgroundLoading ??
+                      Theme.of(context).colorScheme.onPrimary,
+                  width: width,
+                  height: height,
+                );
+              }
+              return child;
+            },
+            loadingBuilder: (BuildContext context, Widget child,
+                ImageChunkEvent? loadingProgress) {
+              if (loadingProgress != null) {
+                return Container(
+                  color: backgroundLoading ??
+                      Theme.of(context).colorScheme.onPrimary,
+                  width: width,
+                  height: height,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
                     ),
                   ),
-                ),
-              );
-            } else {
-              return child;
-            }
-          },
-          errorBuilder: (context, error, stackTrace) => SizedBox(
-            width: width,
-            height: height,
-            child: failed ?? empty??
-                Padding(
-                    padding: EdgeInsets.all(getPaddingEmpty()),
-                    child: SvgPicture.asset(getImageEmpty())),
-          ),
-        );
+                );
+              } else {
+                return child;
+              }
+            },
+            errorBuilder: (context, error, stackTrace) => SizedBox(
+              width: width,
+              height: height,
+              child: failed ?? empty??
+                  Padding(
+                      padding: EdgeInsets.all(getPaddingEmpty()),
+                      child: SvgPicture.asset(getImageEmpty())),
+            ),
+          );
+        }catch(_){}
       }
     }
 

@@ -16,22 +16,30 @@ class CashMoneySectionX extends GetView<ZakatCalculatorController> {
         title: "Zakat on cash money",
         isOpen: controller.isCashMoney.value,
         onChangeOpen: controller.onOpenCashMoney,
+        error: controller.cashError.value,
+        isLoading: controller.cashIsLoading.value,
+        isDone: controller.cashIsDone.value,
         child: Column(
           children: [
             const LabelInputX("The Amount", marginTop: 0),
-            TextFieldX(
-              /// To calculate the value of Zakat after changing the value
-              onChanged: (_) => controller.calculateCashMoney(),
-              controller: controller.caskMoney,
-              textInputType: TextInputType.number,
-              textInputAction: TextInputAction.done,
-              validate: ValidateX.money,
-              color: Theme.of(context).cardColor,
-              hint: "0",
-              suffixWidget: TextX(
-                "SAR",
-                style: TextStyleX.titleSmall,
-                color: Get.theme.colorScheme.secondary,
+            Form(
+              key: controller.cashFormKey,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              child: TextFieldX(
+                /// To calculate the value of Zakat after changing the value
+                onEditingComplete: (_) async => await controller.calculateCashMoney(),
+                controller: controller.cash,
+                textInputType: TextInputType.number,
+                textInputAction: TextInputAction.done,
+                validate: ValidateX.moneyOptional,
+                color: Theme.of(context).cardColor,
+                errorMaxLines: 2,
+                hint: "0",
+                suffixWidget: TextX(
+                  "SAR",
+                  style: TextStyleX.titleSmall,
+                  color: Get.theme.colorScheme.secondary,
+                ),
               ),
             ),
           ],

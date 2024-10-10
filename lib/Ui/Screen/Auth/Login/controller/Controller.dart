@@ -26,13 +26,13 @@ class LoginController extends GetxController {
   Rx<ButtonStateEX> buttonState = ButtonStateEX.normal.obs;
 
   RxBool isPhone = true.obs;
-  RxInt countryCode = ((Get.arguments??{}[NameX.countryCode] ?? 966) as int).obs;
+  RxInt countryCode = ((Get.arguments is Map?(Get.arguments?[NameX.countryCode] ?? 966):966) as int).obs;
   final loginVia = ValueNotifier(1);
 
   GlobalKey<FormState> formKey = GlobalKey();
   AutovalidateMode autoValidate = AutovalidateMode.disabled;
 
-  TextEditingController phone = TextEditingController(text: Get.arguments??{}[NameX.phone]);
+  TextEditingController phone = TextEditingController(text: Get.arguments is Map?Get.arguments[NameX.phone]:'');
   TextEditingController email = TextEditingController();
 
   //============================================================================
@@ -40,14 +40,14 @@ class LoginController extends GetxController {
 
   onChangeCountryCode(String code) => countryCode.value = int.parse(code);
 
-  onSignUp() {
+  onSignUp() async{
     if (isLoading.isFalse) {
       error.value = null;
       if (isSheet) {
         Get.back();
 
         /// to close login sheet
-        bottomSheetX(child: SignUpView(isSheet: true).paddingOnly(top: 14));
+        await bottomSheetX(child: SignUpView(isSheet: true).paddingOnly(top: 14));
       } else if (Get.previousRoute == RouteNameX.signUp) {
         Get.back();
 
@@ -129,11 +129,12 @@ class LoginController extends GetxController {
     /// go to otp screen
     if (isSheet) {
       Get.back();
-      bottomSheetX(child: OTPView(isSheet: true, otp: otp).paddingOnly(top: 14));
+      await bottomSheetX(child: OTPView(isSheet: true, otp: otp).paddingOnly(top: 14));
+      return null;
     } else {
-      Get.toNamed(RouteNameX.otp, arguments: otp);
+      Get.toNamed(RouteNameX.otp, arguments: {NameX.otp:otp});
+      return massage;
     }
-    return massage;
   }
 
   Future<String?> loginByEmail() async {
@@ -147,11 +148,13 @@ class LoginController extends GetxController {
 
     Get.toNamed(
       RouteNameX.otp,
-      arguments: OtpX(
-        email: email.text.trim(),
-        isLogin: true,
-        isPhone: false,
-      ),
+      arguments: {
+        NameX.otp:OtpX(
+          email: email.text.trim(),
+          isLogin: true,
+          isPhone: false,
+        )
+      },
     );
     return massage;
   }

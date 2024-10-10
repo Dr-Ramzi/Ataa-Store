@@ -18,7 +18,7 @@ previewDedicateSheetX({required PreviewDedicateControllerX controller}) {
   return bottomSheetX(
     title: "Preview the gifting",
     child: Obx(
-          () => Column(
+      () => Column(
         children: [
           /// Display type tabs
           ClipRRect(
@@ -55,30 +55,33 @@ previewDedicateSheetX({required PreviewDedicateControllerX controller}) {
           /// Show the gifting image
           if (controller.isCard.value)
             ContainerX(
-              maxHeight: 500,
-              minHeight: 400,
               padding: const EdgeInsets.all(16),
-              child: GiftCardForGiftingX(
-                isPreview: true,
-                radius: 26,
-                borderWidth: 7,
-                nameFrom: controller.nameFrom,
-                nameTo: controller.nameTo,
-                amount: controller.amount,
-                isShowAmount: controller.isShowAmount,
-                orgName: controller.orgName,
-                color: controller.color,
-                giftCardFormByGender: controller.giftCardFormByGender,
+              child: Column(
+                children: [
+                  GiftCardForGiftX(
+                    isPreview: true,
+                    radius: 26,
+                    borderWidth: 7,
+                    nameFrom: controller.nameFrom,
+                    nameTo: controller.nameTo,
+                    amount: controller.amount,
+                    isShowAmount: controller.isShowAmount,
+                    orgName: controller.orgName,
+                    color: controller.color,
+                    giftCardFormByGender: controller.giftCardFormByGender,
+                  ).fadeAnimation300,
+                ],
               ),
-            ).fadeAnimation300,
+            ),
 
           /// Show the gifting message
           if (!controller.isCard.value)
             Container(
               constraints: const BoxConstraints(
-                maxHeight: 500,
-                minHeight: 400,
+                maxHeight: 400,
+                minHeight: 300,
               ),
+              padding: const EdgeInsets.symmetric(vertical: 16),
               child: Column(
                 children: [
                   FutureBuilderX(
@@ -87,10 +90,9 @@ previewDedicateSheetX({required PreviewDedicateControllerX controller}) {
                       height: 200,
                       width: double.maxFinite,
                       borderRadius: BorderRadius.circular(StyleX.radius),
-                      margin: const EdgeInsets.symmetric(vertical: 16),
                     ),
                     child: (data) => ContainerX(
-                      margin: const EdgeInsets.symmetric(vertical: 16),
+                      width: double.infinity,
                       color: Get.theme.colorScheme.onPrimary,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 14,
@@ -101,7 +103,7 @@ previewDedicateSheetX({required PreviewDedicateControllerX controller}) {
                         children: [
                           /// message
                           MessageText(
-                            message:controller.getMessageString(),
+                            message: controller.getMessageString(),
                           ),
                         ],
                       ),
@@ -132,7 +134,8 @@ class MessageText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text.rich(
       _buildMessageWithLinks(message),
-      style: TextStyleX.titleMedium.copyWith(color: ColorX.primary,fontFamily: FontX.fontFamily),
+      style: TextStyleX.titleMedium
+          .copyWith(color: ColorX.primary, fontFamily: FontX.fontFamily),
     );
   }
 
@@ -151,12 +154,15 @@ class MessageText extends StatelessWidget {
       }
 
       final String url = match.group(0)!;
-      final String fullUrl = url.startsWith('http') ? url : 'http://$url'; // إضافة http:// إذا كان الرابط لا يبدأ بـ http
+      final String fullUrl = url.startsWith('http')
+          ? url
+          : 'http://$url'; // إضافة http:// إذا كان الرابط لا يبدأ بـ http
 
       spans.add(
         TextSpan(
           text: url,
-          style: TextStyleX.titleMedium.copyWith(color: ColorX.url,fontFamily: FontX.fontFamily),
+          style: TextStyleX.titleMedium
+              .copyWith(color: ColorX.url, fontFamily: FontX.fontFamily),
           recognizer: TapGestureRecognizer()
             ..onTap = () {
               _launchURL(fullUrl);
@@ -175,8 +181,8 @@ class MessageText extends StatelessWidget {
   }
 
   void _launchURL(String url) async {
-    try{
+    try {
       await launchUrl(Uri.parse(url));
-    }catch(_){}
+    } catch (_) {}
   }
 }

@@ -20,7 +20,21 @@ class ValidateX{
     }
     return null;
   }
-
+  static String? fullName(String? value) {
+    String pattern = r'^[\u0621-\u064A\u0660-\u0669a-zA-Z\s]+$';
+    if (value!.trim().isEmpty) {
+      return 'Name Required'.tr;
+    } else if (value.trim().length < 2) {
+      return 'It must be at least two characters'.tr;
+    } else if (value.trim().length > 20) {
+      return 'It must be no more than 20 characters'.tr;
+    } else if (!RegExp(pattern).hasMatch(value.trim())) {
+      return 'The name must consist of letters only'.tr;
+    } else if (!value.trim().contains(' ')) {
+      return 'The name must consist of at least two words'.tr;
+    }
+    return null;
+  }
   /// Verify names
   static String? nameNoRequired(String? value) {
     String pattern = r'^[\u0621-\u064A\u0660\ a-zA-Z]+$';
@@ -113,10 +127,23 @@ class ValidateX{
     }
     return null;
   }
+  /// Verify the gram weight
+  static String? gramOptional(String? value) {
+    String pattern = r'^[0-9]+$';
+    RegExp regExp = RegExp(pattern);
+    if (value!.trim().isEmpty) {
+      return null;
+    }else if (!regExp.hasMatch(value.trim())) {
+      return 'It should contain gram only'.tr;
+    }else if (double.parse(value)==0) {
+      return 'The gram should not be 0'.tr;
+    }
+    return null;
+  }
 
   /// Verify funds
   static String? money(String? value) {
-    String pattern = r'^[0-9]+$';
+    String pattern = r'^\d+(\.\d+)?$';
     RegExp regExp = RegExp(pattern);
     if (value!.trim().isEmpty) {
       return "Money Required".tr;
@@ -127,10 +154,9 @@ class ValidateX{
     }
     return null;
   }
-
   /// Verify optional funds
   static String? moneyOptional(String? value) {
-    String pattern = r'^[0-9]+$';
+    String pattern = r'^\d+(\.\d+)?$';
     RegExp regExp = RegExp(pattern);
     if (value!.trim().isEmpty) {
       return null;

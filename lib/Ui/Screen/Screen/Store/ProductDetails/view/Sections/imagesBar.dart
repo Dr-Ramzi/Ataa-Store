@@ -18,7 +18,7 @@ class ImagesBarSection extends GetView<ProductDetailsController> {
         child: Row(
           children: [
             for (int index = 0;
-                index < controller.product.imageURL.length;
+                index < controller.product.imageUrl.length;
                 index++)
               GestureDetector(
                 onTap: () => controller.onChangeImage(index),
@@ -34,7 +34,7 @@ class ImagesBarSection extends GetView<ProductDetailsController> {
                       child: ImageNetworkX(
                         height: 70,
                         width: 70,
-                        imageUrl: controller.product.imageURL[index],
+                        imageUrl: controller.product.imageUrl[index],
                       ),
                     ),
                   ),

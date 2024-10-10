@@ -61,7 +61,7 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                             borderRadius:
                                 BorderRadius.circular(StyleX.radiusMd),
                             child: ImageNetworkX(
-                              imageUrl: controller.product.imageURL[
+                              imageUrl: controller.product.imageUrl[
                                   controller.imageSelectedIndex.value],
                               height: 200,
                               width: double.maxFinite,
@@ -74,7 +74,7 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
 
                       /// Product images
                       /// Show images bar if has more 1
-                      if (controller.product.imageURL.length > 1)
+                      if (controller.product.imageUrl.length > 1)
                         const ImagesBarSection()
                             .marginOnly(bottom: 16)
                             .fadeAnimation300,

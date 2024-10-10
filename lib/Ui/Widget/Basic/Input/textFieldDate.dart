@@ -42,7 +42,7 @@ class TextFieldDateX extends StatefulWidget {
 
 class _TextFieldDateXState extends State<TextFieldDateX> {
   DateTime? date;
-  TimeOfDay? time;
+  TimeOfDay time = const TimeOfDay(hour: 1, minute: 0);
   @override
   void initState() {
     initializeDateFormatting(widget.locale.languageCode, null);
@@ -102,14 +102,14 @@ class _TextFieldDateXState extends State<TextFieldDateX> {
                       onDateSelected: (newDate) {
                         date = newDate;
                       },
-                    ),
+                    ).fadeAnimation200,
                     const SizedBox(height: 10),
                     Center(
                       child: TimeInputX(
                         initialTime: time,
                         onChange: (time) => this.time=time,
                       ),
-                    ),
+                    ).fadeAnimation250,
                     const SizedBox(height: 10),
                     Row(
                       children: [
@@ -123,7 +123,7 @@ class _TextFieldDateXState extends State<TextFieldDateX> {
                                       .arabicToEnglishNumbers
                                   : '');
                               if (widget.onChange != null) {
-                                widget.onChange!(time!=null?date?.addTime(time!):date);
+                                widget.onChange!(date?.addTime(time));
                               }
                               Get.back();
                             },
@@ -136,14 +136,14 @@ class _TextFieldDateXState extends State<TextFieldDateX> {
                             onTap: () {
                               widget.controller.text = '';
                               date=null;
-                              time=null;
+                              time=const TimeOfDay(hour: 1, minute: 0);
                               widget.onChange!(null);
                               Get.back();
                             },
                           ),
                         )
                       ],
-                    )
+                    ).fadeAnimation300
                   ],
                 ),
               );

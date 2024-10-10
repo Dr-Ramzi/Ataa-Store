@@ -19,22 +19,27 @@ class TestimonialX {
 
   factory TestimonialX.fromJson(Map<String, dynamic> json) {
     Map<String, Object?> imageJson = Map<String, Object?>.from(json[NameX.image] ?? {});
+    try{
 
-    return ModelUtilX.checkFromJson(
-      json,
-          (json) => TestimonialX(
-        id: json[NameX.id].toStrDefaultX(''),
-        name: json[NameX.name].toStrX,
-        content: json[NameX.content].toStrX,
-        isActive: json[NameX.status].toBoolDefaultX(true),
-        imageUrl: imageJson[NameX.url].toStrNullableX,
-        country: json[NameX.country].toFromJsonNullableX(CountryX.fromJson),
-      ),
-      requiredDataKeys: [
-        NameX.name,
-        NameX.content,
-      ],
-    );
+      return ModelUtilX.checkFromJson(
+        json,
+            (json) => TestimonialX(
+          id: json[NameX.id].toStrDefaultX(''),
+          name: json[NameX.name].toStrX,
+          content: json[NameX.content].toStrDefaultX(''),
+          isActive: json[NameX.status].toBoolDefaultX(true),
+          imageUrl: imageJson[NameX.url].toStrNullableX,
+          country: json[NameX.country].toFromJsonNullableX(CountryX.fromJson),
+        ),
+        requiredDataKeys: [
+          NameX.name,
+          NameX.content,
+        ],
+      );
+    }catch(e){
+      e.toErrorX.log();
+      rethrow;
+    }
   }
 
   /// Method to convert an instance to JSON

@@ -105,7 +105,7 @@ class ProductDetailsController extends GetxController {
           buttonState.value = ButtonStateEX.loading;
 
           /// Connect to basket Controller to add to cart in database
-          await basketController.addProduct(product);
+          // await basketController.addProduct(product);
 
           /// The time delay here is aesthetically beneficial
           buttonState.value = ButtonStateEX.success;

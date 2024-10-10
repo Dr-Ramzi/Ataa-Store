@@ -18,14 +18,14 @@ class AppBarWithCoverSectionX extends GetView<CampaignDetailsController> {
           width: double.maxFinite,
           child: PageView.builder(
             controller: controller.imagesController,
-            itemCount: controller.campaign.imageURL.length,
+            itemCount: controller.campaign.imageUrl?.length??0,
             itemBuilder: (_, index) {
               return Container(
                 color: Theme.of(context).cardColor,
                 width: double.maxFinite,
                 height: 300,
                 child: ImageNetworkX(
-                  imageUrl: controller.campaign.imageURL[index],
+                  imageUrl: controller.campaign.imageUrl![index],
                   fit: BoxFit.cover,
                 ),
               );
@@ -58,7 +58,7 @@ class AppBarWithCoverSectionX extends GetView<CampaignDetailsController> {
             children: [
               SmoothPageIndicator(
                 controller: controller.imagesController,
-                count: controller.campaign.imageURL.length,
+                count: controller.campaign.imageUrl?.length??0,
                 effect: const ExpandingDotsEffect(
                   dotHeight: 6,
                   dotWidth: 6,

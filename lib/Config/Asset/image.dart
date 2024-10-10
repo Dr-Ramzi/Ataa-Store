@@ -28,6 +28,13 @@ class ImageX {
   static const String giftCardLogo = '${_path}gift/gift-card-logo.png';
   static const String giftCardBackground1 = '${_path}gift/gift-card-background-1.png';
 
+  /// Rate
+  static const String excellent = '${_path}rate/excellent.png';
+  static const String good = '${_path}rate/good.png';
+  static const String average = '${_path}rate/average.png';
+  static const String poor = '${_path}rate/poor.png';
+  static const String bad = '${_path}rate/bad.png';
+
   /// Empty
   static const String basketEmpty = '${_path}empty/basket-empty.png';
 

@@ -31,7 +31,7 @@ class MoreSectionsController extends GetxController {
 
   onSponsorships() => Get.toNamed(RouteNameX.typesSponsorships);
 
-  onGifting() => Get.toNamed(RouteNameX.gifting);
+  onGifting() => Get.toNamed(RouteNameX.gift);
 
   onDeductions() => Get.toNamed(RouteNameX.allDeductions);
 

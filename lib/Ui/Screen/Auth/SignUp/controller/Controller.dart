@@ -83,7 +83,7 @@ class SignUpController extends GetxController {
         error.value = null;
         try {
           /// Connect to the database to create the account
-          await DatabaseX.signUp(
+          String? massage = await DatabaseX.signUp(
             name: name.text.trim(),
             phone: phone.text.toIntX,
             countryCode: countryCode,
@@ -94,6 +94,10 @@ class SignUpController extends GetxController {
           await Future.delayed(
             const Duration(seconds: StyleX.successButtonSecond),
           );
+
+          if(massage!=null && massage.isNotEmpty){
+            ToastX.success(message: massage);
+          }
 
           /// create otp object
           OtpX otp = OtpX(
@@ -106,9 +110,9 @@ class SignUpController extends GetxController {
           /// go to otp screen
           if (isSheet) {
             Get.back(); // close sign up sheet
-            bottomSheetX(child: OTPView(isSheet: true, otp: otp));
+            bottomSheetX(child: OTPView(isSheet: true, otp: otp).paddingOnly(top: 14));
           } else {
-            Get.toNamed(RouteNameX.otp, arguments: otp);
+            Get.toNamed(RouteNameX.otp, arguments: {NameX.otp:otp});
           }
         } catch (e) {
           error.value = e.toErrorX;

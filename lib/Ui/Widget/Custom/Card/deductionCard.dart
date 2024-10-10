@@ -52,7 +52,7 @@ class DeductionCardX extends StatelessWidget {
                       onTap: () async => await shareSheet(deduction.shareURL),
                       child: const ContainerX(
                         padding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                         child: Icon(Icons.share_rounded),
                       ),
                     ),
@@ -64,7 +64,7 @@ class DeductionCardX extends StatelessWidget {
                       start: 10,
                       top: 12,
                       child:
-                          DeductionMarkerCardX(deduction: deduction.recurring)),
+                      DeductionMarkerCardX(deduction: deduction.recurring.name)),
                 ],
               ),
               const SizedBox(height: 4),
@@ -89,16 +89,16 @@ class DeductionCardX extends StatelessWidget {
 
                     /// Subscribe Button
                     if(deduction.isSubscribed)
-                    ButtonX.gray(
-                      text: 'Subscribed',
-                      onTap: (){},
-                    ),
+                      ButtonX.gray(
+                        text: 'Subscribed',
+                        onTap: (){},
+                      ),
                     if(!deduction.isSubscribed)
-                    ButtonX(
-                      text: "Subscribe Now",
-                      onTap: () async=>await onSubscribe(deduction),
-                      iconData: Icons.payments_rounded,
-                    ),
+                      ButtonX(
+                        text: "Subscribe Now",
+                        onTap: () async=>await onSubscribe(deduction),
+                        iconData: Icons.payments_rounded,
+                      ),
                   ],
                 ),
               )

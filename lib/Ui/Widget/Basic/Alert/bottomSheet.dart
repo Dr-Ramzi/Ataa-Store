@@ -5,6 +5,8 @@ Future<dynamic> bottomSheetX({
   String? title,
   EdgeInsets? padding,
   bool isPaddingBottom = true,
+  bool isScrollEnabled = true,
+  ScrollController? scrollController,
 }) async {
   return await Get.bottomSheet(
     backgroundColor: Get.theme.cardColor,
@@ -42,7 +44,7 @@ Future<dynamic> bottomSheetX({
               padding: const EdgeInsetsDirectional.only(
                 top: 5.0,
                 start: StyleX.bottomSheetPadding,
-                end: StyleX.bottomSheetPadding-10,
+                end: StyleX.bottomSheetPadding - 10,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,9 +70,14 @@ Future<dynamic> bottomSheetX({
           const SizedBox(height: 6.0),
           Flexible(
             child: ListView(
+              controller: scrollController,
+              physics: isScrollEnabled
+                  ? const AlwaysScrollableScrollPhysics()
+                  : const NeverScrollableScrollPhysics(),
               padding: padding ??
                   EdgeInsets.only(
-                    bottom: (isPaddingBottom ? StyleX.bottomSheetPadding : 0)+ MediaQuery.of(Get.context!).padding.bottom,
+                    bottom: (isPaddingBottom ? StyleX.bottomSheetPadding : 0) +
+                        MediaQuery.of(Get.context!).padding.bottom,
                     left: StyleX.bottomSheetPadding,
                     right: StyleX.bottomSheetPadding,
                   ),

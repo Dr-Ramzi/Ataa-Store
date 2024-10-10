@@ -2,6 +2,7 @@ import 'package:ataa/Core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../Core/Controller/Filter/filterController.dart';
+import '../../../../../../Data/Model/Donation/donation.dart';
 import '../../../../../../Data/data.dart';
 import '../../../../../ScreenSheet/Filter/GeneralFilter/generalFilterSheet.dart';
 import '../../../../../ScreenSheet/Pay/PayDonation/payDonationSheet.dart';
@@ -25,7 +26,6 @@ class AllDonationController extends GetxController {
   //============================================================================
   // Functions
 
-  int count = 0;
   Future<List<DonationX>> getData(ScrollRefreshLoadMoreParametersX data) async {
     List<DonationX> results = await DatabaseX.getDonationsBySearch(
       page: data.page,
@@ -33,7 +33,7 @@ class AllDonationController extends GetxController {
       sortType: data.orderBy,
       searchQuery: data.searchQuery,
       isZakat: data.filters?[NameX.isZakat],
-      categoryID: data.filters?[NameX.categoryID],
+      categoryID: data.filters?[NameX.categoryId],
     );
     return results;
   }

@@ -22,7 +22,7 @@ class ActivityView extends GetView<ActivityController> {
             /// TODO: Show >>> My Campaigns
             // OptionCardX(title: "My Campaigns", icon: IconX.speakerPhone,onTap: controller.onCampaigns,),
             /// TODO: Show >>> My Deductions
-            // OptionCardX(title: "My Deductions", icon: IconX.creditCard,onTap: controller.onDeductions,),
+            OptionCardX(title: "My Deductions", icon: IconX.creditCard,onTap: controller.onDeductions,),
             /// TODO: Show >>> My Sponsorships
             // OptionCardX(title: "My Sponsorships", icon: Icons.thumb_up_alt_rounded,onTap: controller.onSponsorships,),
             OptionCardX(title: "Cart", icon: Icons.shopping_cart_rounded,onTap: controller.onGivingCart,),

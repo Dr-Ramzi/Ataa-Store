@@ -4,11 +4,11 @@ import 'package:ataa/Config/config.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../Data/Model/Gifting/giftCardFormByGender.dart';
+import '../../../../Data/Model/Gift/Subclass/giftCardFormByGender.dart';
 import '../../widget.dart';
 
-class GiftCardForGiftingX extends StatelessWidget {
-  const GiftCardForGiftingX({
+class GiftCardForGiftX extends StatelessWidget {
+  const GiftCardForGiftX({
     super.key,
     this.radius = StyleX.radius,
     this.borderWidth = 3,
@@ -31,6 +31,7 @@ class GiftCardForGiftingX extends StatelessWidget {
   final bool isShowAmount;
   final String? orgName;
   final GiftCardFormByGenderX? giftCardFormByGender;
+
   @override
   Widget build(BuildContext context) {
     // النسبة بين الطول والعرض الأصلية
@@ -48,8 +49,8 @@ class GiftCardForGiftingX extends StatelessWidget {
 
         // الطول بناءً على النسبة بين العرض والطول، وبشرط أن لا يزيد عن 700
         double cardHeight = cardWidth * aspectRatio;
-        if (cardHeight > 700) {
-          cardHeight = 700;
+        if (cardHeight > 765) {
+          cardHeight = 765;
           cardWidth = cardHeight / aspectRatio;
         }
 
@@ -60,7 +61,7 @@ class GiftCardForGiftingX extends StatelessWidget {
           child: ConstrainedBox(
             constraints: const BoxConstraints(
               maxWidth: 500, // الحد الأقصى لعرض البطاقة
-              maxHeight: 700, // الحد الأقصى لطول البطاقة
+              maxHeight: 765, // الحد الأقصى لطول البطاقة
             ),
             child: Container(
               width: cardWidth,
@@ -75,9 +76,9 @@ class GiftCardForGiftingX extends StatelessWidget {
               ),
               child: Stack(
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(radius - 4),
-                    child: Positioned.fill(
+                  Positioned.fill(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(radius - 4),
                       child: Column(
                         children: [
                           Directionality(
@@ -100,7 +101,7 @@ class GiftCardForGiftingX extends StatelessWidget {
                                   ),
                                   SizedBox(height: 30 * scaleFactor),
 
-                                  /// Name To
+                                  /// Name From
                                   ContainerX(
                                     height: 26 * scaleFactor,
                                     width: double.infinity,
@@ -125,14 +126,12 @@ class GiftCardForGiftingX extends StatelessWidget {
 
                                   /// Image in gift card form by gender
                                   Center(
-                                    child: FittedBox(
-                                      fit: BoxFit.contain,
-                                      child: ImageNetworkX(
-                                        imageUrl:
-                                            giftCardFormByGender?.imageUrl ??
-                                                '',
-                                        height: 60 * scaleFactor,
-                                      ),
+                                    child: ImageNetworkX(
+                                      imageUrl:
+                                          giftCardFormByGender?.imageUrl ??
+                                              '',
+                                      height: 60 * scaleFactor,
+                                      width:  60 * scaleFactor,
                                     ),
                                   ),
                                   SizedBox(height: 14 * scaleFactor),
@@ -190,7 +189,7 @@ class GiftCardForGiftingX extends StatelessWidget {
                                       vertical: 5.6 * scaleFactor,
                                     ),
                                     child: TextX(
-                                      '${'In the field'.tr} / $orgName',
+                                      '${'In the field'.tr} / ${orgName??''}',
                                       style: TextStyleX.titleSmall.copyWith(
                                         fontSize: 10 * scaleFactor,
                                         fontWeight: FontWeight.w600,

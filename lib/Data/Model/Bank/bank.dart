@@ -23,6 +23,7 @@ class BankX {
           imageUrl: imageJson[NameX.url].toStrDefaultX(''),
           bankAccounts: ModelUtilX.generateItems(json[NameX.bankAccounts] as List, BankAccountX.fromJson),
         ),
+        requiredDataKeys: [],
         requiredAnyDataOfKeys: [
           [
             NameX.name,

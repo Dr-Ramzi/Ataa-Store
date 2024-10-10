@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:ataa/Core/Extension/convert/convert.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../Config/config.dart';
+import '../../../Data/Model/Deduction/deduction.dart';
 import '../../../Data/data.dart';
 import '../../../UI/Widget/widget.dart';
 import '../../core.dart';
@@ -48,14 +50,15 @@ class SubscriptionDeductionControllerX extends GetxController {
 
   onChangeDeductionAmount(int val) {
     deductionAmount.text = val.toString();
-    freeDeductionSelected.value=val;
+    freeDeductionSelected.value = val;
   }
 
-  removeFreeDonationSelected(val){
-    if (int.tryParse(val)!=null) {
+  removeFreeDonationSelected(val) {
+    if (int.tryParse(val) != null) {
       freeDeductionSelected.value = int.parse(val);
     }
   }
+
   bool dataVerification() {
     if (!deduction.isOpenPrice) {
       return true;
@@ -73,29 +76,27 @@ class SubscriptionDeductionControllerX extends GetxController {
         if (dataVerification()) {
           isLoading.value = true;
           buttonState.value = ButtonStateEX.loading;
-
-          /// TODO: Database >>> Create a connection to start the payment process
-          /// TODO: Payment >>> Go to the payment screen
-          /// TODO: Database >>> Send a response from the payment screen and complete the process
-          await Future.delayed(const Duration(seconds: 1));
-
-          /// The time delay here is aesthetically beneficial
-          buttonState.value = ButtonStateEX.success;
           await Future.delayed(
-            const Duration(seconds: StyleX.successButtonSecond),
+            const Duration(milliseconds: 500),
           );
-
           /// if use this controller form bottom sheet
           if (isSheet) {
             Get.back();
           }
-          ToastX.success(
-            message:
-                "You have successfully subscribed to the periodic deduction",
+
+          await Get.toNamed(
+            RouteNameX.deductionPayment,
+            arguments: [
+              deduction,
+              deduction.isOpenPrice
+                  ? deductionAmount.text.toDoubleX
+                  : deduction.initialPrice
+            ],
           );
 
           /// clear date on controller
           removeController();
+          buttonState.value = ButtonStateEX.normal;
         }
       } catch (error) {
         ToastX.error(message: error.toString());
