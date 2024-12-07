@@ -110,7 +110,7 @@ class GeneralPaymentController extends GetxController {
       paymentTransaction =
           await DatabaseX.createPaymentTransactionForQuickDonation(
         form: form,
-        orgId: quickDonationOrgId!,
+        projectId: quickDonationOrgId!,
       );
     }
 

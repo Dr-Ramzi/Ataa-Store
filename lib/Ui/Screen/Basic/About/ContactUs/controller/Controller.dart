@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:ataa/Data/Model/ContactUs/contactUsSocialMedia.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../../../Data/Model/ContactUs/contactUs.dart';
@@ -32,17 +35,22 @@ class ContactUsController extends GetxController {
   }
 
   Future<void> onTapMobile() async {
-    final Uri uri = Uri(scheme: 'tel', path: contactUs.mobile.toString());
+    final Uri uri = Uri.parse('tel:+966${contactUs.mobile}');
     await openUrl(uri);
   }
 
   Future<void> onTapWhatsapp() async {
-    final Uri uri = Uri.parse("whatsapp://send?phone=${contactUs.whatsappNumber}");
+    final Uri uri;
+    if(Platform.isAndroid){
+      uri=Uri.parse("whatsapp://send?phone=+966${contactUs.whatsappNumber}");
+    }else{
+      uri=Uri.parse("https://wa.me/+966${contactUs.whatsappNumber}");
+    }
     await openUrl(uri);
   }
 
   Future<void> onTapEmail() async {
-    final Uri uri = Uri(scheme: 'mailto', path: contactUs.email!);
+    final Uri uri = Uri.parse('mailto:+${contactUs.email}');
     await openUrl(uri);
   }
 

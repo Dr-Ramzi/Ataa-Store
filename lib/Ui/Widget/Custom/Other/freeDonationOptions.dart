@@ -6,8 +6,10 @@ class FreeDonationOptionsX extends StatelessWidget {
     required this.onSelected,
     this.isMarginTop = true,
     required this.selected,
+    this.title = "Donation Amount",
   });
   final Function(int val) onSelected;
+  final String title;
   final bool isMarginTop;
   final int selected;
 
@@ -17,7 +19,7 @@ class FreeDonationOptionsX extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         LabelInputX(
-          "Donation Amount",
+          title,
           marginTop: isMarginTop ? 20 : 0,
         ),
         Row(

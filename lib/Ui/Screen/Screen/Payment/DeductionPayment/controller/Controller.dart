@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:ataa/Core/Error/error.dart';
 import 'package:ataa/Data/Enum/payment_method_status.dart';
@@ -11,6 +12,7 @@ import '../../../../../../Config/config.dart';
 import '../../../../../../Data/Model/PaymentTransaction/paymentTransaction.dart';
 import '../../../../../../Data/Model/PaymentTransaction/paymentTransactionForm.dart';
 import '../../../../../../Data/data.dart';
+import '../../../../../Section/AppleAndGooglePay/controller/Controller.dart';
 import '../../../../../Section/PreSavedPaymentCards/controller/Controller.dart';
 
 class DeductionPaymentController extends GetxController {
@@ -18,8 +20,13 @@ class DeductionPaymentController extends GetxController {
   // Injection of required controls
 
   final PreSavedPaymentCardsController preSavedPaymentCardsController =
-      Get.put(PreSavedPaymentCardsController(),tag: 'DeductionPayment');
-
+      Get.put(PreSavedPaymentCardsController(), tag: 'DeductionPayment');
+  late final AppleAndGooglePayController appleAndGooglePayController = Get.put(
+    AppleAndGooglePayController()
+      ..onPayDoneCallback = onPayByAppleOrGoogle
+      ..onTapCallback = onTapAppleAndGooglePay,
+    tag: 'DeductionPayment-AppleAndGooglePay',
+  );
   //============================================================================
   // Variables
 
@@ -35,6 +42,10 @@ class DeductionPaymentController extends GetxController {
   // Functions
 
   Future<void> getData() async {
+    await appleAndGooglePayController.init(
+      title: 'Deduction',
+      total: price,
+    );
     await preSavedPaymentCardsController.getData();
   }
 
@@ -45,9 +56,49 @@ class DeductionPaymentController extends GetxController {
       curve: Curves.easeInOut,
     );
   }
+  void onTapAppleAndGooglePay() {
+    error.value=null;
+  }
+
+  onPayByAppleOrGoogle(String token) async {
+    try {
+      PaymentTransactionFormX form = PaymentTransactionFormX(
+        price: price,
+        paymentMethod: Platform.isIOS ? PaymentMethodStatusX.applePay : PaymentMethodStatusX.googlePay,
+        applePayToken: Platform.isIOS ? token : null,
+        googlePayToken: Platform.isIOS ? null : token,
+      );
+      await sendPayToServer(form: form);
+    } catch (e) {
+      e.toErrorX.log();
+      error.value = e.toErrorX;
+    }
+  }
+  sendPayToServer({required PaymentTransactionFormX form}) async {
+    PaymentTransactionX paymentTransaction =
+    await DatabaseX.createPaymentTransactionForDeduction(
+      form: form,
+      deductionId: deduction.id,
+    );
+    if (paymentTransaction.verificationUrl != null) {
+      dynamic result = await Get.toNamed(
+        RouteNameX.verificationUrl,
+        arguments: paymentTransaction.verificationUrl,
+      );
+      if (result != true) {
+        throw 'Payment was not verified, try again.';
+      }
+    }
+    Get.offAndToNamed(
+      RouteNameX.paymentSuccessful,
+      arguments: paymentTransaction,
+    );
+  }
+
   onPay() async {
     if (isLoading.isFalse) {
       try {
+        preSavedPaymentCardsController.validate();
         if (preSavedPaymentCardsController.validate()) {
           error.value = null;
           isLoading.value = true;
@@ -77,22 +128,7 @@ class DeductionPaymentController extends GetxController {
                     ? preSavedPaymentCardsController.isSaveForLater.value
                     : null,
           );
-          PaymentTransactionX paymentTransaction =
-              await DatabaseX.createPaymentTransactionForDeduction(
-            form: form,
-            deductionId: deduction.id,
-          );
-          if (paymentTransaction.verificationUrl != null) {
-            dynamic result = await Get.toNamed(
-              RouteNameX.verificationUrl,
-              arguments: paymentTransaction.verificationUrl,
-            );
-            if (result != true) {
-              throw 'Payment was not verified, try again.';
-            }
-          }
-          Get.offAndToNamed(RouteNameX.paymentSuccessful,
-              arguments: paymentTransaction);
+          await sendPayToServer(form: form);
         }
       } catch (e) {
         e.toErrorX.log();

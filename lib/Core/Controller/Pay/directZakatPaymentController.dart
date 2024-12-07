@@ -49,7 +49,7 @@ class DirectZakatPaymentControllerX extends GetxController {
 
   onAddToCart({bool isPay = false}) async {
     if (isLoading.isFalse) {
-       if(zakatSelectionController.optionSelected.value==null){
+       if(zakatSelectionController.optionSelected.value == null && app.generalSettings.defaultZakat==null){
          ToastX.error(message: 'You must choose one of the donations');
        }else if (formKey.currentState!.validate()) {
         isLoading.value = true;
@@ -58,8 +58,8 @@ class DirectZakatPaymentControllerX extends GetxController {
         try {
           var data = await DatabaseX.createDonationOrder(
             form: DonationOrderFormX(
-              donationId: zakatSelectionController.optionSelected.value!.id,
-              price: money.text.toDoubleX,
+              donationId: zakatSelectionController.optionSelected.value!=null?zakatSelectionController.optionSelected.value!.id:app.generalSettings.defaultZakat!.id,
+              price: money.text.toIntX,
               donationOnBehalfOfFamilyAndFriends: false,
             ),
           );
@@ -74,6 +74,9 @@ class DirectZakatPaymentControllerX extends GetxController {
           /// Clear date on controller
           clearData();
           zakatSelectionController.clearData();
+          if(app.generalSettings.defaultZakat!=null) {
+            zakatSelectionController.optionSelected=app.generalSettings.defaultZakat.obs;
+          }
         } catch (error) {
           error.toErrorX.log();
           ToastX.error(message: error.toString());
@@ -92,6 +95,15 @@ class DirectZakatPaymentControllerX extends GetxController {
       } else {
         autoValidate = AutovalidateMode.always;
       }
+    }
+  }
+
+  //============================================================================
+  @override
+  void onInit() {
+    super.onInit();
+    if(app.generalSettings.defaultZakat!=null) {
+      zakatSelectionController.optionSelected=app.generalSettings.defaultZakat.obs;
     }
   }
 }

@@ -3,7 +3,7 @@ import '../Subclass/donationFamilyAndFriends.dart';
 
 class DonationOrderFormX {
   final String donationId;
-  final double price;
+  final int price;
   final int sharesQuantity;
   final String? donationOpenPackageId;
   final String? donationSharesPackageId;

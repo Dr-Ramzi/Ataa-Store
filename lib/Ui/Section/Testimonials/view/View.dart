@@ -21,6 +21,7 @@ class TestimonialsSectionX extends StatelessWidget {
       isHideHeaderIfEmpty: true,
       isHideHeaderIfInitLoading: false,
       isHeaderPadding: false,
+      isHideEmpty: true,
       header: header,
       initLoading: Row(
         children: [

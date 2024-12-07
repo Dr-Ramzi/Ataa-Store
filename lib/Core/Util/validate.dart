@@ -143,38 +143,63 @@ class ValidateX{
 
   /// Verify funds
   static String? money(String? value) {
-    String pattern = r'^\d+(\.\d+)?$';
+    String pattern = r'^\d+$';
     RegExp regExp = RegExp(pattern);
-    if (value!.trim().isEmpty) {
+
+    if (value == null || value.trim().isEmpty) {
       return "Money Required".tr;
-    }else if (!regExp.hasMatch(value.trim())) {
-      return 'It should contain money only'.tr;
-    }else if (double.parse(value)==0) {
-      return 'The money should not be 0'.tr;
+    } else if (!regExp.hasMatch(value.trim())) {
+      return 'It should contain whole numbers only'.tr;
+    } else if (int.parse(value) < 1) {
+      return 'The money should be at least 1'.tr;
     }
+
+    return null;
+  }
+  /// Verify funds
+  static String? giftMoney(String? value) {
+    String pattern = r'^\d+$';
+    RegExp regExp = RegExp(pattern);
+
+    if (value == null || value.trim().isEmpty) {
+      return "Money Required".tr;
+    } else if (!regExp.hasMatch(value.trim())) {
+      return 'It should contain whole numbers only'.tr;
+    } else if (int.parse(value) < 1) {
+      return 'The money should be at least 1'.tr;
+    }
+
     return null;
   }
   /// Verify optional funds
   static String? moneyOptional(String? value) {
-    String pattern = r'^\d+(\.\d+)?$';
+    String pattern = r'^\d+$';
     RegExp regExp = RegExp(pattern);
     if (value!.trim().isEmpty) {
       return null;
-    }else if (!regExp.hasMatch(value.trim())) {
-      return 'It should contain money only'.tr;
-    }else if (double.parse(value)==0) {
-      return 'The money should not be 0'.tr;
+    } else if (!regExp.hasMatch(value.trim())) {
+      return 'It should contain whole numbers only'.tr;
+    } else if (int.parse(value) < 1) {
+      return 'The money should be at least 1'.tr;
     }
+
     return null;
   }
 
   /// Verify the phone number
   static String? phone(String? value) {
-    String pattern = r'(^(?:[+0]9|00)?[0-9]{8,12}$)';
+    String pattern = r'^(?:0[1-9][0-9]{7,11}|[1-9][0-9]{7,11})$';
+
     if (value!.trim().isEmpty) {
       return 'Phone Required'.tr;
     }
-    else if (!RegExp(pattern).hasMatch(value.trim().arabicToEnglishNumbers)) {
+
+    final phoneNumber = value.trim().arabicToEnglishNumbers;
+    if (!RegExp(pattern).hasMatch(phoneNumber)) {
+      return 'Enter a valid phone number'.tr;
+    }
+
+    if (RegExp(r'^(?:(\d)\1{7,})$').hasMatch(phoneNumber)) {
       return 'Enter a valid phone number'.tr;
     }
     return null;

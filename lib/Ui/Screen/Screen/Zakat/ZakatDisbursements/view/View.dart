@@ -13,7 +13,7 @@ class ZakatDisbursementsView extends GetView<ZakatDisbursementsController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarX(
-        title: "Projects that accept Zakat",
+        title: "Zakat expenditures",
         actions: [CartIconButtonsX()],
       ),
       body: Obx(
@@ -21,7 +21,7 @@ class ZakatDisbursementsView extends GetView<ZakatDisbursementsController> {
           return Column(
             children: [
               SearchBarX(
-                disabledSearch : !controller.app.generalSettings.isActiveProjectSearch,
+                disabledSearch : !controller.app.generalSettings.isActiveDonationSearch,
                 search: controller.search,
                 onTapFilter: controller.onFilter,
               ).fadeAnimation200,

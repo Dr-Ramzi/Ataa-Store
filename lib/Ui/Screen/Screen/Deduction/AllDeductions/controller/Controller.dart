@@ -27,6 +27,8 @@ class AllDeductionsController extends GetxController {
   // Functions
 
   Future<List<DeductionX>> getData(ScrollRefreshLoadMoreParametersX data) async {
+    print(data.orderBy);
+    print(data.filters);
     List<DeductionX> results = await DatabaseX.getDeductionsBySearch(
       page: data.page,
       perPage: data.perPage,

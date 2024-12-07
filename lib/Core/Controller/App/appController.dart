@@ -7,6 +7,7 @@ class AppControllerX extends GetxController {
   Rx<UserX?> user = Rx<UserX?>(null);
 
   late GeneralAppSettingsX generalSettings;
+  late HomeElementSettingsX homeElementSettings;
   RxBool isLogin = LocalDataX.token.isNotEmpty.obs;
 
   //============================================================================
@@ -15,6 +16,7 @@ class AppControllerX extends GetxController {
   init() async {
     /// General Settings
     generalSettings = await DatabaseX.getGeneralSettings();
+    homeElementSettings = await DatabaseX.getHomeElementSettings();
 
     /// Profile
     if (isLogin.value) {

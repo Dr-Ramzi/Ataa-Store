@@ -25,7 +25,7 @@ class ZakatView extends GetView<ZakatController> {
         child: Column(
           children: [
             OptionWithIconCardX(
-              title: "Projects that accept Zakat",
+              title: "Zakat expenditures",
               subtitle:
               "Pay your zakat to projects for which zakat deductions apply",
               icon: Icons.verified,

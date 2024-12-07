@@ -57,7 +57,7 @@ directZakatPaymentSheetX() {
               Obx(
                     () => MultipleSelectionCardX(
                   title: controller.zakatSelectionController.optionSelected
-                      .value?.donationBasic.name ?? '',
+                      .value?.donationBasic.name ??'',
                   onTap: controller.onTapZakatSelection,
                 ),
               ).fadeAnimation400,

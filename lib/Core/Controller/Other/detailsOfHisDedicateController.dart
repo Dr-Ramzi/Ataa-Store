@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
+import 'package:flutter_native_contact_picker/model/contact.dart';
 import 'package:get/get.dart';
 import '../../../Data/data.dart';
 import '../../../Ui/Widget/widget.dart';
@@ -20,7 +21,7 @@ class DetailsOfHisDedicateController extends GetxController {
   late Rx<String> gender = "male".obs;
   RxInt countryCode = 966.obs;
 
-  final FlutterContactPicker contactPicker = FlutterContactPicker();
+  final FlutterNativeContactPicker contactPicker = FlutterNativeContactPicker();
 
   GlobalKey<FormState> formKey = GlobalKey();
   AutovalidateMode autoValidate = AutovalidateMode.disabled;

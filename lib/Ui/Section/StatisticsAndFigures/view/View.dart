@@ -21,6 +21,7 @@ class StatisticsAndFiguresSectionX extends StatelessWidget {
       parentScrollController: parentScrollController,
       isHideHeaderIfError: true,
       isHideHeaderIfEmpty: true,
+      isHideEmpty: true,
       isHideHeaderIfInitLoading: false,
       isShowNoMoreData: false,
       isExpanded: false,

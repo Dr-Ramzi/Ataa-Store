@@ -1,3 +1,6 @@
+// import 'package:ataa/Core/Service/firebaseRemoteConfigService.dart';
+// import 'package:firebase_analytics/firebase_analytics.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'Config/Route/routeList.dart';
@@ -18,8 +21,11 @@ void main() async {
     // Ensures that the Flutter framework is properly initialized
     WidgetsFlutterBinding.ensureInitialized();
 
+    // await Firebase.initializeApp();
+
     await LoggingX.init();
     await ConfigX.init();
+    // await FirebaseRemoteConfigServiceX.init();
     await DataX.init();
     await CoreX.init();
 
@@ -31,6 +37,10 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  // static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  // static FirebaseAnalyticsObserver observer =
+  // FirebaseAnalyticsObserver(analytics: analytics);
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -39,7 +49,7 @@ class MyApp extends StatelessWidget {
 
       /// Initialization of the main controllers
       initialBinding: BindingsBuilder(() {
-        Get.put<AppControllerX>(
+        Get.put(
           AppControllerX(),
           permanent: true,
         );
@@ -52,6 +62,8 @@ class MyApp extends StatelessWidget {
       /// Routes
       getPages: RouteListX.routes,
       initialRoute: RouteNameX.loading,
+      // ربط Firebase Analytics مع Navigation Observer
+      // navigatorObservers: <NavigatorObserver>[observer],
 
       /// Settings GetX
       smartManagement: SmartManagement.full,

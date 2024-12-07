@@ -4,14 +4,14 @@ import 'package:ataa/Core/Error/error.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../Config/config.dart';
-import '../../../../../Core/Controller/SelectedOptions/organizationSelectionController.dart';
+import '../../../../../Core/Controller/SelectedOptions/quickDonationSelectionController.dart';
 import '../../../../../Core/core.dart';
 import '../../../../../Data/Enum/payment_method_status.dart';
 import '../../../../../Data/Model/PaymentTransaction/paymentTransaction.dart';
 import '../../../../../Data/Model/PaymentTransaction/paymentTransactionForm.dart';
 import '../../../../../Data/data.dart';
 import '../../../../../UI/Widget/widget.dart';
-import '../../../../ScreenSheet/Selection/Organization/organizationSelectionSheet.dart';
+import '../../../../ScreenSheet/Selection/Donation/quickDonationSelectionSheet.dart';
 import '../../../../Section/AppleAndGooglePay/controller/Controller.dart';
 
 class QuickDonationController extends GetxController {
@@ -19,8 +19,8 @@ class QuickDonationController extends GetxController {
   // Injection of required controls
 
   AppControllerX app = Get.find();
-  OrganizationSelectionController donationProjectSelectedController = Get.put(
-    OrganizationSelectionController(isQuickDonation: true),
+  QuickDonationSelectionController quickDonationSelectionController = Get.put(
+    QuickDonationSelectionController(),
     tag: "Quick Donation",
   );
   late final AppleAndGooglePayController appleAndGooglePayController = Get.put(
@@ -101,7 +101,7 @@ class QuickDonationController extends GetxController {
   }
 
   onTapChooseDonationProject() async {
-    await organizationSelectionSheetX(donationProjectSelectedController);
+    await quickDonationSelectionSheetX(quickDonationSelectionController);
     appleAndGooglePayController.isDisabled.value = !isDataVerification();
   }
 
@@ -113,11 +113,9 @@ class QuickDonationController extends GetxController {
     donationAmount.text = '';
     freeDonationSelected.value = 0;
     autoValidate = AutovalidateMode.disabled;
-    donationProjectSelectedController.orgSelected.value = null;
+    quickDonationSelectionController.selected.value = null;
     appleAndGooglePayController.isDisabled.value = true;
     appleAndGooglePayController.paymentItems.value = [];
-    // donationProjectSelectedController.orgSelected.value =
-    //     donationProjectSelectedController.allOption;
   }
 
   /// Verify the entered data
@@ -127,13 +125,13 @@ class QuickDonationController extends GetxController {
       autoValidate = AutovalidateMode.always;
       throw "Make sure you enter a valid value in donation amount";
     }
-    if (donationProjectSelectedController.orgSelected.value == null) {
+    if (quickDonationSelectionController.selected.value == null && app.generalSettings.defaultQuickDonation==null) {
       throw "You must choose one of the donations";
     }
   }
 
   isDataVerification() {
-    if (validateAmount(donationAmount.text)!=null || donationProjectSelectedController.orgSelected.value == null) {
+    if (validateAmount(donationAmount.text)!=null || (quickDonationSelectionController.selected.value == null && app.generalSettings.defaultQuickDonation==null)) {
       return false;
     } else {
       return true;
@@ -164,7 +162,7 @@ class QuickDonationController extends GetxController {
     PaymentTransactionX paymentTransaction =
         await DatabaseX.createPaymentTransactionForQuickDonation(
       form: form,
-      orgId: donationProjectSelectedController.orgSelected.value!.id,
+      projectId: quickDonationSelectionController.selected.value!=null?quickDonationSelectionController.selected.value!.id:app.generalSettings.defaultQuickDonation!.id,
     );
 
     /// Clear date on controller
@@ -193,8 +191,7 @@ class QuickDonationController extends GetxController {
           RouteNameX.generalPayment,
           arguments: {
             NameX.amount: double.parse(donationAmount.text),
-            NameX.orgId:
-                donationProjectSelectedController.orgSelected.value?.id,
+            NameX.orgId: quickDonationSelectionController.selected.value!=null?quickDonationSelectionController.selected.value!.id:app.generalSettings.defaultQuickDonation!.id,
           },
         );
 

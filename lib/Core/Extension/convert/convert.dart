@@ -254,42 +254,6 @@ extension ConvertExtensionX on dynamic {
     }
   }
 
-  DateTime? get toDateTimeNullableX {
-    try {
-      if (this == null) {
-        return null;
-      }
-      if (this is DateTime) {
-        return this as DateTime;
-      }
-      if (this is String) {
-        String value = (this as String).trim();
-        try {
-          return DateTime.tryParse(value);
-        } catch (e) {
-          return null;
-        }
-      }
-      if (this is int) {
-        try {
-          return DateTime.fromMillisecondsSinceEpoch(this as int);
-        } catch (e) {
-          return null;
-        }
-      }
-      if (this is double) {
-        try {
-          return DateTime.fromMillisecondsSinceEpoch((this as double).toInt());
-        } catch (e) {
-          return null;
-        }
-      }
-      return null;
-    } catch (e) {
-      return null;
-    }
-  }
-
   /// Converts a given value to a bool if possible.
   /// If the conversion fails or the value is null, it returns the provided default value.
   ///
@@ -428,6 +392,77 @@ extension ConvertExtensionX on dynamic {
 
   /// TODO: Add to date time convert function
   DateTime get toDateTimeX{
-    return DateTime.now();
+    try {
+      if (this == null) {
+        return DateTime.now();
+      }
+      if (this is DateTime) {
+        return this as DateTime;
+      }
+      if (this is String) {
+        String value = (this as String).trim();
+        try {
+          var x = DateTime.tryParse(value);
+          if(x!=null){
+            return x;
+          }
+          throw Exception();
+        } catch (e) {
+          rethrow;
+        }
+      }
+      if (this is int) {
+        try {
+          return DateTime.fromMillisecondsSinceEpoch(this as int);
+        } catch (e) {
+          rethrow;
+        }
+      }
+      if (this is double) {
+        try {
+          return DateTime.fromMillisecondsSinceEpoch((this as double).toInt());
+        } catch (e) {
+          throw Exception();
+        }
+      }
+      throw Exception();
+    } catch (e) {
+      rethrow;
+    }
+  }
+  DateTime? get toDateTimeNullableX {
+    try {
+      if (this == null) {
+        return null;
+      }
+      if (this is DateTime) {
+        return this as DateTime;
+      }
+      if (this is String) {
+        String value = (this as String).trim();
+        try {
+          return DateTime.tryParse(value);
+        } catch (e) {
+          return null;
+        }
+      }
+      if (this is int) {
+        try {
+          return DateTime.fromMillisecondsSinceEpoch(this as int);
+        } catch (e) {
+          return null;
+        }
+      }
+      if (this is double) {
+        try {
+          return DateTime.fromMillisecondsSinceEpoch((this as double).toInt());
+        } catch (e) {
+          return null;
+        }
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
   }
 }

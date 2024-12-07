@@ -73,24 +73,23 @@ class PayDonationControllerX extends GetxController {
   onChangeStockValue(double val) {
     numOfStock.value = val.toInt();
     if (donation.donationShares != null) {
-      donationAmount.text =
-          (donation.donationShares!.price * numOfStock.value).toString();
+      donationAmount.text =(donation.donationShares!.price * numOfStock.value).toIntNullableX.toString();
     }
   }
 
   onChangeOpenPackage(DonationOpenPackageX val) {
     openPackageSelected.value = val;
-    donationAmount.text = val.price.toString();
+    donationAmount.text = val.price.toInt().toString();
   }
   onChangeDeductionPackage(DonationDeductionPackageX val) {
     deductionPackageSelected.value = val;
-    donationAmount.text = val.price.toString();
+    donationAmount.text = val.price.toInt().toString();
   }
 
   onChangeSharesPackage(DonationSharesPackageX val) {
     sharesPackageSelected.value = val;
     donationAmount.text =
-        (val.sharesCount * donation.donationShares!.price).toString();
+        (val.sharesCount * donation.donationShares!.price).toIntNullableX.toString();
     numOfStock.value = val.sharesCount;
   }
 
@@ -124,7 +123,7 @@ class PayDonationControllerX extends GetxController {
       /// Verify input fields
       autoValidate = AutovalidateMode.always;
       return throw "Make sure you enter a valid value in donation amount";
-    } else if (num.parse(donationAmount.text) <
+    } else if (int.parse(donationAmount.text) <
         app.generalSettings.minimumDonationAmount) {
       /// Verify the lowest possible donation value in Free Donation
       return throw "${"The minimum donation amount is".tr} ${app.generalSettings.minimumDonationAmount} ${"SAR".tr}";
@@ -150,7 +149,7 @@ class PayDonationControllerX extends GetxController {
             var data = await DatabaseX.createDonationOrder(
               form: DonationOrderFormX(
                 donationId: donation.id,
-                price: donationAmount.text.toDoubleX,
+                price: donationAmount.text.toIntX,
                 donationOpenPackageId: openPackageSelected.value?.id,
                 donationSharesPackageId: sharesPackageSelected.value?.id,
                 donationDeductionPackageId: deductionPackageSelected.value?.id,

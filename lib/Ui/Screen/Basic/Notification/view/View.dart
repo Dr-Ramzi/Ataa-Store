@@ -18,7 +18,11 @@ class NotificationsView extends GetView<NotificationsController> {
           () {
             /// Empty State
             if (controller.notifications.isEmpty) {
-              return const EmptyView(message: "You have no new notifications.").fadeAnimation200;
+              return Column(
+                children: [
+                  const EmptyView(message: "You have no new notifications.").fadeAnimation200,
+                ],
+              );
             } else {
               /// Main Content
               return ListView.builder(
@@ -37,30 +41,30 @@ class NotificationsView extends GetView<NotificationsController> {
           },
         ),
       ),
-      /// Delete Button
-      floatingActionButton: Obx(
-        () {
-          /// Show the button only if there are notifications
-          if (controller.notifications.isNotEmpty) {
-            return FloatingActionButtonX(
-              icon: Iconsax.trash,
-              backgroundColor: ColorX.danger,
-              onTap: () {
-                bottomSheetDangerousX(
-                    icon: Icons.delete,
-                    onOk: controller.deleteAllNotifications,
-                    okText: "Delete",
-                    title: "Delete All Notifications",
-                    message:
-                        "You are about to delete all notifications,are you sure you want to delete them?",
-                );
-              },
-            ).fadeAnimation400;
-          } else {
-            return const SizedBox();
-          }
-        },
-      ),
+      // /// Delete Button
+      // floatingActionButton: Obx(
+      //   () {
+      //     /// Show the button only if there are notifications
+      //     if (controller.notifications.isNotEmpty) {
+      //       return FloatingActionButtonX(
+      //         icon: Iconsax.trash,
+      //         backgroundColor: ColorX.danger,
+      //         onTap: () {
+      //           bottomSheetDangerousX(
+      //               icon: Icons.delete,
+      //               onOk: controller.deleteAllNotifications,
+      //               okText: "Delete",
+      //               title: "Delete All Notifications",
+      //               message:
+      //                   "You are about to delete all notifications,are you sure you want to delete them?",
+      //           );
+      //         },
+      //       ).fadeAnimation400;
+      //     } else {
+      //       return const SizedBox();
+      //     }
+      //   },
+      // ),
     );
   }
 }

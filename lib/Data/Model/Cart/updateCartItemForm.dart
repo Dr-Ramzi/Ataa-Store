@@ -12,7 +12,7 @@ class UpdateCartItemFormX {
   });
 
   String id;
-  double price;
+  int price;
   int quantity;
   int? sharesQuantity;
   String? donationOpenPackageId;

@@ -22,7 +22,7 @@ class RateSection extends GetView<PaymentSuccessfulController> {
             ).fadeAnimation400,
             const SizedBox(height: 24),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -32,65 +32,65 @@ class RateSection extends GetView<PaymentSuccessfulController> {
                       opacity: controller.rateSelected.value == 5 ? 1 : context.isDarkMode? 0.6: 0.4,
                       child: Column(
                         children: [
-                          Image.asset(ImageX.excellent, width: 40),
+                          Image.asset(ImageX.excellent, width: 37),
                           const SizedBox(height: 4),
                           const TextX('Excellent')
                         ],
                       ),
                     ),
-                  ),
+                  ).paddingSymmetric(horizontal: 10),
                   GestureDetector(
                     onTap: () => controller.rateSelected.value = 4,
                     child: Opacity(
                       opacity: controller.rateSelected.value == 4 ? 1 : context.isDarkMode? 0.6: 0.4,
                       child: Column(
                         children: [
-                          Image.asset(ImageX.good, width: 40),
+                          Image.asset(ImageX.good, width: 37),
                           const SizedBox(height: 4),
                           const TextX('Good')
                         ],
                       ),
                     ),
-                  ),
+                  ).paddingSymmetric(horizontal: 10),
                   GestureDetector(
                     onTap: () => controller.rateSelected.value = 3,
                     child: Opacity(
                       opacity: controller.rateSelected.value == 3 ? 1 : context.isDarkMode? 0.6: 0.4,
                       child: Column(
                         children: [
-                          Image.asset(ImageX.average, width: 40),
+                          Image.asset(ImageX.average, width: 37),
                           const SizedBox(height: 4),
                           const TextX('Average')
                         ],
                       ),
                     ),
-                  ),
+                  ).paddingSymmetric(horizontal: 10),
                   GestureDetector(
                     onTap: () => controller.rateSelected.value = 2,
                     child: Opacity(
                       opacity: controller.rateSelected.value == 2 ? 1 : context.isDarkMode? 0.6: 0.4,
                       child: Column(
                         children: [
-                          Image.asset(ImageX.poor, width: 40),
+                          Image.asset(ImageX.poor, width: 37),
                           const SizedBox(height: 4),
                           const TextX('Poor')
                         ],
                       ),
                     ),
-                  ),
+                  ).paddingSymmetric(horizontal: 10),
                   GestureDetector(
                     onTap: () => controller.rateSelected.value = 1,
                     child: Opacity(
                       opacity: controller.rateSelected.value == 1 ? 1 : context.isDarkMode? 0.6: 0.4,
                       child: Column(
                         children: [
-                          Image.asset(ImageX.bad, width: 40),
+                          Image.asset(ImageX.bad, width: 37),
                           const SizedBox(height: 4),
                           const TextX('Bad')
                         ],
                       ),
                     ),
-                  ),
+                  ).paddingSymmetric(horizontal: 10),
                 ],
               ).fadeAnimation400,
             ),

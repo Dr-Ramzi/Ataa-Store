@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 import '../../../../Data/data.dart';
 
 class OrganizationSelectionController extends GetxController {
-  bool? isQuickDonation;
-  OrganizationSelectionController({this.isQuickDonation});
   //============================================================================
   // Variables
 
@@ -28,7 +26,6 @@ class OrganizationSelectionController extends GetxController {
     ScrollRefreshLoadMoreParametersX data,
   ) async {
     return await DatabaseX.getAllOrganizations(
-      isQuickDonation: isQuickDonation,
       page: data.page,
       perPage: data.perPage,
     );
@@ -36,12 +33,7 @@ class OrganizationSelectionController extends GetxController {
 
   @override
   void onInit() {
-    if (isQuickDonation == false && orgSelected.value == null) {
-      orgSelected.value = allOption;
-    }
-    // if(isQuickDonation==true && orgSelected.value==null) {
-    //   orgSelected.value=allOption;
-    // }
+    orgSelected.value ??= allOption;
     super.onInit();
   }
 }

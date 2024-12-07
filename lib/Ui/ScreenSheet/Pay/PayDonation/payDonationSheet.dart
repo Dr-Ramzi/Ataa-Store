@@ -52,7 +52,7 @@ payDonationSheet(
               SharesPackagesSectionX(controller),
               SharesSectionX(controller),
               DonationAmountSectionX(controller),
-              if(controller.donation.donationDeductionPackages.isEmpty)
+              if(controller.donation.donationSettings.isShowGifting)
               DonateOnBehalfOfFamilyPartOfSheetX(
                   controller: controller.donateOnBehalfOfFamily,
               ),

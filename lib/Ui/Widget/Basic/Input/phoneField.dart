@@ -25,6 +25,7 @@ class PhoneFieldX extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int countryCode=this.countryCode;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -42,6 +43,7 @@ class PhoneFieldX extends StatelessWidget {
               isDisableChangeCountryCode:isDisableChangeCountryCode,
               onInputChanged: (phone) {
                 onChangeCountryCode(phone.dial_code);
+                countryCode=int.parse(phone.dial_code);
               },
               dialogConfig: DialogConfig(
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,

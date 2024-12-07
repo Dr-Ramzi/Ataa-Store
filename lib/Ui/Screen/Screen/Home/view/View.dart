@@ -34,46 +34,7 @@ class HomeView extends GetView<HomeController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const AdsSectionX(),
-                    const DonationsSectionX(),
-                    const AssociationProgramsSectionX(),
-                    const DeductionsSectionX(),
-                    const ZakatSectionX(),
-                    /// TODO: Show >>> Store on home
-                    // ProductsSectionX(),
-                    TestimonialsSectionX(
-                      padding: const EdgeInsets.only(
-                        left: StyleX.hPaddingApp,
-                        right: StyleX.hPaddingApp,
-                        bottom: 20,
-                      ),
-                      header: const SectionTitleX(
-                        title: "Testimonials",
-                        icon: IconX.testimonials,
-                      ),
-                    ),
-                    StatisticsAndFiguresSectionX(
-                      padding: const EdgeInsets.only(
-                        left: StyleX.hPaddingApp,
-                        right: StyleX.hPaddingApp,
-                        bottom: 8,
-                      ),
-                      parentScrollController: controller.scrollController,
-                      header: const SectionTitleX(
-                        title: "Statistics and Figures",
-                        icon: IconX.statisticsAndFigures,
-                        iconSize: 18,
-                      ),
-                    ),
-                    PartnersSectionX(
-                      padding: const EdgeInsets.only(
-                        left: StyleX.hPaddingApp,
-                        right: StyleX.hPaddingApp,
-                      ),
-                      header: const SectionTitleX(
-                        title: "Our Partners",
-                        icon: IconX.sparkles,
-                      ),
-                    ),
+                    ...controller.getActiveSections(),
                   ],
                 ),
               ),

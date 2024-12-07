@@ -19,7 +19,7 @@ class AllDeductionsView extends GetView<AllDeductionsController> {
             mainAxisSize: MainAxisSize.min,
             children: [
               SearchBarX(
-                disabledSearch : !controller.app.generalSettings.isActiveProjectSearch,
+                disabledSearch : !controller.app.generalSettings.isActiveDonationSearch,
                 search: controller.search,
                 onTapFilter: controller.onFilter,
               ).fadeAnimation200,

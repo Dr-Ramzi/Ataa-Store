@@ -12,17 +12,15 @@ class NotificationsController extends GetxController {
 
   void getData() {
     /// Fetch data from internal storage because all notifications are kept on the device when they arrive
-    notifications.value = LocalDataX.allNotifications.reversed.toList();
+    notifications.value = [];
 
     /// TODO: Delete >>> this code after run notifications
-    notifications.value = TestDataX.notifications;
+    // notifications.value = TestDataX.notifications;
   }
 
   /// Delete all notifications from variables and internal storage
   void deleteAllNotifications() {
     notifications.value = [];
-    LocalDataX.allNotifications = [];
-    LocalDataX.put(LocalKeyX.allNotifications, []);
   }
 
   //============================================================================
@@ -37,8 +35,7 @@ class NotificationsController extends GetxController {
 
     /// This Delayed to Fix error in flutter
     Future.delayed(Duration.zero).then((value) {
-      /// Clear the number of unread notifications
-      LocalDataX.put(LocalKeyX.unreadNotifications, 0);
+      /// TODO: Clear the number of unread notifications
     });
   }
 }

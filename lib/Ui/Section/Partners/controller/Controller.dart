@@ -5,15 +5,11 @@ import '../../../../Data/data.dart';
 
 class PartnersController extends GetxController {
   Future<List<PartnerX>> getData(ScrollRefreshLoadMoreParametersX data) async {
-    try {
-      List<PartnerX> results = await DatabaseX.getPartners(
-        page: data.page,
-        perPage: data.perPage,
-      );
-      return results;
-    } catch (e) {
-      return Future.error(e);
-    }
+    List<PartnerX> results = await DatabaseX.getPartners(
+      page: data.page,
+      perPage: data.perPage,
+    );
+    return results;
   }
   void onTap(PartnerX partner) async {
     try {

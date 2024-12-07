@@ -38,7 +38,7 @@ class OrganizationDetailsView extends GetView<OrganizationDetailsController> {
                   onTapFilter: controller.onFilter,
                   isMargin: false,
                   disabledSearch:
-                      !controller.app.generalSettings.isActiveProjectSearch,
+                      !controller.app.generalSettings.isActiveDonationSearch,
                 ).marginSymmetric(vertical: 10).fadeAnimation200,
 
                 TextX(

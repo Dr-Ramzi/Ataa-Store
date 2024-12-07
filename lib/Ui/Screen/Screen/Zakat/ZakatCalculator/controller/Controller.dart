@@ -99,14 +99,14 @@ class ZakatCalculatorController extends GetxController {
   //----------------------------------------------------------------------------
   // Total funds and zakat sections
 
-  RxDouble totalZakat = 0.0.obs;
-  RxDouble totalMoney = 0.0.obs;
-  double totalCash = 0;
-  double totalGold = 0;
-  double totalSilver = 0;
-  double totalShare = 0;
-  double totalOther = 0;
-  double totalAdditionalAmount = 0;
+  RxInt totalZakat = 0.obs;
+  RxInt totalMoney = 0.obs;
+  int totalCash = 0;
+  int totalGold = 0;
+  int totalSilver = 0;
+  int totalShare = 0;
+  int totalOther = 0;
+  int totalAdditionalAmount = 0;
 
   ///============================================================================
   /// Functions
@@ -338,7 +338,7 @@ class ZakatCalculatorController extends GetxController {
                 ZakatCalculationGoldX(
                   karat: MetalKaratStatusX.values
                       .firstWhere((e) => e.karat == goldKarats[i]),
-                  gram: goldGrams[i].text.toIntX,
+                  gram: int.parse(goldGrams[i].text),
                 ),
               );
             } else {
@@ -385,7 +385,7 @@ class ZakatCalculatorController extends GetxController {
             totalSilver = await DatabaseX.getZakatCalculation(
               form: ZakatCalculationFormX(
                 type: ZakatCalculationTypeStatusX.silver,
-                weight: silver.text.toIntX,
+                weight: int.parse(silver.text),
               ),
             );
             silverIsDone.value = true;
@@ -492,7 +492,7 @@ class ZakatCalculatorController extends GetxController {
   calculateAdditionalAmount() {
     if (additionalAmount.text.isNotEmpty &&
         ValidateX.money(additionalAmount.text) == null) {
-      totalAdditionalAmount = additionalAmount.text.toDoubleX;
+      totalAdditionalAmount = int.parse(additionalAmount.text);
       calculateTotal();
     }
   }
@@ -552,7 +552,7 @@ class ZakatCalculatorController extends GetxController {
 
   onAddToCart({bool isPay = false}) async {
     if (isPayOrCartLoading.isFalse) {
-      if (zakatSelectionController.optionSelected.value == null) {
+      if (zakatSelectionController.optionSelected.value == null && app.generalSettings.defaultZakat==null) {
         ToastX.error(message: 'You must choose one of the donations');
       } else if (additionalAmountFormKey.currentState!.validate()) {
         isPayOrCartLoading.value = true;
@@ -563,7 +563,7 @@ class ZakatCalculatorController extends GetxController {
         try {
           var data = await DatabaseX.createDonationOrder(
             form: DonationOrderFormX(
-              donationId: zakatSelectionController.optionSelected.value!.id,
+              donationId: zakatSelectionController.optionSelected.value!=null?zakatSelectionController.optionSelected.value!.id:app.generalSettings.defaultZakat!.id,
               price: totalZakat.value,
               donationOnBehalfOfFamilyAndFriends: false,
             ),
@@ -592,6 +592,9 @@ class ZakatCalculatorController extends GetxController {
           /// Clear date on controller
           clearData();
           zakatSelectionController.clearData();
+          if(app.generalSettings.defaultZakat!=null) {
+            zakatSelectionController.optionSelected=app.generalSettings.defaultZakat.obs;
+          }
         } catch (error) {
           error.toErrorX.log();
           ToastX.error(message: error.toString());
@@ -612,6 +615,15 @@ class ZakatCalculatorController extends GetxController {
       }else{
         ToastX.error(message: 'There is an error in the additional amount field data.');
       }
+    }
+  }
+
+  //============================================================================
+  @override
+  void onInit() {
+    super.onInit();
+    if(app.generalSettings.defaultZakat!=null) {
+      zakatSelectionController.optionSelected=app.generalSettings.defaultZakat.obs;
     }
   }
 }

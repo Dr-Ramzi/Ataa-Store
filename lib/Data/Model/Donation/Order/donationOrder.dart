@@ -49,9 +49,16 @@ class DonationOrderX extends OrderX {
     Map<String, Object?> donationTypeDetailsJson = Map<String, Object?>.from((donationJson[NameX.donationTypeDetails] ?? {}) as Map);
     Map<String, Object?> donationTypeJson = Map<String, Object?>.from((donationTypeDetailsJson[NameX.donationType] ?? {}) as Map);
     Map<String, Object?> donationShareJson = Map<String, Object?>.from((donationTypeDetailsJson[NameX.donationShares] ?? {}) as Map);
-    List<Map<String, dynamic>> donationSharesPackagesJsonList = List<Map<String, dynamic>>.from((donationTypeDetailsJson[NameX.donationSharesPackages] ?? [])as List);
-    List<Map<String, dynamic>> donationDeductionPackagesJsonList = List<Map<String, dynamic>>.from((donationTypeDetailsJson[NameX.donationDeductionPackages] ?? [])as List);
-    List<Map<String, dynamic>> donationOpenPackagesJsonList = List<Map<String, dynamic>>.from((donationTypeDetailsJson[NameX.donationOpenPackages] ?? [])as List);
+    List<Map<String, dynamic>> donationSharesPackagesJsonList = ((donationTypeDetailsJson[NameX.donationSharesPackages] ?? [])as List)
+        .map<Map<String, dynamic>>((e) => Map<String, dynamic>.from(e))
+        .toList();
+    List<Map<String, dynamic>> donationDeductionPackagesJsonList = ((donationTypeDetailsJson[NameX.donationDeductionPackages] ?? [])as List)
+        .map<Map<String, dynamic>>((e) => Map<String, dynamic>.from(e))
+        .toList();
+    List<Map<String, dynamic>> donationOpenPackagesJsonList = ((donationTypeDetailsJson[NameX.donationOpenPackages] ?? [])as List)
+        .map<Map<String, dynamic>>((e) => Map<String, dynamic>.from(e))
+        .toList();
+
     return ModelUtilX.checkFromJson(
       json,
       (json) => DonationOrderX(

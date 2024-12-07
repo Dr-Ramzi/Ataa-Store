@@ -2,6 +2,7 @@ library data;
 
 import 'dart:async';
 import 'package:ataa/Core/Extension/convert/convert.dart';
+import 'package:ataa/Core/Service/firebaseRemoteConfigService.dart';
 import 'package:ataa/Core/core.dart';
 import 'package:ataa/Data/Enum/model_type_status.dart';
 import 'package:ataa/Data/Enum/rate_type_status.dart';
@@ -35,6 +36,7 @@ import 'Model/General/generalPaymentMethodsSettings.dart';
 import 'Model/Gift/GiftMessage/giftMessage.dart';
 import 'Model/Gift/Subclass/giftCategory.dart';
 import 'Model/Gift/gift.dart';
+import 'Model/HomeElement/homeElementSettings.dart';
 import 'Model/PaymentCard/paymentCardForm.dart';
 import 'Model/PaymentTransaction/paymentTransactionForm.dart';
 import 'Model/Statistics/campaignStatistics.dart';

@@ -179,7 +179,7 @@ class CartController extends GetxController {
         var result = await DatabaseX.updateCartItem(
           form: UpdateCartItemFormX(
             id: item.id,
-            price: price == null ? item.price.toDouble() : price.toDoubleX,
+            price: price == null ? item.price : price.toIntX,
             quantity: quantity ?? item.quantity,
             sharesQuantity: sharesQuantity,
             donationSharesPackageId: donationSharesPackageId,

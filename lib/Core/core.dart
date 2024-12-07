@@ -10,11 +10,11 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:url_launcher/url_launcher.dart';
 import '../Config/config.dart';
+import '../Data/Model/HomeElement/homeElementSettings.dart';
 import '../Data/data.dart';
 import '../UI/Screen/Auth/Login/view/loginView.dart';
 import '../UI/Screen/Auth/SignUp/view/View.dart';
 import '../UI/Widget/widget.dart';
-import 'package:flutter_share_me/flutter_share_me.dart';
 
 import 'Controller/Cart/cartGeneralController.dart';
 import 'Helper/http/http.dart';

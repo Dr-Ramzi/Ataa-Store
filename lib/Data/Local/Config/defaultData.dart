@@ -9,9 +9,6 @@ class LocalDefaultDataX{
   static String token='';
   static String cartId = '';
   static bool cartIdIsAssign = false;
-  static String userID='';
-  static int unreadNotifications=0;
-  static List<Map<String,dynamic>> allNotifications=[];
   static SettingsX settings= SettingsX(
     language: Get.deviceLocale?.languageCode ?? TranslationX.fallbackLocale.languageCode,
     themeIsDark: Get.isPlatformDarkMode,

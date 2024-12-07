@@ -99,143 +99,142 @@ class _CartDonationCardXState extends State<CartDonationCardX> {
                         maxLines: 2,
                       ),
                       const SizedBox(height: 9),
-                      Container(
-                        constraints: const BoxConstraints(maxWidth: 250),
-                        child: Column(
-                          children: [
-                            /// Shares
-                            if (donationOrder.donationData.donationType ==
-                                ModelDonationDataTypeStatusX.shares)
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 140,
-                                    child: NumberFieldX(
-                                      value: sharesQuantity,
-                                      min: 1,
-                                      color: Theme.of(context).cardColor,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          sharesQuantity = val.toInt();
-                                        });
-                                        if (_debounceTimer?.isActive ?? false) {
-                                          _debounceTimer!.cancel();
-                                        }
+                      Column(
+                        children: [
+                          /// Shares
+                          if (donationOrder.donationData.donationType ==
+                              ModelDonationDataTypeStatusX.shares)
+                            Row(
+                              children: [
+                                Flexible(
+                                  child: FittedBox(
+                                    child: SizedBox(
+                                      width: 130,
+                                      child: NumberFieldX(
+                                        value: sharesQuantity,
+                                        min: 1,
+                                        color: Theme.of(context).cardColor,
+                                        onChanged: (val) {
+                                          setState(() {
+                                            sharesQuantity = val.toInt();
+                                          });
+                                          if (_debounceTimer?.isActive ?? false) {
+                                            _debounceTimer!.cancel();
+                                          }
 
-                                        _debounceTimer = Timer(
-                                            _debounceTimerDuration, () async {
-                                          setState(() {
-                                            isLoadingUpdate = true;
+                                          _debounceTimer = Timer(
+                                              _debounceTimerDuration, () async {
+                                            setState(() {
+                                              isLoadingUpdate = true;
+                                            });
+                                            try {
+                                              await widget.onUpdate(
+                                                cartItem,
+                                                price: ((donationOrder
+                                                            .donationShares!
+                                                            .price) *
+                                                        (sharesQuantity))
+                                                    .toString(),
+                                                sharesQuantity: val.toInt(),
+                                                donationSharesPackageId:
+                                                    donationSharesPackageId,
+                                                donationOpenPackageId:
+                                                    donationOpenPackageId,
+                                                donationDeductionPackageId:
+                                                    donationDeductionPackageId,
+                                              );
+                                            } catch (_) {}
+                                            setState(() {
+                                              isLoadingUpdate = false;
+                                            });
                                           });
-                                          try {
-                                            await widget.onUpdate(
-                                              cartItem,
-                                              price: ((donationOrder
-                                                          .donationShares!
-                                                          .price) *
-                                                      (sharesQuantity))
-                                                  .toString(),
-                                              sharesQuantity: val.toInt(),
-                                              donationSharesPackageId:
-                                                  donationSharesPackageId,
-                                              donationOpenPackageId:
-                                                  donationOpenPackageId,
-                                              donationDeductionPackageId:
-                                                  donationDeductionPackageId,
-                                            );
-                                          } catch (_) {}
-                                          setState(() {
-                                            isLoadingUpdate = false;
-                                          });
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Flexible(
-                                    child: Row(
-                                      children: [
-                                        TextX(
-                                          FunctionX.formatLargeNumber(
-                                              (donationOrder
-                                                      .donationShares!.price) *
-                                                  (sharesQuantity)),
-                                          size: 16,
-                                          fontWeight: FontWeight.w700,
-                                          maxLines: 1,
-                                        ),
-                                        TextX(
-                                          ' ${"SAR".tr}',
-                                          style: TextStyleX.titleSmall,
-                                          maxLines: 1,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            if (donationOrder.donationData.donationType !=
-                                ModelDonationDataTypeStatusX.shares)
-                              SizedBox(
-                                width: 180,
-                                child: Opacity(
-                                  opacity:
-                                      donationOrder.isCanEditAmount ? 0.5 : 1,
-                                  child: TextFieldX(
-                                    controller: priceController,
-                                    onlyRead: donationOrder.isCanEditAmount,
-                                    textInputType: TextInputType.number,
-                                    textInputAction: TextInputAction.done,
-                                    hint: "0",
-                                    borderColor: context.isDarkMode
-                                        ? null
-                                        : ColorX.grey.shade300,
-                                    color: Theme.of(context).cardColor,
-                                    validate: ValidateX.money,
-                                    onChanged: (val) {
-                                      if (_debounceTimer?.isActive ?? false) {
-                                        _debounceTimer!.cancel();
-                                      }
-                                      _debounceTimer = Timer(
-                                          _debounceTimerDuration, () async {
-                                        setState(() {
-                                          isLoadingUpdate = true;
-                                        });
-                                        try {
-                                          await widget.onUpdate(
-                                            cartItem,
-                                            price: val,
-                                            sharesQuantity: sharesQuantity,
-                                            donationSharesPackageId:
-                                                donationSharesPackageId,
-                                            donationOpenPackageId:
-                                                donationOpenPackageId,
-                                            donationDeductionPackageId:
-                                                donationDeductionPackageId,
-                                          );
-                                        } catch (_) {}
-                                        setState(() {
-                                          isLoadingUpdate = false;
-                                        });
-                                      });
-                                    },
-                                    suffixWidget: TextX(
-                                      "SAR",
-                                      style: TextStyleX.titleSmall,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),
+                                const SizedBox(width: 12),
+                                Row(
+                                  children: [
+                                    TextX(
+                                      FunctionX.formatLargeNumber(
+                                          (donationOrder
+                                                  .donationShares!.price) *
+                                              (sharesQuantity)),
+                                      fontWeight: FontWeight.w700,
+                                      overflow: null,
+                                      maxLines: 1,
+                                    ),
+                                    TextX(
+                                      ' ${"SAR".tr}',
+                                      style: TextStyleX.titleSmall,
+                                      maxLines: 1,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          if (donationOrder.donationData.donationType !=
+                              ModelDonationDataTypeStatusX.shares)
+                            SizedBox(
+                              width: 180,
+                              child: Opacity(
+                                opacity:
+                                    donationOrder.isCanEditAmount ? 0.5 : 1,
+                                child: TextFieldX(
+                                  controller: priceController,
+                                  onlyRead: donationOrder.isCanEditAmount,
+                                  textInputType: TextInputType.number,
+                                  textInputAction: TextInputAction.done,
+                                  hint: "0",
+                                  borderColor: context.isDarkMode
+                                      ? null
+                                      : ColorX.grey.shade300,
+                                  color: Theme.of(context).cardColor,
+                                  validate: ValidateX.money,
+                                  onChanged: (val) {
+                                    if (_debounceTimer?.isActive ?? false) {
+                                      _debounceTimer!.cancel();
+                                    }
+                                    _debounceTimer = Timer(
+                                        _debounceTimerDuration, () async {
+                                      setState(() {
+                                        isLoadingUpdate = true;
+                                      });
+                                      try {
+                                        await widget.onUpdate(
+                                          cartItem,
+                                          price: val,
+                                          sharesQuantity: sharesQuantity,
+                                          donationSharesPackageId:
+                                              donationSharesPackageId,
+                                          donationOpenPackageId:
+                                              donationOpenPackageId,
+                                          donationDeductionPackageId:
+                                              donationDeductionPackageId,
+                                        );
+                                      } catch (_) {}
+                                      setState(() {
+                                        isLoadingUpdate = false;
+                                      });
+                                    });
+                                  },
+                                  suffixWidget: TextX(
+                                    "SAR",
+                                    style: TextStyleX.titleSmall,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .secondary,
+                                  ),
+                                ),
                               ),
-                          ],
-                        ),
+                            ),
+                        ],
                       )
                     ],
                   ),
                 ),
-                const SizedBox(width: 20),
+                const SizedBox(width: 10),
                 IconButton(
                   onPressed: () async {
                     setState(() {

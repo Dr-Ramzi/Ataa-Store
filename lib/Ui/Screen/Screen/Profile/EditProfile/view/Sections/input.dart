@@ -29,7 +29,7 @@ class InputSectionX extends GetView<EditProfileController> {
               ).fadeAnimation200,
               PhoneFieldX(
                 controller: controller.phone,
-                label: "Mobile",
+                label: "Mobile Number",
                 isRequired: true,
                 onChangeCountryCode: controller.onChangeCountryCode,
                 countryCode: controller.countryCode,

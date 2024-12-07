@@ -14,7 +14,7 @@ class TextX extends StatelessWidget {
   final Color? color;
   final TextAlign? textAlign;
   final FontWeight? fontWeight;
-  final TextOverflow overflow;
+  final TextOverflow? overflow;
   final int maxLines;
   final double? size;
   @override

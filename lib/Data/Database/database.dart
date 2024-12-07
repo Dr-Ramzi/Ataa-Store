@@ -8,6 +8,8 @@ class DatabaseX {
   static init() async {
     try {
       /// Here codes are added to configure anything within this section when the application starts
+      // DBEndPointX.mainAPI= FirebaseRemoteConfigServiceX.getString('base_url','https://ataa-store-backend-staging.edialoguecenter.com/api/v1/');
+      DBEndPointX.mainAPI= 'https://ataa-store-backend-testing.edialoguecenter.com/api/v1/' ;
     } catch (e) {
       return Future.error(e);
     }
@@ -230,6 +232,25 @@ class DatabaseX {
     );
   }
 
+  //============================================================================
+  // Home Element Settings
+
+  static Future<HomeElementSettingsX> getHomeElementSettings() async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getHomeElementSettings,
+      param: DataSourceParamX(
+        maxRetries: 3,
+        localCacheKey: 'home_element_settings',
+        localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
+      ),
+    );
+    final Map<String, dynamic> elementMap = {
+      for (var item in (data.$1[NameX.data] ?? []) as List )
+        item[NameX.name].toString(): item,
+    };
+    return HomeElementSettingsX.fromJson(elementMap);
+  }
   //============================================================================
   // General Settings
 
@@ -786,6 +807,7 @@ class DatabaseX {
       param: DataSourceParamX(
         localCacheKey: 'all_deductions',
         localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
         page: page,
         limit: perPage,
       ),
@@ -811,6 +833,7 @@ class DatabaseX {
       param: DataSourceParamX(
         localCacheKey: 'deductions_by_search_$filterParams',
         localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
         page: page,
         limit: perPage,
         filterParams: filterParams,
@@ -933,32 +956,36 @@ class DatabaseX {
     int page = 1,
     int perPage = 20,
   }) async {
-    Map<String, dynamic>? filterParams = {
-      NameX.isZakat: isZakat.toIntNullableX,
-      NameX.donationCategoryId: categoryID,
-      NameX.sortType: sortType,
-    };
-    var data = await RemoteDataSourceX.get(
-      DBEndPointX.getDonationsBySearch,
-      param: DataSourceParamX(
-        localCacheKey: 'donations_by_search_$filterParams',
-        localCacheMaxAge: const Duration(days: 3),
-        authToken: LocalDataX.token,
-        page: page,
-        limit: perPage,
-        filterParams: filterParams,
-        search: searchQuery,
-        searchKey: NameX.search,
-      ),
-    );
-    List<DonationX> result =
-        ModelUtilX.generateItems(data.$1[NameX.data], DonationX.fromJson);
-    if (result.isEmpty &&
-        isZakat == true &&
-        (searchQuery == null || searchQuery.isEmpty)) {
-      result = [await getDefaultZakat()];
+    if((searchQuery==null || searchQuery.isEmpty) && (sortType==null || sortType.isEmpty)){
+      return await getAllDonations(isZakat: isZakat,categoryID: categoryID,page: page,perPage: perPage);
+    }else{
+      Map<String, dynamic>? filterParams = {
+        NameX.isZakat: isZakat.toIntNullableX,
+        NameX.donationCategoryId: categoryID,
+        NameX.sortType: sortType,
+      };
+      var data = await RemoteDataSourceX.get(
+        DBEndPointX.getDonationsBySearch,
+        param: DataSourceParamX(
+          localCacheKey: 'donations_by_search_$filterParams',
+          localCacheMaxAge: const Duration(days: 3),
+          authToken: LocalDataX.token,
+          page: page,
+          limit: perPage,
+          filterParams: filterParams,
+          search: searchQuery,
+          searchKey: NameX.search,
+        ),
+      );
+      List<DonationX> result =
+      ModelUtilX.generateItems(data.$1[NameX.data], DonationX.fromJson);
+      if (result.isEmpty &&
+          isZakat == true &&
+          (searchQuery == null || searchQuery.isEmpty)) {
+        result = [await getDefaultZakat()];
+      }
+      return result;
     }
-    return result;
   }
 
   static Future<DonationX> getDonationDetails({required int code}) async {
@@ -1050,7 +1077,7 @@ class DatabaseX {
     return MetalPriceX.fromJson(Map<String, dynamic>.from(data.$1[NameX.data]));
   }
 
-  static Future<double> getZakatCalculation({
+  static Future<int> getZakatCalculation({
     required ZakatCalculationFormX form,
   }) async {
     var data = await RemoteDataSourceX.post(
@@ -1061,7 +1088,7 @@ class DatabaseX {
       ),
     );
     if (data.$1.runtimeType == int || data.$1.runtimeType == double) {
-      return data.$1 + .0;
+      return int.parse(data.$1.toString());
     } else {
       return throw ErrorX(message: data.$2);
     }
@@ -1072,26 +1099,30 @@ class DatabaseX {
 
   static Future<PaymentTransactionX> createPaymentTransactionForQuickDonation({
     required PaymentTransactionFormX form,
-    required String orgId,
+    required String projectId,
   }) async {
     dynamic data;
     if (form.transferImageFile != null) {
+      print('object1');
       data = await RemoteDataSourceX.postFiles(
         DBEndPointX.postCreatePaymentTransactionForQuickDonation,
         {NameX.transferImageFile: form.transferImageFile!},
         param: DataSourceParamX(
           authToken: LocalDataX.token,
           requestBody: form.toJson(),
-          pathParams: {NameX.categoryId: orgId},
+          pathParams: {NameX.projectId: projectId},
           maxRetries: 3,
         ),
       );
     } else {
+      print('object2');
+      print(DBEndPointX.postCreatePaymentTransactionForQuickDonation);
+      print(projectId);
       data = await RemoteDataSourceX.post(
         DBEndPointX.postCreatePaymentTransactionForQuickDonation,
         param: DataSourceParamX(
           authToken: LocalDataX.token,
-          pathParams: {NameX.categoryId: orgId},
+          pathParams: {NameX.projectId: projectId},
           requestBody: form.toJson(),
           maxRetries: 3,
         ),

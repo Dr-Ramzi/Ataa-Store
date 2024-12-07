@@ -87,7 +87,7 @@ class _CartGiftCardXState extends State<CartGiftCardX> {
                                       ? null
                                       : ColorX.grey.shade300,
                                   color: Theme.of(context).cardColor,
-                                  validate: ValidateX.money,
+                                  validate: ValidateX.giftMoney,
                                   onChanged: (val) {
                                     if (_debounceTimer?.isActive ?? false) {
                                       _debounceTimer!.cancel();

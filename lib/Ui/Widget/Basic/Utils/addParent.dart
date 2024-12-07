@@ -1,9 +1,5 @@
 part of '../../widget.dart';
 
-// ~~~~~~~~~~~~~~~~~~~~~~~{{ Why this class }}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/// Animation Show the item as disappearing
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 class AddParentX extends StatelessWidget {
   const AddParentX({
     required this.child,

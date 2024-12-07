@@ -26,7 +26,7 @@ subscriptionDeductionSheetX(DeductionX deduction) {
   // Content
 
   return bottomSheetX(
-    title: "Participation in deduction",
+    title: "Subscribe to deduction",
     child: Obx(
       () {
         /// Mandatory login
@@ -82,6 +82,7 @@ subscriptionDeductionSheetX(DeductionX deduction) {
                     children: [
                       /// Free Deduction Options [ 20 , 50 , 100 ] SAR
                       FreeDonationOptionsX(
+                        title:'Deduction amount',
                         isMarginTop: false,
                         onSelected: controller.onChangeDeductionAmount,
                         selected: controller.freeDeductionSelected.value,

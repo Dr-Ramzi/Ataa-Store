@@ -1,3 +1,4 @@
+import 'package:ataa/Core/core.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ class DonationDetailsController extends GetxController {
   //============================================================================
   // Injection of required controls
 
+  AppControllerX app = Get.find();
   DonateOnBehalfOfFamilyController donateOnBehalfOfFamilyController = Get.put(
       DonateOnBehalfOfFamilyController(),
       tag: Get.arguments.toString());

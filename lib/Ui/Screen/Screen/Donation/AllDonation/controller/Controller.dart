@@ -13,7 +13,7 @@ class AllDonationController extends GetxController {
 
   final AppControllerX app = Get.find();
   late FilterControllerX filterController = Get.put(
-    FilterControllerX(tag: "All Donation")..isShowSort = app.generalSettings.isActiveProjectSearch,
+    FilterControllerX(tag: "All Donation")..isShowSort = app.generalSettings.isActiveDonationSearch,
     tag: "All Donation",
   );
 

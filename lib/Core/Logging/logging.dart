@@ -16,7 +16,7 @@ class LoggingX {
     //   LoggingConsoleX.logger(error, stack);
     //   return true;
     // };
-    ErrorWidget.builder = CaptureScreenErrorX.builder;
+    // ErrorWidget.builder = CaptureScreenErrorX.builder;
   }
   static Future<void> ignoreException(Type exceptionType) async {
     final originalOnError = FlutterError.onError!;

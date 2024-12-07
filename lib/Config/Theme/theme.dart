@@ -7,13 +7,11 @@ part of '../config.dart';
 class ThemeX {
   //============================================================================
   // Functions
-  static ThemeMode get getTheme =>
-      isDarkMode ? ThemeMode.dark : ThemeMode.light;
+  static ThemeMode get getTheme => isDarkMode ? ThemeMode.dark : ThemeMode.light;
 
   static bool get isDarkMode => LocalDataX.settings.themeIsDark;
 
-  static change(bool val) =>
-      Get.changeThemeMode(isDarkMode ? ThemeMode.dark : ThemeMode.light);
+  static change(bool val) => Get.changeThemeMode(isDarkMode ? ThemeMode.dark : ThemeMode.light);
 
   //============================================================================
   // Data

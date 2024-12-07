@@ -23,7 +23,7 @@ donationSelectionSheetX({
         mainAxisSize: MainAxisSize.min,
         children: [
           TextFieldX(
-            disabled: !controller.app.generalSettings.isActiveProjectSearch,
+            disabled: !controller.app.generalSettings.isActiveDonationSearch,
             color: Get.theme.cardColor,
             controller: controller.search,
             hint: "Search by project name",

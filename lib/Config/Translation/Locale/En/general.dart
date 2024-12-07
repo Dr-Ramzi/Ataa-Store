@@ -145,7 +145,7 @@ const Map<String, String> enGeneral = {
   'Share link': 'Share link',
   'Total donations': 'Total donations',
   'Total amount of donations': 'Total amount of donations',
-  'Projects that accept Zakat': 'Projects that accept Zakat',
+  'Zakat expenditures': 'Zakat expenditures',
   'Card number': 'Card number',
   'Conditions': 'Conditions',
   'I agree to': 'I agree to',
@@ -511,7 +511,7 @@ const Map<String, String> enGeneral = {
   "You must log in to complete the process":
       "You must log in to complete the process",
   "Deduction amount": "Deduction amount",
-  "Participation in deduction": "Participation in deduction",
+  "Subscribe to deduction": "Subscribe to deduction",
   "The amount will be automatically deducted on the first day of every calendar month.":
       "The amount will be automatically deducted on the first day of every calendar month.",
   "Donate to the project": "Donate to the project",
@@ -586,6 +586,7 @@ const Map<String, String> enGeneral = {
   "There are no products currently": "There are no products currently",
   "There are no current campaigns": "There are no current campaigns",
   "The minimum donation amount is": "The minimum donation amount is",
+  "The minimum deduction amount is": "The minimum deduction amount is",
   "Go to my gifts": "Go to my gifts",
   "My Gifts": "My Gifts",
   "Number of gifts": "Number of gifts",
@@ -736,5 +737,8 @@ const Map<String, String> enGeneral = {
   "Failed to save image.":"Failed to save image.",
   "Permission to access storage is denied.":"Permission to access storage is denied.",
   "Permission to access storage is permanently denied. Please enable it from settings.":"Permission to access storage is permanently denied. Please enable it from settings.",
+  "It should contain whole numbers only":"It should contain whole numbers only",
+  "The money should be at least 1":"The money should be at least 1",
+  "Watch the video":"Watch the video",
   // "":"",
 };

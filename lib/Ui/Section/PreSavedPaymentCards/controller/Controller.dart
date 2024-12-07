@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:ataa/Core/Error/error.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../Core/core.dart';
@@ -32,9 +33,14 @@ class PreSavedPaymentCardsController extends GetxController {
     if (app.isLogin.value && paymentCards.isEmpty) {
       paymentCards = await DatabaseX.getAllPaymentCards();
       isAddNewCardOpen.value = paymentCards.isEmpty;
-      paymentCardSelected.value=paymentCards.firstWhereOrNull((element) => element.isDefault);
-      isValidate.value = paymentCardSelected.value!=null;
-    }else{
+      paymentCardSelected.value =
+          paymentCards.firstWhereOrNull((element) => element.isDefault);
+      if (paymentCards.isEmpty) {
+        isValidate.value = true;
+      } else {
+        isValidate.value = paymentCardSelected.value != null;
+      }
+    } else {
       isValidate.value = true;
     }
   }
@@ -64,16 +70,20 @@ class PreSavedPaymentCardsController extends GetxController {
   onChangeSaveForLater(bool val) => isSaveForLater.value = val;
 
   bool validate() {
-    if (paymentCardSelected.value == null &&
-        paymentCards.isNotEmpty &&
-        isAddNewCardOpen.isFalse) {
-      throw 'Payment method details must be specified.';
-    } else if ((paymentCards.isEmpty || isAddNewCardOpen.isTrue) &&
-        !formKey.currentState!.validate()) {
-      autoValidate = AutovalidateMode.always;
-      throw 'There is an error in the card data entered.';
-    } else {
-      return true;
+    try{
+      if (paymentCardSelected.value == null &&
+          paymentCards.isNotEmpty &&
+          isAddNewCardOpen.isFalse) {
+        throw ErrorX(message: 'Payment method details must be specified.');
+      } else if ((paymentCards.isEmpty || isAddNewCardOpen.isTrue) &&
+          !formKey.currentState!.validate()) {
+        autoValidate = AutovalidateMode.always;
+        throw ErrorX(message:'There is an error in the card data entered.');
+      } else {
+        return true;
+      }
+    }catch(e){
+      rethrow;
     }
   }
 

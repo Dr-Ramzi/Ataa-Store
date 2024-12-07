@@ -46,20 +46,26 @@ class FunctionX {
   /// like: +963994343927 -> [ 963 , 994343927 ]
   static (String, int?) extractCountryCodeAndPhoneNumber(String number) {
     // Remove all spaces
+    print(number);
     number = number.replaceAll(" ", '');
     number = number.replaceAll("-", '');
+    print(number);
 
     // Remove any leading '+' or '00'
     number = number.replaceAll(RegExp(r'^(\+|00)'), '');
+    print(number);
 
     // Check if the number contains a country code
     if (number.length > 10) {
       int? countryCode;
-      String x =number.substring(0, number.length - 9);
-      if(x.length == 3 || x.length==2){
+      int cut = number.length>12?number.length-3:9;
+      String x =number.substring(0, number.length - cut);
+      String phoneNumber = number.substring(number.length - cut);
+      if(x.length == 3){
         countryCode = int.parse(x);
+      }else{
+        phoneNumber = number;
       }
-      String phoneNumber = number.substring(number.length - 9);
 
       return (phoneNumber, countryCode);
     } else {

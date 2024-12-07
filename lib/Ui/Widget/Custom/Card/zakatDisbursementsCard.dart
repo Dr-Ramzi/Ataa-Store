@@ -20,7 +20,7 @@ class ZakatDisbursementsCardX extends StatelessWidget {
           ),
           const SizedBox(width: 4),
           TextX(
-            "Projects that accept Zakat",
+            "Zakat expenditures",
             color: ColorX.primary,
             style: TextStyleX.supTitleMedium,
           ),

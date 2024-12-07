@@ -15,9 +15,6 @@ class LocalDataX<T>{
   static bool get cartIdIsAssign => get(LocalKeyX.cartIdIsAssign,defaultData: LocalDefaultDataX.cartIdIsAssign);
   static String get token => get(LocalKeyX.token,defaultData: LocalDefaultDataX.token);
 
-  static late int unreadNotifications;
-  static late List<NotificationX> allNotifications;
-
   //============================================================================
   // Functions
 
@@ -28,12 +25,6 @@ class LocalDataX<T>{
       get(
         LocalKeyX.settings,
         defaultData:LocalDefaultDataX.settings.toJson(),
-      ),
-    );
-    allNotifications = List<NotificationX>.from(
-      get(LocalKeyX.allNotifications, defaultData:LocalDefaultDataX.allNotifications)
-          .map(
-            (json) => NotificationX.fromJson(json),
       ),
     );
     route = get(LocalKeyX.route, defaultData:LocalDefaultDataX.route)!;

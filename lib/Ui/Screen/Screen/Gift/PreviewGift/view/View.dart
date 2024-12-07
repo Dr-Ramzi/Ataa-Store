@@ -89,15 +89,14 @@ class PreviewGiftView extends GetView<PreviewGiftController> {
                         nameTo: controller.giftOrder.giftBasic.recipientName,
                         amount: controller.giftOrder.giftBasic.price.toString(),
                         isShowAmount: controller.giftOrder.isShowPrice,
-                        orgName: controller.giftOrder.giftBasic.donorName,
+                        orgName: controller.organization.name,
                         borderWidth: 8,
                         radius: StyleX.radiusLg,
                         color: Color(
                           int.parse(
                               "0xff${controller.giftOrder.giftBasic.color.code.substring(1)}"),
                         ),
-                        giftCardFormByGender:
-                        controller.giftOrder.giftBasic.recipientGender ==
+                        giftCardFormByGender: controller.giftOrder.giftBasic.recipientGender ==
                             GenderStatusX.male
                             ? controller.giftCategory.giftCardFormMale
                             : controller.giftCategory.giftCardFormFemale,

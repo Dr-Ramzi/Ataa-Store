@@ -3,6 +3,7 @@ import 'package:ataa/Core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
+import 'package:flutter_native_contact_picker/model/contact.dart';
 import 'package:get/get.dart';
 
 class DonateOnBehalfOfFamilyController extends GetxController {
@@ -17,7 +18,7 @@ class DonateOnBehalfOfFamilyController extends GetxController {
   RxBool isEnable = false.obs;
   RxInt countryCode = 966.obs;
 
-  final FlutterContactPicker contactPicker = FlutterContactPicker();
+  final FlutterNativeContactPicker contactPicker = FlutterNativeContactPicker();
 
   GlobalKey<FormState> formKey = GlobalKey();
   AutovalidateMode autoValidate = AutovalidateMode.disabled;

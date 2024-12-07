@@ -13,7 +13,7 @@ organizationSelectionSheetX(OrganizationSelectionController controller) {
     title: "Donation project",
     child: ScrollRefreshLoadMoreX<OrganizationX>(
       fetchData: controller.getData,
-      firstFixedData: controller.isQuickDonation??false?[]:[controller.allOption],
+      firstFixedData: [controller.allOption],
       initLoading: const SizedBox(
         height: 180,
         child: Center(

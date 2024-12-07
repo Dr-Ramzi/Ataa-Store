@@ -34,11 +34,10 @@ class MyDonationCardX extends StatelessWidget {
             data: intl.DateFormat('dd/MM/yyyy')
                 .format(myDonation.paymentTransaction.createdAt),
           ).fadeAnimation300,
-          if (myDonation.paymentTransaction.paymentDataBankTransfer != null)
+          if (myDonation.paymentTransaction.receiptUrl != null)
             InkWell(
               onTap: () => Get.toNamed(RouteNameX.receiptPreview,
-                  arguments: myDonation.paymentTransaction
-                      .paymentDataBankTransfer!.transferImageUrl),
+                  arguments: myDonation.paymentTransaction.receiptUrl),
               child: ActivityDataRowX(
                 title: "Donation receipt",
                 dataWidget: Row(

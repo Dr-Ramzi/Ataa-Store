@@ -17,7 +17,16 @@ class NameX {
   static const String donationCategories = 'project_donation_categories';
   static const String giftDonationCategories = 'donation_categories';
   static const String donationCategory = 'donation_category';
+  static const String deductions = 'deductions';
+  static const String testimonials = 'testimonials';
+  static const String statistic = 'statistic';
+  static const String partner = 'partner';
+  static const String zakatExpenditures = 'zakat_expenditures';
+  static const String donationOpportunities = 'donation_opportunities';
   static const String projectCompletionImage = 'project_completion_image';
+  static const String defaultQuickDonation = 'default_quick_donation_project';
+  static const String defaultZakat = 'default_zakat_project';
+  static const String defaultCountryCode = 'default_country_code';
   static const String donationTypeDetails = 'project_donation_type';
   static const String donationType = 'donation_type';
   static const String donationTypeName = 'nameLocalized';
@@ -230,8 +239,10 @@ class NameX {
       'is_show_browser_applepay_message';
   static const String isShowCountryCodeList = 'is_show_country_code_list';
   static const String isActiveProjectSearch = 'is_active_project_search';
+  static const String isActiveDeductionSearch = 'is_active_recurring_donation_search';
   static const String isActiveComments = 'is_active_comments';
   static const String minimumDonationAmount = 'minimum_donation_amount';
+  static const String minimumDeductionAmount = 'minimum_deduction_amount';
   static const String productShippingAmount = 'product_shipping_amount';
   static const String browserApplePayMessage = 'browser_applepay_message';
   static const String donationData = 'donation_data';

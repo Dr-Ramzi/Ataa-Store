@@ -71,7 +71,17 @@ class AppBarWithCoverSectionX extends GetView<DonationDetailsController> {
             },
           ),
         ).fadeAnimation200,
-
+        if(controller.donation.donationBasic.isDone)
+          Positioned.fill(
+            child: ImageNetworkX(
+              height: 300,
+              width: double.maxFinite,
+              imageUrl: controller.app.generalSettings.projectCompletionImageUrl ?? ImageX.doneDonation,
+              isFile: controller.app.generalSettings.projectCompletionImageUrl == null,
+              empty: const SizedBox(),
+              fit: BoxFit.contain,
+            ).paddingAll(5),
+          ),
 
         /// AppBar
         Positioned(

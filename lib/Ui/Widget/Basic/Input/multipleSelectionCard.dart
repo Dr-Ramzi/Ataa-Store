@@ -53,6 +53,7 @@ class MultipleSelectionCardX extends StatelessWidget {
               child: Container(
                 constraints: const BoxConstraints(
                   maxWidth: 100,
+                  minWidth: 0.1
                 ),
                 child: TextX(
                   selected!,

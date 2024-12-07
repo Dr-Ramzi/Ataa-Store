@@ -49,14 +49,18 @@ class DataForGiftSectionX extends GetView<CreateGiftController> {
                   ).paddingOnly(bottom: 10).fadeAnimation400,
 
                   /// Input Phone Number
-                  PhoneFieldX(
-                    key: Key(controller.recipientCountryCode.value.toString()),
-                    label: "Recipient’s Mobile Number",
-                    controller: controller.recipientPhone,
-                    onChangeCountryCode: controller.onChangeCountryCode,
-                    countryCode: controller.recipientCountryCode.value,
-                    isDisableChangeCountryCode: !controller.app.generalSettings.isShowCountryCodeList,
-                  ).paddingOnly(bottom: 10).fadeAnimation400,
+                  Obx(
+                    () => PhoneFieldX(
+                      key:
+                          Key(controller.recipientCountryCode.value.toString()),
+                      label: "Recipient’s Mobile Number",
+                      controller: controller.recipientPhone,
+                      onChangeCountryCode: controller.onChangeCountryCode,
+                      countryCode: controller.recipientCountryCode.value,
+                      isDisableChangeCountryCode:
+                          !controller.app.generalSettings.isShowCountryCodeList,
+                    ).paddingOnly(bottom: 10).fadeAnimation400,
+                  ),
 
                   /// Get data from contacts
                   InkWell(

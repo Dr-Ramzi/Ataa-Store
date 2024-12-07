@@ -32,7 +32,9 @@ class DonationDetailsSectionX extends GetView<DonationDetailsController> {
                     minHeight: 8,
                   ),
                 ),
+                if(controller.donation.donationSettings.isShowDonationsPercentage)
                 const SizedBox(width: 16),
+                if(controller.donation.donationSettings.isShowDonationsPercentage)
                 TextX(
                   "${controller.donation.donationBasic.completionRate.toStringAsFixed(2)} %",
                   style: TextStyleX.supTitleLarge,
@@ -65,8 +67,9 @@ class DonationDetailsSectionX extends GetView<DonationDetailsController> {
                     isMoney: true,
                   ),
                 ),
+                if(controller.donation.donationSettings.isShowDonorsCount)
                 const SizedBox(width: 8),
-
+                if(controller.donation.donationSettings.isShowDonorsCount)
                 /// Total Targets
                 Flexible(
                   child: StatisticCardX(

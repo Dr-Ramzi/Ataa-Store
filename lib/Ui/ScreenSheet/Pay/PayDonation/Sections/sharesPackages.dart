@@ -30,8 +30,7 @@ class SharesPackagesSectionX extends StatelessWidget {
                       ...controller.donation.sharesPackages.map(
                         (data) {
                           return RadioButtonX<String>(
-                            label:
-                                '${FunctionX.formatLargeNumber(controller.sharesPackageSelected.value!.sharesCount*controller.donation.donationShares!.price)} ${'SAR'.tr}  ( ${data.name} )',
+                            label: '${FunctionX.formatLargeNumber(data.sharesCount*controller.donation.donationShares!.price)} ${'SAR'.tr}  ( ${data.name} )',
                             value: data.id,
                             onChanged: (_){
                                 controller.onChangeSharesPackage(data);

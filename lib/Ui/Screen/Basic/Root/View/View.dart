@@ -20,11 +20,12 @@ class RootView extends GetView<RootController> {
             title: controller.appBarTitle(),
             pages: controller.pages,
             indexSelected: controller.indexPageSelected.value,
-            leadingWidth: controller.isHomePage() ? 260 :  controller.isMorePage() ? 100: 0,
+            leadingWidth: controller.isHomePage() ? 260 :  controller.isMorePage() || controller.isAllDonationPage() ? 100: 0,
 
             /// To implement the home page design
             leading: controller.isHomePage()
                 ? const HomeAppBarLeadingX().fadeAnimation100
+                :controller.isAllDonationPage()?BackButtonX(onTap: controller.goToHome).fadeAnimation100
                 : (controller.isMorePage() &&
                         controller.isMoreDynamicPage.isTrue)
                     ? BackButtonX(onTap: controller.changeMoreDynamicPage).fadeAnimation100
@@ -46,8 +47,8 @@ class RootView extends GetView<RootController> {
                 child: SafeArea(
                   child: Visibility(
                     /// for don't move when open keyboard
-                    visible: MediaQuery.of(context).viewInsets.bottom == 0.0 ||
-                        !controller.app.generalSettings.isActiveQuickDonation,
+                    visible: MediaQuery.of(context).viewInsets.bottom == 0.0 &&
+                        controller.app.generalSettings.isActiveQuickDonation,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -104,8 +105,8 @@ class RootView extends GetView<RootController> {
                 child: SafeArea(
                   child: Visibility(
                     /// for don't move when open keyboard
-                    visible: MediaQuery.of(context).viewInsets.bottom == 0.0 ||
-                        !controller.app.generalSettings.isActiveQuickDonation,
+                    visible: MediaQuery.of(context).viewInsets.bottom == 0.0 &&
+                        controller.app.generalSettings.isActiveQuickDonation,
                     child: Row(mainAxisAlignment: MainAxisAlignment.center,children: [QuickDonationButton(onTap: controller.openQuickDonation)]),
                   ),
                 ),

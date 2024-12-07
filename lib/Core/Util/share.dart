@@ -8,7 +8,7 @@ class ShareX{
   static Future<String?> share({required ShareOn share,required String msg,required String url}) async {
     try {
       String? response;
-      final FlutterShareMe flutterShareMe = FlutterShareMe();
+      // final FlutterShareMe flutterShareMe = FlutterShareMe();
       switch (share) {
         case ShareOn.facebook:
           try {
@@ -17,16 +17,16 @@ class ShareX{
           // response = await flutterShareMe.shareToFacebook(url: url, msg: msg);
           break;
         case ShareOn.twitter:
-          response = await flutterShareMe.shareToTwitter(url: url, msg: msg);
+          // response = await flutterShareMe.shareToTwitter(url: url, msg: msg);
           break;
         case ShareOn.whatsapp:
-          response = await flutterShareMe.shareToWhatsApp(msg: msg);
+          // response = await flutterShareMe.shareToWhatsApp(msg: msg);
           break;
         case ShareOn.shareSystem:
-          response = await flutterShareMe.shareToSystem(msg: msg);
+          // response = await flutterShareMe.shareToSystem(msg: msg);
           break;
         case ShareOn.telegram:
-          response = await flutterShareMe.shareToTelegram(msg: msg);
+          // response = await flutterShareMe.shareToTelegram(msg: msg);
           break;
       }
       return response;

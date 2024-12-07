@@ -10,6 +10,4 @@ class LocalKeyX{
   static const String cartIdIsAssign='cartIdIsAssign';
   static const String token='token';
   static const String settings='settings';
-  static const String unreadNotifications='unreadNotifications';
-  static const String allNotifications='allNotifications';
 }

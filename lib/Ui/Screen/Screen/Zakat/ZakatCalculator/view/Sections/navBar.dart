@@ -16,8 +16,6 @@ class NavBarSectionX extends GetView<ZakatCalculatorController> {
         /// If one of the Zakat sections is activated, the calculator is displayed
         if (controller.isHasZakat()) {
           return ContainerX(
-            // maxHeight: 350,
-            // minHeight: 320,
             isShadow: true,
             borderRadius: const BorderRadius.vertical(
               top: Radius.circular(StyleX.radiusMd),

@@ -38,12 +38,11 @@ class DonationDataSectionX extends GetView<CreateGiftController> {
                     autovalidateMode: controller.autoValidateDonationAmount,
                     child: TextFieldX(
                       controller: controller.donationAmount,
-                      onChanged:
-                          controller.onChangeAmountForFreeDonationSelected,
+                      onChanged: controller.onChangeAmountForFreeDonationSelected,
                       textInputType: TextInputType.number,
                       textInputAction: TextInputAction.done,
                       hint: "0",
-                      validate: ValidateX.money,
+                      validate: ValidateX.giftMoney,
                       suffixWidget: TextX(
                         "SAR",
                         style: TextStyleX.titleSmall,

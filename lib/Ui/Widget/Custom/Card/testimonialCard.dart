@@ -42,7 +42,7 @@ class TestimonialCardX extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ImageNetworkX(
-                  imageUrl: '',
+                  imageUrl: testimonial.imageUrl??'',
                   radius: 100,
                   height: 24,
                   width: 24,

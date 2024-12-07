@@ -13,7 +13,10 @@ class ContactUsView extends GetView<ContactUsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarX(title: 'Contact us'),
+      appBar: AppBarX(
+        title: 'Contact us',
+        actions: [CartIconButtonsX()],
+      ),
       body: SafeArea(
         child: FutureBuilderX(
           future: controller.getData,
@@ -45,8 +48,8 @@ class ContactUsView extends GetView<ContactUsController> {
                     customWidgetBuilder: (element) {
                       if (element.localName == 'img') {
                         return ImageNetworkX(
-                            imageUrl: element.attributes[NameX.src].toString(),
-                            width: double.maxFinite,
+                          imageUrl: element.attributes[NameX.src].toString(),
+                          width: double.maxFinite,
                         );
                       }
                       return null;
@@ -55,56 +58,56 @@ class ContactUsView extends GetView<ContactUsController> {
                   ).fadeAnimation200.paddingOnly(bottom: 16),
                 ContactCardX(
                   icon: IconX.contactUs,
-                  title: controller.contactUs.mobile.toString(),
-                  isShow: controller.contactUs.mobile!=null,
+                  title: '+966${controller.contactUs.mobile}',
+                  isShow: controller.contactUs.mobile != null,
                   onTap: controller.onTapMobile,
                 ).fadeAnimation200,
                 ContactCardX(
                   icon: IconX.whatsappBold,
-                  title: controller.contactUs.whatsappNumber.toString(),
-                  isShow: controller.contactUs.whatsappNumber!=null,
+                  title: '+966${controller.contactUs.whatsappNumber}',
+                  isShow: controller.contactUs.whatsappNumber != null,
                   onTap: controller.onTapWhatsapp,
                 ).fadeAnimation300,
                 ContactCardX(
                   icon: Icons.email_rounded,
                   title: controller.contactUs.email,
-                  isShow: controller.contactUs.email!=null,
+                  isShow: controller.contactUs.email != null,
                   onTap: controller.onTapEmail,
                 ).fadeAnimation300,
                 ContactCardX(
                   icon: Icons.language_rounded,
                   title: controller.socialMedia.siteUrl,
-                  isShow: controller.socialMedia.siteUrl!=null,
+                  isShow: controller.socialMedia.siteUrl != null,
                   onTap: controller.onTapSite,
                 ).fadeAnimation400,
                 ContactCardX(
                   icon: IconX.x,
-                  title:'Our account on X platform',
-                  isShow: controller.socialMedia.twitterUrl!=null,
+                  title: 'Our account on X platform',
+                  isShow: controller.socialMedia.twitterUrl != null,
                   onTap: controller.onTapTwitter,
                 ).fadeAnimation400,
                 ContactCardX(
                   icon: IconX.snapchat,
-                  title:'Our account on the Snapchat platform',
-                  isShow: controller.socialMedia.snapchatUrl!=null,
+                  title: 'Our account on Snapchat platform',
+                  isShow: controller.socialMedia.snapchatUrl != null,
                   onTap: controller.onTapSnapchat,
                 ).fadeAnimation500,
                 ContactCardX(
                   icon: IconX.facebook,
-                  title:'Our account on Facebook platform',
-                  isShow: controller.socialMedia.facebookUrl!=null,
+                  title: 'Our account on Facebook platform',
+                  isShow: controller.socialMedia.facebookUrl != null,
                   onTap: controller.onTapFacebook,
                 ).fadeAnimation500,
                 ContactCardX(
                   icon: IconX.instagram,
-                  title:'Our account on Instagram platform',
-                  isShow: controller.socialMedia.instagramUrl!=null,
+                  title: 'Our account on Instagram platform',
+                  isShow: controller.socialMedia.instagramUrl != null,
                   onTap: controller.onTapInstagram,
                 ).fadeAnimation600,
                 ContactCardX(
                   icon: IconX.youtube,
-                  title:'Our account on YouTube platform',
-                  isShow: controller.socialMedia.youtubeUrl!=null,
+                  title: 'Our account on YouTube platform',
+                  isShow: controller.socialMedia.youtubeUrl != null,
                   onTap: controller.onTapYoutube,
                 ).fadeAnimation600,
               ],

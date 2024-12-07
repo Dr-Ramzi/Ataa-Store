@@ -4,6 +4,7 @@ import 'package:ataa/Data/Enum/gift_color_status.dart';
 import 'package:ataa/Data/Model/Gift/Subclass/giftBasic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
+import 'package:flutter_native_contact_picker/model/contact.dart';
 import 'package:get/get.dart';
 import '../../../../../../Config/config.dart';
 import '../../../../../../Core/Controller/Cart/cartGeneralController.dart';
@@ -79,7 +80,7 @@ class CreateGiftController extends GetxController {
   RxString donationAmountForCard = ''.obs;
 
   /// init
-  final FlutterContactPicker contactPicker = FlutterContactPicker();
+  final FlutterNativeContactPicker contactPicker = FlutterNativeContactPicker();
 
   /// The name Mahdi is fetched through the username
   late TextEditingController donorName = TextEditingController();
@@ -182,6 +183,9 @@ class CreateGiftController extends GetxController {
             contact.phoneNumbers![0],
           );
 
+          print(contact.phoneNumbers![0]);
+          print(result);
+
           /// Assign a value to the phone number because it cannot be empty
           recipientPhone.text = result.$1;
 
@@ -190,6 +194,7 @@ class CreateGiftController extends GetxController {
         }
       }
     } catch (e) {
+      print(e);
       return Future.error(e);
     }
   }

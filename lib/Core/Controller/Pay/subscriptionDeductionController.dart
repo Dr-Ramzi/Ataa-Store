@@ -70,6 +70,19 @@ class SubscriptionDeductionControllerX extends GetxController {
     return true;
   }
 
+  String? validateAmount(String? val) {
+    String? message;
+    message = ValidateX.money(val);
+
+    /// Verify the lowest possible donation value in Free Donation
+    if (message == null &&
+        num.parse(deductionAmount.text) <
+            app.generalSettings.minimumDeductionAmount) {
+      message =
+      "${"The minimum deduction amount is".tr} ${app.generalSettings.minimumDeductionAmount} ${"SAR".tr}";
+    }
+    return message;
+  }
   onDeduction() async {
     if (isLoading.isFalse) {
       try {

@@ -18,7 +18,7 @@ class DonationX {
   final DonationSettingsX donationSettings;
   final List<DonationCategoryX> categories;
 
-  final DonationTypeX donationType;
+  final DonationTypeX? donationType;
   final bool isShowPackages;
   final bool isCanEditAmount;
   final DonationSharesX? donationShares;
@@ -35,7 +35,7 @@ class DonationX {
     required this.donationDetails,
     required this.donationSettings,
     required this.categories,
-    required this.donationType,
+    this.donationType,
     required this.isShowPackages,
     required this.isCanEditAmount,
     this.donationShares,
@@ -61,21 +61,21 @@ class DonationX {
       Map<String, Object?> donationShareJson = Map<String, Object?>.from(
           (donationTypeDetailsJson[NameX.donationShares] ?? {}) as Map);
 
-      List<Map<String, dynamic>> donationSharesPackagesJsonList = ((donationTypeDetailsJson[NameX.donationSharesPackages] ?? [])as List)
-          .map<Map<String, dynamic>>((e) => Map<String, dynamic>.from(e))
-          .toList();
 
-      List<Map<String, dynamic>> donationDeductionPackagesJsonList = ((donationTypeDetailsJson[NameX.donationDeductionPackages] ?? [])as List)
-          .map<Map<String, dynamic>>((e) => Map<String, dynamic>.from(e))
-          .toList();
+      Map<String, dynamic> donationTypeDetailsJsonAsMapDynamic = Map<String, dynamic>.from(donationTypeDetailsJson);
 
-      List<Map<String, dynamic>> donationOpenPackagesJsonList = ((donationTypeDetailsJson[NameX.donationOpenPackages] ?? [])as List)
-          .map<Map<String, dynamic>>((e) => Map<String, dynamic>.from(e))
-          .toList();
 
-      List<Map<String, dynamic>> categoriesJsonList = (json[NameX.donationCategories] ?? [])
-          .map<Map<String, dynamic>>((e) => Map<String, dynamic>.from(e))
-          .toList();
+      List<Map<String, dynamic>> donationSharesPackagesJsonList = List<Map<String, dynamic>>.from((donationTypeDetailsJson[NameX.donationSharesPackages] is! List ? ((donationTypeDetailsJsonAsMapDynamic[NameX.donationSharesPackages]?[NameX.data]!=null)?(donationTypeDetailsJsonAsMapDynamic[NameX.donationSharesPackages][NameX.data]):[]) : donationTypeDetailsJson[NameX.donationSharesPackages]) as List);
+
+      List<Map<String, dynamic>> donationDeductionPackagesJsonList =
+      List<Map<String, dynamic>>.from((donationTypeDetailsJson[NameX.donationDeductionPackages] is! List ? ((donationTypeDetailsJsonAsMapDynamic[NameX.donationDeductionPackages]?[NameX.data]!=null)?(donationTypeDetailsJsonAsMapDynamic[NameX.donationDeductionPackages][NameX.data]):[]) : donationTypeDetailsJson[NameX.donationDeductionPackages]) as List);
+
+      List<Map<String, dynamic>> donationOpenPackagesJsonList =
+      List<Map<String, dynamic>>.from((donationTypeDetailsJson[NameX.donationOpenPackages] is! List ? ((donationTypeDetailsJsonAsMapDynamic[NameX.donationOpenPackages]?[NameX.data]!=null)?(donationTypeDetailsJsonAsMapDynamic[NameX.donationOpenPackages][NameX.data]):[]): donationTypeDetailsJson[NameX.donationOpenPackages]) as List);
+
+      List<Map<String, dynamic>> categoriesJsonList =
+      List<Map<String, dynamic>>.from((json[NameX.donationCategories] is! List ? ((json[NameX.donationCategories]?[NameX.data]!=null)?(json[NameX.donationCategories][NameX.data]):[]) : json[NameX.donationCategories]) as List);
+
 
       return ModelUtilX.checkFromJson(
         json,
@@ -85,7 +85,7 @@ class DonationX {
           donationDetails: DonationDetailsX.fromJson(donationDetailsJson),
           donationSettings: DonationSettingsX.fromJson(donationSettingsJson),
           categories: categoriesJsonList.map((json) => DonationCategoryX.fromJson(json)).toList(),
-          donationType: DonationTypeX.fromJson(donationTypeJson),
+          donationType: donationTypeJson.toFromJsonNullableX(DonationTypeX.fromJson),
 
           isShowPackages: donationTypeDetailsJson[NameX.isShowPackages].toBoolDefaultX(false),
           isCanEditAmount: donationTypeDetailsJson[NameX.isCanEditAmount].toBoolDefaultX(false),
@@ -101,7 +101,6 @@ class DonationX {
         requiredDataKeys: [
           NameX.id,
           NameX.donationBasic,
-          NameX.donationType,
         ],
       );
   }
@@ -114,7 +113,7 @@ class DonationX {
       NameX.donationSettings: donationSettings.toJson(),
       NameX.donationCategories: [...categories.map((category) => category.toJson())],
       NameX.donationTypeDetails: {
-        NameX.donationType: donationType.toJson(),
+        NameX.donationType: donationType?.toJson(),
         NameX.isShowPackages: isShowPackages,
         NameX.isCanEditAmount: isCanEditAmount,
         NameX.donationShares: donationShares?.toJson(),

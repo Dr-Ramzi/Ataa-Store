@@ -18,7 +18,7 @@ class CartItemX {
   });
 
   String id;
-  num price;
+  int price;
   int quantity;
   ModelTypeStatusX type;
   String name;
@@ -43,7 +43,7 @@ class CartItemX {
       json,
           (json) => CartItemX(
         id: json[NameX.id].toStrX,
-        price: json[NameX.price].toDoubleDefaultX(0),
+        price: json[NameX.price].toIntDefaultX(0),
         quantity: json[NameX.quantity].toIntDefaultX(1),
         type: type,
         name: json[NameX.name].toStrX,
@@ -63,7 +63,7 @@ class CartItemX {
   Map<String, dynamic> toJson() {
     return {
       NameX.id: id,
-      NameX.price: price.toDouble(),
+      NameX.price: price,
       NameX.quantity: quantity,
       NameX.type: type.name,
       NameX.name: name,

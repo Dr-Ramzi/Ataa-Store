@@ -18,7 +18,7 @@ class AllDonationView extends GetView<AllDonationController> {
             mainAxisSize: MainAxisSize.min,
             children: [
               SearchBarX(
-                disabledSearch : !controller.app.generalSettings.isActiveProjectSearch,
+                disabledSearch : !controller.app.generalSettings.isActiveDonationSearch,
                 search: controller.search,
                 onTapFilter: controller.onFilter,
               ).fadeAnimation200,

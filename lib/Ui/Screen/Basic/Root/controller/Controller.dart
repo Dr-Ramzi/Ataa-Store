@@ -19,14 +19,16 @@ class RootController extends GetxController {
   // Variables
 
   RxInt indexPageSelected = 0.obs;
-  List<RootPageX> pages = navBarItems;
+  late List<RootPageX> pages = app.generalSettings.isActiveQuickDonation?navBarItems:[navBarItems[0],navBarItems[1],navBarItems[3],navBarItems[4]];
   RxBool isMoreDynamicPage = false.obs;
 
   //============================================================================
   // Functions
 
   isHomePage() => indexPageSelected.value == 0;
+  isAllDonationPage() => indexPageSelected.value == 1;
   isMorePage() => indexPageSelected.value == 3;
+  goToHome() => onItemSelected(0);
   changeMoreDynamicPage() => isMoreDynamicPage.value = !isMoreDynamicPage.value;
   appBarTitle() {
     if (indexPageSelected.value == 1) {
@@ -43,7 +45,9 @@ class RootController extends GetxController {
 
   onItemSelected(int index) {
     /// To disable the hidden button below the quick donate button
-    if (!(app.generalSettings.isActiveQuickDonation && index == 2)) {
+    if (app.generalSettings.isActiveQuickDonation && index == 2) {
+      openQuickDonation();
+    }else{
       indexPageSelected.value = index;
     }
   }
@@ -81,9 +85,6 @@ class RootController extends GetxController {
 
   init()async{
     /// Initialize quick actions
-    // await QuickActionX.init();
-    if(!app.generalSettings.isActiveQuickDonation){
-      pages.removeAt(2);
-    }
+    await QuickActionX.init();
   }
 }

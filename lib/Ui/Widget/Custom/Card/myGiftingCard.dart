@@ -16,7 +16,7 @@ class MyGiftCardX extends StatelessWidget {
         children: [
           ActivityDataRowX(
             title: "Mahdi Name",
-            data: gift.name,
+            data: gift.orderModel.giftBasic.recipientName,
           ).fadeAnimation100,
           ActivityDataRowX(
             title: "Gift amount",
@@ -30,7 +30,8 @@ class MyGiftCardX extends StatelessWidget {
           ActivityDataRowX(
                   title: "Gift date",
                   data: intl.DateFormat('dd/MM/yyyy')
-                      .format(gift.paymentTransaction.createdAt))
+                      .format(gift.paymentTransaction.createdAt),
+          )
               .fadeAnimation200,
           InkWell(
             onTap: () => Get.toNamed(RouteNameX.previewGift,arguments:gift.orderModel),

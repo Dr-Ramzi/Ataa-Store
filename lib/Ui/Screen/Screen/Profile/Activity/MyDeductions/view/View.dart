@@ -45,7 +45,7 @@ class MyDeductionsView extends GetView<MyDeductionsController> {
                     children: [
                       ButtonX.second(
                         width: 140,
-                        text: 'Show more',
+                        text: 'Show More',
                         iconData: IconX.ourBanks,
                         onTap: controller.onShowMore,
                       ).fadeAnimationX(60 * (index>6?6:index + 1)),

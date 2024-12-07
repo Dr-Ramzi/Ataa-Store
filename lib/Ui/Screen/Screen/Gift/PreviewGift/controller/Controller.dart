@@ -8,8 +8,7 @@ import 'package:ataa/UI/Widget/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PreviewGiftController extends GetxController {
@@ -108,7 +107,7 @@ class PreviewGiftController extends GetxController {
         }
 
         // حفظ الصورة في مكتبة الصور
-        final result = await ImageGallerySaver.saveImage(
+        final result = await ImageGallerySaverPlus.saveImage(
           pngBytes,
           quality: 100,
           name: '${giftOrder.giftBasic.recipientName}_gift_card',

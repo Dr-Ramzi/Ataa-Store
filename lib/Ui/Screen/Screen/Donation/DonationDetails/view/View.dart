@@ -29,17 +29,17 @@ class DonationDetailsView extends GetView<DonationDetailsController> {
           }
 
           /// Main Content
-          return const Column(
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               /// AppBar
-              AppBarWithCoverSectionX(),
+              const AppBarWithCoverSectionX(),
 
               /// Donation Details
               Expanded(
                 child: Stack(
                   children: [
-                    Column(
+                    const Column(
                       children: [
                         /// Static Section
                         HeaderSectionX(),
@@ -50,7 +50,8 @@ class DonationDetailsView extends GetView<DonationDetailsController> {
                     ),
 
                     /// Pay Buttons
-                    NavBarSectionX(),
+                    if(!controller.donation.donationBasic.isDone)
+                    const NavBarSectionX(),
                   ],
                 ),
               ),
