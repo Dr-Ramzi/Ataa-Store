@@ -8,8 +8,8 @@ class DatabaseX {
   static init() async {
     try {
       /// Here codes are added to configure anything within this section when the application starts
-      // DBEndPointX.mainAPI= FirebaseRemoteConfigServiceX.getString('base_url','https://ataa-store-backend-staging.edialoguecenter.com/api/v1/');
-      DBEndPointX.mainAPI= 'https://ataa-store-backend-testing.edialoguecenter.com/api/v1/' ;
+      DBEndPointX.mainAPI= FirebaseRemoteConfigServiceX.getString('base_url','https://ataa-store-backend-staging.edialoguecenter.com/api/v1/');
+      // DBEndPointX.mainAPI= 'https://ataa-store-backend-testing.edialoguecenter.com/api/v1/' ;
     } catch (e) {
       return Future.error(e);
     }
