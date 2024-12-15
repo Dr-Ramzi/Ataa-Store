@@ -1103,7 +1103,6 @@ class DatabaseX {
   }) async {
     dynamic data;
     if (form.transferImageFile != null) {
-      print('object1');
       data = await RemoteDataSourceX.postFiles(
         DBEndPointX.postCreatePaymentTransactionForQuickDonation,
         {NameX.transferImageFile: form.transferImageFile!},
@@ -1115,9 +1114,6 @@ class DatabaseX {
         ),
       );
     } else {
-      print('object2');
-      print(DBEndPointX.postCreatePaymentTransactionForQuickDonation);
-      print(projectId);
       data = await RemoteDataSourceX.post(
         DBEndPointX.postCreatePaymentTransactionForQuickDonation,
         param: DataSourceParamX(
@@ -1420,6 +1416,81 @@ class DatabaseX {
       ),
     );
     return data.$2;
+  }
+
+  //============================================================================
+  // Notifications
+
+  static Future<List<NotificationX>> getAllNotifications({
+    bool? isRead,
+    String? type,
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    Map<String, dynamic>? filterParams = {
+      if (isRead != null) NameX.isRead: isRead,
+      if (type != null) NameX.type: type,
+    };
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getAllNotifications,
+      param: DataSourceParamX(
+        localCacheKey: 'get_all_notifications$filterParams',
+        localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
+        page: page,
+        limit: perPage,
+        filterParams: filterParams,
+      ),
+    );
+
+    List<Map<String, dynamic>> allNotifications = [];
+    for (var item in data.$1[NameX.data]) {
+      if (item[NameX.notifications] != null) {
+
+        allNotifications.addAll(List<Map<String, dynamic>>.from(item[NameX.notifications]));
+      }
+    }
+    return ModelUtilX.generateItems(allNotifications, NotificationX.fromJson);
+  }
+  //============================================================================
+  // Share Links
+
+  static Future<List<ShareLinkX>> getAllMyShareLinks({
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getAllMyShareLinks,
+      param: DataSourceParamX(
+        localCacheKey: 'get_all_share_links',
+        localCacheMaxAge: const Duration(days: 3),
+        authToken: LocalDataX.token,
+        page: page,
+        limit: perPage,
+      ),
+    );
+
+    return ModelUtilX.generateItems(data.$1[NameX.data], ShareLinkX.fromJson);
+  }
+
+  static Future<MiniShareLinkX> createShareLink(
+      {required LinkableTypeStatusX linkableType,required String modelId}) async {
+    var data = await RemoteDataSourceX.post(
+      DBEndPointX.postCreateShareLink,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        requestBody: {
+          NameX.linkableType:linkableType.name,
+          NameX.linkableId:modelId,
+        },
+      ),
+    );
+
+    return MiniShareLinkX.fromJson(
+      Map<String, dynamic>.from(
+        data.$1[NameX.data],
+      ),
+    );
   }
 
   //============================================================================

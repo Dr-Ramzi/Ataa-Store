@@ -197,10 +197,32 @@ class HomeController extends GetxController {
   //----------------------------------------------------------------------------
   // Deduction
 
-  onTapDeduction(String id) =>
-      Get.toNamed(RouteNameX.deductionDetails, arguments: id);
-  onSubscriptionDeduction(deduction) async =>
-      await subscriptionDeductionSheetX(deduction);
+  Future<dynamic> onTapDeduction(String id)async{
+    var x = await Get.toNamed(RouteNameX.deductionDetails, arguments: id);
+    return x;
+  }
+
+  Future<bool> onSubscriptionDonation(deduction) async {
+    (dynamic isOpenPayment, dynamic deductionAmount)? subscription =
+    await subscriptionDeductionSheetX(deduction);
+    if (subscription != null && subscription.$1 == true) {
+      var isDone = await Get.toNamed(
+        RouteNameX.deductionPayment,
+        arguments: [
+          deduction,
+          deduction.isOpenPrice
+              ? subscription.$2
+              : deduction.initialPrice
+        ],
+      );
+      if(isDone == true){
+        return true;
+      }
+    }
+    return false;
+  }
+
+
   onDeductionsMore() => Get.toNamed(RouteNameX.allDeductions);
 
   //----------------------------------------------------------------------------

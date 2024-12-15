@@ -5,6 +5,7 @@ class TextFieldX extends StatefulWidget {
   final TextEditingController controller;
   final String? label;
   final String? hint;
+  final String? counterText;
   final int? hintMaxLines;
   final int? errorMaxLines;
   final bool disabled;
@@ -13,9 +14,12 @@ class TextFieldX extends StatefulWidget {
   final EdgeInsets margin;
   final IconData? icon;
   final Widget? prefixWidget;
+  final double? width;
+  final double? height;
   final double iconSize;
   final Color? color;
   final Color? borderColor;
+  final FocusNode? focusNode;
   final BorderSide? border;
   final BorderRadiusGeometry? borderRadius;
   final BorderSide? borderError;
@@ -30,6 +34,7 @@ class TextFieldX extends StatefulWidget {
   final TextInputType? textInputType;
   final TextInputAction? textInputAction;
   final String? Function(String?)? validate;
+  final Function()? onTap;
   final Function(String)? onChanged;
   final Function(bool)? onChangedFocus;
   final void Function(String value)? onEditingComplete;
@@ -41,6 +46,7 @@ class TextFieldX extends StatefulWidget {
     this.isRequired,
     this.hint,
     this.hintMaxLines,
+    this.counterText,
     this.errorMaxLines,
     this.validate,
     this.autofocus = false,
@@ -54,12 +60,16 @@ class TextFieldX extends StatefulWidget {
     this.iconSize = 24.0,
     this.disabled = false,
     this.color,
+    this.focusNode,
     this.borderColor,
     this.border,
+    this.width,
+    this.height,
     this.borderRadius,
     this.borderError,
     this.borderErrorRadius,
     this.textAlign,
+    this.onTap,
     this.onChanged,
     this.onChangedFocus,
     this.onEditingComplete,
@@ -117,15 +127,17 @@ class _TextFieldXState extends State<TextFieldX> {
       children: [
         if (widget.label != null)
           LabelInputX(widget.label!, isRequired: widget.isRequired),
-        Padding(
-          padding: widget.margin,
+        Container(
+          width: widget.width,
+          margin: widget.margin,
           child: TextFormField(
             textAlign: widget.textAlign ?? TextAlign.start,
             maxLength: widget.maxLength,
             minLines: widget.minLines,
             style: TextStyleX.titleSmall,
             autofocus: widget.autofocus,
-            focusNode: _focusNode,
+            focusNode: widget.focusNode??_focusNode,
+            onTap:widget.onTap,
             onEditingComplete: ()=>widget.onEditingComplete?.call(''),
             onChanged: (text) {
               if(widget.textInputType==TextInputType.number) {
@@ -159,6 +171,7 @@ class _TextFieldXState extends State<TextFieldX> {
             },
             decoration: InputDecoration(
               filled: true,
+              counterText: widget.counterText,
               fillColor: widget.disabled
                   ? Theme.of(context).disabledColor
                   : widget.color ?? Theme.of(context).cardTheme.color,
@@ -181,7 +194,7 @@ class _TextFieldXState extends State<TextFieldX> {
               prefixIconConstraints: (widget.icon != null || widget.prefixWidget!=null)
                   ? null
                   : BoxConstraints.tight(
-                      const Size(16, StyleX.inputHeight),
+                      Size(16, widget.height??StyleX.inputHeight),
                     ),
               suffixIcon: widget.suffixWidget != null
                   ? Padding(
@@ -199,8 +212,7 @@ class _TextFieldXState extends State<TextFieldX> {
                           },
                         )
                       : null),
-              suffixIconConstraints:
-                  const BoxConstraints(maxWidth: StyleX.inputHeight),
+              suffixIconConstraints: BoxConstraints(maxWidth: widget.height??StyleX.inputHeight),
               floatingLabelBehavior: FloatingLabelBehavior.always,
               border: InputBorder.none,
               isCollapsed: true,

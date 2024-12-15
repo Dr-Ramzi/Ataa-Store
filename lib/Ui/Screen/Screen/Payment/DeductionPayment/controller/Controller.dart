@@ -92,6 +92,7 @@ class DeductionPaymentController extends GetxController {
     Get.offAndToNamed(
       RouteNameX.paymentSuccessful,
       arguments: paymentTransaction,
+      result: true
     );
   }
 

@@ -189,6 +189,8 @@ const Map<String, String> arGeneral = {
   'Start Now': 'ابدأ الآن',
   'Settings': 'الإعدادات',
   'Language': 'اللغة',
+  'Arabic': 'العربية',
+  'Choose the browsing language for the app. You can change it later from the settings.': 'اختر لغة التصفح للتطبيق. يمكنك تغييرها لاحقًا من الإعدادات',
   'Theme': 'الوضع الليلي',
   'Terms and Conditions': 'الشروط والأحكام',
   'terms & Conditions': 'الشروط',

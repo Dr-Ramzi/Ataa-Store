@@ -49,6 +49,7 @@ class GeneralPaymentController extends GetxController {
   String? quickDonationOrgId = Get.arguments?[NameX.orgId];
   DonationX? quickDonationDonation = Get.arguments?[NameX.donation];
   double? totalCart = Get.arguments?[NameX.totalCart];
+  bool? fromCart = Get.arguments?[NameX.fromCart];
 
   Rx<ButtonStateEX> buttonState = Rx<ButtonStateEX>(ButtonStateEX.normal);
   final ScrollController scrollController = ScrollController();
@@ -80,7 +81,7 @@ class GeneralPaymentController extends GetxController {
   onPayByAppleOrGoogle(String token) async {
     try {
       PaymentTransactionFormX form = PaymentTransactionFormX(
-        price: quickDonationAmount,
+        price: totalCart ?? quickDonationAmount!,
         paymentMethod: Platform.isIOS
             ? PaymentMethodStatusX.applePay
             : PaymentMethodStatusX.googlePay,
@@ -124,7 +125,7 @@ class GeneralPaymentController extends GetxController {
       }
     }
 
-    if(totalCart!=null){
+    if(fromCart==true){
       /// for close cart screen
      Get.back();
     }
@@ -145,7 +146,7 @@ class GeneralPaymentController extends GetxController {
           late PaymentTransactionFormX form;
           if (isViaCard.isTrue) {
             form = PaymentTransactionFormX(
-              price: quickDonationAmount,
+              price: totalCart ?? quickDonationAmount!,
               paymentMethod: PaymentMethodStatusX.creditCard,
               paymentCardId:
                   preSavedPaymentCardsController.paymentCardSelected.value?.id,
@@ -171,7 +172,7 @@ class GeneralPaymentController extends GetxController {
             );
           } else {
             form = PaymentTransactionFormX(
-              price: quickDonationAmount,
+              price: totalCart ?? quickDonationAmount!,
               paymentMethod: PaymentMethodStatusX.bankTransfer,
               bankAccountId: payByBankTransferController.bankAccountSelected.value!.id,
               transferImageFile: File(payByBankTransferController.image.value!.path),

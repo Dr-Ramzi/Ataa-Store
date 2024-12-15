@@ -7,13 +7,13 @@ class NotificationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ContainerX(
       margin: const EdgeInsets.symmetric(vertical: 5.0),
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(17.0),
       radius: 16,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ContainerX(
-              padding: const EdgeInsets.all(14.0),
+              padding: const EdgeInsets.all(12.0),
               color: Theme.of(context).colorScheme.onPrimary,
               child: Icon(
                 Icons.notifications_rounded,
@@ -27,21 +27,29 @@ class NotificationCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if(notification.titleDonor!=null)
                 TextX(
-                  notification.title,
+                  notification.titleDonor!,
+                  style: TextStyleX.titleSmall,
                   fontWeight: FontWeight.w700,
                 ),
-                const SizedBox(height: 4.0),
+                if(notification.titleDonor!=null)
+                const SizedBox(height: 6.0),
+                if(notification.contentDonor!=null)
                 TextX(
-                  notification.body,
+                  notification.contentDonor!,
                   style: TextStyleX.supTitleLarge,
-                  size: 14,
+                  size: 13,
                 ),
-                const SizedBox(height: 5.0),
-                TextX(
-                  notification.dateTime,
-                  style: TextStyleX.supTitleLarge,
-                  color: Theme.of(context).primaryColor,
+                const SizedBox(height: 7.0),
+                Directionality(
+                  textDirection: TextDirection.ltr,
+                  child: TextX(
+                    intl.DateFormat('yyyy/MM/dd  HH:mm').format(notification.createdAt),
+                    style: TextStyleX.supTitleLarge,
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),

@@ -79,7 +79,8 @@ class OnboardingView extends GetView<OnboardingController> {
                             TextX(
                               controller.cardsTitle[index],
                               color: Colors.white,
-                              style: TextStyleX.headerSmall.copyWith(fontSize: 24),
+                              style:
+                                  TextStyleX.headerSmall.copyWith(fontSize: 24),
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 10),
@@ -89,7 +90,8 @@ class OnboardingView extends GetView<OnboardingController> {
                               child: TextX(
                                 controller.cardsSubtitle[index],
                                 color: Colors.white,
-                                style: TextStyleX.titleMedium.copyWith(fontSize: 16),
+                                style: TextStyleX.titleMedium
+                                    .copyWith(fontSize: 16),
                                 textAlign: TextAlign.center,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -115,17 +117,59 @@ class OnboardingView extends GetView<OnboardingController> {
                   ).fadeAnimation500,
                   const SizedBox(height: 20),
 
-                  /// Next Button
                   Obx(
-                    () => ButtonX(
-                      onTap: controller.onNext,
-                      text: controller.buttonText(),
-                      colorButton: Colors.white,
-                      colorText: ColorX.primary,
-                      borderColor: Colors.transparent,
-                    ).fadeAnimation600,
+                    () {
+                      /// Language Button
+                      if (controller.cardIndex.value == 0) {
+                        return Column(
+                          children: [
+                            ButtonX(
+                              onTap: () => controller.changeLanguage('ar'),
+                              text: 'Arabic',
+                              colorButton: Colors.white,
+                              colorText: ColorX.primary,
+                              borderColor: Colors.transparent,
+                            ),
+                            ButtonX(
+                              onTap: () => controller.changeLanguage('en'),
+                              text: 'English',
+                              colorButton: Colors.white,
+                              colorText: ColorX.primary,
+                              borderColor: Colors.transparent,
+                            ),
+                          ],
+                        );
+                      } else if (controller.cardIndex.value == 1) {
+                        return Column(
+                          children: [
+                            ButtonX(
+                              onTap: controller.onNext,
+                              text: 'Next',
+                              colorButton: Colors.white,
+                              colorText: ColorX.primary,
+                              borderColor: Colors.transparent,
+                            ),
+                            ButtonX(
+                              onTap: controller.onSkip,
+                              text: 'Skip',
+                              colorButton: ColorX.primary,
+                              colorText: Colors.white,
+                              borderColor: Colors.white,
+                            ),
+                          ],
+                        );
+                      } else {
+                        /// Skip Button
+                        return ButtonX(
+                          onTap: controller.onSkip,
+                          text: 'Start Now',
+                          colorButton: Colors.white,
+                          colorText: ColorX.primary,
+                          borderColor: Colors.transparent,
+                        );
+                      }
+                    },
                   ),
-
                   SizedBox(height: MediaQuery.of(context).padding.bottom),
                 ],
               ),

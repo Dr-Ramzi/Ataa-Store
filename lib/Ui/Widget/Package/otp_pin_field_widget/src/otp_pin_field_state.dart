@@ -4,9 +4,9 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:otp_pin_field/otp_pin_field_platform_interface.dart';
 
 import '../otp_pin_field.dart';
+import '../otp_pin_field_platform_interface.dart';
 import 'gradient_outline_input_border.dart';
 
 class OtpPinFieldState extends State<OtpPinField>
@@ -35,7 +35,7 @@ class OtpPinFieldState extends State<OtpPinField>
         _OtpPinFieldAutoFill()
             .listenForCode(smsCodeRegexPattern: widget.smsRegex ?? '\\d{0,4}');
       });
-      listenForCode();
+      // listenForCode();
     }
     for (var i = 0; i < widget.maxLength; i++) {
       pinsInputed.add('');
@@ -115,6 +115,9 @@ class OtpPinFieldState extends State<OtpPinField>
                       onSubmitted: (text) {
                         debugPrint(text);
                       },
+                      onTapOutside: (event) {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                      },
                       onChanged: (text) {
                         if (ending && text.length == widget.maxLength) {
                           return;
@@ -124,7 +127,9 @@ class OtpPinFieldState extends State<OtpPinField>
                         widget.onChange(text);
                         ending = text.length == widget.maxLength;
                         if (ending) {
-                          widget.onSubmit(text);
+                          if(widget.onSubmit!=null) {
+                            widget.onSubmit!(text);
+                          }
                           FocusScope.of(context).unfocus();
                         }
                       },
@@ -169,7 +174,9 @@ class OtpPinFieldState extends State<OtpPinField>
                       if (controller.text.length != widget.maxLength) {
                         return;
                       }
-                      widget.onSubmit(controller.text);
+                      if(widget.onSubmit!=null) {
+                        widget.onSubmit!(controller.text);
+                      }
                     },
                   ))
         ],
@@ -213,6 +220,9 @@ class OtpPinFieldState extends State<OtpPinField>
                 onSubmitted: (text) {
                   debugPrint(text);
                 },
+                onTapOutside: (event) {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
                 onChanged: (text) {
                   if (ending && text.length == widget.maxLength) {
                     return;
@@ -222,7 +232,9 @@ class OtpPinFieldState extends State<OtpPinField>
                   widget.onChange(text);
                   ending = text.length == widget.maxLength;
                   if (ending) {
-                    widget.onSubmit(text);
+                    if(widget.onSubmit!=null) {
+                      widget.onSubmit!(text);
+                    }
                     FocusScope.of(context).unfocus();
                   }
                 },
@@ -460,7 +472,28 @@ class OtpPinFieldState extends State<OtpPinField>
       hasFocus = widget.highlightBorder;
     });
   }
-
+  void codeUpdate(String code) {
+    debugPrint('auto fill sms code is $code');
+    if (controller.text != code) {
+      controller.value = TextEditingValue(text: code);
+      if (widget.onCodeChanged != null) {
+        widget.onCodeChanged!(code);
+      }
+      FocusManager.instance.primaryFocus?.unfocus();
+      setState(() {
+        _focusNode = FocusNode();
+        if (code.isNotEmpty == true) {
+          for (var i = 0; i < code.length; i++) {
+            pinsInputed[i] = code[i];
+          }
+        }
+        _focusNode.addListener(_focusListener);
+        ending = true;
+        hasFocus = widget.highlightBorder;
+        controller.text = code;
+      });
+    }
+  }
   @override
   void codeUpdated() {
     debugPrint('auto fill sms code is $code');
@@ -525,7 +558,9 @@ class OtpPinFieldState extends State<OtpPinField>
       widget.onChange(controller.text.trim());
       ending = controller.text.trim().length == widget.maxLength;
       if (ending) {
-        widget.onSubmit(controller.text.trim());
+        if(widget.onSubmit!=null) {
+          widget.onSubmit!(controller.text.trim());
+        }
         FocusScope.of(context).unfocus();
         _hideKeyboard();
       }

@@ -4,7 +4,7 @@
 name: ataa
 description: "description_project_x"
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 1.0.4+4
+version: 1.0.4+6
 
 #====================================================================
 # Flutter Version
@@ -23,13 +23,13 @@ dependencies:
   ## Basic
   get: any
   intl: any
-  url_launcher: any
-  universal_html: any
   package_info_plus: any
-  http: ^1.2.0
 
   #-------------------------------------
   ## Network
+  http: ^1.2.0
+  url_launcher: any
+  universal_html: any
 
   #-------------------------------------
   ## Map
@@ -51,13 +51,14 @@ dependencies:
   cupertino_icons: any
   material_design_icons_flutter: ^7.0.7296
 
-  ## Video
   ##-------------------------------------
+  ## Video
   video_player: ^2.9.2
   chewie: ^1.8.5
+  youtube_player_flutter: ^9.1.1
 
-  ## Image
   ##-------------------------------------
+  ## Image
   image_picker: any
   image_network: ^2.5.1
   flutter_svg: ^2.0.9 # To support SVG images
@@ -78,21 +79,31 @@ dependencies:
   firebase_crashlytics: any
 
   #-------------------------------------
-  ## Other
+  ## pay
+  pay: ^2.0.0
+
+  #-------------------------------------
+  ## image
+  image_gallery_saver_plus: any
+
+  #-------------------------------------
+  ## widget
   badges: ^3.1.2 # Notice number on the icon
-  smooth_page_indicator: ^1.1.0 # Show the number of images and any open image via dots below the image
-  flutter_advanced_segment: ^3.0.2 # Multiple tabs item
-#  flutter_share_me: ^1.3.0 # To share links externally
-  flutter_native_contact_picker: ^0.0.9 # To fetch data from contacts
   flutter_spinbox: ^0.13.1 # Number entry widget
   auto_size_text: ^3.0.0 # Automatic text size
+  smooth_page_indicator: ^1.1.0 # Show the number of images and any open image via dots below the image
+  flutter_advanced_segment: ^3.0.2 # Multiple tabs item
+
+  #-------------------------------------
+  ## Other
+  flutter_native_contact_picker: ^0.0.9 # To fetch data from contacts
   sms_autofill: ^2.4.1 # OTP sms auto fill
   webview_flutter: ^4.9.0
-  pay: ^2.0.0
   flex_list: ^1.0.0
-  image_gallery_saver_plus: any
   permission_handler: any
-#  sms_otp_auto_verify: ^2.2.0
+  downloadsfolder: ^1.1.1
+  app_links: ^6.3.3
+#  flutter_share_me: ^1.3.0 # To share links externally
 
   #-------------------------------------
   ## Edit Package

@@ -19,7 +19,6 @@ class SubscriptionDeductionControllerX extends GetxController {
   // Variables
 
   RxBool isLoading = false.obs;
-  bool isSheet = false;
 
   Rx<ButtonStateEX> buttonState = ButtonStateEX.normal.obs;
 
@@ -34,9 +33,8 @@ class SubscriptionDeductionControllerX extends GetxController {
   //============================================================================
   // Initialization
 
-  init(DeductionX deduction, {bool isSheet = false}) {
+  init(DeductionX deduction) {
     this.deduction = deduction;
-    this.isSheet = isSheet;
   }
 
   //============================================================================
@@ -92,20 +90,20 @@ class SubscriptionDeductionControllerX extends GetxController {
           await Future.delayed(
             const Duration(milliseconds: 500),
           );
-          /// if use this controller form bottom sheet
-          if (isSheet) {
-            Get.back();
-          }
 
-          await Get.toNamed(
-            RouteNameX.deductionPayment,
-            arguments: [
-              deduction,
-              deduction.isOpenPrice
-                  ? deductionAmount.text.toDoubleX
-                  : deduction.initialPrice
-            ],
-          );
+          Get.back(result: (true,deduction.isOpenPrice?deductionAmount.text.toDoubleX:null));
+
+          /// NOTE:
+          /// Moved to the deduction display screen in order to update the subscription button if subscribed.
+          // await Get.toNamed(
+          //   RouteNameX.deductionPayment,
+          //   arguments: [
+          //     deduction,
+          //     deduction.isOpenPrice
+          //         ? deductionAmount.text.toDoubleX
+          //         : deduction.initialPrice
+          //   ],
+          // );
 
           /// clear date on controller
           removeController();

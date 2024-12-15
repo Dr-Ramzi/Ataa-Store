@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:otp_pin_field/otp_pin_field.dart';
+
+import 'otp_pin_field_input_type.dart';
+import 'otp_pin_field_state.dart';
+import 'otp_pin_field_style.dart';
 
 typedef OnDone = void Function(String text);
 typedef OnChange = void Function(String text);
@@ -9,7 +12,7 @@ class OtpPinField extends StatefulWidget {
   final double fieldWidth;
   final int maxLength;
   final OtpPinFieldStyle? otpPinFieldStyle;
-  final OnDone onSubmit;
+  final OnDone? onSubmit;
   final OnChange onChange;
   final OtpPinFieldInputType otpPinFieldInputType;
   final String otpPinInputCustom;
@@ -48,7 +51,7 @@ class OtpPinField extends StatefulWidget {
     this.otpPinInputCustom = '*',
     this.smsRegex,
     this.beforeTextPaste,
-    required this.onSubmit,
+    this.onSubmit,
     required this.onChange,
     this.keyboardType = TextInputType.number,
     this.autoFocus = true,

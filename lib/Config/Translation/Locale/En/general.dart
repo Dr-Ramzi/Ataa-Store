@@ -198,6 +198,8 @@ const Map<String, String> enGeneral = {
   'Start Now': 'Start Now',
   'Settings': 'Settings',
   'Language': 'Language',
+  'Arabic': 'Arabic',
+  'Choose the browsing language for the app. You can change it later from the settings.': 'Choose the browsing language for the app. You can change it later from the settings.',
   'Theme': 'Theme',
   'Terms and Conditions': 'Terms and Conditions',
   'terms & Conditions': 'terms & Conditions',

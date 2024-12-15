@@ -20,7 +20,7 @@ subscriptionDeductionSheetX(DeductionX deduction) {
     SubscriptionDeductionControllerX(),
     tag: deduction.id,
   );
-  controller.init(deduction, isSheet: true);
+  controller.init(deduction);
 
   //============================================================================
   // Content

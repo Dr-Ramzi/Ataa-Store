@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../Config/Translation/translation.dart';
 import '../../../../Config/config.dart';
 import '../../../../Data/data.dart';
+import '../../../../UI/Widget/widget.dart';
 
 class OnboardingController extends GetxController {
   //============================================================================
@@ -15,6 +17,7 @@ class OnboardingController extends GetxController {
   //============================================================================
   // Functions
 
+
   onNext() {
     /// If the cards run out, the skip is triggered
     if (cardIndex.value == cardsTitle.length - 1) {
@@ -26,19 +29,22 @@ class OnboardingController extends GetxController {
       );
     }
   }
+  changeLanguage(String val) async {
+    try {
+      /// Switch language
+      await TranslationX.changeLocale(val);
 
+      /// Save the language to internal storage
+      LocalDataX.settings.language = val;
+      LocalDataX.put(LocalKeyX.settings, LocalDataX.settings.toJson());
+      onNext();
+    } catch (e) {
+      ToastX.error(message: e.toString());
+    }
+  }
   onSkip() {
     /// Save the path when you log in, so it doesn't appear again
     LocalDataX.put(LocalKeyX.route, RouteNameX.login);
     Get.offAllNamed(RouteNameX.login);
-  }
-
-  /// Get the name of the button
-  buttonText(){
-    if (cardIndex.value == cardsTitle.length - 1) {
-      return "Start Now";
-    } else {
-      return "Next";
-    }
   }
 }

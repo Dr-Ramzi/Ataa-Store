@@ -45,7 +45,7 @@ class StyleX{
   /// Cards
   static const double donationCardHeight=295;
   static const double donationCardWidthSM=340;
-  static const double deductionCardHeight=284;
+  static const double deductionCardHeight=288;
   static const double deductionCardWidthSM=340;
   static const double productCardHeight=310;
   static const double productCardWidth=200;

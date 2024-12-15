@@ -22,6 +22,7 @@ class MyShariLinksView extends GetView<MyShareLinksController> {
           builder: (controller) => AbsorbPointer(
             absorbing: controller.isLoading,
             child: ScrollRefreshLoadMoreX(
+              key: controller.scrollRefreshLoadMoreKey,
               fetchData: controller.getData,
               padding: const EdgeInsets.symmetric(
                 vertical: StyleX.vPaddingApp,

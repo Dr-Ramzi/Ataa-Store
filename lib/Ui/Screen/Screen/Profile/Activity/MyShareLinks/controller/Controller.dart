@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../../Core/Controller/Create/addShareLinkController.dart';
+import '../../../../../../../Data/Model/ShareLink/shareLink.dart';
 import '../../../../../../../Data/data.dart';
 import '../../../../../../../UI/Widget/widget.dart';
 import '../../../../../../ScreenSheet/Create/AddShareLink/addShareLinkSheet.dart';
@@ -24,12 +25,10 @@ class MyShareLinksController extends GetxController {
   // Functions
 
   Future<List<ShareLinkX>> getData(ScrollRefreshLoadMoreParametersX data) async {
-    await Future.delayed(const Duration(seconds: 1));
-    // return await DatabaseX.getAllMyShareLinks(
-    //   page: data.page,
-    //   perPage: data.perPage,
-    // );
-    return [...TestDataX.shareLinks,...TestDataX.shareLinks,...TestDataX.shareLinks];
+    return await DatabaseX.getAllMyShareLinks(
+      page: data.page,
+      perPage: data.perPage,
+    );
   }
 
   onShowMore(){
@@ -47,7 +46,7 @@ class MyShareLinksController extends GetxController {
         /// It is checked whether a share link has been created or not
         if(newLink!=null){
           /// Add to share links list
-          scrollRefreshLoadMoreKey.currentState?.addItem(newLink);
+          scrollRefreshLoadMoreKey.currentState?.refresh();
         }
       } catch (e) {
         ToastX.error(message: e.toString());

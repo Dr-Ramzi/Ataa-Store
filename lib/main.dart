@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:ataa/Core/Service/firebaseRemoteConfigService.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,6 +27,10 @@ void main() async {
     await Firebase.initializeApp();
     await LoggingX.init();
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack,fatal: true);
+      return true;
+    };
     await ConfigX.init();
     await FirebaseRemoteConfigServiceX.init();
     await DataX.init();

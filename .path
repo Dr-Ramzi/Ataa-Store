@@ -1,0 +1,3 @@
+/Users/saker/Desktop/Code/Flutter/Ataa/Ataa/ios/Pods/FirebaseCrashlytics/upload-symbols -gsp /Users/saker/Desktop/Code/Flutter/Ataa/Ataa/ios/Runner/GoogleService-Info.plist -p ios /Users/saker/Desktop/dSYMs
+
+/Users/saker/Desktop/Code/Flutter/Ataa/Ataa/ios/Pods/FirebaseCrashlytics/upload-symbols -gsp /Users/saker/Desktop/Code/Flutter/Ataa/Ataa/ios/Runner/GoogleService-Info.plist -p ios /Users/saker/Desktop/Code/Flutter/Ataa/Ataa/build/ios/archive/Runner.xcarchive/dSYMs

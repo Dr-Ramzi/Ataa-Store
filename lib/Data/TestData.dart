@@ -60,39 +60,6 @@ class TestDataX {
     ),
   ];
 
-  static List<ShareLinkX> shareLinks = [
-    ShareLinkX(
-      id: "1",
-      donationID: "1",
-      donationName: "Teach 30 Muslims the Pillars of Islam",
-      link: "https://ataa-store-frontend-staging.edialoguecenter.com/",
-      numVisits: 302,
-      numRegistered: 42,
-      numDonors: 17,
-      totalDonations: 3205,
-    ),
-    ShareLinkX(
-      id: "2",
-      donationID: "2",
-      donationName: "Prayer science for 120 new Muslims",
-      link: "https://ataa-store-frontend-staging.edialoguecenter.com/",
-      numVisits: 98,
-      numRegistered: 2,
-      numDonors: 1,
-      totalDonations: 100,
-    ),
-    ShareLinkX(
-      id: "3",
-      donationID: "3",
-      donationName: "Charity on Friday",
-      link: "https://ataa-store-frontend-staging.edialoguecenter.com/",
-      numVisits: 109,
-      numRegistered: 24,
-      numDonors: 5,
-      totalDonations: 410,
-    ),
-  ];
-
   static List<ProductX> products = [
     ProductX(
       id: '1',
@@ -355,14 +322,6 @@ class TestDataX {
     ),
   ];
 
-  static List<NotificationX> notifications = [
-    NotificationX(
-      id: 1,
-      title: 'Test',
-      body: "Congratulations on the success of your “Sponsor 100 Muslims”",
-      dateTime: "Two days ago",
-    )
-  ];
   static String about = """  منصة تبرعات لدعم مشاريع جمعية ركن الحوار.
 
 من برامجنا التعريف بالإسلام لدعوة الآخرين من خلال الحوار البناء، وأكاديمية المسلم الجديد لتوجيه للمسلمين الجدد وتعليمهم دينهم. وكذلك أكاديمية رسل السلام لتدريب المسلمين على الدعوة إلى الإسلام بطرق فعالة وأسس سليمة.""";

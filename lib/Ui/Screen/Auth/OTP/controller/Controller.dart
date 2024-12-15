@@ -8,6 +8,7 @@ import '../../../../../Core/Error/error.dart';
 import '../../../../../Core/core.dart';
 import '../../../../../Data/data.dart';
 import '../../../../ScreenSheet/Other/AccountCreated/accountCreatedSheet.dart';
+import '../../../../Widget/Package/otp_pin_field_widget/src/otp_pin_field_state.dart';
 import '../../../../Widget/widget.dart';
 
 class OTPController extends GetxController with CodeAutoFill {
@@ -29,9 +30,10 @@ class OTPController extends GetxController with CodeAutoFill {
   /// if open OTP from sheet then get OTP object from view screen parameters
   late OtpX otp = Get.arguments is Map?Get.arguments[NameX.otp]:OtpX.empty();
 
-  GlobalKey<FormState> formKey = GlobalKey();
   AutovalidateMode autoValidate = AutovalidateMode.disabled;
   TextEditingController otpCode = TextEditingController();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<OtpPinFieldState> otpKey = GlobalKey<OtpPinFieldState>();
 
   late Timer timer;
   RxInt start = 60.obs;
@@ -258,7 +260,7 @@ class OTPController extends GetxController with CodeAutoFill {
 
     /// to get app signature
     SmsAutoFill().getAppSignature.then((signature) {
-      // print(signature +" signature");
+      // print("$signature signature");
       appSignature.value = signature;
     });
   }
@@ -268,6 +270,7 @@ class OTPController extends GetxController with CodeAutoFill {
   void codeUpdated() {
     /// Fetch the code
     otpCode.text = code ?? "";
+    otpKey.currentState?.codeUpdate(code.toString());
   }
 
   /// Disable listeners

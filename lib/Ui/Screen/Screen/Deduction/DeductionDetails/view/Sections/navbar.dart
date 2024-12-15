@@ -13,6 +13,7 @@ class NavBarSectionX extends GetView<DeductionDetailsController> {
       bottom: 0,
       right: 0,
       left: 0,
+
       /// Card
       child: ContainerX(
         isShadow: true,
@@ -23,15 +24,25 @@ class NavBarSectionX extends GetView<DeductionDetailsController> {
           horizontal: StyleX.hPaddingApp,
           vertical: 20,
         ),
+
         /// Subscription Button
-        child: Obx(
-          () => ButtonStateX(
-            state: controller.subscriptionButtonState.value,
-            onTap: controller.onSubscriptionDeduction,
-            text: "Subscribe Now",
-            iconData: Icons.payments_rounded,
-          ).fadeAnimation600,
-        ),
+        child:  Obx(
+              (){
+                if(controller.isSubscribed.value){
+                  return ButtonX.gray(
+                    text: 'Subscribed',
+                    onTap: () {},
+                  );
+                }else{
+                  return ButtonStateX(
+                    state: controller.subscriptionButtonState.value,
+                    onTap: ()async=> await controller.onSubscriptionDonation(),
+                    text: "Subscribe Now",
+                    iconData: Icons.payments_rounded,
+                  );
+                }
+              }
+        ).fadeAnimation600,
       ),
     );
   }

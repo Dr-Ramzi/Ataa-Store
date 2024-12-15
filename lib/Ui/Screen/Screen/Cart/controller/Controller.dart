@@ -105,9 +105,9 @@ class CartController extends GetxController {
               RouteNameX.generalPayment,
               arguments: {
                 NameX.totalCart: cartGeneral.cart.value.totalPrice,
+                NameX.fromCart:true,
               },
             );
-
             cartSummary.value= cartGeneral.cart.value.totalPrice;
           }
         } catch (error) {

@@ -198,6 +198,17 @@ class DBEndPointX {
   static final String postRating= '${mainAPI}ratings';
 
   //============================================================================
+  // Notifications
+
+  static final String getAllNotifications = '${mainAPI}notification/notifications';
+
+  //============================================================================
+  // Share Links
+
+  static final String getAllMyShareLinks = '${mainAPI}affiliations';
+  static final String postCreateShareLink = '${mainAPI}affiliations';
+
+  //============================================================================
   // Payment Transaction Item
 
   static final String getAllPaymentTransactionItemByModelType= '${mainAPI}payments/transactions/item';

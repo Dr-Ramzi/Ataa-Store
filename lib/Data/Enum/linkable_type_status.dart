@@ -1,8 +1,9 @@
-enum ModelDonationDataTypeStatusX {
-  openDonation('open_donation'),
-  shares('shares_donation'),
-  deduction('deduction_donation');
+enum LinkableTypeStatusX {
+  donation('Project'),
+  org('DonationCategory'),
+  deduction('RecurringDonation'),
+  gift('Gift');
 
   final String name;
-  const ModelDonationDataTypeStatusX(this.name);
+  const LinkableTypeStatusX(this.name);
 }

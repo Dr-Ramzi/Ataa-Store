@@ -64,6 +64,13 @@ class _AdsCardsXState extends State<AdsCardsX> {
         SmoothPageIndicator(
           controller: adsController,
           count: widget.ads.length,
+          onDotClicked: (index) {
+            adsController.animateToPage(
+              index,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
+          },
           effect: ExpandingDotsEffect(
             dotHeight: 6,
             dotWidth: 6,

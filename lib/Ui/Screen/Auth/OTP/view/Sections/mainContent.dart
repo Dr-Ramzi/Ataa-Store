@@ -4,6 +4,7 @@ import '../../../../../../Config/config.dart';
 import '../../../../../../Core/core.dart';
 import '../../../../../../UI/Widget/widget.dart';
 import '../../../../../Animation/animation.dart';
+import '../../../../../Widget/Package/otp_pin_field_widget/otp_pin_field.dart';
 import '../../controller/Controller.dart';
 
 class MainContentOtpX extends GetView<OTPController> {
@@ -32,7 +33,7 @@ class MainContentOtpX extends GetView<OTPController> {
             const SizedBox(height: 32.0),
 
             /// Error Message
-            if (controller.error.value!=null)
+            if (controller.error.value != null)
               GestureDetector(
                 onTap: controller.onTapError,
                 child: MessageCardX(
@@ -47,13 +48,42 @@ class MainContentOtpX extends GetView<OTPController> {
               autovalidateMode: controller.autoValidate,
               child: Column(
                 children: [
-                  TextFieldX(
-                    controller: controller.otpCode,
-                    label: "Verification Code",
-                    hint: '',
-                    validate: ValidateX.otp,
-                    textInputType: TextInputType.number,
-                    textInputAction: TextInputAction.done,
+                  Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: OtpPinField(
+                      key: controller.otpKey,
+                      fieldHeight: 55,
+                      fieldWidth: 55,
+                      textInputAction: TextInputAction.done,
+                      maxLength: 4,
+                      showCursor: true,
+                      cursorColor: ColorX.primary,
+                      cursorWidth: 2,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      otpPinFieldDecoration: OtpPinFieldDecoration.defaultPinBoxDecoration,
+                      onChange: (val) {
+                        if(val.length==4) {
+                          controller.otpCode.text = val;
+                        }else{
+                          controller.otpCode.text = '';
+                        }
+                      },
+                      otpPinFieldStyle: OtpPinFieldStyle(
+                        showHintText: false,
+                        defaultFieldBackgroundColor:
+                            Theme.of(context).cardTheme.color ??
+                                Colors.transparent,
+                        activeFieldBackgroundColor:
+                            Theme.of(context).cardTheme.color ??
+                                Colors.transparent,
+                        activeFieldBorderColor: ColorX.primary,
+                        defaultFieldBorderColor: Theme.of(context).dividerColor,
+                        fieldBorderWidth: StyleX.borderWidth,
+                        fieldPadding: 16,
+                        textStyle:
+                            TextStyleX.titleMedium.copyWith(fontSize: 17),
+                      ),
+                    ),
                   ),
                 ],
               ),

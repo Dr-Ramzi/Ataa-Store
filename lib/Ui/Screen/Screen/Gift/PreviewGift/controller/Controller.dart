@@ -5,6 +5,7 @@ import 'package:ataa/Data/Model/Gift/Order/giftOrder.dart';
 import 'package:ataa/Data/Model/Gift/Subclass/giftCategory.dart';
 import 'package:ataa/Data/data.dart';
 import 'package:ataa/UI/Widget/widget.dart';
+import 'package:downloadsfolder/downloadsfolder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
@@ -71,17 +72,18 @@ class PreviewGiftController extends GetxController {
             return;
           }
         }
-        bool dirDownloadExists = true;
-        var directory = "/storage/emulated/0/Download/";
+        Directory downloadDirectory = await getDownloadDirectory();
+        // bool dirDownloadExists = true;
+        // var directory = "/storage/emulated/0/Download/";
+        //
+        // dirDownloadExists = await Directory(directory).exists();
+        // if(dirDownloadExists){
+        //   directory = "/storage/emulated/0/Download/";
+        // }else{
+        //   directory = "/storage/emulated/0/Downloads/";
+        // }
 
-        dirDownloadExists = await Directory(directory).exists();
-        if(dirDownloadExists){
-          directory = "/storage/emulated/0/Download/";
-        }else{
-          directory = "/storage/emulated/0/Downloads/";
-        }
-
-        String basePath ='$directory/${giftOrder.giftBasic.recipientName} - gift card';
+        String basePath ='${downloadDirectory.path}/${giftOrder.giftBasic.recipientName} - gift card';
         String path = '$basePath.png';
 
         int counter = 1;

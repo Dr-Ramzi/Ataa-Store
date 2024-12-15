@@ -13,8 +13,9 @@ class AllDeductionsController extends GetxController {
   // Injection of required controls
 
   AppControllerX app = Get.find();
-  FilterControllerX filterController =
-      Get.put(FilterControllerX(tag: "All Deduction")..isShowDeduction=true, tag: "All Deduction");
+  FilterControllerX filterController = Get.put(
+      FilterControllerX(tag: "All Deduction")..isShowDeduction = true,
+      tag: "All Deduction");
 
   //============================================================================
   // Variables
@@ -26,9 +27,8 @@ class AllDeductionsController extends GetxController {
   //============================================================================
   // Functions
 
-  Future<List<DeductionX>> getData(ScrollRefreshLoadMoreParametersX data) async {
-    print(data.orderBy);
-    print(data.filters);
+  Future<List<DeductionX>> getData(
+      ScrollRefreshLoadMoreParametersX data) async {
     List<DeductionX> results = await DatabaseX.getDeductionsBySearch(
       page: data.page,
       perPage: data.perPage,
@@ -40,12 +40,28 @@ class AllDeductionsController extends GetxController {
     return results;
   }
 
-
-  onTapDeduction(String id) =>
-      Get.toNamed(RouteNameX.deductionDetails, arguments: id);
-
-  onSubscriptionDonation(deduction) async {
-    await subscriptionDeductionSheetX(deduction);
+  Future<dynamic> onTapDeduction(String id)async{
+    var x = await Get.toNamed(RouteNameX.deductionDetails, arguments: id);
+    return x;
+  }
+  Future<bool> onSubscriptionDonation(deduction) async {
+    (dynamic isOpenPayment, dynamic deductionAmount)? subscription =
+        await subscriptionDeductionSheetX(deduction);
+    if (subscription != null && subscription.$1 == true) {
+      var isDone = await Get.toNamed(
+        RouteNameX.deductionPayment,
+        arguments: [
+          deduction,
+          deduction.isOpenPrice
+              ? subscription.$2
+              : deduction.initialPrice
+        ],
+      );
+      if(isDone == true){
+        return true;
+      }
+    }
+    return false;
   }
 
   //----------------------------------------------------------------------------

@@ -61,6 +61,7 @@ class NameX {
   static const String password = 'password';
   static const String isConfirmed = 'isConfirmed';
   static const String type = 'type';
+  static const String isRead = 'is_read_by_donor';
   static const String rate = 'rate';
   static const String comment = 'comment';
   static const String donationOrder = 'type';
@@ -100,6 +101,7 @@ class NameX {
   static const String count = 'count';
   static const String price = 'price';
   static const String totalCart = 'totalCart';
+  static const String fromCart = 'fromCart';
   static const String isDefaultZakat = 'is_default_zakat';
   static const String quantity = 'quantity';
   static const String numStock = 'numStock';
@@ -184,6 +186,7 @@ class NameX {
   static const String isShowAmount = 'is_show_price';
   static const String isSendToMe = 'is_send_to_donor';
   static const String isSendLater = 'is_send_later';
+  static const String notifications = 'notifications';
 
   static const String numProduct = 'numProduct';
   static const String numOrder = 'numOrder';
@@ -199,6 +202,16 @@ class NameX {
   static const String orderProductsIDs = 'orderProductsIDs';
   static const String createdAt = 'created_at';
   static const String updatedAt = 'updated_at';
+
+  static const String titleDonor = 'title_donor';
+  static const String contentDonor = 'content_donor';
+  static const String titleUser = 'title_user';
+  static const String contentUser = 'content_user';
+  static const String isReadByDonor = 'is_read_by_donor';
+  static const String isReadByUser = 'is_read_by_user';
+  static const String donorId = 'donor_id';
+  static const String relatableId = 'relatable_id';
+  static const String relatableType = 'relatable_type';
 
   static const String totalDonations = 'total_donation';
   static const String currentDonations = 'price';
@@ -396,4 +409,18 @@ class NameX {
   static const String isApplePay = 'is_active_apple_pay';
 
   static const String donationSubscriptionId = 'donation_subscription_id';
+
+  static const String affiliateCode = 'affiliate_code';
+  static const String ownerId = 'owner_id';
+  static const String ownerType = 'owner_type';
+  static const String linkableId = 'linkable_id';
+  static const String linkableType = 'linkable_type';
+  static const String linkable = 'linkable';
+  static const String visits = 'visits';
+  static const String registrations = 'registrations';
+  static const String logins = 'logins';
+  static const String donationsCount = 'donations_count';
+  static const String donorsCount = 'donors_count';
+  static const String donationsSum = 'donations_sum';
+  static const String affiliateLink = 'affiliate_link';
 }

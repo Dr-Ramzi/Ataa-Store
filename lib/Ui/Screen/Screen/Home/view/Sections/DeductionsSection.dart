@@ -40,7 +40,7 @@ class DeductionsSectionX extends GetView<HomeController> {
         return DeductionCardX(
           deduction: data,
           onTap: controller.onTapDeduction,
-          onSubscribe: controller.onSubscriptionDeduction,
+          onSubscribe: controller.onSubscriptionDonation,
           isSmallCard: true,
         ).fadeAnimation300;
       },

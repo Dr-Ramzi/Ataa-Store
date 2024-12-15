@@ -264,6 +264,20 @@ class ScrollRefreshLoadMoreXState<T> extends State<ScrollRefreshLoadMoreX<T>> {
     });
   }
 
+  Future<void> refresh() async {
+    setState(() {
+      items = [];
+      currentPage = widget.initPage;
+      hasMoreData = true;
+      isInitLoading = true; // عرض حالة التحميل الأولي
+      isLoadMoreLoading = false;
+      isRefreshing = false;
+      error = null;
+    });
+
+    await loadData(isInit: true); // إعادة تحميل البيانات
+  }
+
   @override
   void didUpdateWidget(covariant ScrollRefreshLoadMoreX<T> oldWidget) {
     super.didUpdateWidget(oldWidget);

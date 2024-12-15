@@ -183,9 +183,6 @@ class CreateGiftController extends GetxController {
             contact.phoneNumbers![0],
           );
 
-          print(contact.phoneNumbers![0]);
-          print(result);
-
           /// Assign a value to the phone number because it cannot be empty
           recipientPhone.text = result.$1;
 
@@ -194,7 +191,6 @@ class CreateGiftController extends GetxController {
         }
       }
     } catch (e) {
-      print(e);
       return Future.error(e);
     }
   }

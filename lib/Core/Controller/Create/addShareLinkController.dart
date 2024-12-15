@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import '../../../Config/config.dart';
+import '../../../Data/Enum/linkable_type_status.dart';
 import '../../../Data/data.dart';
 import '../../../Ui/ScreenSheet/Selection/Donation/donationSelectionSheet.dart';
 import '../../../Ui/Widget/widget.dart';
@@ -36,22 +37,9 @@ class AddShareLinkControllerX extends GetxController {
         isLoading.value = true;
         buttonState.value = ButtonStateEX.loading;
         try {
-          // TODO: Database >>> Add a share link to the database
-          await Future.delayed(const Duration(seconds: 1)); // delete this
 
           /// Create a share link object
-          ShareLinkX shareLink = ShareLinkX(
-            id: "",
-            link: "",
-            numDonors: 0,
-            numRegistered: 0,
-            numVisits: 0,
-            totalDonations: 0,
-            donationID:
-                donationOpportunityController.donationSelected.value!.id,
-            donationName:
-                donationOpportunityController.donationSelected.value!.donationBasic.name,
-          );
+          var result = await DatabaseX.createShareLink(linkableType: LinkableTypeStatusX.donation,modelId: donationOpportunityController.donationSelected.value!.id);
 
           /// The time delay here is aesthetically beneficial
           buttonState.value = ButtonStateEX.success;
@@ -60,7 +48,7 @@ class AddShareLinkControllerX extends GetxController {
           );
 
           /// This controller form bottom sheet
-          Get.back(result: shareLink);
+          Get.back(result: result);
           ToastX.success(
             message: "The sharing link has been created successfully",
           );

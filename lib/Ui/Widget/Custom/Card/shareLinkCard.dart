@@ -10,14 +10,14 @@ class ShareLinkCardX extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AccordionX(
-      title: shareLink.donationName,
+      title: shareLink.title,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ActivityDataRowX(
             title: "Share link",
             dataWidget: InkWell(
-              onTap: ()=>ClipboardX.copy(shareLink.link),
+              onTap: ()=>ClipboardX.copy(shareLink.affiliateLink),
               child: Row(
                 children: [
                   TextX(
@@ -38,19 +38,19 @@ class ShareLinkCardX extends StatelessWidget {
           ).fadeAnimation100,
           ActivityDataRowX(
             title: "Number of visits",
-            data: FunctionX.formatLargeNumber(shareLink.numVisits),
+            data: FunctionX.formatLargeNumber(shareLink.visits),
           ).fadeAnimation200,
           ActivityDataRowX(
             title: "New registrants",
-            data:FunctionX.formatLargeNumber(shareLink.numRegistered),
+            data:FunctionX.formatLargeNumber(shareLink.registrations),
           ).fadeAnimation300,
           ActivityDataRowX(
             title: "Number of donors",
-            data: FunctionX.formatLargeNumber(shareLink.numDonors),
+            data: FunctionX.formatLargeNumber(shareLink.donorsCount),
           ).fadeAnimation300,
           ActivityDataRowX(
             title: "Total donations",
-            data:"${FunctionX.formatLargeNumber(shareLink.totalDonations)} ${"SAR".tr}",
+            data:"${FunctionX.formatLargeNumber(shareLink.donationsSum)} ${"SAR".tr}",
           ).fadeAnimation300,
         ],
       ),

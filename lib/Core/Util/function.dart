@@ -46,14 +46,11 @@ class FunctionX {
   /// like: +963994343927 -> [ 963 , 994343927 ]
   static (String, int?) extractCountryCodeAndPhoneNumber(String number) {
     // Remove all spaces
-    print(number);
     number = number.replaceAll(" ", '');
     number = number.replaceAll("-", '');
-    print(number);
 
     // Remove any leading '+' or '00'
     number = number.replaceAll(RegExp(r'^(\+|00)'), '');
-    print(number);
 
     // Check if the number contains a country code
     if (number.length > 10) {

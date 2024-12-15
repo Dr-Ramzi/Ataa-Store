@@ -7,6 +7,7 @@ import '../../../../../../Core/Controller/Other/donateOnBehalfOfFamilyController
 import '../../../../../../Data/Model/Donation/donation.dart';
 import '../../../../../../Data/data.dart';
 import '../../../../../ScreenSheet/Pay/PayDonation/payDonationSheet.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class DonationDetailsController extends GetxController {
   //============================================================================
@@ -30,7 +31,9 @@ class DonationDetailsController extends GetxController {
 
   late Rx<VideoPlayerController> videoPlayerController;
   late ChewieController chewieController;
+  late YoutubePlayerController youtubeController;
   RxBool isInitChewieController = false.obs;
+  RxBool isInitYoutubeController = false.obs;
   RxBool hasErrorVideo = false.obs;
 
   //============================================================================
@@ -42,22 +45,51 @@ class DonationDetailsController extends GetxController {
       donation = await DatabaseX.getDonationDetails(code: code);
 
       /// Init Video Player
-      if (donation.donationDetails.videoUrl!=null && donation.donationDetails.videoUrl!.isURL) {
-        initVideoPlayer(donation.donationDetails.videoUrl!);
+      if (donation.donationDetails.videoUrl != null &&
+          donation.donationDetails.videoUrl!.isURL) {
+        final url = donation.donationDetails.videoUrl!;
+        if (isYoutubeUrl(url)) {
+          initYoutubePlayer(url);
+        } else {
+          initVideoPlayer(url);
+        }
       }
     } catch (e) {
       return Future.error(e);
     }
   }
+  /// Check if the URL is a YouTube link
+  bool isYoutubeUrl(String url) {
+    return YoutubePlayer.convertUrlToId(url) != null;
+  }
+
+  /// Initialize YouTube Player
+  initYoutubePlayer(String url) {
+    try {
+      isInitYoutubeController.value = false;
+      youtubeController = YoutubePlayerController(
+        initialVideoId: YoutubePlayer.convertUrlToId(url)!,
+        flags: const YoutubePlayerFlags(
+          autoPlay: false,
+          mute: false,
+          disableDragSeek: true,
+          loop: true,
+        ),
+      );
+      isInitYoutubeController.value = true;
+    } catch (_) {
+      hasErrorVideo.value = true;
+    }
+  }
 
   onPayDonation() async => await payDonationSheet(donation);
-  onDonationAddToCart() async =>
-      await payDonationSheet(donation, onlyAddToCart: true);
+  onDonationAddToCart() async => await payDonationSheet(donation, onlyAddToCart: true);
 
   int getNumCover() {
     return donation.donationDetails.imageUrl!=null && donation.donationDetails.videoUrl!=null? 2 : 1;
   }
 
+  /// Initialize Video Player
   initVideoPlayer(String url) async {
     try {
       isInitChewieController.value = false;
@@ -82,10 +114,18 @@ class DonationDetailsController extends GetxController {
 
   @override
   void onClose() {
-    if (donation.donationDetails.videoUrl!=null && donation.donationDetails.videoUrl!.isURL) {
-      chewieController.dispose();
-      videoPlayerController.value.dispose();
+    try{
+    if (donation.donationDetails.videoUrl != null &&
+        donation.donationDetails.videoUrl!.isURL) {
+      if (isInitChewieController.value) {
+        chewieController.dispose();
+        videoPlayerController.value.dispose();
+      }
+      if (isInitYoutubeController.value) {
+        youtubeController.dispose();
+      }
     }
+    }catch(_){}
     super.onClose();
   }
 }

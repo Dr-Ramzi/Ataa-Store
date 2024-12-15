@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../../../../../../Config/config.dart';
 import '../../../../../../../UI/Widget/widget.dart';
 import '../../controller/Controller.dart';
@@ -24,7 +25,7 @@ class AppBarWithCoverSectionX extends GetView<DonationDetailsController> {
             itemBuilder: (_, index) {
               if ((controller.getNumCover() == 1 &&
                   index == 0 &&
-                  controller.donation.donationDetails.imageUrl!=null) ||
+                  controller.donation.donationDetails.imageUrl != null) ||
                   (controller.getNumCover() == 2 && index == 0)) {
                 return Container(
                   color: Theme.of(context).cardColor,
@@ -38,11 +39,40 @@ class AppBarWithCoverSectionX extends GetView<DonationDetailsController> {
               } else if (!controller.hasErrorVideo.value ||
                   (controller.getNumCover() == 1 &&
                       index == 0 &&
-                      controller.donation.donationDetails.videoUrl!=null) ||
+                      controller.donation.donationDetails.videoUrl != null) ||
                   (controller.getNumCover() == 2 && index == 1)) {
                 return Obx(
                       () {
-                    if (controller.isInitChewieController.isFalse ||
+                    if (controller.isInitYoutubeController.isTrue) {
+                      return GestureDetector(
+                        onHorizontalDragEnd: (details) {
+                          if (details.velocity.pixelsPerSecond.dx > 0) {
+                            if (controller.imagesController.page?.round() != 0) {
+                              controller.imagesController.previousPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                              );
+                            }
+                          } else if (details.velocity.pixelsPerSecond.dx < 0) {
+                            if (controller.imagesController.page?.round() !=
+                                controller.getNumCover() - 1) {
+                              controller.imagesController.nextPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                              );
+                            }
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: YoutubePlayer(
+                            controller: controller.youtubeController,
+                            showVideoProgressIndicator: true,
+                            progressIndicatorColor: Colors.red,
+                          ),
+                        ),
+                      );
+                    } else if (controller.isInitChewieController.isFalse ||
                         !controller
                             .videoPlayerController.value.value.isInitialized) {
                       return const Center(child: CircularProgressIndicator());
@@ -110,6 +140,13 @@ class AppBarWithCoverSectionX extends GetView<DonationDetailsController> {
                 SmoothPageIndicator(
                   controller: controller.imagesController,
                   count: controller.getNumCover(),
+                  onDotClicked: (index) {
+                    controller.imagesController.animateToPage(
+                      index,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
+                  },
                   effect: const ExpandingDotsEffect(
                     dotHeight: 6,
                     dotWidth: 6,
