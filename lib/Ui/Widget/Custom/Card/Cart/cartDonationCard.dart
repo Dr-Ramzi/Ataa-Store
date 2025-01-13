@@ -6,8 +6,10 @@ class CartDonationCardX extends StatefulWidget {
     required this.onDelete,
     required this.cartItem,
     required this.onUpdate,
+    required this.minimumDonationAmount,
   });
   final CartItemX cartItem;
+  final int minimumDonationAmount;
   final Function(CartItemX item) onDelete;
   final Function(
     CartItemX item, {
@@ -34,6 +36,7 @@ class _CartDonationCardXState extends State<CartDonationCardX> {
   String? donationOpenPackageId;
   String? donationDeductionPackageId;
   Timer? _debounceTimer;
+  int donationSharesPrice = 0;
   final Duration _debounceTimerDuration = const Duration(milliseconds: 1000);
 
   @override
@@ -48,6 +51,7 @@ class _CartDonationCardXState extends State<CartDonationCardX> {
     donationOpenPackageId = donationOrder.donationData.donationOpenPackageId;
     donationDeductionPackageId =
         donationOrder.donationData.donationDeductionPackageId;
+    donationSharesPrice = (donationOrder.donationData.price/sharesQuantity).toIntX;
   }
 
   @override
@@ -69,7 +73,18 @@ class _CartDonationCardXState extends State<CartDonationCardX> {
       });
     }
   }
+  String? validateAmount(String? val) {
+    String? message;
+    message = ValidateX.money(val);
 
+    /// Verify the lowest possible donation value in Free Donation
+    if (message == null &&
+        num.parse(priceController.text) < widget.minimumDonationAmount) {
+      message =
+      "${"The minimum donation amount is".tr} ${widget.minimumDonationAmount} ${"SAR".tr}";
+    }
+    return message;
+  }
   @override
   Widget build(BuildContext context) {
     return AbsorbPointer(
@@ -130,10 +145,7 @@ class _CartDonationCardXState extends State<CartDonationCardX> {
                                             try {
                                               await widget.onUpdate(
                                                 cartItem,
-                                                price: ((donationOrder
-                                                            .donationShares!
-                                                            .price) *
-                                                        (sharesQuantity))
+                                                price: (donationSharesPrice*sharesQuantity)
                                                     .toString(),
                                                 sharesQuantity: val.toInt(),
                                                 donationSharesPackageId:
@@ -157,10 +169,7 @@ class _CartDonationCardXState extends State<CartDonationCardX> {
                                 Row(
                                   children: [
                                     TextX(
-                                      FunctionX.formatLargeNumber(
-                                          (donationOrder
-                                                  .donationShares!.price) *
-                                              (sharesQuantity)),
+                                      FunctionX.formatLargeNumber( sharesQuantity * donationSharesPrice),
                                       fontWeight: FontWeight.w700,
                                       overflow: null,
                                       maxLines: 1,
@@ -179,45 +188,48 @@ class _CartDonationCardXState extends State<CartDonationCardX> {
                             SizedBox(
                               width: 180,
                               child: Opacity(
-                                opacity:
-                                    donationOrder.isCanEditAmount ? 0.5 : 1,
+                                opacity: !donationOrder.isCanEditAmount ? 0.5 : 1,
                                 child: TextFieldX(
                                   controller: priceController,
-                                  onlyRead: donationOrder.isCanEditAmount,
+                                  onlyRead: !donationOrder.isCanEditAmount,
                                   textInputType: TextInputType.number,
                                   textInputAction: TextInputAction.done,
+                                  errorMaxLines: 2,
                                   hint: "0",
                                   borderColor: context.isDarkMode
                                       ? null
                                       : ColorX.grey.shade300,
                                   color: Theme.of(context).cardColor,
-                                  validate: ValidateX.money,
+                                  validate: validateAmount,
                                   onChanged: (val) {
-                                    if (_debounceTimer?.isActive ?? false) {
-                                      _debounceTimer!.cancel();
+                                    if(validateAmount(val) == null){
+
+                                      if (_debounceTimer?.isActive ?? false) {
+                                        _debounceTimer!.cancel();
+                                      }
+                                      _debounceTimer = Timer(
+                                          _debounceTimerDuration, () async {
+                                        setState(() {
+                                          isLoadingUpdate = true;
+                                        });
+                                        try {
+                                          await widget.onUpdate(
+                                            cartItem,
+                                            price: val,
+                                            sharesQuantity: sharesQuantity,
+                                            donationSharesPackageId:
+                                            donationSharesPackageId,
+                                            donationOpenPackageId:
+                                            donationOpenPackageId,
+                                            donationDeductionPackageId:
+                                            donationDeductionPackageId,
+                                          );
+                                        } catch (_) {}
+                                        setState(() {
+                                          isLoadingUpdate = false;
+                                        });
+                                      });
                                     }
-                                    _debounceTimer = Timer(
-                                        _debounceTimerDuration, () async {
-                                      setState(() {
-                                        isLoadingUpdate = true;
-                                      });
-                                      try {
-                                        await widget.onUpdate(
-                                          cartItem,
-                                          price: val,
-                                          sharesQuantity: sharesQuantity,
-                                          donationSharesPackageId:
-                                              donationSharesPackageId,
-                                          donationOpenPackageId:
-                                              donationOpenPackageId,
-                                          donationDeductionPackageId:
-                                              donationDeductionPackageId,
-                                        );
-                                      } catch (_) {}
-                                      setState(() {
-                                        isLoadingUpdate = false;
-                                      });
-                                    });
                                   },
                                   suffixWidget: TextX(
                                     "SAR",
@@ -322,17 +334,19 @@ class _CartDonationCardXState extends State<CartDonationCardX> {
                             if (donationSharesPackageId != id) {
                               setState(() {
                                 donationSharesPackageId = id;
-                                sharesQuantity = donationOrder.sharesPackages
+                                var sharesCount = donationOrder.sharesPackages
                                     .firstWhere((x) => x.id == id)
                                     .sharesCount;
+                                donationSharesPrice = ((donationOrder.donationShares?.price??0) * sharesCount).toIntX;
+                              });
+                              setState(() {
                                 isLoadingUpdate = true;
                               });
                               try {
                                 await widget.onUpdate(
                                   cartItem,
                                   price:
-                                      ((donationOrder.donationShares!.price) *
-                                              (sharesQuantity))
+                                      (donationSharesPrice*sharesQuantity)
                                           .toString(),
                                   sharesQuantity: sharesQuantity,
                                   donationSharesPackageId: id,
@@ -341,6 +355,9 @@ class _CartDonationCardXState extends State<CartDonationCardX> {
                                       donationDeductionPackageId,
                                 );
                               } catch (_) {}
+                              setState(() {
+                                isLoadingUpdate = false;
+                              });
                               setState(() {
                                 isLoadingUpdate = false;
                               });

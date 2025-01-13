@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ataa/Config/config.dart';
 import 'package:ataa/UI/Animation/animation.dart';
 import 'package:flutter/material.dart';
@@ -40,10 +42,11 @@ class DeductionPaymentView extends GetView<DeductionPaymentController> {
                       ContainerX(
                         child: Column(
                           children: [
+                            if(controller.isShowAppleAndGooglePay)
                             AppleAndGooglePaySectionX(
                               controller: controller.appleAndGooglePayController,
                             ).marginOnly(bottom: 20).fadeAnimation200,
-                            if(controller.appleAndGooglePayController.error.value==null && controller.appleAndGooglePayController.initError.isFalse)
+                            if(controller.isShowPaymentCard && controller.isShowAppleAndGooglePay && controller.appleAndGooglePayController.error.value==null && controller.appleAndGooglePayController.initError.isFalse)
                             /// The word "OR" is an element
                               Row(
                                 children: [
@@ -60,8 +63,11 @@ class DeductionPaymentView extends GetView<DeductionPaymentController> {
                                   const Flexible(child: Divider()),
                                 ],
                               ).marginOnly(bottom: 20).fadeAnimation200,
+                            if(controller.isShowPaymentCard)
                             PreSavedPaymentCardsSectionX(
-                                controller: controller.preSavedPaymentCardsController),
+                                controller: controller.preSavedPaymentCardsController,
+                            ),
+                            if(controller.isShowPaymentCard)
                             ButtonStateX(
                               disabled: !controller.preSavedPaymentCardsController.isValidate.value,
                               onTap: controller.onPay,

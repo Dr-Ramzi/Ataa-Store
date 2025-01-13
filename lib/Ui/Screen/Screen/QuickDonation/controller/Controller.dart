@@ -72,6 +72,8 @@ class QuickDonationController extends GetxController {
     return message;
   }
 
+  get isShowAppleAndGooglePay =>(Platform.isAndroid && app.generalPaymentMethodsSettings.isGooglePay) || (Platform.isIOS && app.generalPaymentMethodsSettings.isApplePay);
+
   onTapDisabledAppleAndGooglePay() {
     try {
       dataVerification();

@@ -73,14 +73,15 @@ class DonationX {
       List<Map<String, dynamic>> donationOpenPackagesJsonList =
       List<Map<String, dynamic>>.from((donationTypeDetailsJson[NameX.donationOpenPackages] is! List ? ((donationTypeDetailsJsonAsMapDynamic[NameX.donationOpenPackages]?[NameX.data]!=null)?(donationTypeDetailsJsonAsMapDynamic[NameX.donationOpenPackages][NameX.data]):[]): donationTypeDetailsJson[NameX.donationOpenPackages]) as List);
 
-      List<Map<String, dynamic>> categoriesJsonList =
-      List<Map<String, dynamic>>.from((json[NameX.donationCategories] is! List ? ((json[NameX.donationCategories]?[NameX.data]!=null)?(json[NameX.donationCategories][NameX.data]):[]) : json[NameX.donationCategories]) as List);
-
+      List<Map<String, dynamic>> categoriesJsonList = List<Map<String, dynamic>>.from((json[NameX.donationCategories] is List ? json[NameX.donationCategories] : ((json[NameX.donationCategories]?[NameX.data]!=null)?(json[NameX.donationCategories][NameX.data]):[]))
+          .map((item) => (item as Map).map(
+            (key, value) => MapEntry(key.toString(), value),
+      )).toList());
 
       return ModelUtilX.checkFromJson(
         json,
         (json) => DonationX(
-          id: json[NameX.id].toStrX,
+          id: json[NameX.id].toStrDefaultX(''),
           donationBasic: DonationBasicX.fromJson(donationBasicJson),
           donationDetails: DonationDetailsX.fromJson(donationDetailsJson),
           donationSettings: DonationSettingsX.fromJson(donationSettingsJson),
@@ -98,10 +99,6 @@ class DonationX {
           /// TODO: Add share Url on from json of donation
           // shareURL: json[NameX.]??'',
         ),
-        requiredDataKeys: [
-          NameX.id,
-          NameX.donationBasic,
-        ],
       );
   }
 

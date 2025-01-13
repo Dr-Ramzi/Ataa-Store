@@ -11,7 +11,7 @@ class GiftBasicX {
   final String recipientName;
   final int recipientMobile;
   final GenderStatusX recipientGender;
-  final double price;
+  final int price;
   final GiftColorStatusX color;
 
   GiftBasicX({
@@ -33,7 +33,7 @@ class GiftBasicX {
         recipientName: json[NameX.recipientName].toStrX,
         recipientMobile: json[NameX.recipientMobile].toIntX,
         recipientGender: GenderStatusX.values.firstWhere((x) => x.name==json[NameX.recipientGender].toStrX.toLowerCase(),),
-        price: json[NameX.price].toDoubleX,
+        price: json[NameX.price].toIntX,
         color: GiftColorStatusX.values.firstWhere((x) => x.code==json[NameX.color].toStrX,orElse: () => GiftColorStatusX.teal,),
       ),
       requiredDataKeys: [

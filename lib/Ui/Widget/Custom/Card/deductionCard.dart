@@ -63,21 +63,22 @@ class _DeductionCardXState extends State<DeductionCardX> {
                     ),
                   ),
 
-                  /// Share Button
-                  Positioned.directional(
-                    textDirection: Directionality.of(context),
-                    end: 10,
-                    top: 10,
-                    child: InkResponse(
-                      onTap: () async =>
-                          await shareSheet(widget.deduction.shareURL),
-                      child: const ContainerX(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        child: Icon(Icons.share_rounded),
-                      ),
-                    ),
-                  ),
+                  /// TODO: تشغيل زر المشاركة
+                  // /// Share Button
+                  // Positioned.directional(
+                  //   textDirection: Directionality.of(context),
+                  //   end: 10,
+                  //   top: 10,
+                  //   child: InkResponse(
+                  //     onTap: () async =>
+                  //         await shareSheet(widget.deduction.shareURL),
+                  //     child: const ContainerX(
+                  //       padding:
+                  //           EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  //       child: Icon(Icons.share_rounded),
+                  //     ),
+                  //   ),
+                  // ),
 
                   /// Deduction Recurring Marker
                   Positioned.directional(

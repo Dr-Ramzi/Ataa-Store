@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:ataa/Core/Controller/Cart/cartGeneralController.dart';
+import 'package:ataa/Core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -21,6 +22,7 @@ class GeneralPaymentController extends GetxController {
   //============================================================================
   // Injection of required controls
 
+  AppControllerX app = Get.find();
   final PreSavedPaymentCardsController preSavedPaymentCardsController = Get.put(
     PreSavedPaymentCardsController(),
     tag: 'GeneralPayment',
@@ -44,7 +46,7 @@ class GeneralPaymentController extends GetxController {
   RxBool isLoading = false.obs;
   Rx<ErrorX?> error = Rx<ErrorX?>(null);
   final payVia = ValueNotifier(1);
-  RxBool isViaCard = true.obs;
+  late RxBool isViaCard = RxBool(isShowPaymentCard);
   double? quickDonationAmount = Get.arguments?[NameX.amount];
   String? quickDonationOrgId = Get.arguments?[NameX.orgId];
   DonationX? quickDonationDonation = Get.arguments?[NameX.donation];
@@ -77,6 +79,10 @@ class GeneralPaymentController extends GetxController {
   void onTapAppleAndGooglePay() {
     error.value=null;
   }
+
+  get isShowAppleAndGooglePay =>(Platform.isAndroid && app.generalPaymentMethodsSettings.isGooglePay) || (Platform.isIOS && app.generalPaymentMethodsSettings.isApplePay);
+  get isShowPaymentCard =>!app.generalPaymentMethodsSettings.isCreditCards;
+  get isShowBank =>app.generalPaymentMethodsSettings.isBankTransfers;
 
   onPayByAppleOrGoogle(String token) async {
     try {

@@ -17,13 +17,13 @@ class MiniCartX {
     return ModelUtilX.checkFromJson(
       json,
       (json) => MiniCartX(
-        id: json[NameX.id].toStrX,
-        countItem: json[NameX.cartItemsCount].toIntX,
+        id: json[NameX.id].toStrDefaultX(''),
+        countItem: json[NameX.cartItemsCount].toIntDefaultX(0),
         message: json[NameX.message].toStrDefaultX(''),
       ),
       requiredDataKeys: [
-        NameX.id,
-        NameX.cartItemsCount,
+        // NameX.id,
+        // NameX.cartItemsCount,
       ],
     );
   }

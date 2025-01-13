@@ -65,7 +65,7 @@ class FilterControllerX extends GetxController {
       sortByGeneralSheetX(controller: sortByGeneralController);
 
   /// Erase all data and return it to its default state
-  clearDate() {
+  clearData() {
     sort.value = "All";
     isZakat.value = false;
     filterByOrgController.clearData();

@@ -4,7 +4,7 @@
 name: ataa
 description: "description_project_x"
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 1.0.4+6
+version: 1.0.4+7
 
 #====================================================================
 # Flutter Version
@@ -152,6 +152,7 @@ flutter:
     # pubspec.yaml: It must be present to access package data, application name and version
     - pubspec.yaml
     - assets/images/
+    - assets/images/flags/
     - assets/images/logos/
     - assets/images/otherLogos/
     - assets/images/empty/

@@ -21,33 +21,45 @@ class HeaderSectionX extends GetView<DeductionDetailsController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+
+              /// TODO: حذف هذا القسم عند ربط المشاركة
+              Flexible(
+                child: TextX(
+                  controller.deduction.name,
+                  color: Theme.of(context).primaryColor,
+                  style: TextStyleX.headerSmall,
+                ).fadeAnimation300,
+              ),
+
               /// Deduction marker
               DeductionMarkerCardX(deduction: controller.deduction.recurring.name)
                   .fadeAnimation300,
               const SizedBox(width: 20),
 
+              /// TODO: تشغيل زر المشاركة
               /// Share Button
-              ButtonX.gray(
-                width: 100,
-                height: StyleX.buttonHeightSm,
-                marginVertical: 0,
-                onTap: () async => shareSheet(controller.deduction.shareURL),
-                text: "Share",
-                iconData: Icons.share,
-                colorText: Theme.of(context).iconTheme.color,
-              ).fadeAnimation300,
+              // ButtonX.gray(
+              //   width: 100,
+              //   height: StyleX.buttonHeightSm,
+              //   marginVertical: 0,
+              //   onTap: () async => shareSheet(controller.deduction.shareURL),
+              //   text: "Share",
+              //   iconData: Icons.share,
+              //   colorText: Theme.of(context).iconTheme.color,
+              // ).fadeAnimation300,
             ],
           ),
 
+          /// TODO: تشغيل هذا القسم عند ربط المشاركة
           /// Deduction Name
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: TextX(
-              controller.deduction.name,
-              color: Theme.of(context).primaryColor,
-              style: TextStyleX.headerSmall,
-            ),
-          ).fadeAnimation300,
+          // Padding(
+          //   padding: const EdgeInsets.only(top: 8.0),
+          //   child: TextX(
+          //     controller.deduction.name,
+          //     color: Theme.of(context).primaryColor,
+          //     style: TextStyleX.headerSmall,
+          //   ),
+          // ).fadeAnimation300,
           const SizedBox(height: 8),
         ],
       ),

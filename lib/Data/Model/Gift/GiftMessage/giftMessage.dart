@@ -28,25 +28,21 @@ class GiftMessageX {
     return ModelUtilX.checkFromJson(
       json,
       (json) => GiftMessageX(
-        id: json[NameX.id].toStrX,
-        name: json[NameX.name].toStrX,
-        title: json[NameX.title].toStrX,
-        content: json[NameX.content].toStrX,
+        id: json[NameX.id].toStrDefaultX(''),
+        name: json[NameX.name].toStrDefaultX(''),
+        title: json[NameX.title].toStrDefaultX(''),
+        content: json[NameX.content].toStrDefaultX(''),
         isActiveSms: json[NameX.isActiveSms].toBoolDefaultX(false),
         isActiveWhatsapp: json[NameX.isActiveWhatsapp].toBoolDefaultX(false),
-        nameLocalized: json[NameX.nameLocalized].toStrX,
-        variables: ModelUtilX.generateItems(json[NameX.variables] as List, GiftMessageVariableX.fromJson),
+        nameLocalized: json[NameX.nameLocalized].toStrDefaultX(''),
+        variables: ModelUtilX.generateItems((json[NameX.variables]??[]) as List, GiftMessageVariableX.fromJson),
       ),
-      requiredDataKeys: [
-        NameX.id,
-        NameX.name,
-        NameX.title,
-        NameX.content,
-        NameX.isActiveSms,
-        NameX.isActiveWhatsapp,
-        NameX.variables,
-        NameX.nameLocalized,
-      ],
+      // requiredDataKeys: [
+      //   NameX.name,
+      //   NameX.title,
+      //   NameX.content,
+      //   NameX.nameLocalized,
+      // ],
     );
   }
 

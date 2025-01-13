@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:url_launcher/url_launcher.dart';
 import '../Config/config.dart';
+import '../Data/Model/General/generalPaymentMethodsSettings.dart';
 import '../Data/Model/HomeElement/homeElementSettings.dart';
 import '../Data/data.dart';
 import '../UI/Screen/Auth/Login/view/loginView.dart';

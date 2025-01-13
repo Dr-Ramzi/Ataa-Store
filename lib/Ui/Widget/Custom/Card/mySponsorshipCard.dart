@@ -31,6 +31,12 @@ class MySponsorshipCardX extends StatelessWidget {
                   style: TextStyleX.titleSmall,
                 ),
                 const SizedBox(width: 8),
+                if(sponsorship.countryFlagCode.toUpperCase()=='SY')
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: Image.asset('assets/images/flags/sy.png',width: 25,height: 25,),
+                ),
+                if(sponsorship.countryFlagCode.toUpperCase()!='SY')
                 CountryFlag.fromCountryCode(
                   sponsorship.countryFlagCode.toUpperCase(),
                   width: 25,

@@ -30,6 +30,7 @@ class PreviewDedicateControllerX  extends GetxController {
 
   Future<void> getDate()async{
     if(!isGetMessage) {
+      print(LocalDataX.token);
       message = await DatabaseX.getGiftMessageTemplate();
       isGetMessage=true;
     }

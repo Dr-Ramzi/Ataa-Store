@@ -572,6 +572,7 @@ class ZakatCalculatorController extends GetxController {
           String message = await cart.addItem(
             modelId: data.modelId,
             modelType: ModelTypeStatusX.donation,
+            price: totalZakat.value,
             isPayNow: isPay,
           );
 

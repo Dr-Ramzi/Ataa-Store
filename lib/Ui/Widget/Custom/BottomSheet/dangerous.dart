@@ -14,7 +14,7 @@ bottomSheetDangerousX({
       children: [
         ContainerX(
           radius: StyleX.radiusMd,
-          color: ColorX.danger.shade200,
+          color: ColorX.danger.shade100,
           padding: const EdgeInsets.all(20),
           child: Icon(
             icon,

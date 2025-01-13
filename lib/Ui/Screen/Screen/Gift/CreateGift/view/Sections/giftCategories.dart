@@ -36,7 +36,7 @@ class GiftCategoriesSectionX extends GetView<CreateGiftController> {
             () => GiftCategoryCardX(
               giftCategory: data,
               onTap: () => controller.onChangeCategory(index),
-              isSelected: controller.giftCategorySelected.value.id == data.id,
+              isSelected: controller.giftCategorySelected.value?.id == data.id,
             ).fadeAnimation200,
       )
     );

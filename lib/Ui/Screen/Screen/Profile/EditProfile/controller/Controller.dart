@@ -20,6 +20,7 @@ class EditProfileController extends GetxController {
 
   RxBool isLoading = false.obs;
   Rx<ButtonStateEX> buttonState = ButtonStateEX.normal.obs;
+  RxBool isEditPhoneAndEmailError = false.obs;
 
   late int countryCode = app.user.value!.countryCode;
   late Rx<String> gender = (app.user.value!.gender ?? "").obs;
@@ -74,7 +75,12 @@ class EditProfileController extends GetxController {
 
   onEdit() async {
     if (isLoading.isFalse) {
-      if (formKey.currentState!.validate()) {
+      if(app.user.value?.email!=null && email.text.toLowerCase().trim()!=app.user.value?.email?.toLowerCase().trim() &&( phone.text.trim()!=app.user.value?.phone.toString() || countryCode!=app.user.value?.countryCode)){
+        isEditPhoneAndEmailError.value=true;
+      }else{
+        isEditPhoneAndEmailError.value=false;
+      }
+      if (isEditPhoneAndEmailError.isFalse && formKey.currentState!.validate()) {
         isLoading.value = true;
         buttonState.value = ButtonStateEX.loading;
         try {

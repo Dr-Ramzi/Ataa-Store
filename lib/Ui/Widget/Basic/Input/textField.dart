@@ -10,6 +10,7 @@ class TextFieldX extends StatefulWidget {
   final int? errorMaxLines;
   final bool disabled;
   final bool? onlyRead;
+  final bool isActiveError;
   final bool autofocus;
   final EdgeInsets margin;
   final IconData? icon;
@@ -54,6 +55,7 @@ class TextFieldX extends StatefulWidget {
     this.textInputAction,
     this.isPassword = false,
     this.onlyRead,
+    this.isActiveError = false,
     this.margin = const EdgeInsets.symmetric(vertical: 5),
     this.icon,
     this.prefixWidget,
@@ -170,6 +172,7 @@ class _TextFieldXState extends State<TextFieldX> {
               FocusManager.instance.primaryFocus?.unfocus();
             },
             decoration: InputDecoration(
+              errorText:widget.isActiveError?'':null,
               filled: true,
               counterText: widget.counterText,
               fillColor: widget.disabled
@@ -216,7 +219,7 @@ class _TextFieldXState extends State<TextFieldX> {
               floatingLabelBehavior: FloatingLabelBehavior.always,
               border: InputBorder.none,
               isCollapsed: true,
-              errorStyle: TextStyleX.titleSmall,
+              errorStyle: TextStyleX.titleSmall.copyWith(fontSize: widget.validate?.call(widget.controller.text)==null && widget.isActiveError?0:13),
               errorMaxLines: widget.errorMaxLines,
               alignLabelWithHint: true,
               hintText: (widget.hint ?? "").tr,

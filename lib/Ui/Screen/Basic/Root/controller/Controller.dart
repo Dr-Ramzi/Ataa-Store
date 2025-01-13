@@ -1,3 +1,4 @@
+import 'package:ataa/Ui/Screen/Screen/Donation/AllDonation/controller/Controller.dart';
 import 'package:get/get.dart';
 import '../../../../../../Config/config.dart';
 import '../../../../../../Data/data.dart';
@@ -14,6 +15,7 @@ class RootController extends GetxController {
   AppControllerX app = Get.find();
   QuickDonationController quickDonationController =
       Get.put(QuickDonationController());
+  AllDonationController allDonationController = Get.find();
 
   //============================================================================
   // Variables
@@ -48,6 +50,9 @@ class RootController extends GetxController {
     if (app.generalSettings.isActiveQuickDonation && index == 2) {
       openQuickDonation();
     }else{
+      if(indexPageSelected.value==1){
+        allDonationController.clearData();
+      }
       indexPageSelected.value = index;
     }
   }

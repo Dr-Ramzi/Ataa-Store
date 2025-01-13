@@ -23,8 +23,8 @@ class DonationAmountSectionX extends StatelessWidget {
           textInputType: TextInputType.number,
           textInputAction: TextInputAction.done,
           hint: "0",
-          onlyRead: controller.donation.isCanEditAmount,
-          validate: ValidateX.money,
+          onlyRead: !controller.donation.isCanEditAmount,
+          validate: controller.validateAmount,
           suffixWidget: TextX(
             "SAR",
             style: TextStyleX.titleSmall,

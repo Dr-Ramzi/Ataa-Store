@@ -92,7 +92,7 @@ class DBEndPointX {
   static final String getGiftStatistics = '${mainAPI}gift/statics';
   static final String getDeductionStatistics = '${mainAPI}donations/recurring-donations/donation-subscriptions/statistic';
   static final String getSponsorshipStatistics = '${mainAPI}3 --------Add Here----------';
-  static final String getShareLinkStatistics = '${mainAPI}4 --------Add Here----------';
+  static final String getShareLinkStatistics = '${mainAPI}affiliations/statistics';
 
   //============================================================================
   // Ads
@@ -179,7 +179,7 @@ class DBEndPointX {
   static final String putUpdateCartItem = '${mainAPI}carts/items/{item_id}';
   static final String postAssignCart = '${mainAPI}carts/{cart_id}/assign-my-cart';
   static final String deleteCartItem = '${mainAPI}carts/items/{item_id}';
-  // static final String deleteAllCartItems = '${mainAPI}carts/items/delete-all/{cart_id}';
+  static final String deleteAllCartItems = '${mainAPI}carts/items/delete-all/{cart_id}';
 
   //============================================================================
   // Payment Card

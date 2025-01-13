@@ -23,7 +23,7 @@ class PaymentTransactionX {
   final PaymentStatusStatusX status;
   final String? statusLocalized;
   final String? verificationUrl;
-  final DateTime createdAt;
+  final DateTime? createdAt;
   final DateTime? updatedAt;
 
   PaymentTransactionX({
@@ -42,7 +42,7 @@ class PaymentTransactionX {
     required this.status,
     required this.statusLocalized,
     this.verificationUrl,
-    required this.createdAt,
+    this.createdAt,
     this.updatedAt,
   });
 
@@ -67,7 +67,7 @@ class PaymentTransactionX {
          status: PaymentStatusStatusX.values.firstWhere((e) => e.name==json[NameX.status].toStrX,orElse: () => PaymentStatusStatusX.unknown),
          statusLocalized: json[NameX.statusLocalized].toStrNullableX,
          verificationUrl: json[NameX.verificationUrl].toStrNullableX,
-         createdAt: json[NameX.createdAt].toDateTimeX,
+         createdAt: json[NameX.createdAt].toDateTimeNullableX,
          updatedAt: json[NameX.updatedAt].toDateTimeNullableX,
        ),
        requiredDataKeys: [

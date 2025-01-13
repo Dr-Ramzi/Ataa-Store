@@ -29,10 +29,11 @@ class MyDonationCardX extends StatelessWidget {
             data: myDonation.paymentTransaction.paymentMethodLocalized ??
                 myDonation.paymentTransaction.paymentMethod.name,
           ).fadeAnimation200,
+          if(myDonation.paymentTransaction.createdAt!=null)
           ActivityDataRowX(
             title: "Donation date",
             data: intl.DateFormat('dd/MM/yyyy')
-                .format(myDonation.paymentTransaction.createdAt),
+                .format(myDonation.paymentTransaction.createdAt!),
           ).fadeAnimation300,
           if (myDonation.paymentTransaction.receiptUrl != null)
             InkWell(

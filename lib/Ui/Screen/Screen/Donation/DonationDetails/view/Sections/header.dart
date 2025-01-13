@@ -19,12 +19,7 @@ class HeaderSectionX extends GetView<DonationDetailsController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              /// Zakat marker
-              if (controller.donation.donationSettings.isZakat)
-                const ZakatDisbursementsCardX().fadeAnimation300,
-
-              /// Replace the title if the zakat mark is empty
-              if (!controller.donation.donationSettings.isZakat)
+              /// TODO: حذف هذا القسم عند ربط المشاركة
                 Flexible(
                   child: TextX(
                     controller.donation.donationBasic.name,
@@ -32,31 +27,48 @@ class HeaderSectionX extends GetView<DonationDetailsController> {
                     style: TextStyleX.headerSmall,
                   ).fadeAnimation300,
                 ),
-              const SizedBox(width: 20),
 
+              /// Zakat marker
+              if (controller.donation.donationSettings.isZakat)
+                const ZakatDisbursementsCardX().fadeAnimation300,
+
+              /// TODO: تشغيل هذا القسم عند ربط المشاركة
+              /// Replace the title if the zakat mark is empty
+              // if (!controller.donation.donationSettings.isZakat)
+              //   Flexible(
+              //     child: TextX(
+              //       controller.donation.donationBasic.name,
+              //       color: Theme.of(context).primaryColor,
+              //       style: TextStyleX.headerSmall,
+              //     ).fadeAnimation300,
+              //   ),
+              // const SizedBox(width: 20),
+
+              /// TODO: تشغيل زر المشاركة
               /// Share Button
-              ButtonX.gray(
-                width: 100,
-                height: StyleX.buttonHeightSm,
-                marginVertical: 0,
-                onTap: () async => shareSheet(controller.donation.shareURL),
-                text: "Share",
-                iconData: Icons.share,
-                colorText: Theme.of(context).iconTheme.color,
-              ).fadeAnimation300,
+              // ButtonX.gray(
+              //   width: 100,
+              //   height: StyleX.buttonHeightSm,
+              //   marginVertical: 0,
+              //   onTap: () async => shareSheet(controller.donation.shareURL),
+              //   text: "Share",
+              //   iconData: Icons.share,
+              //   colorText: Theme.of(context).iconTheme.color,
+              // ).fadeAnimation300,
             ],
           ),
 
+          /// TODO: تشغيل هذا القسم عند ربط المشاركة
           /// Location of the original address if there is a zakat mark
-          if (controller.donation.donationSettings.isZakat)
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: TextX(
-                controller.donation.donationBasic.name,
-                color: Theme.of(context).primaryColor,
-                style: TextStyleX.headerSmall,
-              ),
-            ).fadeAnimation300,
+          // if (controller.donation.donationSettings.isZakat)
+          //   Padding(
+          //     padding: const EdgeInsets.only(top: 8.0),
+          //     child: TextX(
+          //       controller.donation.donationBasic.name,
+          //       color: Theme.of(context).primaryColor,
+          //       style: TextStyleX.headerSmall,
+          //     ),
+          //   ).fadeAnimation300,
           const SizedBox(height: 8),
         ],
       ),

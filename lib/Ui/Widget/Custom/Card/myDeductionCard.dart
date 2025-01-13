@@ -38,18 +38,18 @@ class MyDeductionCardX extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                 color: myDeduction.orderModel.deduction.status
-                    ? myDeduction.orderModel.deduction.isSubscribed
+                    ? myDeduction.orderModel.status
                         ? (context.isDarkMode?ColorX.green.shade200:ColorX.green.shade100)
                         : (context.isDarkMode?ColorX.red.shade200:ColorX.red.shade100)
                     : Theme.of(context).dividerColor,
                 child: TextX(
                   myDeduction.orderModel.deduction.status
-                      ? myDeduction.orderModel.deduction.isSubscribed
+                      ? myDeduction.orderModel.status
                           ? 'Active'
                           : 'Disabled'
                       : 'Expired',
                   color: myDeduction.orderModel.deduction.status
-                      ? myDeduction.orderModel.deduction.isSubscribed
+                      ? myDeduction.orderModel.status
                           ? ColorX.green.shade800
                           : ColorX.red.shade800
                       : null,
@@ -105,9 +105,9 @@ class MyDeductionCardX extends StatelessWidget {
               const SizedBox(width: 8),
               Flexible(
                 child: AbsorbPointer(
-                  absorbing: !(myDeduction.orderModel.deduction.status && myDeduction.orderModel.deduction.isSubscribed),
+                  absorbing: !(myDeduction.orderModel.deduction.status && myDeduction.orderModel.status),
                   child: Opacity(
-                    opacity: myDeduction.orderModel.deduction.status && myDeduction.orderModel.deduction.isSubscribed?1: context.isDarkMode?0.55:0.4,
+                    opacity: myDeduction.orderModel.deduction.status && myDeduction.orderModel.status?1: context.isDarkMode?0.55:0.4,
                     child: myDeduction.orderModel.deduction.status?ButtonStateX.dangerous(
                       state: buttonState,
                       text: "Unsubscribe",

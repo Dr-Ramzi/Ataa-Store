@@ -58,13 +58,13 @@ class ContactUsView extends GetView<ContactUsController> {
                   ).fadeAnimation200.paddingOnly(bottom: 16),
                 ContactCardX(
                   icon: IconX.contactUs,
-                  title: '+966${controller.contactUs.mobile}',
+                  title: controller.formatPhoneNumber(controller.contactUs.mobile.toString(),countryCode: controller.contactUs.countryCode),
                   isShow: controller.contactUs.mobile != null,
                   onTap: controller.onTapMobile,
                 ).fadeAnimation200,
                 ContactCardX(
                   icon: IconX.whatsappBold,
-                  title: '+966${controller.contactUs.whatsappNumber}',
+                  title: controller.formatPhoneNumber(controller.contactUs.whatsappNumber.toString(),countryCode: controller.contactUs.whatsappCountryCode),
                   isShow: controller.contactUs.whatsappNumber != null,
                   onTap: controller.onTapWhatsapp,
                 ).fadeAnimation300,

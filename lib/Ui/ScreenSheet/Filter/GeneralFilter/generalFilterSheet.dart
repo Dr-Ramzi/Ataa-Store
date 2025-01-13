@@ -71,7 +71,7 @@ generalFilterSheetX({
             const SizedBox(width: 10),
             Flexible(
               child: ButtonX.second(
-                onTap: controller.clearDate,
+                onTap: controller.clearData,
                 text: "Clear all",
               ),
             )

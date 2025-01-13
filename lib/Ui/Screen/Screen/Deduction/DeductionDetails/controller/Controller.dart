@@ -74,6 +74,7 @@ class DeductionDetailsController extends GetxController {
       }
     }
   }
+
   int getNumCover() {
     return deduction.imageUrl.isNotEmpty && deduction.videoUrl.isNotEmpty? 2 : 1;
   }

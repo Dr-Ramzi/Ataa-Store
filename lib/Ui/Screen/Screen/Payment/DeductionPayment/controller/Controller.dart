@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:ataa/Core/Error/error.dart';
+import 'package:ataa/Core/core.dart';
 import 'package:ataa/Data/Enum/payment_method_status.dart';
 import 'package:ataa/Data/Model/Deduction/deduction.dart';
 import 'package:ataa/Data/Model/PaymentCard/paymentCardForm.dart';
@@ -19,6 +20,7 @@ class DeductionPaymentController extends GetxController {
   //============================================================================
   // Injection of required controls
 
+  AppControllerX app =Get.find();
   final PreSavedPaymentCardsController preSavedPaymentCardsController =
       Get.put(PreSavedPaymentCardsController(), tag: 'DeductionPayment');
   late final AppleAndGooglePayController appleAndGooglePayController = Get.put(
@@ -59,6 +61,9 @@ class DeductionPaymentController extends GetxController {
   void onTapAppleAndGooglePay() {
     error.value=null;
   }
+
+  get isShowAppleAndGooglePay =>(Platform.isAndroid && app.generalPaymentMethodsSettings.isGooglePay) || (Platform.isIOS && app.generalPaymentMethodsSettings.isApplePay);
+  get isShowPaymentCard =>app.generalPaymentMethodsSettings.isCreditCards;
 
   onPayByAppleOrGoogle(String token) async {
     try {

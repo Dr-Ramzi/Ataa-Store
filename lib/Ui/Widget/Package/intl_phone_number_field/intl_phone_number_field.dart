@@ -35,6 +35,7 @@ class InternationalPhoneNumberInput extends StatefulWidget {
   final CountryConfig countryConfig;
   final PhoneConfig phoneConfig;
   final int initCountry;
+  final bool isActiveError;
   final dynamic Function(IntPhoneNumber number)? onInputChanged;
   final double betweenPadding;
   final MaskedInputFormatter? formatter;
@@ -55,6 +56,7 @@ class InternationalPhoneNumberInput extends StatefulWidget {
       this.formatter,
       this.validate,
       this.inactive = false,
+      this.isActiveError = false,
       this.isShowCountryCode = true,
       this.isDisableChangeCountryCode = false,
       DialogConfig? dialogConfig,
@@ -203,6 +205,7 @@ class _InternationalPhoneNumberInputState
             hint: widget.phoneConfig.hintText ?? "",
             controller: widget.controller,
             textInputAction: widget.phoneConfig.textInputAction,
+            isActiveError:widget.isActiveError,
             label: widget.phoneConfig.labelText,
             textInputType: TextInputType.number,
             inputFormatters: [

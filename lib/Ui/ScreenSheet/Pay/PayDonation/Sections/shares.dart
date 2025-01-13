@@ -61,7 +61,7 @@ class SharesSectionX extends StatelessWidget {
                 textInputAction: TextInputAction.done,
                 hint: "0",
                 onlyRead: controller.donation.isCanEditAmount,
-                validate: ValidateX.money,
+                validate: controller.validateAmount,
                 suffixWidget: TextX(
                   "SAR",
                   style: TextStyleX.titleSmall,

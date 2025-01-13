@@ -27,10 +27,11 @@ class MyGiftCardX extends StatelessWidget {
             data: gift.paymentTransaction.paymentMethodLocalized ??
                 gift.paymentTransaction.paymentMethod.name,
           ).fadeAnimation200,
+          if(gift.paymentTransaction.createdAt!=null)
           ActivityDataRowX(
                   title: "Gift date",
                   data: intl.DateFormat('dd/MM/yyyy')
-                      .format(gift.paymentTransaction.createdAt),
+                      .format(gift.paymentTransaction.createdAt!),
           )
               .fadeAnimation200,
           InkWell(

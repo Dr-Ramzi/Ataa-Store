@@ -79,6 +79,7 @@ class DonationDataSectionX extends GetView<CreateGiftController> {
                   color: context.isDarkMode ? null : Theme.of(context).cardColor,
                   controller: controller.phoneSendToMe,
                   onChangeCountryCode: controller.onChangeCountryCodeForSendToMe,
+                  isDisableChangeCountryCode:!controller.app.generalSettings.isShowCountryCodeList,
                 ).fadeAnimation100,
               ).paddingOnly(top: 4),
 

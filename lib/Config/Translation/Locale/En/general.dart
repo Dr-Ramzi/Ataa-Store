@@ -742,5 +742,9 @@ const Map<String, String> enGeneral = {
   "It should contain whole numbers only":"It should contain whole numbers only",
   "The money should be at least 1":"The money should be at least 1",
   "Watch the video":"Watch the video",
+  "You must choose the type of gift.":"You must choose the type of gift.",
+  "Are you sure you want to delete all items from your cart?":"Are you sure you want to delete all items from your cart?",
+  "Delete All":"Delete All",
+  "Mobile number and email cannot be modified at the same time":"Mobile number and email cannot be modified at the same time",
   // "":"",
 };

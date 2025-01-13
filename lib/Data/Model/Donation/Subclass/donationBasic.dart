@@ -38,8 +38,8 @@ class DonationBasicX {
       return ModelUtilX.checkFromJson(
         json,
             (json) => DonationBasicX(
-          code: json[NameX.code].toIntX,
-          name: json[NameX.donationName].toStrX,
+          code: json[NameX.code].toIntDefaultX(0),
+          name: json[NameX.donationName].toStrDefaultX(''),
 
           isDefaultZakat: json[NameX.isDefaultZakat].toBoolDefaultX(false),
 
@@ -53,10 +53,6 @@ class DonationBasicX {
           countDonor: json[NameX.countDonor].toIntDefaultX(0),
           completionRate: json[NameX.completionRate].toDoubleDefaultX(0),
         ),
-        requiredDataKeys: [
-          NameX.code,
-          NameX.donationName,
-        ],
       );
   }
   

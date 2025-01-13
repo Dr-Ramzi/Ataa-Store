@@ -64,7 +64,7 @@ class DirectZakatPaymentControllerX extends GetxController {
             ),
           );
 
-          String message = await cart.addItem(modelId: data.modelId,modelType: ModelTypeStatusX.donation,isPayNow:isPay,isCloseSheet:true);
+          String message = await cart.addItem(modelId: data.modelId,modelType: ModelTypeStatusX.donation,price:money.text.toIntX,isPayNow:isPay,isCloseSheet:true);
 
           /// This controller form bottom sheet
           if(!isPay) {

@@ -57,11 +57,10 @@ class QuickDonationView extends StatelessWidget {
                       ).marginOnly(top: 6),
 
                       /// Pay with Apple & Google
+                      if(controller.isShowAppleAndGooglePay)
                       AppleAndGooglePaySectionX(
                         controller: controller.appleAndGooglePayController,
-                      ).fadeAnimation400,
-
-                      const SizedBox(height: 5),
+                      ).marginOnly(bottom: 5).fadeAnimation400,
 
                       /// Pay with App
                       ButtonStateX(

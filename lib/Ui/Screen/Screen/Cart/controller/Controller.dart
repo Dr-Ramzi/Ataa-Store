@@ -37,6 +37,8 @@ class CartController extends GetxController {
   /// Cart Process
   RxBool isLoading = false.obs;
   Rx<ButtonStateEX> buttonState = ButtonStateEX.normal.obs;
+  Rx<ButtonStateEX> buttonStateDeleteAll = ButtonStateEX.normal.obs;
+  RxBool isShowDeleteAll = false.obs;
 
   //============================================================================
   // Functions
@@ -74,6 +76,8 @@ class CartController extends GetxController {
       // check text fields
       autoValidate = AutovalidateMode.always;
       return throw "Check the donation entry fields";
+    }else if(validateAmount() !=null){
+      return throw validateAmount()??'';
     }
     return true;
   }
@@ -127,7 +131,49 @@ class CartController extends GetxController {
     }
   }
 
+  String? validateAmount() {
+    String? message;
+    /// Verify the lowest possible donation value in Free Donation
+    if (cartGeneral.cart.value.totalPrice < app.generalSettings.minimumDonationAmount) {
+      message =
+      "${"The minimum donation amount is".tr} ${app.generalSettings.minimumDonationAmount} ${"SAR".tr}";
+    }
+    return message;
+  }
   //----------------------------------------------------------------------------
+
+  onDeleteAllItems() async {
+    if(isLoading.isFalse){
+      try {
+        isLoading.value = true;
+        buttonStateDeleteAll.value = ButtonStateEX.loading;
+
+        MiniCartX miniCart = await DatabaseX.deleteAllCartItems(
+          cartId: cartGeneral.cart.value.id,
+        );
+        /// For Create new cart id
+        await cartGeneral.getData();
+        cartGeneral.countItem.value=miniCart.countItem;
+        cartGeneral.cart.value.countItem=miniCart.countItem;
+        cartSummary.value= 0;
+        cartGeneral.cart.value.totalPrice = cartSummary.value;
+        cartGeneral.cart.value.items=[];
+        cartGeneral.cart.refresh();
+        ToastX.success(message: miniCart.message);
+      } catch (e) {
+        ToastX.error(message: e.toString());
+        buttonStateDeleteAll.value = ButtonStateEX.failed;
+      }
+      isLoading.value = false;
+      /// Reset the button state
+      Timer(
+        const Duration(seconds: StyleX.returnButtonToNormalStateSecond),
+            () {
+          buttonStateDeleteAll.value = ButtonStateEX.normal;
+        },
+      );
+    }
+  }
 
   onDeleteItem(CartItemX item) async {
     if(isLoading.isFalse){
@@ -135,7 +181,6 @@ class CartController extends GetxController {
         isLoading.value = true;
         MiniCartX miniCart = await DatabaseX.deleteCartItem(
           itemId: item.id,
-          cartId: cartGeneral.cart.value.id,
         );
         cartGeneral.countItem.value=miniCart.countItem;
         cartGeneral.cart.value.countItem=miniCart.countItem;

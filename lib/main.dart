@@ -25,14 +25,17 @@ void main() async {
     WidgetsFlutterBinding.ensureInitialized();
 
     await Firebase.initializeApp();
+    await FirebaseRemoteConfigServiceX.init();
+
     await LoggingX.init();
+
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
     PlatformDispatcher.instance.onError = (error, stack) {
       FirebaseCrashlytics.instance.recordError(error, stack,fatal: true);
       return true;
     };
+
     await ConfigX.init();
-    await FirebaseRemoteConfigServiceX.init();
     await DataX.init();
     await CoreX.init();
 

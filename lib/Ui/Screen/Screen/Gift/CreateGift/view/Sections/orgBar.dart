@@ -24,18 +24,17 @@ class OrgBarSectionX extends GetView<CreateGiftController> {
         Obx(() {
           if (controller.organizations.isEmpty) {
             return ContainerX(
+              width: double.maxFinite,
               margin: const EdgeInsets.symmetric(
                 horizontal: StyleX.hPaddingApp,
               ),
               color: Theme.of(context).colorScheme.onError,
               height: 110,
               child: Center(
-                child:  Expanded(
-                  child: TextX(
-                    'There are currently no available donation options for this type of gift. Please change the type of gift.',
-                  textAlign: TextAlign.center,
-                    color: Theme.of(context).colorScheme.error,
-                  ),
+                child:  TextX(
+                  'There are currently no available donation options for this type of gift. Please change the type of gift.',
+                textAlign: TextAlign.center,
+                  color: Theme.of(context).colorScheme.error,
                 ),
               ),
             );

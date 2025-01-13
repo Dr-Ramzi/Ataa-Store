@@ -1,6 +1,7 @@
 import 'package:ataa/UI/Animation/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../../../../Config/config.dart';
 import '../../../../../../Widget/widget.dart';
 import '../../controller/Controller.dart';
 
@@ -9,7 +10,7 @@ class InputSectionX extends GetView<EditProfileController> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Obx(() => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// Name & Mobile & Email
@@ -33,7 +34,9 @@ class InputSectionX extends GetView<EditProfileController> {
                 isRequired: true,
                 onChangeCountryCode: controller.onChangeCountryCode,
                 countryCode: controller.countryCode,
-                isDisableChangeCountryCode: !controller.app.generalSettings.isShowCountryCodeList,
+                isActiveError: controller.isEditPhoneAndEmailError.value,
+                isDisableChangeCountryCode:
+                !controller.app.generalSettings.isShowCountryCodeList,
               ).marginSymmetric(vertical: 10.0).fadeAnimation300,
               TextFieldX(
                 controller: controller.email,
@@ -43,16 +46,23 @@ class InputSectionX extends GetView<EditProfileController> {
                 validate: controller.validateForEmail(),
                 textInputType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.done,
+                isActiveError: controller.isEditPhoneAndEmailError.value,
               ).fadeAnimation300,
             ],
           ),
         ),
         const SizedBox(height: 10),
 
+        if (controller.isEditPhoneAndEmailError.value)
+          const TextX(
+            'Mobile number and email cannot be modified at the same time',
+            color: ColorX.danger,
+          ).marginOnly(bottom: 10),
+
         /// Gender
         const LabelInputX("Gender").fadeAnimation300,
         Obx(
-          () {
+              () {
             return Row(
               children: [
                 Flexible(
@@ -77,6 +87,6 @@ class InputSectionX extends GetView<EditProfileController> {
           },
         ),
       ],
-    );
+    ),);
   }
 }

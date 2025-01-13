@@ -185,8 +185,9 @@ deductionHistorySheetX({required DeductionHistoryControllerX controller}) {
                                     style: TextStyleX.supTitleMedium,
                                   ),
                                   const SizedBox(height: 6),
+                                  if(data.paymentTransaction.createdAt!=null)
                                   TextX(
-                                    '${intl.DateFormat('yyyy/MM/dd').format(data.paymentTransaction.createdAt)} | ${intl.DateFormat('hh:mm ').format(data.paymentTransaction.createdAt)}${intl.DateFormat('a').format(data.paymentTransaction.createdAt).tr}',
+                                    '${intl.DateFormat('yyyy/MM/dd').format(data.paymentTransaction.createdAt!)} | ${intl.DateFormat('hh:mm ').format(data.paymentTransaction.createdAt!)}${intl.DateFormat('a').format(data.paymentTransaction.createdAt!).tr}',
                                   ),
                                 ],
                               ),

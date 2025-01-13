@@ -8,8 +8,9 @@ class DatabaseX {
   static init() async {
     try {
       /// Here codes are added to configure anything within this section when the application starts
-      DBEndPointX.mainAPI= FirebaseRemoteConfigServiceX.getString('base_url','https://ataa-store-backend-staging.edialoguecenter.com/api/v1/');
-      // DBEndPointX.mainAPI= 'https://ataa-store-backend-testing.edialoguecenter.com/api/v1/' ;
+      DBEndPointX.mainAPI= FirebaseRemoteConfigServiceX.getString('base_url','https://api-store.edialoguec.org.sa/api/v1/');
+      // DBEndPointX.mainAPI= 'https://ataa-store-backend-staging.edialoguecenter.com/api/v1/';
+
     } catch (e) {
       return Future.error(e);
     }
@@ -1253,9 +1254,10 @@ class DatabaseX {
           authToken: LocalDataX.token,
           pathParams: {NameX.cartId: cartId},
           requestBody: {
-            NameX.cartId: cartId,
+            // NameX.cartId: cartId,
             NameX.modelType: modelType.name,
             NameX.modelId: modelId,
+            NameX.quantity:quantity,
           },
         ),
       );
@@ -1292,7 +1294,6 @@ class DatabaseX {
 
   static Future<MiniCartX> deleteCartItem({
     required String itemId,
-    required String cartId,
   }) async {
     var data = await RemoteDataSourceX.delete(
       DBEndPointX.deleteCartItem,
@@ -1304,6 +1305,20 @@ class DatabaseX {
     return MiniCartX.fromJson(
       Map<String, dynamic>.from(data.$1),
     );
+  }
+
+  static Future<MiniCartX> deleteAllCartItems({
+    required String cartId,
+  }) async {
+    var data = await RemoteDataSourceX.delete(
+      DBEndPointX.deleteAllCartItems,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        pathParams: {NameX.cartId: cartId},
+      ),
+    );
+    Map<String, dynamic> dataJson = data.$1 is Map?Map<String, dynamic>.from(data.$1):{};
+    return MiniCartX.fromJson(dataJson);
   }
 
   //============================================================================

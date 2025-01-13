@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:ataa/Core/Extension/convert/convert.dart';
 import 'package:ataa/Data/Enum/gender_status.dart';
 import 'package:ataa/Data/Enum/gift_color_status.dart';
 import 'package:ataa/Data/Model/Gift/Subclass/giftBasic.dart';
@@ -67,7 +68,7 @@ class CreateGiftController extends GetxController {
 
   /// Selected
   RxInt colorSelectedIndex = 0.obs;
-  late Rx<GiftCategoryX> giftCategorySelected;
+  Rx<GiftCategoryX?> giftCategorySelected = Rx(null);
   Rx<GiftCardFormByGenderX?> giftCardFormByGenderSelected = Rx(null);
   Rx<OrganizationX?> orgSelected = Rx(null);
   RxInt freeDonationSelected = 0.obs;
@@ -93,12 +94,12 @@ class CreateGiftController extends GetxController {
   Future<void> getData() async {
     try {
       giftCategories.value = await DatabaseX.getAllGiftCategories();
-      if (giftCategories.isEmpty) {
-        throw ErrorX.createErrorByCode(ErrorCodesX.notFound);
-      } else {
-        giftCategorySelected = giftCategories.first.obs;
-        await getGiftCategoryDetails(giftCategories.first.id);
-      }
+      // if (giftCategories.isEmpty) {
+      //   throw ErrorX.createErrorByCode(ErrorCodesX.notFound);
+      // } else {
+      //   giftCategorySelected = giftCategories.first.obs;
+      //   await getGiftCategoryDetails(giftCategories.first.id);
+      // }
     } catch (e) {
       rethrow;
     }
@@ -115,7 +116,7 @@ class CreateGiftController extends GetxController {
   getGiftCategoryDetails(String id) async {
     isLoadingForGetGiftCategoryDetails.value = true;
     giftCategorySelected.value = await DatabaseX.getGiftCategoryDetails(id: id);
-    organizations.value = giftCategorySelected.value.donationCategories;
+    organizations.value = giftCategorySelected.value?.donationCategories??[];
     orgSelected.value = null;
     isLoadingForGetGiftCategoryDetails.value = false;
     onChangeGiftCardFormByGender();
@@ -126,13 +127,13 @@ class CreateGiftController extends GetxController {
 
   onChangeGiftCardFormByGender() {
     giftCardFormByGenderSelected.value = gender.value == 'male'
-        ? giftCategorySelected.value.giftCardFormMale
-        : giftCategorySelected.value.giftCardFormFemale;
+        ? giftCategorySelected.value?.giftCardFormMale
+        : giftCategorySelected.value?.giftCardFormFemale;
   }
 
   onChangeCategory(index) {
     giftCategorySelected.value = giftCategories[index];
-    getGiftCategoryDetails(giftCategorySelected.value.id);
+    getGiftCategoryDetails(giftCategorySelected.value?.id??'');
   }
 
   onChangeColor(index) => colorSelectedIndex.value = index;
@@ -233,6 +234,8 @@ class CreateGiftController extends GetxController {
       return throw "You must enter a phone number in the designated phone field to send a copy to your mobile.";
     } else if (!isPreview && isSendLater.value && sendLaterDate.value == null) {
       return throw "You must enter the date the gift was sent";
+    }else if(giftCategorySelected.value==null){
+      return throw "You must choose the type of gift.";
     } else {
       return true;
     }
@@ -255,7 +258,7 @@ class CreateGiftController extends GetxController {
               isShowAmount: isShowAmount.value,
               isSendToMe: isSendToMe.value,
               isSendLater: isSendLater.value,
-              giftCategoryId: giftCategorySelected.value.id,
+              giftCategoryId: giftCategorySelected.value!.id,
               donationCategoryId: orgSelected.value!.id,
               sendLaterDate: sendLaterDate.value,
               giftBasic: GiftBasicX(
@@ -270,7 +273,7 @@ class CreateGiftController extends GetxController {
                 recipientGender: GenderStatusX.values.firstWhere(
                       (x) => x.name == gender.value,
                 ),
-                price: double.parse(donationAmount.text),
+                price: donationAmount.text.toIntX,
                 color: GiftColorStatusX.values.firstWhere(
                         (x) => x.code == '#${colors[colorSelectedIndex.value]}'),
               ),
@@ -281,6 +284,7 @@ class CreateGiftController extends GetxController {
             String message = await cart.addItem(
               modelId: data.modelId,
               modelType: ModelTypeStatusX.gift,
+              price: donationAmount.text.toIntX,
               isPayNow: isPay,
             );
 

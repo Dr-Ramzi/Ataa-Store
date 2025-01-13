@@ -44,10 +44,11 @@ class GeneralPaymentView extends GetView<GeneralPaymentController> {
                             ContainerX(
                               child: Column(
                                 children: [
-                                  AppleAndGooglePaySectionX(
+                                  if(controller.isShowAppleAndGooglePay)
+                                    AppleAndGooglePaySectionX(
                                     controller: controller.appleAndGooglePayController,
                                   ).marginOnly(bottom: 20).fadeAnimation200,
-                                  if(controller.appleAndGooglePayController.error.value==null && controller.appleAndGooglePayController.initError.isFalse)
+                                  if((controller.isShowBank || controller.isShowPaymentCard) && controller.isShowAppleAndGooglePay && controller.appleAndGooglePayController.error.value==null && controller.appleAndGooglePayController.initError.isFalse)
                                   /// The word "OR" is an element
                                   Row(
                                     children: [
@@ -64,23 +65,24 @@ class GeneralPaymentView extends GetView<GeneralPaymentController> {
                                       const Flexible(child: Divider()),
                                     ],
                                   ).marginOnly(bottom: 20).fadeAnimation200,
+                                  if(controller.isShowBank && controller.isShowPaymentCard)
                                   TabSegmentX(
                                     controller: controller.payVia,
                                     tabs: {
                                       1: 'Pay by card'.tr,
                                       2: 'Pay by bank transfer'.tr,
                                     },
-                                  ).fadeAnimation300,
-                                  const SizedBox(height: 16),
-                                  if (controller.isViaCard.value)
+                                  ).marginOnly(bottom: 16).fadeAnimation300,
+                                  if (controller.isViaCard.value && controller.isShowPaymentCard)
                                     PreSavedPaymentCardsSectionX(
                                       controller:
                                       controller.preSavedPaymentCardsController,
                                     ),
-                                  if (!controller.isViaCard.value)
+                                  if (!controller.isViaCard.value && controller.isShowBank)
                                     PayByBankTransferSectionX(
                                       controller: controller.payByBankTransferController,
                                     ),
+                                  if(controller.isShowBank || controller.isShowPaymentCard)
                                   ButtonStateX(
                                     disabled: controller.isViaCard.value?!controller.preSavedPaymentCardsController.isValidate.value:!controller.payByBankTransferController.isValidate.value,
                                     onTap: controller.onPay,

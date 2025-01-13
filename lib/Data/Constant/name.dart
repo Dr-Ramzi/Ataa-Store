@@ -56,6 +56,7 @@ class NameX {
   static const String genderType = 'form_type';
   static const String phone = 'mobile';
   static const String countryCode = 'country_code';
+  static const String whatsappCountryCode = 'whatsapp_country_code';
   static const String email = 'email';
   static const String gender = 'gender';
   static const String password = 'password';
@@ -331,11 +332,11 @@ class NameX {
   static const String countProjectDonations = 'count_project_payment';
   static const String totalAmountDonation = 'total_payment';
 
-  static const String countLinks = 'countLinks';
-  static const String countNewRegistrationsViaLinks = 'countNewRegistrationsViaLinks';
-  static const String countDonationsViaLinks = 'countDonationsViaLinks';
-  static const String countLinkVisits = 'countLinkVisits';
-  static const String totalAmountDonationsViaLinks = 'totalAmountDonationsViaLinks';
+  static const String countLinks = 'total_affiliate_links';
+  static const String countLinkVisits = 'total_visit_activities';
+  static const String countNewRegistrationsViaLinks = 'total_registration_activities';
+  static const String countDonationsViaLinks = 'total_donation_activities';
+  static const String totalAmountDonationsViaLinks = 'total_donations_sum';
 
   static const String countCampaigns = 'countCampaigns';
   static const String countCampaignVisits = 'countCampaignVisits';

@@ -25,6 +25,7 @@ class OTPController extends GetxController with CodeAutoFill {
   RxBool isLoading = false.obs;
   RxBool isResendAgain = false.obs;
   RxBool isLoadingResendAgain = false.obs;
+  RxBool isDoneInput = false.obs;
   Rx<ButtonStateEX> buttonState = ButtonStateEX.normal.obs;
 
   /// if open OTP from sheet then get OTP object from view screen parameters
@@ -279,5 +280,6 @@ class OTPController extends GetxController with CodeAutoFill {
     super.dispose();
     SmsAutoFill().unregisterListener();
     cancel();
+    timer.cancel();
   }
 }

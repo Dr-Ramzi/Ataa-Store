@@ -93,23 +93,24 @@ class DonationCardX extends StatelessWidget {
                           ),
                         ),
 
+                      /// TODO: تشغيل زر المشاركة
                       /// Share Button
-                      Positioned.directional(
-                        end: 10,
-                        top: 10,
-                        textDirection: Directionality.of(context),
-                        child: InkResponse(
-                          onTap: () async =>
-                          await shareSheet(donation.shareURL),
-                          child: const ContainerX(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
-                            ),
-                            child: Icon(Icons.share_rounded),
-                          ),
-                        ),
-                      ),
+                      // Positioned.directional(
+                      //   end: 10,
+                      //   top: 10,
+                      //   textDirection: Directionality.of(context),
+                      //   child: InkResponse(
+                      //     onTap: () async =>
+                      //     await shareSheet(donation.shareURL),
+                      //     child: const ContainerX(
+                      //       padding: EdgeInsets.symmetric(
+                      //         horizontal: 12,
+                      //         vertical: 8,
+                      //       ),
+                      //       child: Icon(Icons.share_rounded),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                   const SizedBox(height: 4),

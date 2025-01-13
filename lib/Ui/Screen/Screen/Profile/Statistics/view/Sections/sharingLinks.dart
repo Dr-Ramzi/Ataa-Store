@@ -28,26 +28,6 @@ class SharingLinksSectionX extends GetView<StatisticsController> {
               const SizedBox(width: 8),
               Flexible(
                 child: StatisticCardX(
-                  icon: Icons.person_add_alt_rounded,
-                  statistic: controller.shareLinkStatistics.value!.countNewRegistrationsViaLinks,
-                  subtitle: "New registrants",
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Flexible(
-                child: StatisticCardX(
-                  icon: Icons.favorite_rounded,
-                  statistic: controller.shareLinkStatistics.value!.countDonationsViaLinks,
-                  subtitle: "Number of donations",
-                ),
-              ),
-              const SizedBox(width: 8),
-              Flexible(
-                child: StatisticCardX(
                   icon: Icons.visibility_rounded,
                   statistic: controller.shareLinkStatistics.value!.countLinkVisits,
                   subtitle: "Number of visits",
@@ -60,8 +40,29 @@ class SharingLinksSectionX extends GetView<StatisticsController> {
             children: [
               Flexible(
                 child: StatisticCardX(
+                  icon: Icons.person_add_alt_rounded,
+                  statistic: controller.shareLinkStatistics.value!.countNewRegistrationsViaLinks,
+                  subtitle: "New registrants",
+                ),
+              ),
+
+              const SizedBox(width: 8),
+              Flexible(
+                child: StatisticCardX(
+                  icon: Icons.favorite_rounded,
+                  statistic: controller.shareLinkStatistics.value!.countDonationsViaLinks,
+                  subtitle: "Number of donations",
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Flexible(
+                child: StatisticCardX(
                   isMoney: true,
-                  icon: Icons.payment_rounded,
+                  icon: Icons.payments_rounded,
                   statistic: controller.shareLinkStatistics.value!.totalAmountDonationsViaLinks,
                   subtitle: "Total donation amounts via links",
                 ),

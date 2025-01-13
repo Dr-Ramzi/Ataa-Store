@@ -31,6 +31,7 @@ class PayDonationControllerX extends GetxController {
 
   RxBool isLoading = false.obs;
   bool isSheet = false;
+  int donationSharesPrice = 0;
 
   Rx<ButtonStateEX> buttonState = ButtonStateEX.normal.obs;
   Rx<ButtonStateEX> addToCartButtonState = ButtonStateEX.normal.obs;
@@ -63,6 +64,7 @@ class PayDonationControllerX extends GetxController {
           Get.put(DonateOnBehalfOfFamilyController(), tag: donation.id);
     }
 
+    donationSharesPrice = (donation.donationShares?.price??0).toIntX;
     /// Prepare the donation amount if it is a stock type
     onChangeStockValue(1);
   }
@@ -73,10 +75,21 @@ class PayDonationControllerX extends GetxController {
   onChangeStockValue(double val) {
     numOfStock.value = val.toInt();
     if (donation.donationShares != null) {
-      donationAmount.text =(donation.donationShares!.price * numOfStock.value).toIntNullableX.toString();
+      donationAmount.text =(donationSharesPrice * numOfStock.value).toIntNullableX.toString();
     }
   }
+  String? validateAmount(String? val) {
+    String? message;
+    message = ValidateX.money(val);
 
+    /// Verify the lowest possible donation value in Free Donation
+    if (message == null &&
+        num.parse(donationAmount.text) < app.generalSettings.minimumDonationAmount) {
+      message =
+      "${"The minimum donation amount is".tr} ${app.generalSettings.minimumDonationAmount} ${"SAR".tr}";
+    }
+    return message;
+  }
   onChangeOpenPackage(DonationOpenPackageX val) {
     openPackageSelected.value = val;
     donationAmount.text = val.price.toInt().toString();
@@ -88,9 +101,8 @@ class PayDonationControllerX extends GetxController {
 
   onChangeSharesPackage(DonationSharesPackageX val) {
     sharesPackageSelected.value = val;
-    donationAmount.text =
-        (val.sharesCount * donation.donationShares!.price).toIntNullableX.toString();
-    numOfStock.value = val.sharesCount;
+    donationSharesPrice = ((donation.donationShares?.price??0) * val.sharesCount).toIntX;
+    donationAmount.text =  (numOfStock.value * donationSharesPrice).toIntNullableX.toString();
   }
 
   onChangeDonationAmount(int val) {
@@ -154,8 +166,7 @@ class PayDonationControllerX extends GetxController {
                 donationSharesPackageId: sharesPackageSelected.value?.id,
                 donationDeductionPackageId: deductionPackageSelected.value?.id,
                 sharesQuantity: numOfStock.value,
-                donationOnBehalfOfFamilyAndFriends:
-                    donateOnBehalfOfFamily.isEnable.value,
+                donationOnBehalfOfFamilyAndFriends: donateOnBehalfOfFamily.isEnable.value,
                 familyAndFriends: donateOnBehalfOfFamily.isEnable.value
                     ? DonationFamilyAndFriendsX(
                         donorName: donateOnBehalfOfFamily.donorName.text,
@@ -169,10 +180,10 @@ class PayDonationControllerX extends GetxController {
                     : null,
               ),
             );
-
             String message = await cart.addItem(
               modelId: data.modelId,
               modelType: ModelTypeStatusX.donation,
+              price: donationAmount.text.toIntX,
               isPayNow: isPay,
               isCloseSheet: isSheet,
             );

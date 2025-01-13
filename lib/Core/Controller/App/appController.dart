@@ -7,6 +7,7 @@ class AppControllerX extends GetxController {
   Rx<UserX?> user = Rx<UserX?>(null);
 
   late GeneralAppSettingsX generalSettings;
+  late GeneralPaymentMethodsSettingsX generalPaymentMethodsSettings;
   late HomeElementSettingsX homeElementSettings;
   RxBool isLogin = LocalDataX.token.isNotEmpty.obs;
 
@@ -16,6 +17,7 @@ class AppControllerX extends GetxController {
   init() async {
     /// General Settings
     generalSettings = await DatabaseX.getGeneralSettings();
+    generalPaymentMethodsSettings = await DatabaseX.getGeneralPaymentMethodsSettings();
     homeElementSettings = await DatabaseX.getHomeElementSettings();
 
     /// Profile

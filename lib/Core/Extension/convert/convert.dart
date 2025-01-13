@@ -390,11 +390,10 @@ extension ConvertExtensionX on dynamic {
   }
 
 
-  /// TODO: Add to date time convert function
   DateTime get toDateTimeX{
     try {
       if (this == null) {
-        return DateTime.now();
+        throw Exception();
       }
       if (this is DateTime) {
         return this as DateTime;

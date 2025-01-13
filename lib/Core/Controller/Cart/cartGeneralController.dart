@@ -62,11 +62,11 @@ class CartGeneralControllerX extends GetxController {
     required String modelId,
     required ModelTypeStatusX modelType,
     required bool isPayNow,
+    required int price,
     bool isCloseSheet = false,
     int quantity = 1,
   }) async {
-    var data =
-        await DatabaseX.createCartItem(cart.value.id, modelType, modelId);
+    var data = await DatabaseX.createCartItem(cart.value.id, modelType, modelId);
     countItem.value = data.countItem;
     cart.value.countItem = data.countItem;
     cart.value.id = data.id;
@@ -87,7 +87,7 @@ class CartGeneralControllerX extends GetxController {
         Get.toNamed(
           RouteNameX.generalPayment,
           arguments: {
-            NameX.totalCart: cart.value.totalPrice,
+            NameX.totalCart: price+0.0,
           },
         );
       } else {

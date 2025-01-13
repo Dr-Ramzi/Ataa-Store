@@ -37,6 +37,12 @@ class AllDonationController extends GetxController {
     );
     return results;
   }
+  clearData(){
+    searchQuery.value='';
+    search.text='';
+    filterController.clearData();
+    filterController.filters.value={};
+  }
 
   //----------------------------------------------------------------------------
   // Search & Filter

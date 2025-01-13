@@ -6,9 +6,11 @@ class CartGiftCardX extends StatefulWidget {
     required this.onDelete,
     required this.cartItem,
     required this.onUpdate,
+    required this.minimumDonationAmount,
   });
   final CartItemX cartItem;
   final Function(CartItemX item) onDelete;
+  final int minimumDonationAmount;
   final Function(
       CartItemX item, {
       String? price,
@@ -42,6 +44,18 @@ class _CartGiftCardXState extends State<CartGiftCardX> {
         priceController = TextEditingController(text: cartItem.price.toString());
       });
     }
+  }
+  String? validateAmount(String? val) {
+    String? message;
+    message = ValidateX.giftMoney(val);
+
+    /// Verify the lowest possible donation value in Free Donation
+    if (message == null &&
+        num.parse(priceController.text) < widget.minimumDonationAmount) {
+      message =
+      "${"The minimum donation amount is".tr} ${widget.minimumDonationAmount} ${"SAR".tr}";
+    }
+    return message;
   }
   @override
   Widget build(BuildContext context) {
@@ -87,25 +101,27 @@ class _CartGiftCardXState extends State<CartGiftCardX> {
                                       ? null
                                       : ColorX.grey.shade300,
                                   color: Theme.of(context).cardColor,
-                                  validate: ValidateX.giftMoney,
+                                  validate: validateAmount,
                                   onChanged: (val) {
-                                    if (_debounceTimer?.isActive ?? false) {
-                                      _debounceTimer!.cancel();
+                                    if(validateAmount(val) == null){
+                                      if (_debounceTimer?.isActive ?? false) {
+                                        _debounceTimer!.cancel();
+                                      }
+                                      _debounceTimer = Timer(_debounceTimerDuration, () async {
+                                        setState(() {
+                                          isLoadingUpdate = true;
+                                        });
+                                        try {
+                                          await widget.onUpdate(
+                                            cartItem,
+                                            price: val,
+                                          );
+                                        } catch (_) {}
+                                        setState(() {
+                                          isLoadingUpdate = false;
+                                        });
+                                      });
                                     }
-                                    _debounceTimer = Timer(_debounceTimerDuration, () async {
-                                      setState(() {
-                                        isLoadingUpdate = true;
-                                      });
-                                      try {
-                                        await widget.onUpdate(
-                                          cartItem,
-                                          price: val,
-                                        );
-                                      } catch (_) {}
-                                      setState(() {
-                                        isLoadingUpdate = false;
-                                      });
-                                    });
                                   },
                                   suffixWidget: TextX(
                                     "SAR",

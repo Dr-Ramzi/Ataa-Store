@@ -60,12 +60,14 @@ class MainContentOtpX extends GetView<OTPController> {
                       cursorColor: ColorX.primary,
                       cursorWidth: 2,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      otpPinFieldDecoration: OtpPinFieldDecoration.defaultPinBoxDecoration,
+                      otpPinFieldDecoration:OtpPinFieldDecoration.custom,
                       onChange: (val) {
                         if(val.length==4) {
                           controller.otpCode.text = val;
+                          controller.isDoneInput.value=true;
                         }else{
                           controller.otpCode.text = '';
+                          controller.isDoneInput.value=false;
                         }
                       },
                       otpPinFieldStyle: OtpPinFieldStyle(
@@ -77,6 +79,7 @@ class MainContentOtpX extends GetView<OTPController> {
                             Theme.of(context).cardTheme.color ??
                                 Colors.transparent,
                         activeFieldBorderColor: ColorX.primary,
+                        fieldBorderRadius: 8,
                         defaultFieldBorderColor: Theme.of(context).dividerColor,
                         fieldBorderWidth: StyleX.borderWidth,
                         fieldPadding: 16,
@@ -95,6 +98,10 @@ class MainContentOtpX extends GetView<OTPController> {
               onTap: controller.onVerify,
               state: controller.buttonState.value,
               text: 'Verify',
+              disabled: controller.isDoneInput.isFalse,
+              colorDisabledButton: context.isDarkMode?ColorX.primary.shade300.withOpacity(0.2):ColorX.primary.withOpacity(0.4),
+              colorDisabledBorder: Colors.transparent,
+              colorDisabledText: context.isDarkMode?Colors.white38:Colors.white,
             ).fadeAnimation400,
             const SizedBox(height: 25.0),
 

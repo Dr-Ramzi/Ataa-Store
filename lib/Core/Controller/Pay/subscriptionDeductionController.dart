@@ -72,7 +72,7 @@ class SubscriptionDeductionControllerX extends GetxController {
     String? message;
     message = ValidateX.money(val);
 
-    /// Verify the lowest possible donation value in Free Donation
+    /// Verify the lowest possible donation value in Free Deduction
     if (message == null &&
         num.parse(deductionAmount.text) <
             app.generalSettings.minimumDeductionAmount) {

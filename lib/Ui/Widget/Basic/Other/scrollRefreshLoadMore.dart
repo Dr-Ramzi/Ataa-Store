@@ -309,6 +309,7 @@ class ScrollRefreshLoadMoreXState<T> extends State<ScrollRefreshLoadMoreX<T>> {
       if (isInit || isRefresh) {
         hasMoreData = true;
         currentPage = widget.initPage;
+        items=[];
       }
       widget.onLoading?.call(isInit, isLoadMore, isRefresh);
     });

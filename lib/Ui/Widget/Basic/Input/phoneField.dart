@@ -8,6 +8,7 @@ class PhoneFieldX extends StatelessWidget {
   final bool? isRequired;
   final bool isShowCountryCode;
   final bool isDisableChangeCountryCode;
+  final bool isActiveError;
   final Color? color;
   final Function(String countryCode) onChangeCountryCode;
   const PhoneFieldX({
@@ -19,6 +20,7 @@ class PhoneFieldX extends StatelessWidget {
     this.hint = "512345678",
     this.countryCode = 966,
     this.isShowCountryCode = true,
+    this.isActiveError = false,
     this.isDisableChangeCountryCode = false,
     super.key,
   });
@@ -36,6 +38,7 @@ class PhoneFieldX extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 7),
             child:  InternationalPhoneNumberInput(
               height: StyleX.inputHeight,
+              isActiveError:isActiveError,
               controller: controller,
               initCountry: countryCode,
               betweenPadding: 5,

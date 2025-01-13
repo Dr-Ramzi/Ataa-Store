@@ -98,7 +98,7 @@ subscriptionDeductionSheetX(DeductionX deduction) {
                           textInputType: TextInputType.number,
                           textInputAction: TextInputAction.done,
                           hint: "0",
-                          validate: ValidateX.money,
+                          validate: controller.validateAmount,
                           suffixWidget: TextX(
                             "SAR",
                             style: TextStyleX.titleSmall,
