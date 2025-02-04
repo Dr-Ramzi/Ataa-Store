@@ -6,7 +6,7 @@
 	<string>development</string>
 	<key>com.apple.developer.in-app-payments</key>
 	<array>
-		<string>merchant.ataa-store-backend-testing.edialoguecenter.com</string>
+		<string>merchant.store.edialoguec.org.sa</string>
 	</array>
 </dict>
 </plist>

@@ -20,8 +20,9 @@ class PaymentTransactionX {
   final String? receiptUrl;
   final String? receiptUrlShort;
   final String? applePayToken;
-  final PaymentStatusStatusX status;
+  PaymentStatusStatusX status;
   final String? statusLocalized;
+  final String? callbackUrl;
   final String? verificationUrl;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -41,6 +42,7 @@ class PaymentTransactionX {
     this.applePayToken,
     required this.status,
     required this.statusLocalized,
+    this.callbackUrl,
     this.verificationUrl,
     this.createdAt,
     this.updatedAt,
@@ -66,6 +68,7 @@ class PaymentTransactionX {
          applePayToken: json[NameX.applePayToken].toStrNullableX,
          status: PaymentStatusStatusX.values.firstWhere((e) => e.name==json[NameX.status].toStrX,orElse: () => PaymentStatusStatusX.unknown),
          statusLocalized: json[NameX.statusLocalized].toStrNullableX,
+         callbackUrl: json[NameX.callbackUrl].toStrNullableX,
          verificationUrl: json[NameX.verificationUrl].toStrNullableX,
          createdAt: json[NameX.createdAt].toDateTimeNullableX,
          updatedAt: json[NameX.updatedAt].toDateTimeNullableX,
@@ -94,6 +97,7 @@ class PaymentTransactionX {
       NameX.applePayToken: applePayToken,
       NameX.status: status.name,
       NameX.statusLocalized: statusLocalized,
+      NameX.callbackUrl: callbackUrl,
       NameX.verificationUrl: verificationUrl,
       NameX.createdAt: createdAt,
     };

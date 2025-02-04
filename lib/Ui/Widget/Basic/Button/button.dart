@@ -110,7 +110,7 @@ class ButtonX extends StatelessWidget {
       child: Container(
         height: height??StyleX.buttonHeight,
         width: width ?? (isMaxFinite?double.maxFinite:null),
-        padding: const EdgeInsets.symmetric(horizontal: 12),
+        padding: padding,
         margin: EdgeInsets.symmetric(
           vertical: marginVertical,
           horizontal: marginHorizontal,

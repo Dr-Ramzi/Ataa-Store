@@ -16,32 +16,27 @@ class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      /// This is a stack to implement the design of the page's AppBar
-      body: SafeArea(
-        child: Stack(
-          alignment: Alignment.center,
-          clipBehavior: Clip.none,
-          children: [
-            /// This for app bar home design
-            Positioned.fill(
-              top: -27,
-              child: SingleChildScrollView(
-                controller: controller.scrollController,
-                /// this padding for height quick donation in nav bar
-                padding: const EdgeInsets.only(bottom: 60),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const AdsSectionX(),
-                    ...controller.getActiveSections(),
-                  ],
-                ),
-              ),
+    return Stack(
+      alignment: Alignment.center,
+      clipBehavior: Clip.none,
+      children: [
+        /// This for app bar home design
+        Positioned.fill(
+          top: -27,
+          child: SingleChildScrollView(
+            controller: controller.scrollController,
+            /// this padding for height quick donation in nav bar
+            padding: const EdgeInsets.only(bottom: 140),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const AdsSectionX(),
+                ...controller.getActiveSections(),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }

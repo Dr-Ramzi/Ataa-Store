@@ -18,8 +18,9 @@ class AllDeductionsView extends GetView<AllDeductionsController> {
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              if(controller.app.generalSettings.isActiveDeductionSearch)
               SearchBarX(
-                disabledSearch : !controller.app.generalSettings.isActiveDonationSearch,
+                disabledSearch : !controller.app.generalSettings.isActiveDeductionSearch,
                 search: controller.search,
                 onTapFilter: controller.onFilter,
               ).fadeAnimation200,
@@ -28,10 +29,10 @@ class AllDeductionsView extends GetView<AllDeductionsController> {
                 filters: controller.filterController.filters.value,
                 orderBy: controller.filterController.orderBy.value,
                 searchQueryController: controller.search,
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                   right: StyleX.hPaddingApp,
                   left: StyleX.hPaddingApp,
-                  top: 6,
+                  top: controller.app.generalSettings.isActiveDeductionSearch?6:StyleX.vPaddingApp,
                   bottom: StyleX.vPaddingApp,
                 ),
                 initLoading: Column(

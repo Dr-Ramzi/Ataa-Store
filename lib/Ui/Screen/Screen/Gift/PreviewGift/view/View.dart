@@ -59,7 +59,7 @@ class PreviewGiftView extends GetView<PreviewGiftController> {
                       nameTo: controller.giftOrder.giftBasic.recipientName,
                       amount: controller.giftOrder.giftBasic.price.toString(),
                       isShowAmount: controller.giftOrder.isShowPrice,
-                      orgName: controller.giftOrder.giftBasic.donorName,
+                      orgName: controller.organization.name,
                       borderWidth: 0,
                       radius: 0,
                       color: Color(

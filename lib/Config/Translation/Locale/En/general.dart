@@ -266,6 +266,7 @@ const Map<String, String> enGeneral = {
   "Campaign Details": "Campaign Details",
   "Been Collected": "Been Collected",
   "Remaining Amount": "Remaining Amount",
+  "Remaining": "Remaining",
   "Share": "Share",
   "Donation Details": "Donation Details",
   "Check the input fields": "Check the input fields",
@@ -746,5 +747,7 @@ const Map<String, String> enGeneral = {
   "Are you sure you want to delete all items from your cart?":"Are you sure you want to delete all items from your cart?",
   "Delete All":"Delete All",
   "Mobile number and email cannot be modified at the same time":"Mobile number and email cannot be modified at the same time",
+  "Unfortunately, there are no payment methods available now":"Unfortunately, there are no payment methods available now",
+  "We apologize, but an error occurred while processing your payment. Please check your payment information and try again.":"We apologize, but an error occurred while processing your payment. Please check your payment information and try again.",
   // "":"",
 };

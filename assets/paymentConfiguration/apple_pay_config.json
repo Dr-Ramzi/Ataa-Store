@@ -1,7 +1,7 @@
 {
   "provider": "apple_pay",
   "data": {
-    "merchantIdentifier": "merchant.ataa-store-backend-testing.edialoguecenter.com",
+    "merchantIdentifier": "merchant.store.edialoguec.org.sa",
     "displayName": "Ataa",
     "merchantCapabilities": ["3DS", "debit", "credit"],
     "supportedNetworks": ["amex", "visa", "discover", "masterCard"],

@@ -31,10 +31,10 @@ class HeaderSectionX extends GetView<DeductionDetailsController> {
                 ).fadeAnimation300,
               ),
 
+              const SizedBox(width: 20),
               /// Deduction marker
               DeductionMarkerCardX(deduction: controller.deduction.recurring.name)
                   .fadeAnimation300,
-              const SizedBox(width: 20),
 
               /// TODO: تشغيل زر المشاركة
               /// Share Button

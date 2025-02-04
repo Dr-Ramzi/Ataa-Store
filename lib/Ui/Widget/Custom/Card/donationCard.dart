@@ -25,6 +25,7 @@ class DonationCardX extends StatelessWidget {
           : const EdgeInsetsDirectional.only(bottom: 14),
       padding: EdgeInsets.zero,
       width: isSmallCard ? StyleX.donationCardWidthSM : double.maxFinite,
+      height: isSmallCard ? StyleX.donationCardHeight : null,
       child: GestureDetector(
         onTap: () {
           Get.toNamed(RouteNameX.donationDetails, arguments: donation.donationBasic.code);
@@ -34,6 +35,7 @@ class DonationCardX extends StatelessWidget {
           child: Stack(
             children: [
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Stack(
                     children: [
@@ -133,44 +135,37 @@ class DonationCardX extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
 
+                        if (donation.donationSettings.isShowCompletionIndicator && donation.donationSettings.isShowDonationsPercentage)
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Icon(
-                              Icons.payments_rounded,
-                              color: context.isDarkMode
-                                  ? Theme.of(context).primaryColor
-                                  : ColorX.primary.shade700,
-                              size: 18,
+                            TextX(
+                              "${"Collected".tr} ${FunctionX.formatLargeNumber(donation.donationBasic.currentDonations)} ${"SAR".tr}",
+                              color: Theme.of(context).primaryColor,
                             ),
                             const SizedBox(width: 8),
                             TextX(
-                              "${"Collected".tr}: ${FunctionX.formatLargeNumber(donation.donationBasic.currentDonations)} ${"SAR".tr}",
+                              "${"Remaining".tr} ${FunctionX.formatLargeNumber(donation.donationBasic.remainingDonations)} ${"SAR".tr}",
                               color: Theme.of(context).colorScheme.secondary,
-                            )
+                            ),
                           ],
                         ),
+                        if (donation.donationSettings.isShowCompletionIndicator && !donation.donationSettings.isShowDonationsPercentage)
+                          TextX(
+                            "${"Collected".tr} ${donation.donationBasic.completionRate % 1 == 0 ? donation.donationBasic.completionRate.toInt().toString() : donation.donationBasic.completionRate.toStringAsFixed(2)}%",
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        if (donation.donationSettings.isShowCompletionIndicator)
                         const SizedBox(height: 8),
 
                         /// Completion Indicator Line
-                        // if (donation.isShowCompletionIndicator)
-                        //   Row(
-                        //     children: [
-                        //       Expanded(
-                        //           child:
-                        //           LinearProgressIndicator(
-                        //             value:
-                        //             donation.currentDonations / donation.totalDonations,
-                        //             borderRadius: BorderRadius.circular(50),
-                        //             minHeight: 6,
-                        //           )
-                        //       ),
-                        //       const SizedBox(width: 16),
-                        //       TextX(
-                        //         "${donation.donationProgress.toStringAsFixed(2)} %",
-                        //         style: TextStyleX.supTitleLarge,
-                        //       )
-                        //     ],
-                        //   ).marginOnly(top: 2, bottom: 4),
+                        if (donation.donationSettings.isShowCompletionIndicator)
+                          LinearProgressIndicator(
+                            value:
+                            donation.donationBasic.currentDonations / donation.donationBasic.totalDonations,
+                            borderRadius: BorderRadius.circular(50),
+                            minHeight: 10,
+                          ).marginOnly(top: 2, bottom: 8),
 
                         /// This space replaces the buttons and the extra 8 pixels are for their margin
                         const SizedBox(

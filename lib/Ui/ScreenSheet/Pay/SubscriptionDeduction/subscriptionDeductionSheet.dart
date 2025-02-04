@@ -115,7 +115,7 @@ subscriptionDeductionSheetX(DeductionX deduction) {
                       .deduction.recurring.name ==
                       RecurringStatusX.monthly.name
                       ? 'The amount will be automatically deducted on the first day of every calendar month.'.tr
-                      : '${'The amount is automatically deducted every'.tr} ${(deduction.recurring.name == RecurringStatusX.daily.name) ? 'day'.tr : '${controller.deduction.dayLocalized ?? controller.deduction.day?.tr} ${'of each week.'.tr}'}',
+                      : '${'The amount is automatically deducted every'.tr} ${(deduction.recurring.name == RecurringStatusX.daily.name) ? '' : '${controller.deduction.day?.tr ?? controller.deduction.dayLocalized} ${'of each week.'.tr}'}',
                 ).marginSymmetric(vertical: 11).fadeAnimation400,
 
                 /// Subscription Button

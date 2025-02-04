@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:ataa/Core/Error/error.dart';
 import 'package:ataa/Core/Extension/convert/convert.dart';
 import 'package:ataa/Data/Model/Cart/MiniCart.dart';
@@ -66,6 +67,8 @@ class CartController extends GetxController {
   //----------------------------------------------------------------------------
   // Pay
 
+  get isHasAppleAndGooglePay =>(Platform.isAndroid && app.generalPaymentMethodsSettings.isGooglePay) || (Platform.isIOS && app.generalPaymentMethodsSettings.isApplePay);
+
   /// Verify the entered data
   bool dataVerification() {
     if (cartGeneral.cart.value.isProduct &&
@@ -78,6 +81,8 @@ class CartController extends GetxController {
       return throw "Check the donation entry fields";
     }else if(validateAmount() !=null){
       return throw validateAmount()??'';
+    }else if(!app.generalPaymentMethodsSettings.isCreditCards && !app.generalPaymentMethodsSettings.isBankTransfers && !isHasAppleAndGooglePay){
+      return throw "Unfortunately, there are no payment methods available now";
     }
     return true;
   }

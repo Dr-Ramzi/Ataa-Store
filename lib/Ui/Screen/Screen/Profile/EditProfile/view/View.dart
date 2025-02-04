@@ -1,3 +1,4 @@
+import 'package:ataa/Data/data.dart';
 import 'package:ataa/Ui/Animation/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -29,7 +29,20 @@ class HeaderSectionX extends GetView<OrganizationDetailsController> {
           const SizedBox(height: 6),
 
           /// Description
-          HtmlWidget(
+          HtmlWidget(Get.isDarkMode
+              ? controller.org.description.replaceAllMapped(
+              RegExp(r'color:\s*(rgb\(0,\s*0,\s*0\)|#000000|black|rgb\(255,\s*255,\s*255\)|#ffffff|white)', caseSensitive: false),
+                  (match) {
+                const colorMap = {
+                  'rgb(0, 0, 0)': 'rgb(255, 255, 255)',
+                  '#000000': '#ffffff',
+                  'black': 'white',
+                  'rgb(255, 255, 255)': 'rgb(0, 0, 0)',
+                  '#ffffff': '#000000',
+                  'white': 'black',
+                };
+                return 'color: ${colorMap[match.group(1)?.toLowerCase()] ?? match.group(1)}';
+              }):
             controller.org.description,
             textStyle: TextStyleX.supTitleLarge,
           ).fadeAnimation200,

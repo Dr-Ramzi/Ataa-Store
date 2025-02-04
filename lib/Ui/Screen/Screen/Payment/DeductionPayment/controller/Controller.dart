@@ -10,10 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../../Config/config.dart';
+import '../../../../../../Data/Enum/payment_status_status.dart';
 import '../../../../../../Data/Model/PaymentTransaction/paymentTransaction.dart';
 import '../../../../../../Data/Model/PaymentTransaction/paymentTransactionForm.dart';
 import '../../../../../../Data/data.dart';
-import '../../../../../Section/AppleAndGooglePay/controller/Controller.dart';
 import '../../../../../Section/PreSavedPaymentCards/controller/Controller.dart';
 
 class DeductionPaymentController extends GetxController {
@@ -23,12 +23,12 @@ class DeductionPaymentController extends GetxController {
   AppControllerX app =Get.find();
   final PreSavedPaymentCardsController preSavedPaymentCardsController =
       Get.put(PreSavedPaymentCardsController(), tag: 'DeductionPayment');
-  late final AppleAndGooglePayController appleAndGooglePayController = Get.put(
-    AppleAndGooglePayController()
-      ..onPayDoneCallback = onPayByAppleOrGoogle
-      ..onTapCallback = onTapAppleAndGooglePay,
-    tag: 'DeductionPayment-AppleAndGooglePay',
-  );
+  // late final AppleAndGooglePayController appleAndGooglePayController = Get.put(
+  //   AppleAndGooglePayController()
+  //     ..onPayDoneCallback = onPayByAppleOrGoogle
+  //     ..onTapCallback = onTapAppleAndGooglePay,
+  //   tag: 'DeductionPayment-AppleAndGooglePay',
+  // );
   //============================================================================
   // Variables
 
@@ -44,10 +44,10 @@ class DeductionPaymentController extends GetxController {
   // Functions
 
   Future<void> getData() async {
-    await appleAndGooglePayController.init(
-      title: 'Deduction',
-      total: price,
-    );
+    // await appleAndGooglePayController.init(
+    //   title: 'Deduction',
+    //   total: price,
+    // );
     await preSavedPaymentCardsController.getData();
   }
 
@@ -88,17 +88,24 @@ class DeductionPaymentController extends GetxController {
     if (paymentTransaction.verificationUrl != null) {
       dynamic result = await Get.toNamed(
         RouteNameX.verificationUrl,
-        arguments: paymentTransaction.verificationUrl,
+        arguments: [paymentTransaction.verificationUrl,paymentTransaction.callbackUrl??paymentTransaction.paymentDataCreditCard?.callbackUrl??'null'],
       );
-      if (result != true) {
-        throw 'Payment was not verified, try again.';
+      if (result is! String) {
+        throw ErrorX(message: 'Payment was not verified, try again.');
+      }else{
+        var x =await DatabaseX.getPaymentTransaction(paymentTransactionId: paymentTransaction.id);
+        paymentTransaction.status = x.status;
       }
     }
-    Get.offAndToNamed(
-      RouteNameX.paymentSuccessful,
-      arguments: paymentTransaction,
-      result: true
-    );
+    if(paymentTransaction.status != PaymentStatusStatusX.paid){
+      throw ErrorX(message: 'We apologize, but an error occurred while processing your payment. Please check your payment information and try again.');
+    }else{
+      Get.offAndToNamed(
+          RouteNameX.paymentSuccessful,
+          arguments: paymentTransaction,
+          result: true
+      );
+    }
   }
 
   onPay() async {

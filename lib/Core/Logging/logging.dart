@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../Util/console/console.dart';
 import '../Util/info.dart';
 import '../Util/string.dart';
-import '../Error/error.dart';
 
 part 'lib/logging_console.dart';
 

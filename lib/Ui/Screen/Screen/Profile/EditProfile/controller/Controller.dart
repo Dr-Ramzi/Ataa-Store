@@ -84,6 +84,13 @@ class EditProfileController extends GetxController {
         isLoading.value = true;
         buttonState.value = ButtonStateEX.loading;
         try {
+
+          if(image!=null){
+            await DatabaseX.uploadProfileImage(
+              image: File(image!.path),
+            );
+          }
+
           (UserX?,String?) data = await DatabaseX.updateProfile(
             name: name.text,
             email: email.text,
@@ -91,12 +98,6 @@ class EditProfileController extends GetxController {
             countryCode: countryCode,
             gender: gender.value,
           );
-
-          if(image!=null){
-            await DatabaseX.uploadProfileImage(
-              image: File(image!.path),
-            );
-          }
 
           if (data.$1!=null) {
             app.user.value=data.$1;

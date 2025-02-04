@@ -7,6 +7,7 @@ part of '../data.dart';
 class NameX {
   static const String id = 'id';
   static const String token = 'access_token';
+  static const String appleToken = 'token';
   static const String tokenType = 'token_type';
   static const String tokenExpiresAt = 'expires_at';
   static const String name = 'name';
@@ -158,7 +159,7 @@ class NameX {
   static const String deduction = 'deduction';
   static const String bankCardNumber = 'bankCardNumber';
 
-  static const String donationAmount = 'price';
+  static const String donationAmount = 'donation_amount';
   static const String sharesQuantity = 'shares_quantity';
   static const String donationOpenPackageId = 'donation_open_package_id';
   static const String donationSharesPackageId = 'donation_shares_package_id';
@@ -214,8 +215,8 @@ class NameX {
   static const String relatableId = 'relatable_id';
   static const String relatableType = 'relatable_type';
 
-  static const String totalDonations = 'total_donation';
-  static const String currentDonations = 'price';
+  static const String totalDonations = 'price';
+  static const String currentDonations = 'total_donation';
   static const String remainingDonations = 'donate_rest';
   static const String countDonations = 'count_donation';
   static const String countDonor = 'count_donor';

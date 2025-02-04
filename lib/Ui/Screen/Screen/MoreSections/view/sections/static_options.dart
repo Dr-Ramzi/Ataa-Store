@@ -15,7 +15,7 @@ class StaticOptionsSectionX extends GetView<MoreSectionsController> {
         right: StyleX.hPaddingApp,
         left: StyleX.hPaddingApp,
         top: StyleX.vPaddingApp,
-        bottom: StyleX.vPaddingApp + 33,
+        bottom: 140,
       ),
       child: Column(
         children: [

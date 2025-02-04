@@ -39,16 +39,17 @@ class GeneralPaymentView extends GetView<GeneralPaymentController> {
                             if (controller.error.value != null || controller.appleAndGooglePayController.error.value != null)
                               MessageCardX(
                                 isError: true,
+                                maxLine: 4,
                                 message: controller.error.value?.message??controller.appleAndGooglePayController.error.value?.message,
                               ).fadeAnimation200.marginOnly(bottom: 14),
                             ContainerX(
                               child: Column(
                                 children: [
-                                  if(controller.isShowAppleAndGooglePay)
+                                  if(controller.isShowAppleAndGooglePay && controller.appleAndGooglePayController.initError.isFalse)
                                     AppleAndGooglePaySectionX(
                                     controller: controller.appleAndGooglePayController,
                                   ).marginOnly(bottom: 20).fadeAnimation200,
-                                  if((controller.isShowBank || controller.isShowPaymentCard) && controller.isShowAppleAndGooglePay && controller.appleAndGooglePayController.error.value==null && controller.appleAndGooglePayController.initError.isFalse)
+                                  if((controller.isShowBank || controller.isShowPaymentCard) && controller.isShowAppleAndGooglePay && controller.appleAndGooglePayController.initError.isFalse)
                                   /// The word "OR" is an element
                                   Row(
                                     children: [

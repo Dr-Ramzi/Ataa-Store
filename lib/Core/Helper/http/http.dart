@@ -202,34 +202,36 @@ class HttpX {
     bool ignoreUnauthorized = false,
     bool isAcceptsBlankFiles = false,
   }) async {
-    // if (isAcceptsBlankFiles && files.isEmpty) {
-    //   return await put(
-    //     url: url,
-    //     body: body,
-    //     headers: headers,
-    //     fallbackResponse: fallbackResponse,
-    //     maxRetries: maxRetries,
-    //     timeout: timeout,
-    //     ignoreUnauthorized: ignoreUnauthorized,
-    //   );
-    // }
+    if (isAcceptsBlankFiles && files.isEmpty) {
+      return await put(
+        url: url,
+        body: body,
+        headers: headers,
+        fallbackResponse: fallbackResponse,
+        maxRetries: maxRetries,
+        timeout: timeout,
+        ignoreUnauthorized: ignoreUnauthorized,
+      );
+    }
+
     // Create request
     var request = http.MultipartRequest('PUT', Uri.parse(url));
 
     // Add headers
-    if (headers != null) {
-      request.headers.addAll(headers);
-    }
+    request.headers.addAll({
+      if (headers != null) ...headers,
+      'Content-Type': 'multipart/form-data',
+    });
 
     // Add each file to the request
     for (int i = 0; i < files.length; i++) {
-      request.files.add(
-        await http.MultipartFile.fromPath(
+      request.files.add(http.MultipartFile.fromBytes(
           files.keys.elementAt(i),
-          files.values.elementAt(i).path,
+            await files.values.elementAt(i).readAsBytes()
         ),
       );
     }
+
     // Add body if any
     if (body != null) {
       // Convert body to Map<String, String> by converting each value to a string

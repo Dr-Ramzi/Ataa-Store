@@ -7,7 +7,7 @@ import '../../../Data/Model/Gift/Subclass/giftCardFormByGender.dart';
 import '../../../Data/data.dart';
 import '../../../Ui/Widget/widget.dart';
 
-class PreviewDedicateControllerX  extends GetxController {
+class PreviewGiftCardControllerX  extends GetxController {
   //============================================================================
   // Variables
 
@@ -30,7 +30,6 @@ class PreviewDedicateControllerX  extends GetxController {
 
   Future<void> getDate()async{
     if(!isGetMessage) {
-      print(LocalDataX.token);
       message = await DatabaseX.getGiftMessageTemplate();
       isGetMessage=true;
     }

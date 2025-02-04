@@ -14,6 +14,7 @@ class RootView extends GetView<RootController> {
       resizeToAvoidBottomInset: false,
       body: Obx(
         () => Scaffold(
+          extendBody: true,
           /// App Bar
           appBar: AppBarRootX(
             key: Key(controller.appBarTitle()),
@@ -39,7 +40,11 @@ class RootView extends GetView<RootController> {
           /// Nav Bar
           bottomNavigationBar: Stack(
             clipBehavior: Clip.none,
+            alignment: Alignment.bottomCenter,
             children: [
+              const SizedBox(
+                height: 150,
+              ),
               Positioned(
                 bottom: StyleX.navBarHeight / 4, // Adjust this value based on the FAB size
                 left: 0,

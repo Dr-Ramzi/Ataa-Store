@@ -14,7 +14,7 @@ import '../../../Widget/widget.dart';
 /// Preview the gifting before paying
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-previewDedicateSheetX({required PreviewDedicateControllerX controller}) {
+previewGiftCardSheetX({required PreviewGiftCardControllerX controller}) {
   return bottomSheetX(
     title: "Preview the gifting",
     child: Obx(
@@ -36,9 +36,11 @@ previewDedicateSheetX({required PreviewDedicateControllerX controller}) {
                     fontWeight: FontWeight.w600,
                     fontFamily: FontX.fontFamily),
                 inactiveStyle: TextStyleX.titleMedium.copyWith(
-                    fontWeight: FontWeight.w600, fontFamily: FontX.fontFamily),
+                  color: Get.isDarkMode?Get.theme.colorScheme.secondary:null,
+                    fontWeight: FontWeight.w600, fontFamily: FontX.fontFamily,
+                ),
                 backgroundColor: Get.context!.isDarkMode
-                    ? Theme.of(Get.context!).cardColor
+                    ? ColorX.grey.shade700
                     : ColorX.grey.shade100,
                 sliderColor: Theme.of(Get.context!).primaryColor,
                 borderRadius: BorderRadius.zero,
@@ -93,7 +95,7 @@ previewDedicateSheetX({required PreviewDedicateControllerX controller}) {
                     ),
                     child: (data) => ContainerX(
                       width: double.infinity,
-                      color: Get.theme.colorScheme.onPrimary,
+                      color: Get.isDarkMode?ColorX.primary.shade100:Get.theme.colorScheme.onPrimary,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 14,
                         vertical: 30,

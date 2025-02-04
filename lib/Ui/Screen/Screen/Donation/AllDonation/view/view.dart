@@ -17,8 +17,8 @@ class AllDonationView extends GetView<AllDonationController> {
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              if(controller.app.generalSettings.isActiveDonationSearch)
               SearchBarX(
-                disabledSearch : !controller.app.generalSettings.isActiveDonationSearch,
                 search: controller.search,
                 onTapFilter: controller.onFilter,
               ).fadeAnimation200,
@@ -27,11 +27,11 @@ class AllDonationView extends GetView<AllDonationController> {
                 filters: controller.filterController.filters.value,
                 orderBy: controller.filterController.orderBy.value,
                 searchQueryController: controller.search,
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                   right: StyleX.hPaddingApp,
                   left: StyleX.hPaddingApp,
-                  top: 6,
-                  bottom: 60,
+                  top: controller.app.generalSettings.isActiveDonationSearch?6:StyleX.vPaddingApp,
+                  bottom: 160,
                 ),
                 initLoading: Column(
                   children: [

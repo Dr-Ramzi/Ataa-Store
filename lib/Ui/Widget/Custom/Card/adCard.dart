@@ -85,7 +85,7 @@ class _AdCardXState extends State<AdCardX> {
                   Positioned.fill(
                     child: ImageNetworkX(
                       imageUrl: widget.ad.imageUrl!,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                       failed: const SizedBox(),
                     ),
                   ),
@@ -96,7 +96,7 @@ class _AdCardXState extends State<AdCardX> {
                     child: (!isInitChewieController)
                         ? const Center(child: CircularProgressIndicator())
                         : FittedBox(
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fill,
                             child: SizedBox(
                               height: videoPlayerController.value.size.height,
                               width: videoPlayerController.value.size.width,
@@ -164,6 +164,8 @@ class _AdCardXState extends State<AdCardX> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               ButtonX(
+                                height: 44,
+                                padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 8),
                                 colorButton: Colors.white,
                                 borderColor: Colors.white,
                                 colorText: ColorX.primary,

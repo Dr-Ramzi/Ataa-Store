@@ -15,7 +15,7 @@ class DynamicOptionsSectionX extends GetView<MoreSectionsController> {
         right: StyleX.hPaddingApp,
         left: StyleX.hPaddingApp,
         top: StyleX.vPaddingApp,
-        bottom: StyleX.vPaddingApp+33,
+        bottom: 140,
       ),
       initLoading: Column(children: [
         for(int i=0;i<10;i++)

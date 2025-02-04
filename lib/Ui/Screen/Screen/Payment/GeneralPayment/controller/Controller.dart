@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import '../../../../../../Config/config.dart';
 import '../../../../../../Core/Error/error.dart';
 import '../../../../../../Data/Enum/payment_method_status.dart';
+import '../../../../../../Data/Enum/payment_status_status.dart';
 import '../../../../../../Data/Model/Donation/donation.dart';
 import '../../../../../../Data/Model/PaymentCard/paymentCardForm.dart';
 import '../../../../../../Data/Model/PaymentTransaction/paymentTransaction.dart';
@@ -77,12 +78,14 @@ class GeneralPaymentController extends GetxController {
   }
 
   void onTapAppleAndGooglePay() {
-    error.value=null;
+    error.value = null;
   }
 
-  get isShowAppleAndGooglePay =>(Platform.isAndroid && app.generalPaymentMethodsSettings.isGooglePay) || (Platform.isIOS && app.generalPaymentMethodsSettings.isApplePay);
-  get isShowPaymentCard =>!app.generalPaymentMethodsSettings.isCreditCards;
-  get isShowBank =>app.generalPaymentMethodsSettings.isBankTransfers;
+  get isShowAppleAndGooglePay =>
+      (Platform.isAndroid && app.generalPaymentMethodsSettings.isGooglePay) ||
+      (Platform.isIOS && app.generalPaymentMethodsSettings.isApplePay);
+  get isShowPaymentCard => app.generalPaymentMethodsSettings.isCreditCards;
+  get isShowBank => app.generalPaymentMethodsSettings.isBankTransfers;
 
   onPayByAppleOrGoogle(String token) async {
     try {
@@ -106,12 +109,12 @@ class GeneralPaymentController extends GetxController {
     if (totalCart != null) {
       paymentTransaction =
           await DatabaseX.createPaymentTransactionForCart(form: form);
-      try{
+      try {
         await cart.getData();
-      }catch(_){
-        cart.countItem.value=0;
-        cart.cart.value.countItem=0;
-        cart.cart.value.items=[];
+      } catch (_) {
+        cart.countItem.value = 0;
+        cart.cart.value.countItem = 0;
+        cart.cart.value.items = [];
       }
     } else {
       paymentTransaction =
@@ -122,18 +125,55 @@ class GeneralPaymentController extends GetxController {
     }
 
     if (paymentTransaction.verificationUrl != null) {
-      dynamic result = await Get.toNamed(
+      var result = await Get.toNamed(
         RouteNameX.verificationUrl,
-        arguments: paymentTransaction.verificationUrl,
+        arguments: [
+          paymentTransaction.verificationUrl,
+          paymentTransaction.callbackUrl ??
+              paymentTransaction.paymentDataCreditCard?.callbackUrl ??
+              'null'
+        ],
       );
-      if (result != true) {
-       throw ErrorX(message:'Payment was not verified, try again.');
+
+      if (result is! String) {
+        throw ErrorX(message: 'Payment was not verified, try again.');
+      }
+
+      if (LocalDataX.token.isEmpty) {
+        if (result.isEmpty) {
+          throw ErrorX(
+            message:
+                'We apologize, but an error occurred while processing your payment. Please check your payment information and try again.',
+          );
+        }
+
+        PaymentStatusStatusX? status = PaymentStatusStatusX.values
+            .firstWhereOrNull((element) => element.name == result);
+
+        if (status != null) {
+          paymentTransaction.status = status;
+        } else {
+          throw ErrorX(
+              message:
+                  'We apologize, but an error occurred while processing your payment. Please check your payment information and try again.',
+          );
+        }
+      } else {
+        var x = await DatabaseX.getPaymentTransaction(
+            paymentTransactionId: paymentTransaction.id,
+        );
+        paymentTransaction.status = x.status;
       }
     }
 
-    if(fromCart==true){
-      /// for close cart screen
-     Get.back();
+    if (paymentTransaction.status != PaymentStatusStatusX.paid) {
+      throw ErrorX(
+          message:
+              'We apologize, but an error occurred while processing your payment. Please check your payment information and try again.');
+    }
+
+    if (fromCart == true) {
+      Get.back(); // Close cart screen
     }
     Get.offAndToNamed(
       RouteNameX.paymentSuccessful,
@@ -144,7 +184,8 @@ class GeneralPaymentController extends GetxController {
   onPay() async {
     if (isLoading.isFalse) {
       try {
-        if ((isViaCard.isTrue && preSavedPaymentCardsController.validate()) || isViaCard.isFalse) {
+        if ((isViaCard.isTrue && preSavedPaymentCardsController.validate()) ||
+            isViaCard.isFalse) {
           error.value = null;
           isLoading.value = true;
           buttonState.value = ButtonStateEX.loading;
@@ -168,7 +209,8 @@ class GeneralPaymentController extends GetxController {
                       year: int.parse(preSavedPaymentCardsController.date.text
                           .split(RegExp(r'(/)'))[1]),
                       cvv: int.parse(preSavedPaymentCardsController.cvv.text),
-                      isDefault: false,)
+                      isDefault: false,
+                    )
                   : null,
               isSavePaymentCard:
                   preSavedPaymentCardsController.paymentCardSelected.value ==
@@ -180,8 +222,10 @@ class GeneralPaymentController extends GetxController {
             form = PaymentTransactionFormX(
               price: totalCart ?? quickDonationAmount!,
               paymentMethod: PaymentMethodStatusX.bankTransfer,
-              bankAccountId: payByBankTransferController.bankAccountSelected.value!.id,
-              transferImageFile: File(payByBankTransferController.image.value!.path),
+              bankAccountId:
+                  payByBankTransferController.bankAccountSelected.value!.id,
+              transferImageFile:
+                  File(payByBankTransferController.image.value!.path),
             );
           }
           await sendPayToServer(form: form);

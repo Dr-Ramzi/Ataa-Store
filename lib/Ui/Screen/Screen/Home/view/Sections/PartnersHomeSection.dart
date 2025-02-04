@@ -11,6 +11,7 @@ class PartnersHomeSectionX extends StatelessWidget {
       padding: const EdgeInsets.only(
         left: StyleX.hPaddingApp,
         right: StyleX.hPaddingApp,
+        bottom: 20,
       ),
       header: const SectionTitleX(
         title: "Our Partners",

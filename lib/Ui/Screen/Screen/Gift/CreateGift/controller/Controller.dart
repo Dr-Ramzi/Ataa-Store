@@ -18,7 +18,7 @@ import '../../../../../../Data/Model/Gift/Subclass/giftCategory.dart';
 import '../../../../../../Data/Model/Gift/gift.dart';
 import '../../../../../../Data/data.dart';
 import '../../../../../../UI/Widget/widget.dart';
-import '../../../../../ScreenSheet/Other/PreviewDedicate/previewDedicateSheet.dart';
+import '../../../../../ScreenSheet/Other/PreviewGiftCard/previewGiftCardSheet.dart';
 
 class CreateGiftController extends GetxController {
   //============================================================================
@@ -27,8 +27,8 @@ class CreateGiftController extends GetxController {
   final AppControllerX app = Get.find();
   final CartGeneralControllerX basketController = Get.find();
   final CartGeneralControllerX cart = Get.find();
-  PreviewDedicateControllerX previewDedicateController =
-      Get.put(PreviewDedicateControllerX());
+  PreviewGiftCardControllerX previewGiftCardController =
+      Get.put(PreviewGiftCardControllerX());
 
   //============================================================================
   // Variables
@@ -333,16 +333,16 @@ class CreateGiftController extends GetxController {
       try {
         if (dataVerification(isPreview: true)) {
           isLoading.value = true;
-          previewDedicateController.nameFrom = donorNameForCard.value;
-          previewDedicateController.nameTo = recipientNameForCard.value;
-          previewDedicateController.amount = donationAmountForCard.value;
-          previewDedicateController.isShowAmount = isShowAmount.value;
-          previewDedicateController.orgName = orgSelected.value!.name;
-          previewDedicateController.color =
+          previewGiftCardController.nameFrom = donorNameForCard.value;
+          previewGiftCardController.nameTo = recipientNameForCard.value;
+          previewGiftCardController.amount = donationAmountForCard.value;
+          previewGiftCardController.isShowAmount = isShowAmount.value;
+          previewGiftCardController.orgName = orgSelected.value!.name;
+          previewGiftCardController.color =
               Color(int.parse("0xff${colors[colorSelectedIndex.value]}"));
-          previewDedicateController.giftCardFormByGender =
+          previewGiftCardController.giftCardFormByGender =
               giftCardFormByGenderSelected.value!;
-          await previewDedicateSheetX(controller: previewDedicateController);
+          await previewGiftCardSheetX(controller: previewGiftCardController);
         }
       } catch (error) {
         ToastX.error(message: error.toString());

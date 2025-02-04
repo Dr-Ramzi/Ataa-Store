@@ -33,7 +33,7 @@ class DBEndPointX {
 
   static final String getProfile = '${mainAPI}profile';
   static final String putUpdateProfile = '${mainAPI}profile';
-  static final String putUploadProfileImage = '${mainAPI}profile/image';
+  static final String postUploadProfileImage = '${mainAPI}profile/image';
   static final String deleteProfileImage = '${mainAPI}profile/image';
 
   //============================================================================
@@ -76,7 +76,7 @@ class DBEndPointX {
 
   static final String getAllGiftCategories = '${mainAPI}gift/categories';
   static final String getGiftCategoryDetails = '${mainAPI}gift/categories/{id}';
-  static final String getGiftMessageTemplate = '${mainAPI}portal-settings/notification-templates/gift';
+  static final String getGiftMessageTemplate = '${mainAPI}portal-settings/notification-templates/gift_card_donation_receiver';
   // ---  gift order ---
   static final String postCreateGiftOrder = '${mainAPI}gift/orders';
   static final String getAllMyGiftOrders = '${mainAPI}gift/orders';

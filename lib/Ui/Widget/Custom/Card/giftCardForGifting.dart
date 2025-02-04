@@ -109,17 +109,19 @@ class GiftCardForGiftX extends StatelessWidget {
                                     radius: 100,
                                     padding: EdgeInsets.symmetric(
                                       horizontal: 17 * scaleFactor,
-                                      vertical: 5.6 * scaleFactor,
                                     ),
-                                    child: TextX(
-                                      '${'To'.tr} / $nameTo',
-                                      style: TextStyleX.titleSmall.copyWith(
-                                        fontSize: 10 * scaleFactor,
-                                        fontWeight: FontWeight.w600,
+                                    child: Align(
+                                      alignment: AlignmentDirectional.centerStart,
+                                      child: TextX(
+                                        '${'To'.tr} / $nameTo',
+                                        style: TextStyleX.titleSmall.copyWith(
+                                          fontSize: 10 * scaleFactor,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        color: Colors.white,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
                                       ),
-                                      color: Colors.white,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
                                     ),
                                   ),
                                   SizedBox(height: 16 * scaleFactor),
@@ -186,17 +188,19 @@ class GiftCardForGiftX extends StatelessWidget {
                                     radius: 100,
                                     padding: EdgeInsets.symmetric(
                                       horizontal: 17 * scaleFactor,
-                                      vertical: 5.6 * scaleFactor,
                                     ),
-                                    child: TextX(
-                                      '${'In the field'.tr} / ${orgName??''}',
-                                      style: TextStyleX.titleSmall.copyWith(
-                                        fontSize: 10 * scaleFactor,
-                                        fontWeight: FontWeight.w600,
+                                    child: Align(
+                                      alignment: AlignmentDirectional.centerStart,
+                                      child: TextX(
+                                        orgName??'',
+                                        style: TextStyleX.titleSmall.copyWith(
+                                          fontSize: 10 * scaleFactor,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        color: color,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
                                       ),
-                                      color: color,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
                                     ),
                                   ),
                                   SizedBox(height: 14 * scaleFactor),

@@ -43,13 +43,13 @@ class StyleX{
   static const double borderWidth=1;
 
   /// Cards
-  static const double donationCardHeight=295;
+  static const double donationCardHeight=332;
   static const double donationCardWidthSM=340;
   static const double deductionCardHeight=288;
   static const double deductionCardWidthSM=340;
   static const double productCardHeight=310;
   static const double productCardWidth=200;
-  static const double organizationCardHeight=150;
+  static const double organizationCardHeight=160;
   static const double organizationCardWidth=140;
   static const double partnerCardHeight=120;
   static const double partnerCardWidth=170;

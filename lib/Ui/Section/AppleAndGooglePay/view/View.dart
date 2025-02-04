@@ -34,7 +34,8 @@ class AppleAndGooglePaySectionX extends StatelessWidget {
                     onTap: () => controller.onTapDisabledCallback?.call(),
                     child: AbsorbPointer(
                       absorbing: controller.isDisabled.value,
-                      child: ApplePayButton(
+                      child:
+                      ApplePayButton(
                         paymentConfiguration: controller.applePayConfig!,
                         paymentItems: controller.paymentItems.value,
                         style: ApplePayButtonStyle.black,

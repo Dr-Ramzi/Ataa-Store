@@ -14,7 +14,7 @@ class HomeElementX {
     required this.name,
     this.nameLocalized,
     required this.order,
-    this.isActive = true,
+    this.isActive = false,
   });
 
   factory HomeElementX.fromJson(Map<String, dynamic> json) {

@@ -25,8 +25,7 @@ class PreviewGiftController extends GetxController {
   // Functions
 
   Future<void> getData() async {
-    giftCategory =
-        await DatabaseX.getGiftCategoryDetails(id: giftOrder.giftCategory.id);
+    giftCategory = await DatabaseX.getGiftCategoryDetails(id: giftOrder.giftCategory.id);
     if (giftCategory.donationCategories
             .firstWhereOrNull((x) => x.id == giftOrder.organizationId) !=
         null) {

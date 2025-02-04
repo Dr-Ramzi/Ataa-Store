@@ -24,7 +24,20 @@ class DynamicPageView extends GetView<DynamicPageController> {
         child: ContainerX(
           padding: const EdgeInsets.all(16),
           child: HtmlWidget(
-            buildAsync: true,
+            buildAsync: true,Get.isDarkMode
+              ? controller.page.contentHTML.replaceAllMapped(
+              RegExp(r'color:\s*(rgb\(0,\s*0,\s*0\)|#000000|black|rgb\(255,\s*255,\s*255\)|#ffffff|white)', caseSensitive: false),
+                  (match) {
+                const colorMap = {
+                  'rgb(0, 0, 0)': 'rgb(255, 255, 255)',
+                  '#000000': '#ffffff',
+                  'black': 'white',
+                  'rgb(255, 255, 255)': 'rgb(0, 0, 0)',
+                  '#ffffff': '#000000',
+                  'white': 'black',
+                };
+                return 'color: ${colorMap[match.group(1)?.toLowerCase()] ?? match.group(1)}';
+              }):
             controller.page.contentHTML,
             customWidgetBuilder: (element) {
               if(element.localName == 'img'){

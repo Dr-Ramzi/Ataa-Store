@@ -1,10 +1,11 @@
 import 'dart:io';
 
 import 'package:ataa/Core/Error/error.dart';
-import 'package:ataa/Data/data.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pay/pay.dart';
+
+import '../../../../Data/data.dart';
 
 class AppleAndGooglePayController extends GetxController {
   //============================================================================
@@ -16,7 +17,7 @@ class AppleAndGooglePayController extends GetxController {
   Function? onTapDisabledCallback;
   PaymentConfiguration? applePayConfig;
   PaymentConfiguration? googlePayConfig;
-  Rx<String?> token = Rx<String?>(null);
+  Rx<String> token = Rx<String>('');
   Rx<List<PaymentItem>> paymentItems = Rx<List<PaymentItem>>([]);
   Rx<ErrorX?> error = Rx<ErrorX?>(null);
   RxBool initError = false.obs;
@@ -25,14 +26,21 @@ class AppleAndGooglePayController extends GetxController {
   Function? onCancelCallback;
   Function(String token)? onPayDoneCallback;
 
+  String description = '';
+  double amount = 1;
   //============================================================================
   // Functions
 
-  createPaymentItems(String title,double total) {
+  createPaymentItems([String? desc,double? price]) {
+    if(price!=null && price>=1) {
+      amount=price;
+    }
+    description=desc??description;
+
     paymentItems.value = [
       PaymentItem(
-        label:  title.tr,
-        amount: total.toString(),
+        label: description.tr,
+        amount: amount.toString(),
         status: PaymentItemStatus.final_price,
       ),
     ];
@@ -52,6 +60,7 @@ class AppleAndGooglePayController extends GetxController {
     this.error.value = null;
     if (error is PlatformException && error.code != 'paymentCanceled') {
       this.error.value = error.toErrorX;
+      error.toErrorX.log();
       if (onErrorCallback != null) {
         onErrorCallback!(error);
       }
@@ -61,16 +70,17 @@ class AppleAndGooglePayController extends GetxController {
 
   void onCancel() {
     isLoading.value = false;
-      onCancelCallback?.call();
+    onCancelCallback?.call();
   }
 
-
-  Future<void> init({required String title,required double total}) async {
-    isLoading.value=true;
+  Future<void> init({required String title, required double total}) async {
+    isLoading.value = true;
     error.value = null;
-    initError.value=false;
+    initError.value = false;
     try {
-      createPaymentItems(title,total);
+      description= title;
+      amount = total>=1?total:1;
+      createPaymentItems();
       applePayConfig = await PaymentConfiguration.fromAsset(
         'paymentConfiguration/apple_pay_config.json',
       );
@@ -79,32 +89,35 @@ class AppleAndGooglePayController extends GetxController {
       );
     } catch (e) {
       error.value = e.toErrorX;
+      e.toErrorX.log();
     }
-    if((Platform.isIOS && applePayConfig==null) ||  (Platform.isAndroid && googlePayConfig==null)){
-      initError.value=true;
+    if ((Platform.isIOS && applePayConfig == null) ||
+        (Platform.isAndroid && googlePayConfig == null)) {
+      initError.value = true;
     }
-    isLoading.value=false;
+    isLoading.value = false;
   }
 
   void onApplePayResult(paymentResult)async {
     try {
       isDone.value=true;
       paymentItems.value=[];
-      token.value = paymentResult[NameX.token].toString();
-      await onPayDoneCallback?.call(token.value??'');
+      token.value = (paymentResult[NameX.appleToken]??'').toString();
+      await onPayDoneCallback?.call(token.value);
       isLoading.value=false;
     } catch (e) {
       error.value = e.toErrorX;
     }
   }
 
-  void onGooglePayResult(paymentResult) async{
+  void onGooglePayResult(paymentResult) async {
     try {
-      isDone.value=true;
-      paymentItems.value=[];
-      token.value = paymentResult['paymentMethodData']['tokenizationData']['token'].toString();
-      await onPayDoneCallback?.call(token.value??'');
-      isLoading.value=false;
+      isDone.value = true;
+      paymentItems.value = [];
+      token.value = (paymentResult['paymentMethodData']['tokenizationData']['token'] ??'')
+          .toString();
+      await onPayDoneCallback?.call(token.value);
+      isLoading.value = false;
     } catch (e) {
       error.value = e.toErrorX;
     }

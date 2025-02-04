@@ -71,7 +71,6 @@ class HomeController extends GetxController {
     try {
       var result = await DatabaseX.getAllDonations(
         isHome: true,
-        isZakat: false,
         perPage: data.perPage,
         page: data.page,
       );
@@ -110,7 +109,7 @@ class HomeController extends GetxController {
       );
       isHasErrorInDeductions.value = false;
       deductions += result;
-      return result;
+      return result.take(3).toList();
     } catch (e) {
       isHasErrorInDeductions.value = deductions.isNotEmpty;
       return Future.error(e);
@@ -248,7 +247,7 @@ class HomeController extends GetxController {
     });
 
     // إنشاء قائمة الـ Widgets بناءً على الأقسام المصنفة
-    return activeSections.map((section) {
+    var x = activeSections.map((section) {
       switch (section.name) {
         /// TODO: Show >>> Store on home
         case NameX.donationOpportunities:
@@ -269,6 +268,7 @@ class HomeController extends GetxController {
           return const SizedBox(); // عنصر فارغ إذا كان غير معرّف
       }
     }).toList();
+    return x;
   }
 
   //----------------------------------------------------------------------------

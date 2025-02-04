@@ -218,8 +218,8 @@ class DatabaseX {
   static Future<String?> uploadProfileImage({
     required File image,
   }) async {
-    var data = await RemoteDataSourceX.putFiles(
-      DBEndPointX.deleteProfileImage,
+    var data = await RemoteDataSourceX.postFiles(
+      DBEndPointX.postUploadProfileImage,
       {NameX.imageFile: image},
       param: DataSourceParamX(authToken: LocalDataX.token),
     );
@@ -927,8 +927,8 @@ class DatabaseX {
     int perPage = 20,
   }) async {
     Map<String, dynamic>? filterParams = {
-      NameX.isShowHome: isHome.toIntNullableX,
-      NameX.isZakat: isZakat.toIntNullableX,
+      if(isHome!=null)NameX.isShowHome: isHome.toIntNullableX,
+      if(isZakat!=null)NameX.isZakat: isZakat.toIntNullableX,
       NameX.donationCategoryId: categoryID,
     };
     var data = await RemoteDataSourceX.get(
@@ -961,7 +961,7 @@ class DatabaseX {
       return await getAllDonations(isZakat: isZakat,categoryID: categoryID,page: page,perPage: perPage);
     }else{
       Map<String, dynamic>? filterParams = {
-        NameX.isZakat: isZakat.toIntNullableX,
+        if(isZakat!=null)NameX.isZakat: isZakat.toIntNullableX,
         NameX.donationCategoryId: categoryID,
         NameX.sortType: sortType,
       };
@@ -1512,7 +1512,7 @@ class DatabaseX {
   // My Records
 
   static Future<List<PaymentTransactionItemX<T>>>
-      getAllMyRecords<T extends OrderX>({
+  getAllMyRecords<T extends OrderX>({
     required ModelTypeStatusX type,
     required T Function(Map<String, dynamic>) orderModelFromJson,
     bool isAllWithoutPaginated = false,
@@ -1526,7 +1526,7 @@ class DatabaseX {
           : DBEndPointX.getAllPaymentTransactionItemByModelTypeWithoutPaginated,
       param: DataSourceParamX(
         localCacheKey:
-            'all_my_records_by_model_type_${type.name}_$isAllWithoutPaginated',
+        'all_my_records_by_model_type_${type.name}_$isAllWithoutPaginated',
         localCacheMaxAge: const Duration(days: 3),
         authToken: LocalDataX.token,
         filterParams: {
@@ -1539,8 +1539,24 @@ class DatabaseX {
     );
     return ModelUtilX.generateItems<PaymentTransactionItemX<T>>(
       data.$1[NameX.data],
-      (Map<String, dynamic> json) =>
-          PaymentTransactionItemX<T>.fromJson(json, orderModelFromJson),
+          (Map<String, dynamic> json) =>
+      PaymentTransactionItemX<T>.fromJson(json, orderModelFromJson),
     );
+  }
+
+  static Future<PaymentTransactionX>
+  getPaymentTransaction<T extends OrderX>({
+    required String paymentTransactionId,
+  }) async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getPaymentTransactionDetails,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        pathParams: {
+        NameX.id: paymentTransactionId,
+      },
+      ),
+    );
+    return PaymentTransactionX.fromJson(data.$1[NameX.data]);
   }
 }

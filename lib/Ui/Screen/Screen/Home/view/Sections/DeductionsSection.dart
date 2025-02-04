@@ -14,6 +14,7 @@ class DeductionsSectionX extends GetView<HomeController> {
     return ScrollRefreshLoadMoreX<DeductionX>(
       fetchData: controller.getDeductions,
       scrollDirection: Axis.horizontal,
+      isGetMoreEnabled: false,
       padding: const EdgeInsets.only(
         left: StyleX.hPaddingApp,
         right: StyleX.hPaddingApp,

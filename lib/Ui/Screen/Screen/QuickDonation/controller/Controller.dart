@@ -88,8 +88,7 @@ class QuickDonationController extends GetxController {
     donationAmount.text = val.toString();
     freeDonationSelected.value = val;
     appleAndGooglePayController.isDisabled.value = !isDataVerification();
-    appleAndGooglePayController.createPaymentItems(
-        'quick donation', freeDonationSelected.value + 0.0);
+    appleAndGooglePayController.createPaymentItems('quick donation', freeDonationSelected.value + 0.0);
   }
 
   removeFreeDonationSelected(String val) {

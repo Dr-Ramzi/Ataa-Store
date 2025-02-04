@@ -21,16 +21,18 @@ class OrganizationCardX extends StatelessWidget {
               fit: BoxFit.contain,
             ),
             const SizedBox(height: 14),
-            Flexible(
-              child: AutoSizeText(
-                org.name,
-                style: TextStyleX.titleSmall.copyWith(fontWeight: FontWeight.w600),
-                minFontSize: 12,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
+            Expanded(
+              child: Center(
+                child: AutoSizeText(
+                  org.name,
+                  style: TextStyleX.titleSmall.copyWith(fontWeight: FontWeight.w600),
+                  maxLines: 2,
+                  minFontSize: 8,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),
