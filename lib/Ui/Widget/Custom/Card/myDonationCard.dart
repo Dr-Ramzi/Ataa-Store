@@ -5,12 +5,12 @@ class MyDonationCardX extends StatelessWidget {
     super.key,
     required this.myDonation,
   });
-  final PaymentTransactionItemX<DonationOrderX> myDonation;
+  final PaymentTransactionItemX myDonation;
 
   @override
   Widget build(BuildContext context) {
     return AccordionX(
-      title: myDonation.name,
+      title: '${myDonation.type.name.tr} - ${myDonation.name}',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

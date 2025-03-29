@@ -21,7 +21,7 @@ class FilterByLanguageControllerX extends GetxController {
     try {
       /// TODO: Database >>> Fetch available countries in the filtering process
       await Future.delayed(const Duration(seconds: 1)); // delete this
-      options = ["All", ...TestDataX.language];
+      // options = ["All", ...TestDataX.language];
     } catch (e) {
       return Future.error(e);
     }

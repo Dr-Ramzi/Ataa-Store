@@ -61,6 +61,7 @@ class RouteNameX {
   static const String allCampaigns = '/allCampaigns';
   static const String createCampaign = '/createCampaign';
   static const String campaignDetails = '/campaignDetails';
+  static const String myCampaignDetails = '/myCampaignDetails';
 
   /// Donations
   static const String donationDetails = '/donationDetails';

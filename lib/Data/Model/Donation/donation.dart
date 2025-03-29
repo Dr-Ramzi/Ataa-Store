@@ -26,9 +26,6 @@ class DonationX {
   final List<DonationOpenPackageX> openPackages;
   final List<DonationDeductionPackageX> donationDeductionPackages;
 
-  /// TODO: Add share Url on from json of donation
-  final String shareURL;
-
   DonationX({
     required this.id,
     required this.donationBasic,
@@ -42,9 +39,6 @@ class DonationX {
     this.sharesPackages = const [],
     required this.openPackages,
     required this.donationDeductionPackages,
-
-    /// TODO: Add share Url on from json of donation
-    this.shareURL = "",
   });
 
   factory DonationX.fromJson(Map<String, dynamic> json) {
@@ -95,9 +89,6 @@ class DonationX {
           sharesPackages: donationSharesPackagesJsonList.map((json) => DonationSharesPackageX.fromJson(json)).toList(),
           donationDeductionPackages: donationDeductionPackagesJsonList.map((json) => DonationDeductionPackageX.fromJson(json)).toList(),
           openPackages: donationOpenPackagesJsonList.map((json) => DonationOpenPackageX.fromJson(json)).toList(),
-
-          /// TODO: Add share Url on from json of donation
-          // shareURL: json[NameX.]??'',
         ),
       );
   }
@@ -122,9 +113,6 @@ class DonationX {
         NameX.donationOpenPackages:
             openPackages.map((package) => package.toJson()).toList(),
       },
-
-      /// TODO: Add share Url on from json of donation
-      // NameX.shareURL: shareURL,
     };
   }
 }

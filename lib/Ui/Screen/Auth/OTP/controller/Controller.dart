@@ -29,7 +29,8 @@ class OTPController extends GetxController with CodeAutoFill {
   Rx<ButtonStateEX> buttonState = ButtonStateEX.normal.obs;
 
   /// if open OTP from sheet then get OTP object from view screen parameters
-  late OtpX otp = Get.arguments is Map?Get.arguments[NameX.otp]:OtpX.empty();
+  late OtpX otp =
+      Get.arguments is Map ? Get.arguments[NameX.otp] : OtpX.empty();
 
   AutovalidateMode autoValidate = AutovalidateMode.disabled;
   TextEditingController otpCode = TextEditingController();
@@ -50,7 +51,7 @@ class OTPController extends GetxController with CodeAutoFill {
   String getTitle() {
     if (otp.isPhone) {
       return "Confirm mobile number";
-    } else if (!otp.isLogin && !otp.isEdit) {
+    } else if (otp.isEdit) {
       return "Email confirmation";
     }
     return "OTP";
@@ -89,19 +90,11 @@ class OTPController extends GetxController with CodeAutoFill {
         error.value = null;
         try {
           if (otp.isEdit) {
-            if (otp.isPhone) {
-              /// Update Profile => Otp By Phone
-              app.user.value = await DatabaseX.otpUpdateProfile(
-                otp: int.parse(otpCode.text),
-              );
-            }else{
-              /// Update Profile => Otp By Email
-              /// TODO: Database >>> change api end point on verify otp code for update profile via email
-              app.user.value = await DatabaseX.otpUpdateProfile(
-                otp: int.parse(otpCode.text),
-              );
-            }
-          }if(otp.isPhone){
+            /// Update Profile
+            app.user.value = await DatabaseX.otpUpdateProfile(
+              otp: int.parse(otpCode.text),
+            );
+          } else if (otp.isPhone) {
             /// Login & Sign up => Otp By Phone
             app.user.value = await DatabaseX.otpByPhone(
               otp: int.parse(otpCode.text),
@@ -129,13 +122,12 @@ class OTPController extends GetxController with CodeAutoFill {
             LocalDataX.put(LocalKeyX.route, RouteNameX.root);
             app.isLogin.value = true;
 
-            try{
+            try {
               await cart.assignCart(app.user.value!.token);
-            }catch(_){}
-            try{
+            } catch (_) {}
+            try {
               await cart.getData();
-            }catch(_){}
-
+            } catch (_) {}
 
             /// The time delay here is aesthetically beneficial
             buttonState.value = ButtonStateEX.success;
@@ -198,14 +190,9 @@ class OTPController extends GetxController with CodeAutoFill {
   /// use api from backend to send code otp
   sendCode() async {
     try {
-      if(otp.isEdit){
-        if (otp.isPhone) {
-          return await DatabaseX.resendOtpUpdateProfile();
-        } else {
-          /// TODO: Database >>> change api end point on resend otp code for update profile by email
-          return await DatabaseX.resendOtpUpdateProfile();
-        }
-      }else if (otp.isLogin) {
+      if (otp.isEdit) {
+        return await DatabaseX.resendOtpUpdateProfile();
+      } else if (otp.isLogin) {
         if (otp.isPhone) {
           return await DatabaseX.loginByPhone(
             phone: otp.phone!,
@@ -227,7 +214,7 @@ class OTPController extends GetxController with CodeAutoFill {
         }
       }
     } catch (e) {
-      error.value = e.toErrorX;
+      rethrow;
     }
   }
 

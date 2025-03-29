@@ -4,43 +4,50 @@ part of '../core.dart';
 /// Manage sharing with other applications
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-class ShareX{
-  static Future<String?> share({required ShareOn share,required String msg,required String url}) async {
+enum ShareOn { facebook, twitter, whatsapp, telegram, shareSystem }
+
+class ShareX {
+  static Future<String?> share({required ShareOn share, required String msg, required String url}) async {
     try {
       String? response;
-      // final FlutterShareMe flutterShareMe = FlutterShareMe();
+      final fullMessage = "$msg\n$url";
+
       switch (share) {
         case ShareOn.facebook:
-          try {
-            await launchUrl(Uri.parse("https://www.facebook.com/sharer/sharer.php?u=${Uri.encodeComponent(url)}&t=$msg"));
-          } catch (_) {}
-          // response = await flutterShareMe.shareToFacebook(url: url, msg: msg);
+          response = await _launchUrl("https://www.facebook.com/sharer/sharer.php?u=$url");
           break;
+
         case ShareOn.twitter:
-          // response = await flutterShareMe.shareToTwitter(url: url, msg: msg);
+          response = await _launchUrl("https://twitter.com/intent/tweet?text=${Uri.encodeComponent(fullMessage)}");
           break;
+
         case ShareOn.whatsapp:
-          // response = await flutterShareMe.shareToWhatsApp(msg: msg);
+          response = await _launchUrl("https://wa.me/?text=${Uri.encodeComponent(fullMessage)}");
           break;
-        case ShareOn.shareSystem:
-          // response = await flutterShareMe.shareToSystem(msg: msg);
-          break;
+
         case ShareOn.telegram:
-          // response = await flutterShareMe.shareToTelegram(msg: msg);
+          response = await _launchUrl("https://t.me/share/url?url=${Uri.encodeComponent(url)}&text=${Uri.encodeComponent(msg)}");
+          break;
+
+        case ShareOn.shareSystem:
+          await Share.share(fullMessage);
+          response = "Shared successfully";
           break;
       }
+
       return response;
     } catch (e) {
       return Future.error(e);
     }
   }
-}
 
-/// Sharing Platform
-enum ShareOn {
-  facebook,
-  twitter,
-  whatsapp,
-  telegram,
-  shareSystem,
+  static Future<String> _launchUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+      return "Opened successfully";
+    } else {
+      return Future.error("Could not launch $url");
+    }
+  }
 }

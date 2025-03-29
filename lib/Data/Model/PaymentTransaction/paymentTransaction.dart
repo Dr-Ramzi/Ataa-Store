@@ -77,7 +77,6 @@ class PaymentTransactionX {
          NameX.id,
          NameX.code,
          NameX.paymentMethod,
-         NameX.paymentData,
          NameX.status,
        ],
      );

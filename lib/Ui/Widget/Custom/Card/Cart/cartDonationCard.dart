@@ -6,9 +6,11 @@ class CartDonationCardX extends StatefulWidget {
     required this.onDelete,
     required this.cartItem,
     required this.onUpdate,
+    this.isCampaign = false,
     required this.minimumDonationAmount,
   });
   final CartItemX cartItem;
+  final bool isCampaign;
   final int minimumDonationAmount;
   final Function(CartItemX item) onDelete;
   final Function(
@@ -110,7 +112,7 @@ class _CartDonationCardXState extends State<CartDonationCardX> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TextX(
-                        cartItem.name,
+                        widget.isCampaign?'${'Campaign'.tr} - ${cartItem.name}':cartItem.name,
                         maxLines: 2,
                       ),
                       const SizedBox(height: 9),

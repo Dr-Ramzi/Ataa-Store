@@ -5,7 +5,8 @@ class AdCardX extends StatefulWidget {
       {super.key,
       required this.ad,
       required this.onTap,
-      required this.onTapButton});
+      required this.onTapButton,
+      });
   final AdsX ad;
   final Function(AdsX) onTap;
   final Function(AdsX) onTapButton;

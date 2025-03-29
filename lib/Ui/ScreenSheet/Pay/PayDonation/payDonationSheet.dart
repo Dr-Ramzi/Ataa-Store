@@ -32,6 +32,7 @@ payDonationSheet(
     tag: donation.id,
   )
     ..donation = donation
+    ..campaign = campaign
     ..isSheet = true;
   controller.init();
 
@@ -39,7 +40,7 @@ payDonationSheet(
   // Content
 
   return bottomSheetX(
-    title: "Donate to the project",
+    title: campaign!=null?"Donate to the campaign":"Donate to the project",
     child: Obx(
       () {
         /// Main Content

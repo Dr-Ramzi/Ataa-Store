@@ -9,7 +9,7 @@ class DeductionHistoryControllerX extends GetxController {
   //============================================================================
   // Variables
 
-  late PaymentTransactionItemX<DeductionOrderX> myDeduction;
+  late DeductionOrderX myDeduction;
   List<PaymentTransactionItemX<DeductionOrderX>> history = [];
 
   //============================================================================
@@ -25,7 +25,7 @@ class DeductionHistoryControllerX extends GetxController {
       type: ModelTypeStatusX.deduction,
       orderModelFromJson: DeductionOrderX.fromJson,
       isAllWithoutPaginated: true,
-      byModelId:myDeduction.orderModel.modelId,
+      byModelId:myDeduction.modelId,
     );
   }
 }

@@ -19,7 +19,7 @@ class TestimonialsSectionX extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       isHideHeaderIfError: true,
       isHideHeaderIfEmpty: true,
-      isHideHeaderIfInitLoading: false,
+      isHideHeaderIfLoading: false,
       isHeaderPadding: false,
       isHideEmpty: true,
       header: header,

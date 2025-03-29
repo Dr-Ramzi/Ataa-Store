@@ -107,10 +107,6 @@ class CreditCardUtilsX {
     } else if (input.startsWith(RegExp(r'(352[89]|35[3-8][0-9])'))) {
       cardType = CreditCardTypeEX.jcb;
     }
-    // else if () {
-    /// TODO: Algorithm >>> Add regExp to Mada payment card
-    //   cardType = CreditCardType.Mada;
-    // }
     else if (input.length <= 8) {
       cardType = CreditCardTypeEX.others;
     } else {

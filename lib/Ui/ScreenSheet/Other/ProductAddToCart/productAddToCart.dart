@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../Config/config.dart';
 import '../../../../Data/data.dart';
-import '../../../Screen/Screen/Store/ProductDetails/controller/Controller.dart';
+import '../../../Screen/Store/ProductDetails/controller/Controller.dart';
 import '../../../Widget/widget.dart';
 
 // ~~~~~~~~~~~~~~~~~~~~~~~{{ Why this bottom sheet }}~~~~~~~~~~~~~~~~~~~~~~~~~~~

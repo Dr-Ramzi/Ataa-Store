@@ -6,12 +6,14 @@ class DonationCardX extends StatelessWidget {
     required this.donation,
     this.isSmallCard = false,
     required this.onDonation,
+    this.onTap,
     required this.onAddToCart,
     required this.doneImageUrl,
   });
   final bool isSmallCard;
   final DonationX donation;
   final String? doneImageUrl;
+  final Function()? onTap;
   final Function(DonationX donation) onDonation;
   final Function(DonationX id) onAddToCart;
 
@@ -27,8 +29,11 @@ class DonationCardX extends StatelessWidget {
       width: isSmallCard ? StyleX.donationCardWidthSM : double.maxFinite,
       height: isSmallCard ? StyleX.donationCardHeight : null,
       child: GestureDetector(
-        onTap: () {
-          Get.toNamed(RouteNameX.donationDetails, arguments: donation.donationBasic.code);
+        onTap: onTap?.call??() {
+          Get.toNamed(
+            RouteNameX.donationDetails,
+            arguments: donation.donationBasic.code,
+          );
         },
         child: Container(
           color: Colors.transparent,
@@ -47,11 +52,11 @@ class DonationCardX extends StatelessWidget {
                         child: ImageNetworkX(
                           height: 170,
                           width: double.maxFinite,
-                          imageUrl: donation.donationDetails.imageUrl??'',
+                          imageUrl: donation.donationDetails.imageUrl ?? '',
                         ),
                       ),
 
-                      if(donation.donationBasic.isDone)
+                      if (donation.donationBasic.isDone)
                         Positioned.fill(
                           child: ImageNetworkX(
                             imageUrl: doneImageUrl ?? ImageX.doneDonation,
@@ -71,7 +76,7 @@ class DonationCardX extends StatelessWidget {
                         ),
 
                       /// Value Share
-                      if (donation.donationShares!=null)
+                      if (donation.donationShares != null)
                         Positioned.directional(
                           textDirection: Directionality.of(context),
                           start: 0,
@@ -95,24 +100,28 @@ class DonationCardX extends StatelessWidget {
                           ),
                         ),
 
-                      /// TODO: تشغيل زر المشاركة
                       /// Share Button
-                      // Positioned.directional(
-                      //   end: 10,
-                      //   top: 10,
-                      //   textDirection: Directionality.of(context),
-                      //   child: InkResponse(
-                      //     onTap: () async =>
-                      //     await shareSheet(donation.shareURL),
-                      //     child: const ContainerX(
-                      //       padding: EdgeInsets.symmetric(
-                      //         horizontal: 12,
-                      //         vertical: 8,
-                      //       ),
-                      //       child: Icon(Icons.share_rounded),
-                      //     ),
-                      //   ),
-                      // ),
+                      Positioned.directional(
+                        end: 10,
+                        top: 10,
+                        textDirection: Directionality.of(context),
+                        child: InkResponse(
+                          onTap: () async {
+                            await shareSheet(
+                              id: donation.id,
+                              code: donation.donationBasic.code,
+                              type: LinkableTypeStatusX.donation,
+                            );
+                          },
+                          child: const ContainerX(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                            child: Icon(Icons.share_rounded),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 4),
@@ -135,34 +144,39 @@ class DonationCardX extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
 
-                        if (donation.donationSettings.isShowCompletionIndicator && donation.donationSettings.isShowDonationsPercentage)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            TextX(
-                              "${"Collected".tr} ${FunctionX.formatLargeNumber(donation.donationBasic.currentDonations)} ${"SAR".tr}",
-                              color: Theme.of(context).primaryColor,
-                            ),
-                            const SizedBox(width: 8),
-                            TextX(
-                              "${"Remaining".tr} ${FunctionX.formatLargeNumber(donation.donationBasic.remainingDonations)} ${"SAR".tr}",
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                          ],
-                        ),
-                        if (donation.donationSettings.isShowCompletionIndicator && !donation.donationSettings.isShowDonationsPercentage)
+                        if (donation
+                                .donationSettings.isShowCompletionIndicator &&
+                            donation.donationSettings.isShowDonationsPercentage)
                           TextX(
                             "${"Collected".tr} ${donation.donationBasic.completionRate % 1 == 0 ? donation.donationBasic.completionRate.toInt().toString() : donation.donationBasic.completionRate.toStringAsFixed(2)}%",
                             color: Theme.of(context).primaryColor,
                           ),
+                        if (donation
+                                .donationSettings.isShowCompletionIndicator &&
+                            !donation
+                                .donationSettings.isShowDonationsPercentage)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextX(
+                                "${"Collected".tr} ${FunctionX.formatLargeNumber(donation.donationBasic.currentDonations)} ${"SAR".tr}",
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              const SizedBox(width: 8),
+                              TextX(
+                                "${"Remaining".tr} ${FunctionX.formatLargeNumber(donation.donationBasic.remainingDonations)} ${"SAR".tr}",
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                            ],
+                          ),
                         if (donation.donationSettings.isShowCompletionIndicator)
-                        const SizedBox(height: 8),
+                          const SizedBox(height: 8),
 
                         /// Completion Indicator Line
                         if (donation.donationSettings.isShowCompletionIndicator)
                           LinearProgressIndicator(
-                            value:
-                            donation.donationBasic.currentDonations / donation.donationBasic.totalDonations,
+                            value: donation.donationBasic.currentDonations /
+                                donation.donationBasic.totalDonations,
                             borderRadius: BorderRadius.circular(50),
                             minHeight: 10,
                           ).marginOnly(top: 2, bottom: 8),

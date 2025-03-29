@@ -8,7 +8,7 @@ class MyDeductionCardX extends StatelessWidget {
     required this.onTransactionHistory,
     required this.buttonState,
   });
-  final PaymentTransactionItemX<DeductionOrderX> myDeduction;
+  final DeductionOrderX myDeduction;
   final ButtonStateEX buttonState;
   final Function() onUnsubscribe;
   final Function() onTransactionHistory;
@@ -25,7 +25,7 @@ class MyDeductionCardX extends StatelessWidget {
             children: [
               Expanded(
                 child: TextX(
-                  myDeduction.name,
+                  myDeduction.deduction.name,
                   style: TextStyleX.titleLarge,
                   fontWeight: FontWeight.w700,
                   overflow: TextOverflow.ellipsis,
@@ -37,19 +37,19 @@ class MyDeductionCardX extends StatelessWidget {
                 radius: StyleX.radiusSm,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                color: myDeduction.orderModel.deduction.status
-                    ? myDeduction.orderModel.status
+                color: myDeduction.deduction.status
+                    ? myDeduction.status
                         ? (context.isDarkMode?ColorX.green.shade200:ColorX.green.shade100)
                         : (context.isDarkMode?ColorX.red.shade200:ColorX.red.shade100)
                     : Theme.of(context).dividerColor,
                 child: TextX(
-                  myDeduction.orderModel.deduction.status
-                      ? myDeduction.orderModel.status
+                  myDeduction.deduction.status
+                      ? myDeduction.status
                           ? 'Active'
                           : 'Disabled'
                       : 'Expired',
-                  color: myDeduction.orderModel.deduction.status
-                      ? myDeduction.orderModel.status
+                  color: myDeduction.deduction.status
+                      ? myDeduction.status
                           ? ColorX.green.shade800
                           : ColorX.red.shade800
                       : null,
@@ -59,33 +59,32 @@ class MyDeductionCardX extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           TextX(
-            "${FunctionX.formatLargeNumber(myDeduction.price)} ${"SAR".tr} / ${myDeduction.orderModel.deduction.recurringLocalized ?? myDeduction.orderModel.deduction.recurring.name.tr}",
+            "${FunctionX.formatLargeNumber(myDeduction.price)} ${"SAR".tr} / ${myDeduction.deduction.recurringLocalized ?? myDeduction.deduction.recurring.name.tr}",
             fontWeight: FontWeight.w600,
           ),
           const SizedBox(height: 10),
           TextX(
-            '${'Next discount in'.tr} ${intl.DateFormat('yyyy/MM/dd').format(myDeduction.orderModel.nextSubscriptionDiscountDate)}',
+            '${'Next discount in'.tr} ${intl.DateFormat('yyyy/MM/dd').format(myDeduction.nextSubscriptionDiscountDate)}',
             style: TextStyleX.supTitleLarge,
           ),
           const SizedBox(height: 16),
           Row(
             children: [
               ImageNetworkX(
-                imageUrl: myDeduction
-                        .paymentTransaction.paymentTransactionCard?.iconUrl ??
+                imageUrl: myDeduction.paymentTransactionCard?.iconUrl ??
                     '',
                 height: 26,
                 width: 26,
               ),
               TextX(
-                myDeduction.paymentTransaction.paymentTransactionCard
+                myDeduction.paymentTransactionCard
                         ?.paymentCardCompany ??
                     '',
               ).marginSymmetric(horizontal: 8),
               Directionality(
                 textDirection: TextDirection.ltr,
                 child: TextX(
-                  "****${myDeduction.paymentTransaction.paymentTransactionCard?.lastFourDigits}",
+                  "****${myDeduction.paymentTransactionCard?.lastFourDigits}",
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -105,10 +104,10 @@ class MyDeductionCardX extends StatelessWidget {
               const SizedBox(width: 8),
               Flexible(
                 child: AbsorbPointer(
-                  absorbing: !(myDeduction.orderModel.deduction.status && myDeduction.orderModel.status),
+                  absorbing: !(myDeduction.deduction.status && myDeduction.status),
                   child: Opacity(
-                    opacity: myDeduction.orderModel.deduction.status && myDeduction.orderModel.status?1: context.isDarkMode?0.55:0.4,
-                    child: myDeduction.orderModel.deduction.status?ButtonStateX.dangerous(
+                    opacity: myDeduction.deduction.status && myDeduction.status?1: context.isDarkMode?0.55:0.4,
+                    child: myDeduction.deduction.status?ButtonStateX.dangerous(
                       state: buttonState,
                       text: "Unsubscribe",
                       onTap: onUnsubscribe,

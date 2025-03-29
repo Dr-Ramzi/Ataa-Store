@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../../Config/config.dart';
 import '../../../../Core/Controller/Other/shareController.dart';
 import '../../../../Core/core.dart';
+import '../../../../Data/Enum/linkable_type_status.dart';
 import '../../../GeneralState/error.dart';
 import '../../../Widget/widget.dart';
 
@@ -12,11 +13,14 @@ import '../../../Widget/widget.dart';
 /// with the ability to copy the link and create a link for the user
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-shareSheet(String shareUrl) async {
+shareSheet({required String id,required int code,required LinkableTypeStatusX type,}) async {
   //============================================================================
   // Injection of required controls
 
   final ShaeControllerX controller = Get.put(ShaeControllerX());
+  controller.id=id;
+  controller.code=code;
+  controller.type=type;
 
   //============================================================================
   // Content
@@ -24,7 +28,7 @@ shareSheet(String shareUrl) async {
   return bottomSheetX(
     title: "Share the link",
     child: FutureBuilder(
-      future: controller.shareLink(shareUrl),
+      future: controller.shareLink(),
       builder: (context, snapshot) {
         /// Loading State
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -98,7 +102,7 @@ shareSheet(String shareUrl) async {
                     Flexible(
                       flex: 3,
                       child: ButtonX.gray(
-                        onTap: () async => ClipboardX.copy(shareUrl),
+                        onTap: () async => ClipboardX.copy(controller.shareUrl),
                         text: "Copy",
                         iconData: IconX.copy,
                         colorText: Theme.of(context).iconTheme.color,
@@ -116,8 +120,9 @@ shareSheet(String shareUrl) async {
                             ? ColorX.grey.shade900
                             : ColorX.grey.shade50,
                         child: TextX(
-                          shareUrl,
+                          controller.shareUrl,
                           maxLines: 1,
+                          textDirection:TextDirection.ltr,
                           style: TextStyleX.titleSmall,
                           color: Theme.of(context).colorScheme.secondary,
                         ),

@@ -11,7 +11,7 @@ class MiniShareLinkX {
   final String linkableType;
   final String title;
   final String status;
-  // final String affiliateLink;
+  final String affiliateLink;
 
   MiniShareLinkX({
     required this.id,
@@ -22,13 +22,14 @@ class MiniShareLinkX {
     required this.linkableType,
     required this.title,
     required this.status,
+    required this.affiliateLink,
   });
 
   factory MiniShareLinkX.fromJson(Map<String, dynamic> json) {
     return ModelUtilX.checkFromJson(
       json,
           (json) => MiniShareLinkX(
-        id: json[NameX.id].toStrX,
+        id: json[NameX.id].toStrDefaultX(''),
         affiliateCode: json[NameX.affiliateCode].toStrX,
         ownerId: json[NameX.ownerId].toStrNullableX,
         ownerType: json[NameX.ownerType].toStrNullableX,
@@ -36,17 +37,16 @@ class MiniShareLinkX {
         linkableType: json[NameX.linkableType].toStrX,
         title: json[NameX.title].toStrX,
         status: json[NameX.status].toStrX,
-        // affiliateLink: json[NameX.affiliateLink].toStrX,
+        affiliateLink: json[NameX.affiliateLink].toStrX,
       ),
       requiredDataKeys: [
-        NameX.id,
         NameX.affiliateCode,
         NameX.linkableId,
         NameX.linkableType,
         // NameX.linkable,
         NameX.title,
         NameX.status,
-        // NameX.affiliateLink,
+        NameX.affiliateLink,
       ],
     );
   }
@@ -61,7 +61,7 @@ class MiniShareLinkX {
       NameX.linkableType: linkableType,
       NameX.title: title,
       NameX.status: status,
-      // NameX.affiliateLink: affiliateLink,
+      NameX.affiliateLink: affiliateLink,
     };
   }
 }

@@ -1,8 +1,8 @@
 enum LinkableTypeStatusX {
   donation('Project'),
   org('DonationCategory'),
-  deduction('RecurringDonation'),
-  gift('Gift');
+  campaign('Campaign'),
+  deduction('RecurringDonation');
 
   final String name;
   const LinkableTypeStatusX(this.name);

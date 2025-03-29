@@ -51,6 +51,20 @@ class ValidateX{
   }
 
   /// Verify long titles
+  static String? campaignTitle(String? value) {
+    String pattern = r'^[\u0621-\u064A\u0660\ a-zA-Z0-9 -.]+$';
+    if (value!.trim().isEmpty) {
+      return 'Title Required'.tr;
+    } else if (value.trim().length < 5) {
+      return 'It must be at least 5 characters'.tr;
+    }else if (value.trim().length > 50) {
+      return 'It must be no more than 50 characters'.tr;
+    } else if (!RegExp(pattern).hasMatch(value.trim())) {
+      return 'It must consist of letters and numbers only'.tr;
+    }
+    return null;
+  }
+  /// Verify long titles
   static String? title(String? value) {
     String pattern = r'^[\u0621-\u064A\u0660\ a-zA-Z0-9 -.]+$';
     if (value!.trim().isEmpty) {

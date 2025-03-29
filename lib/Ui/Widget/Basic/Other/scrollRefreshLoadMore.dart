@@ -33,7 +33,7 @@ class ScrollRefreshLoadMoreX<T> extends StatefulWidget {
   final Widget? header;
   final bool isHideHeaderIfEmpty;
   final bool isHideHeaderIfError;
-  final bool isHideHeaderIfInitLoading;
+  final bool isHideHeaderIfLoading;
   final bool isHeaderPadding;
   final bool isScrollingHeader;
 
@@ -120,7 +120,7 @@ class ScrollRefreshLoadMoreX<T> extends StatefulWidget {
     this.header,
     this.isHideHeaderIfEmpty = false,
     this.isHideHeaderIfError = false,
-    this.isHideHeaderIfInitLoading = true,
+    this.isHideHeaderIfLoading = true,
     this.isHeaderPadding = true,
     this.isHideEmpty = false,
     this.constraints,
@@ -494,7 +494,7 @@ class ScrollRefreshLoadMoreXState<T> extends State<ScrollRefreshLoadMoreX<T>> {
           ),
           child: widget.isScrollingInitLoading
               ? SingleChildScrollView(
-                  padding: EdgeInsets.only(bottom: widget.padding?.bottom??0,left: widget.padding?.left??0,right: widget.padding?.right??0,top: widget.isHideHeaderIfInitLoading?widget.padding?.top??0:0),
+                  padding: EdgeInsets.only(bottom: widget.padding?.bottom??0,left: widget.padding?.left??0,right: widget.padding?.right??0,top: widget.isHideHeaderIfLoading?widget.padding?.top??0:0),
                   scrollDirection: widget.scrollDirection,
                   child: widget.initLoading ??
                       const Center(child: CircularProgressIndicator()),
@@ -689,7 +689,7 @@ class ScrollRefreshLoadMoreXState<T> extends State<ScrollRefreshLoadMoreX<T>> {
             if (widget.header != null &&
                 (!widget.isScrollingHeader ||
                     (widget.isScrollingHeader &&
-                        !widget.isHideHeaderIfInitLoading &&
+                        !widget.isHideHeaderIfLoading &&
                         isInitLoading)||(widget.isScrollingHeader &&
                     !widget.isHideHeaderIfEmpty && items.isEmpty &&
                     !isInitLoading)) &&
@@ -699,7 +699,7 @@ class ScrollRefreshLoadMoreXState<T> extends State<ScrollRefreshLoadMoreX<T>> {
                 !(widget.isHideHeaderIfEmpty &&
                     items.isEmpty &&
                     !isInitLoading) &&
-                !(widget.isHideHeaderIfInitLoading && isInitLoading))
+                !(widget.isHideHeaderIfLoading && isInitLoading) || (isRefreshing && widget.header != null && !widget.isHideHeaderIfLoading))
               Padding(
                 padding: EdgeInsets.only(
                     bottom: widget.spaceBetweenHeaderAndContent,

@@ -22,7 +22,7 @@ class StatisticsAndFiguresSectionX extends StatelessWidget {
       isHideHeaderIfError: true,
       isHideHeaderIfEmpty: true,
       isHideEmpty: true,
-      isHideHeaderIfInitLoading: false,
+      isHideHeaderIfLoading: false,
       isShowNoMoreData: false,
       isExpanded: false,
       isHeaderPadding: false,

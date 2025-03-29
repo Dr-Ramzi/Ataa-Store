@@ -2,10 +2,8 @@ import 'package:ataa/Ui/Animation/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:intl/intl.dart';
 import '../../../../Config/config.dart';
 import '../../../../Core/core.dart';
-import '../../../../Data/data.dart';
 import '../../../../UI/Widget/widget.dart';
 
 // ~~~~~~~~~~~~~~~~~~~~~~~{{ Why this bottom sheet }}~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -13,9 +11,9 @@ import '../../../../UI/Widget/widget.dart';
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 confirmCampaignCreationSheetX({
-  required CampaignX campaign,
-  required String orgName,
-  required String projectName,
+  required String title,
+  required num targetAmount,
+  required String donationName,
 }) async {
   return await bottomSheetX(
     title: "Confirm campaign creation",
@@ -24,19 +22,20 @@ confirmCampaignCreationSheetX({
       children: [
         /// Warning message
         ContainerX(
-          color: Get.theme.colorScheme.onError,
+          color: Get.isDarkMode?ColorX.orange.shade800:ColorX.orange.shade50,
+          padding: const EdgeInsets.all(16),
           child: Row(
             children: [
               Icon(
                 Icons.info_rounded,
-                color: Get.theme.colorScheme.error,
-                size: 28,
+                color: Get.isDarkMode?ColorX.orange.shade50:ColorX.orange.shade800,
+                size: 22,
               ),
               const SizedBox(width: 10),
               Expanded(
                 child: TextX(
                   "Please ensure that the data is correct as it cannot be modified later.",
-                  color: Get.theme.colorScheme.error,
+                  color: Get.isDarkMode?ColorX.orange.shade50:ColorX.orange.shade800,
                   style: TextStyleX.titleSmall,
                   fontWeight: FontWeight.w500,
                 ),
@@ -44,7 +43,7 @@ confirmCampaignCreationSheetX({
             ],
           ),
         ).fadeAnimation200,
-        const SizedBox(height: 16),
+        const SizedBox(height: 20),
 
         /// Title
         const TextX(
@@ -53,13 +52,12 @@ confirmCampaignCreationSheetX({
         ).fadeAnimation200,
         const SizedBox(height: 8),
         TextX(
-          campaign.title,
+          title,
           style: TextStyleX.supTitleLarge,
         ).fadeAnimation200,
 
         /// Line
-        Divider(color: Get.theme.dividerColor).fadeAnimation200,
-        const SizedBox(height: 4),
+        Divider(color: Get.theme.dividerColor).marginOnly(top: 4,bottom: 8).fadeAnimation200,
 
         /// The Program
         const TextX(
@@ -68,88 +66,41 @@ confirmCampaignCreationSheetX({
         ).fadeAnimation200,
         const SizedBox(height: 8),
         TextX(
-          orgName,
+          donationName,
           style: TextStyleX.supTitleLarge,
         ).fadeAnimation200,
 
         /// Line
-        Divider(color: Get.theme.dividerColor).fadeAnimation200,
-        const SizedBox(height: 4),
-
-        /// The Program
-        const TextX(
-          "The Program",
-          fontWeight: FontWeight.w600,
-        ).fadeAnimation300,
-        const SizedBox(height: 8),
-        TextX(
-          projectName,
-          style: TextStyleX.supTitleLarge,
-        ).fadeAnimation300,
-
-        /// Line
-        Divider(color: Get.theme.dividerColor).fadeAnimation300,
-        const SizedBox(height: 4),
-
-        /// Campaign end date
-        const TextX(
-          "Campaign end date",
-          fontWeight: FontWeight.w600,
-        ).fadeAnimation300,
-        const SizedBox(height: 8),
-        TextX(
-          DateFormat.yMMMMEEEEd().format(campaign.endDate),
-          style: TextStyleX.supTitleLarge,
-        ).fadeAnimation300,
-
-        /// Line
-        Divider(color: Get.theme.dividerColor).fadeAnimation300,
-        const SizedBox(height: 4),
-
-        /// Donation method
-        const TextX(
-          "Donation method",
-          fontWeight: FontWeight.w600,
-        ).fadeAnimation300,
-        const SizedBox(height: 8),
-        TextX(
-          campaign.targetAmount != null ? "Open amount" : "Shares",
-          style: TextStyleX.supTitleLarge,
-        ).fadeAnimation300,
-
-        /// Line
-        Divider(color: Get.theme.dividerColor).fadeAnimation300,
-        const SizedBox(height: 4),
+        Divider(color: Get.theme.dividerColor).marginOnly(top: 4,bottom: 8).fadeAnimation200,
 
         /// Target amount
         const TextX(
           "Target amount",
           fontWeight: FontWeight.w600,
-        ).fadeAnimation400,
+        ).fadeAnimation300,
         const SizedBox(height: 8),
         TextX(
-          FunctionX.formatLargeNumber(campaign.getTargetAmount),
+          "${FunctionX.formatLargeNumber(targetAmount)} ${"SAR".tr}",
           style: TextStyleX.supTitleLarge,
-        ).fadeAnimation400,
+        ).fadeAnimation300,
         const SizedBox(height: 16),
 
         /// Buttons
         Row(
           children: [
             Flexible(
-              child: ButtonX(
-                text: "Create",
-                onTap: () => Get.back(
-                  result: true,
-                ),
+              child: ButtonX.gray(
+                text: "Edit",
+                onTap: Get.back,
               ),
             ),
             const SizedBox(width: 8),
             Flexible(
-              child: ButtonX.gray(
-                text: "Edit",
-                iconData: Iconsax.edit,
-                onTap: Get.back,
+              child: ButtonX(
+                text: "Confirm",
+                onTap: () => Get.back(
+                  result: true,
+                ),
               ),
             ),
           ],

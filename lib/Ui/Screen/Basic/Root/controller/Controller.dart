@@ -1,12 +1,12 @@
-import 'package:ataa/Ui/Screen/Screen/Donation/AllDonation/controller/Controller.dart';
+import 'package:ataa/Ui/Screen/Donation/AllDonation/controller/Controller.dart';
 import 'package:get/get.dart';
 import '../../../../../../Config/config.dart';
 import '../../../../../../Data/data.dart';
 import '../../../../../Core/core.dart';
 import '../../../../../Data/Constant/navbarItems.dart';
 import '../../../../../UI/Widget/widget.dart';
-import '../../../Screen/QuickDonation/controller/Controller.dart';
-import '../../../Screen/QuickDonation/view/View.dart';
+import '../../../QuickDonation/controller/Controller.dart';
+import '../../../QuickDonation/view/View.dart';
 
 class RootController extends GetxController {
   //============================================================================

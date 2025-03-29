@@ -33,14 +33,15 @@ deductionHistorySheetX({required DeductionHistoryControllerX controller}) {
           children: [
             MessageCardX(
               message: controller
-                          .myDeduction.orderModel.deduction.recurring.name ==
-                      RecurringStatusX.monthly.name
+                  .myDeduction.deduction.recurring.name ==
+                  RecurringStatusX.monthly.name
                   ? 'The amount will be automatically deducted on the first day of every calendar month.'.tr
-                  : '${'The amount is automatically deducted every'.tr} ${(controller.myDeduction.orderModel.deduction.recurring.name == RecurringStatusX.daily.name) ? 'day'.tr : '${controller.myDeduction.orderModel.deduction.dayLocalized ?? controller.myDeduction.orderModel.deduction.day?.tr} ${'of each week.'.tr}'}',
+                  : '${'The amount is automatically deducted every'.tr} ${(controller
+                  .myDeduction.deduction.recurring.name == RecurringStatusX.daily.name) ? '' : '${controller.myDeduction.deduction.day?.tr ?? controller.myDeduction.deduction.dayLocalized} ${'of each week.'.tr}'}',
             ).fadeAnimation200,
             const SizedBox(height: 20),
             TextX(
-              controller.myDeduction.name,
+              controller.myDeduction.deduction.name,
               style: TextStyleX.titleLarge,
               fontWeight: FontWeight.w700,
               overflow: TextOverflow.ellipsis,
@@ -56,7 +57,7 @@ deductionHistorySheetX({required DeductionHistoryControllerX controller}) {
                 TextX(
                   intl.DateFormat('yyyy/MM/dd').format(
                     controller
-                        .myDeduction.orderModel.nextSubscriptionDiscountDate,
+                        .myDeduction.nextSubscriptionDiscountDate,
                   ),
                   style: TextStyleX.supTitleLarge,
                   size: 14,
@@ -70,8 +71,8 @@ deductionHistorySheetX({required DeductionHistoryControllerX controller}) {
                   child: TextX('${'State'.tr}:'),
                 ),
                 TextX(
-                  controller.myDeduction.orderModel.deduction.status
-                      ? controller.myDeduction.orderModel.deduction.isSubscribed
+                  controller.myDeduction.deduction.status
+                      ? controller.myDeduction.deduction.isSubscribed
                           ? 'Active'
                           : 'Disabled'
                       : 'Expired',
@@ -87,7 +88,7 @@ deductionHistorySheetX({required DeductionHistoryControllerX controller}) {
                   child: TextX('${'The Amount'.tr}:'),
                 ),
                 TextX(
-                  "${FunctionX.formatLargeNumber(controller.myDeduction.price)} ${"SAR".tr} / ${controller.myDeduction.orderModel.deduction.recurringLocalized ?? controller.myDeduction.orderModel.deduction.recurring.name.tr}",
+                  "${FunctionX.formatLargeNumber(controller.myDeduction.price)} ${"SAR".tr} / ${controller.myDeduction.deduction.recurringLocalized ?? controller.myDeduction.deduction.recurring.name.tr}",
                   style: TextStyleX.supTitleLarge,
                   size: 14,
                 ),

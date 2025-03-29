@@ -16,7 +16,7 @@ class MyGiftCardX extends StatelessWidget {
         children: [
           ActivityDataRowX(
             title: "Mahdi Name",
-            data: gift.orderModel.giftBasic.recipientName,
+            data: gift.orderModel!.giftBasic.recipientName,
           ).fadeAnimation100,
           ActivityDataRowX(
             title: "Gift amount",

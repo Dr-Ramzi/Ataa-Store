@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:get/get.dart';
-import '../../../Data/data.dart';
 
 class FilterByCountryControllerX extends GetxController {
   //============================================================================
@@ -21,7 +20,7 @@ class FilterByCountryControllerX extends GetxController {
     try {
       /// TODO: Database >>> Fetch available countries in the filtering process
       await Future.delayed(const Duration(seconds: 1)); // delete this
-      options = ["All", ...TestDataX.countriesSponsorships];
+      // options = ["All", ...TestDataX.countriesSponsorships];
     } catch (e) {
       return Future.error(e);
     }

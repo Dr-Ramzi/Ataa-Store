@@ -24,7 +24,6 @@ class HomeElementSettingsX {
   });
 
   factory HomeElementSettingsX.fromJson(Map<String, dynamic> json) {
-    print(json);
     return ModelUtilX.checkFromJson(
       json,
       (json) => HomeElementSettingsX(

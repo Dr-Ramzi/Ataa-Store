@@ -26,20 +26,19 @@ class AppleAndGooglePayController extends GetxController {
   Function? onCancelCallback;
   Function(String token)? onPayDoneCallback;
 
-  String description = '';
+  final String description = 'eDialogue Store';
   double amount = 1;
   //============================================================================
   // Functions
 
-  createPaymentItems([String? desc,double? price]) {
+  createPaymentItems([double? price]) {
     if(price!=null && price>=1) {
       amount=price;
     }
-    description=desc??description;
 
     paymentItems.value = [
       PaymentItem(
-        label: description.tr,
+        label: description,
         amount: amount.toString(),
         status: PaymentItemStatus.final_price,
       ),
@@ -73,12 +72,11 @@ class AppleAndGooglePayController extends GetxController {
     onCancelCallback?.call();
   }
 
-  Future<void> init({required String title, required double total}) async {
+  Future<void> init({required double total}) async {
     isLoading.value = true;
     error.value = null;
     initError.value = false;
     try {
-      description= title;
       amount = total>=1?total:1;
       createPaymentItems();
       applePayConfig = await PaymentConfiguration.fromAsset(

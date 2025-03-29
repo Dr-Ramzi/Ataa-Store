@@ -4,44 +4,33 @@ import '../../data.dart';
 
 class CampaignStatisticsX {
   CampaignStatisticsX({
-    required this.countCampaigns,
-    required this.countCampaignVisits,
-    required this.countCampaignDonating,
-    required this.totalAmountCampaign,
+    required this.visits,
+    required this.registrations,
+    required this.logins,
+    required this.donationsCount,
+    required this.donorsCount,
+    required this.donationsSum,
   });
 
-  int countCampaigns;
-  int countCampaignVisits;
-  int countCampaignDonating;
-  double totalAmountCampaign;
+  int visits;
+  int registrations;
+  int logins;
+  int donationsCount;
+  int donorsCount;
+  num donationsSum;
 
 
   factory CampaignStatisticsX.fromJson(Map<String, dynamic> json) {
     return ModelUtilX.checkFromJson(
         json,
             (json) => CampaignStatisticsX(
-              countCampaigns: json[NameX.countCampaigns].toIntX,
-              countCampaignVisits: json[NameX.countCampaignVisits].toIntX,
-              countCampaignDonating: json[NameX.countCampaignDonating].toIntX,
-              totalAmountCampaign: json[NameX.totalAmountCampaign].toDoubleX,
+              visits: json[NameX.visits].toIntDefaultX(0),
+              registrations: json[NameX.registrations].toIntDefaultX(0),
+              logins: json[NameX.logins].toIntDefaultX(0),
+              donationsCount: json[NameX.donationsCount].toIntDefaultX(0),
+              donorsCount: json[NameX.donorsCount].toIntDefaultX(0),
+              donationsSum: json[NameX.donationsSum].toIntDefaultX(0),
         ),
-        requiredAnyDataOfKeys: [
-          [
-            NameX.countCampaigns,
-            NameX.countCampaignVisits,
-            NameX.countCampaignDonating,
-            NameX.totalAmountCampaign,
-          ]
-        ]
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      NameX.countCampaigns: countCampaigns,
-      NameX.countCampaignVisits: countCampaignVisits,
-      NameX.countCampaignDonating: countCampaignDonating,
-      NameX.totalAmountCampaign: totalAmountCampaign,
-    };
   }
 }

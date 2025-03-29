@@ -1,10 +1,8 @@
 import 'package:ataa/UI/Animation/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../../../Config/config.dart';
 import '../../../../../Core/Controller/Pay/payDonationController.dart';
-import '../../../../../Core/core.dart';
 import '../../../../../UI/Widget/widget.dart';
 
 class SharesSectionX extends StatelessWidget {
@@ -60,7 +58,7 @@ class SharesSectionX extends StatelessWidget {
                 textInputType: TextInputType.number,
                 textInputAction: TextInputAction.done,
                 hint: "0",
-                onlyRead: controller.donation.isCanEditAmount,
+                onlyRead: !controller.donation.isCanEditAmount,
                 validate: controller.validateAmount,
                 suffixWidget: TextX(
                   "SAR",

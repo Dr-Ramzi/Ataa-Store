@@ -17,11 +17,11 @@ class DeductionMessageSectionX extends StatelessWidget {
             controller.donation.donationDeductionPackages.isNotEmpty) {
           return MessageCardX(
             message: controller
-                        .deductionPackageSelected.value!.recurring.name ==
-                    RecurringStatusX.monthly.name
-                ? 'The amount will be automatically deducted on the first day of every calendar month.'
-                    .tr
-                : '${'The amount is automatically deducted every'.tr} ${(controller.deductionPackageSelected.value!.recurring.name == RecurringStatusX.daily.name) ? 'day'.tr : '${DateFormat('EEEE').format(DateTime.now()).toLowerCase().tr} ${'of each week.'.tr}'}',
+                .deductionPackageSelected.value!.recurring.name ==
+                RecurringStatusX.monthly.name
+                ? 'The amount will be automatically deducted on the first day of every calendar month.'.tr
+                : '${'The amount is automatically deducted every'.tr} ${(controller
+                .deductionPackageSelected.value!.recurring.name == RecurringStatusX.daily.name) ? '' : '${DateFormat('EEEE').format(DateTime.now()).toLowerCase().tr} ${'of each week.'.tr}'}',
           ).marginSymmetric(vertical: 8).fadeAnimation200;
         } else {
           return const SizedBox();

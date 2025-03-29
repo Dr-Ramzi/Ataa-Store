@@ -13,7 +13,7 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 android {
-    namespace = "com.ataa.givingportal"
+    namespace = "com.ataa.rakanalhawar"
     compileSdk = flutter.compileSdkVersion
     ndkVersion "27.0.12077973"
 //    ndkVersion = flutter.ndkVersion
@@ -28,7 +28,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.ataa.givingportal"
+        applicationId = "com.ataa.rakanalhawar"
         minSdk = flutter.minSdkVersion
         multiDexEnabled true
         targetSdk = flutter.targetSdkVersion

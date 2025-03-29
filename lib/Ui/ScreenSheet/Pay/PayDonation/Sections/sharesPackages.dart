@@ -1,12 +1,12 @@
 import 'package:ataa/Core/core.dart';
 import 'package:ataa/UI/Animation/animation.dart';
-import 'package:flex_list/flex_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../Core/Controller/Pay/payDonationController.dart';
 import '../../../../../UI/Widget/widget.dart';
 import '../../../../Widget/Basic/Input/selectedCard.dart';
+import '../../../../Widget/Package/flex_list.dart';
 
 class SharesPackagesSectionX extends StatelessWidget {
   const SharesPackagesSectionX(this.controller, {super.key});
@@ -20,7 +20,9 @@ class SharesPackagesSectionX extends StatelessWidget {
         return Obx(
           () => MultipleSelectionCardX(
             title: "Select the category that suits you",
-            selected: controller.sharesPackageSelected.value!=null?'${FunctionX.formatLargeNumber(controller.sharesPackageSelected.value!.sharesCount*controller.donation.donationShares!.price)} ${'SAR'.tr}  ( ${controller.sharesPackageSelected.value!.name} )':'',
+            selected: controller.sharesPackageSelected.value != null
+                ? '${FunctionX.formatLargeNumber(controller.sharesPackageSelected.value!.sharesCount * controller.donation.donationShares!.price)} ${'SAR'.tr}  ( ${controller.sharesPackageSelected.value!.name} )'
+                : '',
             onTap: () async {
               await bottomSheetX(
                 title: "Select the category that suits you",
@@ -30,10 +32,11 @@ class SharesPackagesSectionX extends StatelessWidget {
                       ...controller.donation.sharesPackages.map(
                         (data) {
                           return RadioButtonX<String>(
-                            label: '${FunctionX.formatLargeNumber(data.sharesCount*controller.donation.donationShares!.price)} ${'SAR'.tr}  ( ${data.name} )',
+                            label:
+                                '${FunctionX.formatLargeNumber(data.sharesCount * controller.donation.donationShares!.price)} ${'SAR'.tr}  ( ${data.name} )',
                             value: data.id,
-                            onChanged: (_){
-                                controller.onChangeSharesPackage(data);
+                            onChanged: (_) {
+                              controller.onChangeSharesPackage(data);
                               Get.back();
                             },
                             groupValue:
@@ -59,44 +62,51 @@ class SharesPackagesSectionX extends StatelessWidget {
             const SizedBox(height: 12),
             LayoutBuilder(
               builder: (context, constraints) {
-                return FlexList(
-                  horizontalSpacing: 6,
-                  verticalSpacing: 6,
-                  children: controller.donation.sharesPackages.map(
-                    (data) {
-                      return IntrinsicWidth(
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxWidth: constraints.maxWidth / 2 - 6, // ملئ المساحة المتاحة لكل عنصر إلى النصف تقريبا
-                          ),
-                          child: Obx(
-                            () => SelectedCardX<String>(
-                              value: data.id,
-                              color: Theme.of(context).cardColor,
-                              margin:EdgeInsets.zero,
-                              onChanged: (_) =>
-                                  controller.onChangeSharesPackage(data),
-                              groupValue:
-                                  controller.sharesPackageSelected.value?.id,
-                              child: FittedBox(
-                                alignment: AlignmentDirectional.centerStart,
-                                child: Row(
-                                  children: [
-                                    TextX(
-                                      '${FunctionX.formatLargeNumber(data.sharesCount*controller.donation.donationShares!.price)} ${'SAR'.tr}',
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    TextX(data.name),
-                                  ],
-                                ),
+                return Align(
+                  alignment: Alignment.centerRight,
+                  child: FlexList(
+                    horizontalSpacing: 6,
+                    verticalSpacing: 6,
+                    children: controller.donation.sharesPackages.map(
+                      (data) {
+                        return Directionality(
+                          textDirection: Directionality.of(context),
+                          child: IntrinsicWidth(
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxWidth: constraints.maxWidth / 2 -
+                                    6, // ملئ المساحة المتاحة لكل عنصر إلى النصف تقريبا
                               ),
-                            ).fadeAnimation250,
+                              child: Obx(
+                                () => SelectedCardX<String>(
+                                  value: data.id,
+                                  color: Theme.of(context).cardColor,
+                                  margin: EdgeInsets.zero,
+                                  onChanged: (_) =>
+                                      controller.onChangeSharesPackage(data),
+                                  groupValue: controller
+                                      .sharesPackageSelected.value?.id,
+                                  child: FittedBox(
+                                    alignment: AlignmentDirectional.centerStart,
+                                    child: Row(
+                                      children: [
+                                        TextX(
+                                          '${FunctionX.formatLargeNumber(data.sharesCount * controller.donation.donationShares!.price)} ${'SAR'.tr}',
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                        const SizedBox(width: 10),
+                                        TextX(data.name),
+                                      ],
+                                    ),
+                                  ),
+                                ).fadeAnimation250,
+                              ),
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  ).toList(),
+                        );
+                      },
+                    ).toList(),
+                  ),
                 );
               },
             ),

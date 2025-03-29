@@ -15,10 +15,13 @@ const Map<String, String> enGeneral = {
   'Enter a valid phone number': 'Enter a valid phone number',
   'Expiry month is invalid': 'Expiry month is invalid',
   'Expiry year is invalid': 'Expiry year is invalid',
+  'It must be at least 5 characters': 'It must be at least 5 characters',
   'It must be at least 10 characters': 'It must be at least 10 characters',
   'It must be at least two characters': 'It must be at least two characters',
   'It must be no more than 100 characters':
       'It must be no more than 100 characters',
+  'It must be no more than 50 characters':
+      'It must be no more than 50 characters',
   'It must be no more than 20 characters':
       'It must be no more than 20 characters',
   'It must be no more than 30 characters':
@@ -259,7 +262,7 @@ const Map<String, String> enGeneral = {
   "Total Cart": "Total Cart",
   "Create your own campaign to support one of our projects, and share it with others to contribute to the advocacy.":
       "Create your own campaign to support one of our projects, and share it with others to contribute to the advocacy.",
-  "User Campaigns": "User Campaigns",
+  "Donation campaigns": "Donation campaigns",
   "Create your own campaign": "Create your own campaign",
   "There are no search results.\nTry searching for something else":
       "There are no search results.\nTry searching for something else",
@@ -275,8 +278,10 @@ const Map<String, String> enGeneral = {
   "You must select a project": "You must select a project",
   "You must select one of the donation projects":
       "You must select one of the donation projects",
+  "You must specify the target amount":"You must specify the target amount",
   "-- Choose donation project --": "-- Choose donation project --",
   "-- Choose project --": "-- Choose project --",
+  "-- Choose target amount --": "-- Choose target amount --",
   "-- Select the date and time to send --":
       "-- Select the date and time to send --",
   "-- Select date --": "-- Select date --",
@@ -340,7 +345,6 @@ const Map<String, String> enGeneral = {
   "Supporting a new Muslim's Islamization":
       "Supporting a new Muslim's Islamization",
   "Sponsorships": "Sponsorships",
-  "User campaigns": "User campaigns",
   "My Activity": "My Activity",
   "My Campaigns": "My Campaigns",
   "My Gifting": "My Gifting",
@@ -352,7 +356,6 @@ const Map<String, String> enGeneral = {
   "Sharing Links": "Sharing Links",
   "All donation campaigns created by you":
       "All donation campaigns created by you",
-  "Donation campaigns": "Donation campaigns",
   "Create a new campaign": "Create a new campaign",
   "There are no current dedications": "There are no current dedications",
   "You haven't created any campaign yet":
@@ -441,7 +444,7 @@ const Map<String, String> enGeneral = {
   "There are gold karats that have not yet been determined":
       "There are gold karats that have not yet been determined",
   "The Amount": "The Amount",
-  "Zakat on cash money": "Zakat on cash money",
+  "Zakat on cash": "Zakat on cash",
   "-- Choose --": "-- Choose --",
   "Add another caliber": "Add another caliber",
   "Caliber": "Caliber",
@@ -637,9 +640,10 @@ const Map<String, String> enGeneral = {
   "Transfer image": "Transfer image",
   "No file uploaded yet": "No file uploaded yet",
   "Browse": "Browse",
-  "Payment request received": "Payment request received",
-  "The bank transfer will be reviewed and you will be notified of the payment status":
-      "The bank transfer will be reviewed and you will be notified of the payment status",
+  "Pending review": "Pending review",
+  "Your request is under review by the payment gateway. We will notify you of any updates as soon as possible.": "Your request is under review by the payment gateway. We will notify you of any updates as soon as possible.",
+  "Your request has been received, and the bank transfer will be reviewed. You will be notified of the payment status.":
+      "Your request has been received, and the bank transfer will be reviewed. You will be notified of the payment status.",
   "How would you rate the donation process?":
       "How would you rate the donation process?",
   "Excellent": "Excellent",
@@ -749,5 +753,27 @@ const Map<String, String> enGeneral = {
   "Mobile number and email cannot be modified at the same time":"Mobile number and email cannot be modified at the same time",
   "Unfortunately, there are no payment methods available now":"Unfortunately, there are no payment methods available now",
   "We apologize, but an error occurred while processing your payment. Please check your payment information and try again.":"We apologize, but an error occurred while processing your payment. Please check your payment information and try again.",
+  "The process":"The process",
+  "project":"donation",
+  "gift":"gift",
+  "quick_donation":"quick donation",
+  "campaign":"campaign",
+  "recurring_donation_subscription":"deduction",
+  "Search by campaign or project name":"Search by campaign or project name",
+  "Confirm":"Confirm",
+  "Donate to the campaign":"Donate to the campaign",
+  "Campaign":"Campaign",
+  "accepted":"accepted",
+  "rejected":"rejected",
+  "disabled":"disabled",
+  "pending":"pending",
+  "Sharing":"Sharing",
+  "Edit campaign":"Edit campaign",
+  "your campaign title":"Your campaign title",
+  "Campaign creation date":"Campaign creation date",
+  "Total Donation Amount":"Total Donation Amount",
+  "Number of registered users on the platform":"Number of registered users on the platform",
+  "Campaign Donations List":"Campaign Donations List",
+  "Save changes":"Save changes",
   // "":"",
 };

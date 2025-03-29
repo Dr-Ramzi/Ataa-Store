@@ -87,7 +87,7 @@ class DBEndPointX {
 
   /// TODO: Database >>> add statistics end points
   static final String getDonationStatistics = '${mainAPI}payments/statics';
-  static final String getCampaignStatistics = '${mainAPI}1 --------Add Here----------';
+  static final String getCampaignStatistics = '${mainAPI}campaign/statistics';
   static final String getOrderStatistics = '${mainAPI}1 --------Add Here----------';
   static final String getGiftStatistics = '${mainAPI}gift/statics';
   static final String getDeductionStatistics = '${mainAPI}donations/recurring-donations/donation-subscriptions/statistic';
@@ -113,14 +113,14 @@ class DBEndPointX {
   // Organization
 
   static final String getAllOrganizations = '${mainAPI}donations/categories';
-  static final String getOrganizationDetails = '${mainAPI}donations/categories/{id}';
+  static final String getOrganizationDetails = '${mainAPI}gift/categories/{id}';
 
   //============================================================================
   // Deduction
 
   static final String getAllDeductions = '${mainAPI}donations/recurring-donations';
   static final String getDeductionsBySearch = '${mainAPI}donations/recurring-donations/search';
-  static final String getDeductionDetails = '${mainAPI}donations/recurring-donations/{id}';
+  static final String getDeductionDetails = '${mainAPI}donations/recurring-donations/{code}';
 
   //============================================================================
   // Subscription
@@ -151,9 +151,20 @@ class DBEndPointX {
   static final String postZakatCalculation = '${mainAPI}calculation/zakat';
 
   //============================================================================
+  // Donation
+
+  static final String getAllCampaigns = '${mainAPI}campaigns/all';
+  static final String getCampaignsBySearch = '${mainAPI}campaigns/search';
+  static final String getCampaignDetails = '${mainAPI}campaigns/{code}';
+  static final String getCampaignDetailsById = '${mainAPI}campaigns/id/{id}';
+  static final String getMyCampaigns = '${mainAPI}campaigns';
+  static final String postCreateNewCampaign = '${mainAPI}campaigns';
+  static final String putUpdateMyCampaign = '${mainAPI}campaigns/{id}';
+
+  //============================================================================
   // Payment Transaction
 
-  static final String getAllPaymentTransaction= '${mainAPI}payments/transactions';
+  static final String getAllPaymentTransactions= '${mainAPI}payments/transactions';
   static final String getPaymentTransactionDetails= '${mainAPI}payments/transactions/{id}';
   static final String postCreatePaymentTransactionForQuickDonation = '${mainAPI}payments/checkout/quick-donation/{project_id}';
   static final String postCreatePaymentTransactionForCart = '${mainAPI}payments/checkout/cart';
@@ -161,6 +172,7 @@ class DBEndPointX {
   static final String postCreatePaymentTransactionForDeduction = '${mainAPI}payments/checkout/recurring-donation/{recurring_donation_id}';
   // static final String postCreatePaymentTransactionGiftOrder = '${mainAPI}payments/checkout/{gift_id}';
   static final String postAssignPaymentTransaction = '${mainAPI}payments/assign/{payment_transactions_code}';
+  static final String getCheckStatusPaymentTransaction = '${mainAPI}payments/check/{id}';
 
   //============================================================================
   // Location

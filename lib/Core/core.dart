@@ -17,10 +17,12 @@ import '../UI/Screen/Auth/Login/view/loginView.dart';
 import '../UI/Screen/Auth/SignUp/view/View.dart';
 import '../UI/Widget/widget.dart';
 
-import '../Ui/Screen/Screen/Donation/AllDonation/controller/Controller.dart';
+import '../Ui/Screen/Donation/AllDonation/controller/Controller.dart';
 import 'Controller/Cart/cartGeneralController.dart';
 import 'Helper/http/http.dart';
 import 'Util/info.dart';
+import 'package:share_plus/share_plus.dart';
+
 part 'Controller/App/appController.dart';
 part 'Util/function.dart';
 part 'Helper/clipboard.dart';
@@ -32,6 +34,7 @@ part 'Util/validate.dart';
 part 'Util/creditCard.dart';
 part 'Util/share.dart';
 part 'Helper/httpOverrides.dart';
+
 // ~~~~~~~~~~~~~~~~~~~~~~~{{ Why this section }}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /// Controlling the internal processes of an application and general controllers,
 /// containing all internal processors and general functions

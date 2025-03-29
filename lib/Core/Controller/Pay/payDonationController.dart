@@ -50,18 +50,19 @@ class PayDonationControllerX extends GetxController {
   RxInt freeDonationSelected = 0.obs;
 
   late DonationX donation;
+  CampaignX? campaign;
 
   //============================================================================
   // Initialization
 
   init() {
     /// check if "donate On Behalf Of Family controller" is has or create
-    if (Get.isRegistered<DonateOnBehalfOfFamilyController>(tag: donation.id)) {
+    if (Get.isRegistered<DonateOnBehalfOfFamilyController>(tag: campaign?.id??donation.id)) {
       donateOnBehalfOfFamily =
-          Get.find<DonateOnBehalfOfFamilyController>(tag: donation.id);
+          Get.find<DonateOnBehalfOfFamilyController>(tag: campaign?.id??donation.id);
     } else {
       donateOnBehalfOfFamily =
-          Get.put(DonateOnBehalfOfFamilyController(), tag: donation.id);
+          Get.put(DonateOnBehalfOfFamilyController(), tag: campaign?.id??donation.id);
     }
 
     donationSharesPrice = (donation.donationShares?.price??0).toIntX;
@@ -118,14 +119,15 @@ class PayDonationControllerX extends GetxController {
 
   /// clear date on controller
   removeController() {
-    Get.delete<DonateOnBehalfOfFamilyController>(tag: donation.id);
-    Get.delete<PayDonationControllerX>(tag: donation.id);
+    Get.delete<DonateOnBehalfOfFamilyController>(tag: campaign?.id??donation.id);
+    Get.delete<PayDonationControllerX>(tag: campaign?.id??donation.id);
   }
 
   bool dataVerification() {
-    if (donation.openPackages.isNotEmpty && openPackageSelected.value == null) {
+    if (donation.openPackages.isNotEmpty && openPackageSelected.value == null && !donation.isCanEditAmount) {
       return throw "You must choose one of the available packages.";
-    } else if (donation.sharesPackages.isNotEmpty &&
+    }
+    else if (donation.sharesPackages.isNotEmpty &&
         sharesPackageSelected.value == null) {
       return throw "You must choose one of the available packages.";
     } else if (donation.donationDeductionPackages.isNotEmpty &&
@@ -160,7 +162,7 @@ class PayDonationControllerX extends GetxController {
 
             var data = await DatabaseX.createDonationOrder(
               form: DonationOrderFormX(
-                donationId: donation.id,
+                donationId: campaign?.id??donation.id,
                 price: donationAmount.text.toIntX,
                 donationOpenPackageId: openPackageSelected.value?.id,
                 donationSharesPackageId: sharesPackageSelected.value?.id,
@@ -182,7 +184,7 @@ class PayDonationControllerX extends GetxController {
             );
             String message = await cart.addItem(
               modelId: data.modelId,
-              modelType: ModelTypeStatusX.donation,
+              modelType: campaign!=null?ModelTypeStatusX.campaign:ModelTypeStatusX.donation,
               price: donationAmount.text.toIntX,
               isPayNow: isPay,
               isCloseSheet: isSheet,

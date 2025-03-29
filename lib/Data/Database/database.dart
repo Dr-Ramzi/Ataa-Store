@@ -127,7 +127,9 @@ class DatabaseX {
       DBEndPointX.postOtpVerifyUpdateProfile,
       param: DataSourceParamX(
         authToken: LocalDataX.token,
-        requestBody: {NameX.otp: otp},
+        requestBody: {
+          NameX.otp: otp,
+        },
       ),
     );
     try {
@@ -260,8 +262,8 @@ class DatabaseX {
       DBEndPointX.getGeneralSettings,
       param: DataSourceParamX(
         maxRetries: 3,
-        localCacheKey: 'general_settings',
-        localCacheMaxAge: const Duration(days: 3),
+        // localCacheKey: 'general_settings',
+        // localCacheMaxAge: const Duration(days: 3),
         authToken: LocalDataX.token,
       ),
     );
@@ -606,7 +608,7 @@ class DatabaseX {
     );
   }
 
-  static Future<CampaignStatisticsX> getCampaignStatistics() async {
+  static Future<MyCampaignStatisticsX> getCampaignStatistics() async {
     var data = await RemoteDataSourceX.get(
       DBEndPointX.getCampaignStatistics,
       param: DataSourceParamX(
@@ -615,7 +617,7 @@ class DatabaseX {
         authToken: LocalDataX.token,
       ),
     );
-    return CampaignStatisticsX.fromJson(
+    return MyCampaignStatisticsX.fromJson(
       Map<String, dynamic>.from(data.$1[NameX.data]),
     );
   }
@@ -845,14 +847,14 @@ class DatabaseX {
     return ModelUtilX.generateItems(data.$1[NameX.data], DeductionX.fromJson);
   }
 
-  static Future<DeductionX> getDeductionDetails({required String id}) async {
+  static Future<DeductionX> getDeductionDetails({required int code}) async {
     var data = await RemoteDataSourceX.get(
       DBEndPointX.getDeductionDetails,
       param: DataSourceParamX(
-        localCacheKey: 'deduction_details_$id',
+        localCacheKey: 'deduction_details_$code',
         localCacheMaxAge: const Duration(days: 1),
         authToken: LocalDataX.token,
-        pathParams: {NameX.id: id},
+        pathParams: {NameX.code: code},
       ),
     );
     return DeductionX.fromJson(
@@ -895,24 +897,6 @@ class DatabaseX {
     return ModelUtilX.generateItems(
       data.$1[NameX.data],
       DeductionOrderX.fromJson,
-    );
-  }
-
-  static Future<DeductionOrderX> getMyDeductionSubscriptionDetails(
-      {required String id}) async {
-    var data = await RemoteDataSourceX.get(
-      DBEndPointX.getDeductionDetails,
-      param: DataSourceParamX(
-        localCacheKey: 'my_deduction_subscription_details_$id',
-        localCacheMaxAge: const Duration(days: 1),
-        authToken: LocalDataX.token,
-        pathParams: {NameX.id: id},
-      ),
-    );
-    return DeductionOrderX.fromJson(
-      Map<String, dynamic>.from(
-        data.$1[NameX.data],
-      ),
     );
   }
 
@@ -1096,6 +1080,113 @@ class DatabaseX {
   }
 
   //============================================================================
+  // Campaigns
+
+  static Future<CampaignX> getCampaignDetails({required int code}) async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getCampaignDetails,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        pathParams: {NameX.code: code},
+      ),
+    );
+    return CampaignX.fromJson(
+      Map<String, dynamic>.from(
+        data.$1[NameX.data],
+      ),
+    );
+  }
+  static Future<List<CampaignX>> getAllCampaigns({
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getAllCampaigns,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        page: page,
+        limit: perPage,
+      ),
+    );
+    return ModelUtilX.generateItems(data.$1[NameX.data], CampaignX.fromJson);
+  }
+  static Future<List<CampaignX>> getCampaignsBySearch({
+    String? sortType,
+    String? searchQuery,
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    if((searchQuery==null || searchQuery.isEmpty) && (sortType==null || sortType.isEmpty)){
+      return await getAllCampaigns(page: page,perPage: perPage);
+    }else{
+      Map<String, dynamic>? filterParams = {
+        NameX.sortType: sortType,
+      };
+      var data = await RemoteDataSourceX.get(
+        DBEndPointX.getCampaignsBySearch,
+        param: DataSourceParamX(
+          authToken: LocalDataX.token,
+          page: page,
+          limit: perPage,
+          filterParams: filterParams,
+          search: searchQuery,
+          searchKey: NameX.search,
+        ),
+      );
+      return ModelUtilX.generateItems(data.$1[NameX.data], CampaignX.fromJson);
+    }
+  }
+  static Future<List<CampaignX>> getMyCampaigns({
+    int page = 1,
+    int perPage = 20,
+  }) async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getMyCampaigns,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        page: page,
+        limit: perPage,
+      ),
+    );
+    return ModelUtilX.generateItems(data.$1[NameX.data], CampaignX.fromJson);
+  }
+
+  static Future<CampaignX> createNewCampaign({
+    required CampaignFormX form,
+  }) async {
+    var data = await RemoteDataSourceX.post(
+      DBEndPointX.postCreateNewCampaign,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        requestBody: form.toJson(),
+      ),
+    );
+    return CampaignX.fromJson(
+      Map<String, dynamic>.from(
+        data.$1[NameX.data],
+      ),
+    );
+  }
+
+  static Future<CampaignX> updateMyCampaign({
+    required CampaignFormX form,
+    required String id,
+  }) async {
+    var data = await RemoteDataSourceX.put(
+      DBEndPointX.putUpdateMyCampaign,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        requestBody: form.toJson(),
+      ),
+    );
+    return CampaignX.fromJson(
+      Map<String, dynamic>.from(
+        data.$1[NameX.data],
+      ),
+    );
+  }
+
+  //============================================================================
   // Payment Transaction
 
   static Future<PaymentTransactionX> createPaymentTransactionForQuickDonation({
@@ -1189,6 +1280,20 @@ class DatabaseX {
       ),
     );
     return data.$2;
+  }
+
+  static Future<PaymentStatusStatusX?> getCheckStatusPaymentTransaction({
+    required String id,
+  }) async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getCheckStatusPaymentTransaction,
+      param: DataSourceParamX(
+        pathParams: {NameX.id: id},
+        maxRetries: 3,
+      ),
+    );
+    String status = (data.$1??'').toString();
+    return PaymentStatusStatusX.values.firstWhereOrNull((x) => x.name==status);
   }
 
   //============================================================================
@@ -1513,8 +1618,8 @@ class DatabaseX {
 
   static Future<List<PaymentTransactionItemX<T>>>
   getAllMyRecords<T extends OrderX>({
-    required ModelTypeStatusX type,
-    required T Function(Map<String, dynamic>) orderModelFromJson,
+    ModelTypeStatusX? type,
+    T Function(Map<String, dynamic>)? orderModelFromJson,
     bool isAllWithoutPaginated = false,
     String? byModelId,
     int page = 1,
@@ -1526,11 +1631,11 @@ class DatabaseX {
           : DBEndPointX.getAllPaymentTransactionItemByModelTypeWithoutPaginated,
       param: DataSourceParamX(
         localCacheKey:
-        'all_my_records_by_model_type_${type.name}_$isAllWithoutPaginated',
+        'all_my_records_by_model_type_${type?.name}_$isAllWithoutPaginated',
         localCacheMaxAge: const Duration(days: 3),
         authToken: LocalDataX.token,
         filterParams: {
-          NameX.modelType: type.name,
+          if (type != null) NameX.modelType: type.name,
           if (byModelId != null) NameX.modelId: byModelId,
         },
         page: page,
@@ -1541,6 +1646,26 @@ class DatabaseX {
       data.$1[NameX.data],
           (Map<String, dynamic> json) =>
       PaymentTransactionItemX<T>.fromJson(json, orderModelFromJson),
+    );
+  }
+
+  static Future<List<PaymentTransactionX>>
+  getAllPaymentTransactions<T extends OrderX>({
+    int page = 1,
+    int perPage = 20,
+}) async {
+    var data = await RemoteDataSourceX.get(
+      DBEndPointX.getAllPaymentTransactions,
+      param: DataSourceParamX(
+        authToken: LocalDataX.token,
+        page: page,
+        limit: perPage,
+      ),
+    );
+    return ModelUtilX.generateItems<PaymentTransactionX>(
+      data.$1[NameX.data],
+          (Map<String, dynamic> json) =>
+          PaymentTransactionX.fromJson(json),
     );
   }
 

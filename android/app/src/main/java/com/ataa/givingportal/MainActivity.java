@@ -1,4 +1,4 @@
-package com.ataa.givingportal;
+package com.ataa.rakanalhawar;
 
 import io.flutter.embedding.android.FlutterActivity;
 

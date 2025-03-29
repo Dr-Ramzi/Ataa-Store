@@ -5,7 +5,7 @@ import '../../data.dart';
 class PaymentTransactionCardX {
   final String paymentCardCompany;
   final String lastFourDigits;
-  final bool isSave;
+  final bool? isSave;
   final String? iconUrl;
 
   PaymentTransactionCardX({
@@ -21,13 +21,12 @@ class PaymentTransactionCardX {
           (json) => PaymentTransactionCardX(
         paymentCardCompany: json[NameX.brand].toStrX,
         lastFourDigits: json[NameX.last4Digits].toStrX,
-        isSave: json[NameX.isSave].toBoolX,
+        isSave: json[NameX.isSave].toBoolNullableX,
         iconUrl: json[NameX.iconUrl].toStrNullableX,
       ),
       requiredDataKeys: [
         NameX.brand,
         NameX.last4Digits,
-        NameX.isSave,
       ],
     );
   }

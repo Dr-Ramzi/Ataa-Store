@@ -9,7 +9,7 @@ class DeductionCardX extends StatefulWidget {
     this.isSmallCard = false,
   });
   final DeductionX deduction;
-  final Future<dynamic> Function(String id) onTap;
+  final Future<dynamic> Function(int code) onTap;
   final Future<bool> Function(DeductionX deduction) onSubscribe;
   final bool isSmallCard;
 
@@ -38,7 +38,7 @@ class _DeductionCardXState extends State<DeductionCardX> {
           widget.isSmallCard ? StyleX.deductionCardWidthSM : double.maxFinite,
       child: GestureDetector(
         onTap: () async {
-          var x = await widget.onTap(widget.deduction.id);
+          var x = await widget.onTap(widget.deduction.code);
           if (x == true) {
             setState(() {
               isSubscribed = true;
@@ -63,22 +63,26 @@ class _DeductionCardXState extends State<DeductionCardX> {
                     ),
                   ),
 
-                  /// TODO: تشغيل زر المشاركة
-                  // /// Share Button
-                  // Positioned.directional(
-                  //   textDirection: Directionality.of(context),
-                  //   end: 10,
-                  //   top: 10,
-                  //   child: InkResponse(
-                  //     onTap: () async =>
-                  //         await shareSheet(widget.deduction.shareURL),
-                  //     child: const ContainerX(
-                  //       padding:
-                  //           EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  //       child: Icon(Icons.share_rounded),
-                  //     ),
-                  //   ),
-                  // ),
+                  /// Share Button
+                  Positioned.directional(
+                    textDirection: Directionality.of(context),
+                    end: 10,
+                    top: 10,
+                    child: InkResponse(
+                      onTap: () async{
+                        await shareSheet(
+                          id: widget.deduction.id,
+                          code: widget.deduction.code,
+                          type: LinkableTypeStatusX.deduction,
+                        );
+                      },
+                      child: const ContainerX(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        child: Icon(Icons.share_rounded),
+                      ),
+                    ),
+                  ),
 
                   /// Deduction Recurring Marker
                   Positioned.directional(

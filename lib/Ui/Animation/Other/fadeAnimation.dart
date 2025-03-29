@@ -77,6 +77,9 @@ extension FadeAnimationExtension on Widget {
   FadeAnimationX get fadeAnimation500 {
     return FadeAnimationX(delay: 500, child: this);
   }
+  FadeAnimationX get fadeAnimation550 {
+    return FadeAnimationX(delay: 550, child: this);
+  }
 
   FadeAnimationX get fadeAnimation600 {
     return FadeAnimationX(delay: 600, child: this);

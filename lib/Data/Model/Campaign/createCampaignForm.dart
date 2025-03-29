@@ -1,22 +1,21 @@
-import 'package:meeting/Data/data.dart';
+import '../../data.dart';
 
-class UpdateProfileFormX {
-  final String name;
-  final String idNumber;
-  final String? phone;
+class CampaignFormX {
+  final String title;
+  final String donationId;
+  final num targetAmount;
 
-  UpdateProfileFormX({
-    required this.name,
-    required this.idNumber,
-    this.phone,
+  CampaignFormX({
+    required this.title,
+    required this.donationId,
+    required this.targetAmount,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      NameX.name: name.trim(),
-      NameX.idNumber: idNumber.trim(),
-      if(phone!=null)
-      NameX.phone: phone?.trim(),
+      NameX.title: title.trim(),
+      NameX.donationId: donationId,
+      NameX.price: targetAmount,
     };
   }
 }

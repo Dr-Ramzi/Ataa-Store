@@ -30,6 +30,16 @@ class ColorX {
     800:Color(0xff9B1C1C),
   });
 
+  static MaterialColor orange =const MaterialColor(0xff9B1C1C, {
+    50:Color(0xffFFF8F1),
+    800:Color(0xff8A2C0D),
+  });
+
+  static MaterialColor yellow =const MaterialColor(0xff9B1C1C, {
+    100:Color(0xffFDF6B2),
+    800:Color(0xff723B13),
+  });
+
   /// Results Cases
   static final MaterialColor success =
   ColorHelperX.toMaterial(const Color(0xff12B76A));

@@ -6,7 +6,7 @@ class TextX extends StatelessWidget {
     super.key,
     this.style,
     this.size,
-
+  this.textDirection,
         this.color, this.textAlign, this.overflow= TextOverflow.ellipsis, this.maxLines=1000, this.fontWeight,
   });
   final String data;
@@ -17,6 +17,7 @@ class TextX extends StatelessWidget {
   final TextOverflow? overflow;
   final int maxLines;
   final double? size;
+  final TextDirection? textDirection;
   @override
   Widget build(BuildContext context) {
     return Text(
@@ -24,6 +25,7 @@ class TextX extends StatelessWidget {
       maxLines: maxLines,
       overflow: overflow,
       softWrap: true,
+      textDirection: textDirection,
       style: style?.copyWith(color: color,fontWeight:fontWeight,
         fontSize:size,) ?? TextStyleX.titleMedium.copyWith(color: color,
           fontWeight:fontWeight,

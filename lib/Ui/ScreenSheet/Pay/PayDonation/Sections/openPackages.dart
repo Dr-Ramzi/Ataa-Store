@@ -1,12 +1,12 @@
 import 'package:ataa/Core/core.dart';
 import 'package:ataa/UI/Animation/animation.dart';
-import 'package:flex_list/flex_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../Core/Controller/Pay/payDonationController.dart';
 import '../../../../../UI/Widget/widget.dart';
 import '../../../../Widget/Basic/Input/selectedCard.dart';
+import '../../../../Widget/Package/flex_list.dart';
 
 class OpenPackagesSectionX extends StatelessWidget {
   const OpenPackagesSectionX(this.controller, {super.key});

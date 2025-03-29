@@ -7,6 +7,7 @@ class SearchBarX extends StatelessWidget {
       required this.onTapFilter,
       this.onSearching,
       this.filterIcon,
+      this.hint='search',
       this.disabledSearch=false,
       this.isMargin=true,
       });
@@ -14,6 +15,7 @@ class SearchBarX extends StatelessWidget {
   final Function onTapFilter;
   final bool disabledSearch;
   final bool isMargin;
+  final String hint;
   final Function(String val)? onSearching;
   final IconData? filterIcon;
   @override
@@ -31,7 +33,7 @@ class SearchBarX extends StatelessWidget {
               color: Theme.of(context).cardColor,
               icon: Icons.search_rounded,
               controller: search,
-              hint: "search",
+              hint: hint,
               textInputAction: TextInputAction.search,
               textInputType: TextInputType.text,
               onChanged: onSearching,

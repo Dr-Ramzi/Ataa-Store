@@ -1,21 +1,18 @@
 part of '../../widget.dart';
 
-class CampaignCardX extends StatelessWidget {
-  const CampaignCardX({
+class MyCampaignCardX extends StatelessWidget {
+  const MyCampaignCardX({
     super.key,
     required this.campaign,
-    this.onAddToCart,
-    this.onDonation,
     required this.onTap,
-    this.isPreview = false,
+    required this.onEdit,
+    required this.openShare,
   });
 
-  final Function(String id) onTap;
-
-  final bool isPreview;
-  final Function(CampaignX)? onDonation;
-  final Function(CampaignX)? onAddToCart;
   final CampaignX campaign;
+  final Function(CampaignX) onTap;
+  final Function(CampaignX) onEdit;
+  final Function(CampaignX) openShare;
 
   @override
   Widget build(BuildContext context) {
@@ -26,175 +23,105 @@ class CampaignCardX extends StatelessWidget {
       padding: EdgeInsets.zero,
       width: double.maxFinite,
       child: GestureDetector(
-        onTap: () async => await onTap(campaign.id),
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(
-                      StyleX.radius,
-                    ),
-                  ),
-                  child: ImageNetworkX(
-                    height: 170,
-                    width: double.maxFinite,
-                    imageUrl: campaign.imageUrl??'',
-                  ),
-                ),
-                if(!isPreview)
-                Positioned.directional(
-                  textDirection: Directionality.of(context),
-                  end: 10,
-                  top: 10,
-                  child: InkResponse(
-                    onTap: () async {
-                      /// TODO: add share for this
-                      // await shareSheet(
-                      //   id: donation.id,
-                      //   code: donation.donationBasic.code,
-                      //   type: LinkableTypeStatusX.donation,
-                      // );
-                    },
-                    child: const ContainerX(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                      child: Icon(
-                        Icons.share_rounded,
-                      ),
-                    ),
-                  ),
-                ),
-                if (campaign.isZakat)
-                  Positioned.directional(
-                      textDirection: Directionality.of(context),
-                      start: 10,
-                      top: 12,
-                      child: const ZakatDisbursementsCardX()),
-                if (campaign.stockValue != null)
-                  Positioned.directional(
-                    textDirection: Directionality.of(context),
-                    start: 0,
-                    bottom: 0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: ColorX.primary,
-                        borderRadius: const BorderRadiusDirectional.only(
-                          topEnd: Radius.circular(StyleX.radiusMd),
-                        ),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
-                      child: TextX(
-                        "${"Value share is".tr} ${campaign.stockValue} ${"SAR".tr}",
-                        color: Colors.white,
-                        style: TextStyleX.supTitleMedium,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Column(
+        onTap: () async => await onTap(campaign),
+        child: Container(
+          color: Colors.transparent,
+          child: Stack(
+            children: [
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(
-                    height: 4,
+                  /// Image
+                  ClipRRect(
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(StyleX.radius),
+                    ),
+                    child: ImageNetworkX(
+                      height: 170,
+                      width: double.maxFinite,
+                      imageUrl:
+                          campaign.donation.donationDetails.imageUrl ?? '',
+                    ),
                   ),
-                  TextX(
-                    campaign.title,
-                    style: TextStyleX.titleMedium,
-                    fontWeight: FontWeight.w700,
-                    maxLines: 1,
-                  ),
-                  const SizedBox(
-                    height: 6,
-                  ),
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                            child: TextX(
-                              "${FunctionX.formatLargeNumber(campaign.currentDonations)} ${"SAR was collected".tr}",
-                              style: TextStyleX.supTitleMedium,
-                              maxLines: 1,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Flexible(
-                            child: TextX(
-                              "${FunctionX.formatLargeNumber(campaign.totalDonations - campaign.currentDonations)} ${"SAR remaining".tr}",
-                              style: TextStyleX.supTitleMedium,
-                              maxLines: 1,
-                              color: context.isDarkMode
-                                  ? ColorX.grey.shade400
-                                  : Theme.of(context).colorScheme.secondary,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      LinearProgressIndicator(
-                        value:
-                            campaign.currentDonations / campaign.totalDonations,
-                        borderRadius: BorderRadius.circular(50),
-                        minHeight: 6,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    children: [
-                        Flexible(
-                          flex: 7,
-                          child: ButtonX(
-                            onTap:  () async {
-                              if (isPreview) {
-                                await onTap(campaign.id);
-                              } else if (onDonation != null) {
-                                await onDonation!(campaign);
-                              }
-                            },
-                            text: isPreview ? "Campaign preview" : "Donate Now",
-                            iconData: Icons.payments_rounded,
+                  const SizedBox(height: 6),
+
+                  /// Content
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8,),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        /// Campaign Status
+                        ContainerX(
+                          padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 4),
+                          radius: StyleX.radiusSm,
+                          color: campaign.status==CampaignStatusX.pending?ColorX.yellow[Get.isDarkMode?800:100]:
+                          campaign.status==CampaignStatusX.accepted?ColorX.green[Get.isDarkMode?800:100]:
+                          campaign.status==CampaignStatusX.rejected?ColorX.red[Get.isDarkMode?800:100]:
+                          ColorX.grey[Get.isDarkMode?800:100],
+                          child: TextX(
+                            campaign.status.name.tr,
+                            style: TextStyleX.titleSmall,
+                            fontWeight: FontWeight.w500,
+                            color: campaign.status==CampaignStatusX.pending?ColorX.yellow[Get.isDarkMode?100:800]:
+                            campaign.status==CampaignStatusX.accepted?ColorX.green[Get.isDarkMode?100:800]:
+                            campaign.status==CampaignStatusX.rejected?ColorX.red[Get.isDarkMode?100:800]:
+                            ColorX.grey[Get.isDarkMode?100:800],
                           ),
                         ),
-                        const SizedBox(
-                          width: 8,
+                        const SizedBox(height: 13),
+                        /// Title
+                        TextX(
+                          campaign.title,
+                          size: 16,
+                          fontWeight: FontWeight.w600,
+                          maxLines: 1,
                         ),
-                        Flexible(
-                          flex: 2,
-                          child: ButtonX.second(
-                            onTap:() async {
-                              if (isPreview) {
-                                /// TODO: add share for this
-                                // await shareSheet(
-                                //   id: donation.id,
-                                //   code: donation.donationBasic.code,
-                                //   type: LinkableTypeStatusX.donation,
-                                // );
-                              } else if (onAddToCart != null) {
-                                await onAddToCart!(campaign);
-                              }
-                            },
-                            iconData: isPreview?Icons.share_rounded:Icons.shopping_cart_rounded,
-                          ),
+                        const SizedBox(height: 10),
+
+                        Row(
+                          children: [
+                              Flexible(
+                                child: ButtonX.second(
+                                  onTap:  () async {
+                                    await onTap(campaign);
+                                  },
+                                  text: "Campaign preview",
+                                  iconData: Icons.remove_red_eye,
+                                ),
+                              ),
+                              if(campaign.status==CampaignStatusX.pending || campaign.status==CampaignStatusX.accepted)
+                              const SizedBox(width: 8),
+                            if(campaign.status==CampaignStatusX.pending)
+                              Flexible(
+                                child: ButtonX.gray(
+                                  onTap:() async {
+                                    await onEdit(campaign);
+                                  },
+                                  text: 'Edit campaign',
+                                  iconData: IconX.edit,
+                                ),
+                              ),
+                            if(campaign.status==CampaignStatusX.accepted)
+                              Flexible(
+                                child: ButtonX(
+                                  onTap:() async {
+                                    await openShare(campaign);
+                                  },
+                                  text: 'Sharing',
+                                  iconData: Icons.share_rounded,
+                                ),
+                              ),
+                          ],
                         ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  )
                 ],
               ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -61,7 +61,7 @@ class DeliveryAddressControllerX extends GetxController {
   getCountries() async {
     try {
       /// TODO: Database >>> Fetch available countries
-      countries = TestDataX.countries;
+      // countries = TestDataX.countries;
 
       /// If the country is not empty, data for the cities belonging to the country is retrieved
       if (countrySelected.isNotEmpty) {
@@ -82,7 +82,7 @@ class DeliveryAddressControllerX extends GetxController {
 
       /// TODO: Database >>> Fetch available cities by country
       await Future.delayed(const Duration(seconds: 1)); // delete this
-      cities = TestDataX.cities;
+      // cities = TestDataX.cities;
     } catch (e) {
       return Future.error(e);
     }

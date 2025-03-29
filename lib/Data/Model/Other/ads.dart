@@ -9,6 +9,9 @@ class AdsX {
     required this.buttonUrl,
     required this.externalUrl,
     this.isActive = true,
+    this.typeIsInternal = false,
+    this.sectionType,
+    required this.section,
     this.imageUrl,
     this.videoUrl,
   });
@@ -19,12 +22,18 @@ class AdsX {
   String buttonTitle;
   String buttonUrl;
   String externalUrl;
+  bool typeIsInternal;
+  AdsSectionTypeStatusX? sectionType;
+  AdSectionX section;
   bool isActive;
   String? imageUrl;
   String? videoUrl;
 
   factory AdsX.fromJson(Map<String, dynamic> json) {
     Map<String, Object?> imageJson = Map<String, Object?>.from(json[NameX.image] ?? {});
+    Map<String, Object?> sectionJson = Map<String, Object?>.from(json[NameX.section] ?? {});
+    String type = (json[NameX.sectionType]??'').toString();
+
     return ModelUtilX.checkFromJson(
       json,
           (json) => AdsX(
@@ -34,6 +43,9 @@ class AdsX {
         buttonTitle: json[NameX.buttonTitle].toStrDefaultX(''),
         buttonUrl: json[NameX.buttonUrl].toStrDefaultX(''),
         externalUrl: json[NameX.externalUrl].toStrDefaultX(''),
+        typeIsInternal: json[NameX.type].toStrDefaultX('')=='internal',
+        sectionType: AdsSectionTypeStatusX.values.firstWhereOrNull((x) => x.name==type),
+        section: AdSectionX.fromJson(sectionJson),
         isActive: json[NameX.isActive].toBoolDefaultX(true),
         imageUrl: imageJson[NameX.url].toStrNullableX,
         videoUrl: json[NameX.videoUrl].toStrNullableX,

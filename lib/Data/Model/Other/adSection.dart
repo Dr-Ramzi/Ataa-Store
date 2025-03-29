@@ -2,21 +2,24 @@ import 'package:ataa/Core/Extension/convert/convert.dart';
 import 'package:ataa/Core/Helper/model/model.dart';
 import 'package:ataa/Data/data.dart';
 
-class AdsSectionX {
+class AdSectionX {
   final String? id;
-  final String? code;
+  final String? sectionId;
+  final int? code;
 
-  AdsSectionX({
+  AdSectionX({
     this.id,
+    this.sectionId,
     this.code,
   });
 
-  factory AdsSectionX.fromJson(Map<String, dynamic> json) {
+  factory AdSectionX.fromJson(Map<String, dynamic> json) {
     return ModelUtilX.checkFromJson(
       json,
-      (json) => AdsSectionX(
+      (json) => AdSectionX(
         id: json[NameX.id].toStrNullableX,
-        code: json[NameX.code].toStrNullableX,
+        sectionId: json[NameX.sectionId].toStrNullableX,
+        code: json[NameX.code].toIntNullableX,
       ),
     );
   }

@@ -64,7 +64,7 @@ class _AccordionXState extends State<AccordionX> {
                       widget.title,
                       fontWeight: FontWeight.w600,
                       maxLines: 1,
-                      color: ColorX.primary,
+                      // color: ColorX.primary,
                     ),
                   ),
                   const SizedBox(width: 20),

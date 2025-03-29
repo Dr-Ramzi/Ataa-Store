@@ -1,13 +1,15 @@
 part of "../../widget.dart";
 
 class AddToCartAndDonationButtonsX extends StatelessWidget {
-  const AddToCartAndDonationButtonsX(
-      {super.key,
-      required this.onDonation,
-      this.onAddToCart,
-      this.sameSize = true,
-      required this.payDonationButtonState, this.addToCartButtonState=ButtonStateEX.normal, this.disabled=false,
-      });
+  const AddToCartAndDonationButtonsX({
+    super.key,
+    required this.onDonation,
+    this.onAddToCart,
+    this.sameSize = true,
+    required this.payDonationButtonState,
+    this.addToCartButtonState = ButtonStateEX.normal,
+    this.disabled = false,
+  });
   final bool sameSize;
   final bool disabled;
   final ButtonStateEX payDonationButtonState;
@@ -19,20 +21,23 @@ class AddToCartAndDonationButtonsX extends StatelessWidget {
     return Row(
       children: [
         if (onDonation != null)
-        Flexible(
-          flex: sameSize?2:7,
-          child: ButtonStateX(
-            colorDisabledButton: context.isDarkMode?ColorX.primary.shade300.withOpacity(0.2):ColorX.primary.withOpacity(0.4),
-            colorDisabledBorder: Colors.transparent,
-            colorDisabledText: context.isDarkMode?Colors.white38:Colors.white,
-            disabled: disabled,
-            state: payDonationButtonState,
-            onTap: onDonation!,
-            text: "Donate Now",
-            iconData: Icons.payments_rounded,
+          Flexible(
+            flex: sameSize ? 2 : 7,
+            child: ButtonStateX(
+              colorDisabledButton: context.isDarkMode
+                  ? ColorX.primary.shade300.withOpacity(0.2)
+                  : ColorX.primary.withOpacity(0.4),
+              colorDisabledBorder: Colors.transparent,
+              colorDisabledText:
+                  context.isDarkMode ? Colors.white38 : Colors.white,
+              disabled: disabled,
+              state: payDonationButtonState,
+              onTap: onDonation!,
+              text: "Donate Now",
+              iconData: Icons.payments_rounded,
+            ),
           ),
-        ),
-        if (onAddToCart != null && onDonation !=null)
+        if (onAddToCart != null && onDonation != null)
           const SizedBox(
             width: 8,
           ),
@@ -40,14 +45,18 @@ class AddToCartAndDonationButtonsX extends StatelessWidget {
           Flexible(
             flex: 2,
             child: ButtonStateX.second(
-              colorDisabledButton:  Colors.transparent,
-              colorDisabledBorder: context.isDarkMode?ColorX.primary.shade300.withOpacity(0.4):ColorX.primary.withOpacity(0.4),
-              colorDisabledText: context.isDarkMode?ColorX.primary.shade300.withOpacity(0.4):ColorX.primary.withOpacity(0.4),
+              colorDisabledButton: Colors.transparent,
+              colorDisabledBorder: context.isDarkMode
+                  ? ColorX.primary.shade300.withOpacity(0.4)
+                  : ColorX.primary.withOpacity(0.4),
+              colorDisabledText: context.isDarkMode
+                  ? ColorX.primary.shade300.withOpacity(0.4)
+                  : ColorX.primary.withOpacity(0.4),
               disabled: disabled,
               state: addToCartButtonState,
               onTap: onAddToCart!,
               iconData: Icons.shopping_cart_rounded,
-              text: sameSize?"Add to cart":null,
+              text: sameSize ? "Add to cart" : null,
             ),
           ),
       ],

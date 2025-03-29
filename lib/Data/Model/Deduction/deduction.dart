@@ -32,9 +32,6 @@ class DeductionX{
   double? initialPrice;
   bool isOpenPrice;
   bool isSubscribed;
-
-  /// TODO: Add share Url on from json of deduction
-  String shareURL;
   
   DeductionX({
     required this.id,
@@ -65,9 +62,6 @@ class DeductionX{
     this.initialPrice,
     required this.isOpenPrice,
     required this.isSubscribed,
-
-    /// TODO: Add share Url on from json of deduction
-    this.shareURL='',
   });
 
 
@@ -106,9 +100,6 @@ class DeductionX{
               initialPrice: json[NameX.initialPrice].toDoubleNullableX,
               isOpenPrice: json[NameX.isOpenPrice].toBoolDefaultX(false),
               isSubscribed: json[NameX.isSubscribed].toBoolDefaultX(false),
-
-              /// TODO: Add share Url on from json of donation
-              // shareURL: json[NameX.]??'',
             ),
         requiredDataKeys: [
           NameX.id,
@@ -141,8 +132,6 @@ class DeductionX{
       NameX.initialPrice:initialPrice,
       NameX.isOpenPrice:isOpenPrice,
       NameX.isSubscribed:isSubscribed,
-      /// TODO: Add share Url on from json of donation
-      // NameX.shareURL: shareURL,
     };
   }
 }

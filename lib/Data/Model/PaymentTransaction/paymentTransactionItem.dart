@@ -1,5 +1,6 @@
 import 'package:ataa/Core/Extension/convert/convert.dart';
 import '../../../Core/Helper/model/model.dart';
+import '../../Enum/model_type_status.dart';
 import '../../data.dart';
 import '../PaymentTransaction/paymentTransaction.dart';
 
@@ -9,9 +10,9 @@ class PaymentTransactionItemX<T extends OrderX>{
   final double price;
   final int quantity;
   final String name;
-  final String type;
+  final ModelTypeStatusX type;
   final String? typeLocalized;
-  T orderModel;
+  T? orderModel;
 
   PaymentTransactionItemX({
     required this.id,
@@ -21,10 +22,10 @@ class PaymentTransactionItemX<T extends OrderX>{
     required this.name,
     required this.type,
     this.typeLocalized,
-    required this.orderModel,
+    this.orderModel,
   });
 
-  factory PaymentTransactionItemX.fromJson(Map<String, dynamic> json,T Function(Map<String, dynamic>) orderModelFromJson) {
+  factory PaymentTransactionItemX.fromJson(Map<String, dynamic> json,[T Function(Map<String, dynamic>)? orderModelFromJson]) {
     Map<String, Object?> paymentTransactionJson = Map<String, Object?>.from(json[NameX.paymentTransaction] ?? {});
     Map<String, Object?> orderModelJson = Map<String, Object?>.from(json[NameX.modelData] ?? {});
     return ModelUtilX.checkFromJson(
@@ -35,9 +36,9 @@ class PaymentTransactionItemX<T extends OrderX>{
         price: json[NameX.price].toDoubleX,
         quantity: json[NameX.quantity].toIntDefaultX(1),
         name: json[NameX.name].toStrDefaultX(''),
-        type: json[NameX.type].toStrX,
+        type: ModelTypeStatusX.values.firstWhere((x) => x.name==json[NameX.type].toString(),orElse: () => ModelTypeStatusX.donation,),
         typeLocalized: json[NameX.typeLocalized].toStrNullableX,
-        orderModel: orderModelFromJson(orderModelJson),
+        orderModel: orderModelFromJson?.call(orderModelJson),
       ),
       requiredDataKeys: [
         NameX.id,
@@ -59,7 +60,7 @@ class PaymentTransactionItemX<T extends OrderX>{
       NameX.name: name,
       NameX.type: type,
       NameX.typeLocalized: typeLocalized,
-      NameX.modelData: orderModel.toJson(),
+      NameX.modelData: orderModel?.toJson(),
     };
   }
 }

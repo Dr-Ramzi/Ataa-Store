@@ -9,6 +9,5 @@ abstract class OrderX {
     required this.modelType,
     required this.createdAt,
   });
-
   Map<String, dynamic> toJson();
 }

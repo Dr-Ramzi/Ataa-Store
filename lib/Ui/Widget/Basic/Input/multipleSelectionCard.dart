@@ -2,12 +2,14 @@ part of '../../widget.dart';
 
 class MultipleSelectionCardX extends StatelessWidget {
   final String title;
+  final IconData? icon;
   final String? selected;
   final bool asInputField;
   final void Function()? onTap;
 
   const MultipleSelectionCardX({
     required this.title,
+    this.icon,
     this.selected,
     this.onTap,
     this.asInputField=false,
@@ -22,9 +24,10 @@ class MultipleSelectionCardX extends StatelessWidget {
         isBorder: true,
         height: StyleX.inputHeight,
         color:  Theme.of(context).cardTheme.color,
-        padding: const EdgeInsets.symmetric(vertical: 12.0,horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 12.0,horizontal: 12),
         child: Row(
           children: [
+            const SizedBox(width: 4),
             if(!asInputField)
               Expanded(
                 child: TextX(
@@ -64,7 +67,7 @@ class MultipleSelectionCardX extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 8),
-            Icon( Icons.arrow_forward_ios_rounded,
+            Icon( icon??Icons.arrow_forward_ios_rounded,
               color: context.isDarkMode?ColorX.grey.shade200 : Theme.of(context).colorScheme.secondary,
               size: 16,
             ),

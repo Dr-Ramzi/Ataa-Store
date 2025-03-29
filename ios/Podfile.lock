@@ -1,6 +1,4 @@
 PODS:
-  - app_links (0.0.2):
-    - Flutter
   - audio_session (0.0.1):
     - Flutter
   - downloadsfolder (0.0.1):
@@ -193,6 +191,8 @@ PODS:
     - PromisesObjC (= 2.4.0)
   - quick_actions_ios (0.0.1):
     - Flutter
+  - share_plus (0.0.1):
+    - Flutter
   - sms_autofill (0.0.1):
     - Flutter
   - sqflite_darwin (0.0.4):
@@ -210,7 +210,6 @@ PODS:
     - FlutterMacOS
 
 DEPENDENCIES:
-  - app_links (from `.symlinks/plugins/app_links/ios`)
   - audio_session (from `.symlinks/plugins/audio_session/ios`)
   - downloadsfolder (from `.symlinks/plugins/downloadsfolder/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
@@ -230,6 +229,7 @@ DEPENDENCIES:
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - pointer_interceptor_ios (from `.symlinks/plugins/pointer_interceptor_ios/ios`)
   - quick_actions_ios (from `.symlinks/plugins/quick_actions_ios/ios`)
+  - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - sms_autofill (from `.symlinks/plugins/sms_autofill/ios`)
   - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
@@ -262,8 +262,6 @@ SPEC REPOS:
     - PromisesSwift
 
 EXTERNAL SOURCES:
-  app_links:
-    :path: ".symlinks/plugins/app_links/ios"
   audio_session:
     :path: ".symlinks/plugins/audio_session/ios"
   downloadsfolder:
@@ -302,6 +300,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/pointer_interceptor_ios/ios"
   quick_actions_ios:
     :path: ".symlinks/plugins/quick_actions_ios/ios"
+  share_plus:
+    :path: ".symlinks/plugins/share_plus/ios"
   sms_autofill:
     :path: ".symlinks/plugins/sms_autofill/ios"
   sqflite_darwin:
@@ -316,7 +316,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/darwin"
 
 SPEC CHECKSUMS:
-  app_links: e7a6750a915a9e161c58d91bc610e8cd1d4d0ad0
   audio_session: 088d2483ebd1dc43f51d253d4a1c517d9a2e7207
   downloadsfolder: 84af83492bd9ab8c94109ba56fd202d7469d3632
   Firebase: cf1b19f21410b029b6786a54e9764a0cacad3c99
@@ -357,6 +356,7 @@ SPEC CHECKSUMS:
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
   quick_actions_ios: 56f3cbaa71e94f212838d1f9fe354bd0734779bf
+  share_plus: 8b6f8b3447e494cca5317c8c3073de39b3600d1f
   sms_autofill: c461043483362c3f1709ee76eaae6eb570b31686
   sqflite_darwin: 5a7236e3b501866c1c9befc6771dfd73ffb8702d
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
