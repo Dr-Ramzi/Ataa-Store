@@ -1,0 +1,4 @@
+enum GenderStatusX{
+  male,
+  female,
+}

@@ -49,8 +49,13 @@ class CampaignCardX extends StatelessWidget {
                   end: 10,
                   top: 10,
                   child: InkResponse(
-                    onTap: () {
-                      shareSheet(campaign.shareURL);
+                    onTap: () async {
+                      /// TODO: add share for this
+                      // await shareSheet(
+                      //   id: donation.id,
+                      //   code: donation.donationBasic.code,
+                      //   type: LinkableTypeStatusX.donation,
+                      // );
                     },
                     child: const ContainerX(
                       padding:
@@ -171,7 +176,12 @@ class CampaignCardX extends StatelessWidget {
                           child: ButtonX.second(
                             onTap:() async {
                               if (isPreview) {
-                                shareSheet(campaign.shareURL);
+                                /// TODO: add share for this
+                                // await shareSheet(
+                                //   id: donation.id,
+                                //   code: donation.donationBasic.code,
+                                //   type: LinkableTypeStatusX.donation,
+                                // );
                               } else if (onAddToCart != null) {
                                 await onAddToCart!(campaign);
                               }
