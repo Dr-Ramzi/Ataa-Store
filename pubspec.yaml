@@ -4,7 +4,7 @@
 name: ataa
 description: "description_project_x"
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 1.0.0+1
+version: 1.0.0+2
 
 #====================================================================
 # Flutter Version
@@ -101,6 +101,7 @@ dependencies:
   webview_flutter: ^4.9.0
   permission_handler: any
   downloadsfolder: ^1.1.1
+  onesignal_flutter: ^5.3.0
 #  app_links: ^6.3.3
   share_plus: any
 

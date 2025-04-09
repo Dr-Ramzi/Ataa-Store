@@ -20,6 +20,7 @@ import '../UI/Widget/widget.dart';
 import '../Ui/Screen/Donation/AllDonation/controller/Controller.dart';
 import 'Controller/Cart/cartGeneralController.dart';
 import 'Helper/http/http.dart';
+import 'Service/onesignalService.dart';
 import 'Util/info.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -45,6 +46,7 @@ class CoreX{
   static init() async{
     await InfoUtilX.init();
     await HttpX.init();
+    await OnesignalServiceX.init();
     /// Here codes are added to configure anything within this section when the application starts
   }
 }
